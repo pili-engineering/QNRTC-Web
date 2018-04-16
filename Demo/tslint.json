@@ -1,0 +1,98 @@
+{
+    "jsRules": {
+        "class-name": true,
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "indent": [
+            true,
+            "spaces"
+        ],
+        "no-unused-new": true,
+        "no-duplicate-variable": true,
+        "no-eval": true,
+        "no-trailing-whitespace": true,
+        "no-unsafe-finally": true,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "quotemark": [
+            true,
+            "double"
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "variable-name": [
+            true
+        ],
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ]
+    },
+    "extends": ["tslint"],
+    "rules": {
+        "class-name": true,
+        "member-access": [true, "check-accessor", "check-constructor"],
+        "semicolon": [true, "always"],
+        "comment-format": [
+            true,
+            "check-space"
+        ],
+        "no-eval": true,
+        "no-internal-module": true,
+        "no-unsafe-finally": true,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-whitespace"
+        ],
+        "triple-equals": [
+            true,
+            "allow-null-check"
+        ],
+        "typedef": [true, "call-signature", "parameter", "member-variable-declaration"],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            }
+        ],
+        "curly": true,
+        "no-invalid-this": [true, "check-function-in-method"],
+        "no-string-throw": true,
+        "no-unused-expression": true,
+        "no-unused-new": true,
+        "no-var-keyword": true,
+        "use-isnan": true,
+        "indent": [true, "spaces"],
+        "no-trailing-whitespace": true,
+        "prefer-const": true,
+        "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+        "array-type": [true, "array"],
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "no-angle-bracket-type-assertion": true,
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type",
+            "check-typecast"
+        ]
+    }
+}
