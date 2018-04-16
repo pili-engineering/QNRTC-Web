@@ -38,7 +38,7 @@ const myRTC = new QNRTC.QNRTCSession();
 ```
 
 ### 4.2 直接引入
-[下载地址](https://github.com/pili-engineering/QNRTC-Web/releases)  
+[下载地址](../Release/pili-rtc-web.js)  
 ```
 <script src="./build/pili-rtc-web.js"></script>
 <script>
