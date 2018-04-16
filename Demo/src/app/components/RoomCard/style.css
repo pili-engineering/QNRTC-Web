@@ -1,0 +1,22 @@
+/*
+ * style.css
+ * Copyright (C) 2018 disoul
+ *
+ * Distributed under terms of the MIT license.
+ */
+@media(max-width: 660px) {
+  .card {
+    width: 48% !important;
+  }
+}
+
+.card {
+  width: 31.3%;
+  margin: 10px 1%;
+}
+
+.image {
+  height: 200px;
+  background: #2C3E50;  /* fallback for old browsers */
+  background: linear-gradient(to right, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
