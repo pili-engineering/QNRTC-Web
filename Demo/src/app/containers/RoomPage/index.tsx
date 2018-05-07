@@ -5,7 +5,8 @@
  * Distributed under terms of the MIT license.
  */
 import * as React from 'react';
-import { User } from 'pili-rtc-web';
+import { Stream, User, deviceManager } from 'pili-rtc-web';
+import Slider from 'react-rangeslider';
 import ClipboardJS from 'clipboard';
 import Draggable from 'react-draggable';
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -47,15 +48,25 @@ interface State {
   showPublish: boolean;
   anchorEl: HTMLElement | null;
   menulist: Menu[];
+  volume: any;
+  currentAudio?: string;
+  currentVideo?: string;
+  stats: {
+    videoPackageLoss: number,
+    audioPackageLoss: number,
+    videoBitrate: number,
+    audioBitrate: number,
+  };
 }
 
 @inject('app', 'router')
 @observer
 export class RoomPage extends React.Component<Props, State> {
   private localPlayer: LocalPlayer;
-  private stream: MediaStream;
+  private stream: Stream;
   private clipboard: any;
   private redirect: boolean;
+  private statInterval: any;
 
   public constructor(props: Props) {
     super(props);
@@ -64,6 +75,15 @@ export class RoomPage extends React.Component<Props, State> {
       showPublish: false,
       anchorEl: null,
       menulist: [],
+      volume: 1,
+      currentAudio: "默认",
+      currentVideo: "默认",
+      stats: {
+        videoPackageLoss: 0,
+        audioPackageLoss: 0,
+        videoBitrate: 0,
+        audioBitrate: 0,
+      },
     };
 
     if (!props.app.roomToken) {
@@ -79,32 +99,27 @@ export class RoomPage extends React.Component<Props, State> {
     this.setState({ showPublish: false });
     piliRTC.on('kicked', this.handleLeaveRoom);
     piliRTC.on('closeroom', this.handleLeaveRoom);
-    navigator.mediaDevices.ondevicechange = e => {
-      console.log('devicechange', e);
-    };
     this.handleCopy();
 
     await this.handlePublish();
+    this.updateDevice();
+    deviceManager.on("device-update", () => {
+      this.updateDevice();
+    });
+
+  }
+
+  private updateDevice = () => {
+    this.setState({
+      currentAudio: deviceManager.audioDevice ? deviceManager.audioDevice.label || "默认" : "默认",
+      currentVideo: deviceManager.videoDevice ? deviceManager.videoDevice.label || "默认" : "默认",
+    });
   }
 
   private getStream = async () => {
     try {
-      const timeout: Promise<MediaStream> = new Promise((_, reject) => {
-        const err = new Error();
-        err.name = 'TimeoutError';
-        setTimeout(() => reject(err), 5000);
-      });
-
-      this.stream = await Promise.race([
-        navigator.mediaDevices.getUserMedia(this.props.app.config.recordOption.config),
-        timeout,
-      ]);
-      if (!this.stream) {
-        const error = new Error();
-        error.name = "未知错误";
-        throw error;
-      }
-      this.localPlayer.video.srcObject = this.stream;
+      this.stream = await deviceManager.getLocalStream(this.props.app.config.recordOption.config);
+      this.stream.play(this.localPlayer.video, true);
       this.setState({ showPublish: true });
     } catch (e) {
       switch (e.name) {
@@ -114,15 +129,6 @@ export class RoomPage extends React.Component<Props, State> {
             title: '没有权限',
             content: '获取摄像头权限被拒绝，请手动打开摄像头权限后重新进入房间',
           });
-          break;
-        case 'TimeoutError':
-          this.props.app.errorStore.showAlert({
-            show: true,
-            title: '没有权限',
-            content: '获取权限超时，您可能没有点击权限申请框, 打开权限后重新进入房间',
-          });
-          break;
-        case 'TypeError':
           break;
         default:
           this.props.app.errorStore.showAlert({
@@ -154,19 +160,14 @@ export class RoomPage extends React.Component<Props, State> {
     this.props.router.push('/');
   }
 
-  private handleSubscrible = (user: User) => {
+  private handleSubscrible = async (user: User) => {
     this.setState({
       anchorEl: null,
     });
-    if (!user.publishStream) {
+    if (!user.published) {
       return;
     }
-    this.props.app.startSubscribe(user);
-  }
-
-  private handleRemoteVideoReady = async (video: HTMLVideoElement, userId: string) => {
-    console.log('handle ready', video);
-    await this.props.app.subscribe(userId, video);
+    await this.props.app.subscribe(user);
   }
 
   private handleUnsubscible = async (userId: string) => {
@@ -177,20 +178,45 @@ export class RoomPage extends React.Component<Props, State> {
   }
 
   private handlePublish = async () => {
-    console.log('publish', this.props.app.publishState);
     switch (this.props.app.publishState) {
       case 'idle':
       case 'fail':
         await this.getStream();
         await this.props.app.publish(this.stream);
+        if (this.statInterval) {
+          clearInterval(this.statInterval);
+        }
+        this.statInterval = setInterval(this.handleStats, 1000);
         break;
       case 'success':
-        this.releaseStream();
         await this.props.app.unpublish();
+        if (this.statInterval) {
+          clearInterval(this.statInterval);
+        }
+        this.setState({
+          stats: {
+            videoPackageLoss: 0,
+            audioPackageLoss: 0,
+            videoBitrate: 0,
+            audioBitrate: 0,
+          },
+        });
         break;
       default:
         break;
     }
+  }
+
+  private handleStats = async () => {
+    const report = await this.stream.getStats();
+    this.setState({
+      stats: {
+        videoPackageLoss: report.videoPacketLoss,
+        audioPackageLoss: report.audioPacketLoss,
+        videoBitrate: Number((report.videoBitrate / 1024).toFixed(2)),
+        audioBitrate: Number((report.audioBitrate / 1024).toFixed(2)),
+      },
+    });
   }
 
   private handleContextMenu = (e: any, userId: string, isunsub?: boolean) => {
@@ -231,24 +257,17 @@ export class RoomPage extends React.Component<Props, State> {
     this.setState({ anchorEl: null });
   }
 
-  private releaseStream = () => {
-    if (!this.stream) {
-      return;
-    }
-    this.stream.getTracks().forEach(track => {
-      track.stop();
+  private setVolume = (value: any): void => {
+    this.setState({
+      volume: value,
     });
+    deviceManager.setVolume(value);
   }
 
   public componentWillUnmount(): void {
     if (this.props.app.roomToken) {
-      this.releaseStream();
       this.props.app.leaveRoom(true);
     }
-  }
-
-  public componentDidCatch(e: Error, info: any): void {
-    console.log(e, info);
   }
 
   public render(): JSX.Element {
@@ -260,6 +279,12 @@ export class RoomPage extends React.Component<Props, State> {
           </p>
           <div className={styles.blank} />
         </header>
+        <div className={styles.stats}>
+          <p>视频丢包: {this.state.stats.videoPackageLoss}</p>
+          <p>音频丢包: {this.state.stats.audioPackageLoss}</p>
+          <p>视频实时码率: {this.state.stats.videoBitrate} kbps</p>
+          <p>音频实时码率: {this.state.stats.audioBitrate} kbps</p>
+        </div>
         <Menu
           anchorEl={this.state.anchorEl}
           open={!!this.state.anchorEl}
@@ -299,17 +324,15 @@ export class RoomPage extends React.Component<Props, State> {
             >
               {Array.from(this.props.app.subscription.keys()).map(k => {
                 const subscription = this.props.app.subscription.get(k);
+                const stream = subscription.stream;
                 return (
                   <RemotePlayer
                     id={`remote-player-${subscription.userId}`}
                     onContextMenu={e => this.handleContextMenu(e, subscription.userId, true)}
                     key={subscription.userId}
                     userId={subscription.userId}
-                    streamId={subscription.streamId}
+                    stream={stream}
                     color={getColorFromUserId(subscription.userId)}
-                    muteAudio={subscription.muteAudio}
-                    muteVideo={subscription.muteVideo}
-                    onVideoReady={this.handleRemoteVideoReady}
                   />
                 );
               })}
@@ -333,13 +356,19 @@ export class RoomPage extends React.Component<Props, State> {
               />
             </IconButton>
           </Tooltip>
-          { this.props.app.publishState === 'success' && <IconButton
-            id="mute_audio"
-            className={styles.muteAudio}
-            onClick={() => this.handleMute(!this.props.app.muteAudio, this.props.app.muteVideo)}
+          { this.props.app.publishState === 'success' &&
+          <Tooltip
+            title={this.state.currentVideo}
+            placement="top-end"
           >
-            { this.props.app.muteAudio ? <MicOffIcon /> : <MicIcon /> }
-          </IconButton> }
+            <IconButton
+              className={styles.muteVideo}
+              id="mute_video"
+              onClick={() => this.handleMute(this.props.app.muteAudio, !this.props.app.muteVideo)}
+            >
+              { this.props.app.muteVideo ? <VideocamOffIcon /> : <VideocamIcon /> }
+            </IconButton>
+          </Tooltip> }
 
           <Button
             className={`${styles.publishbtn} ${this.props.app.publishState === 'success' ? styles.isPublish : ''}`}
@@ -350,13 +379,29 @@ export class RoomPage extends React.Component<Props, State> {
             <PhoneIcon />
           </Button>
 
-          { this.props.app.publishState === 'success' && <IconButton
-            className={styles.muteVideo}
-            id="mute_video"
-            onClick={() => this.handleMute(this.props.app.muteAudio, !this.props.app.muteVideo)}
+          { this.props.app.publishState === 'success' &&
+          <Tooltip
+            title={this.state.currentAudio}
+            placement="top-end"
           >
-            { this.props.app.muteVideo ? <VideocamOffIcon /> : <VideocamIcon /> }
-          </IconButton> }
+            <IconButton
+              id="mute_audio"
+              className={styles.muteAudio}
+              onClick={() => this.handleMute(!this.props.app.muteAudio, this.props.app.muteVideo)}
+            >
+              { this.props.app.muteAudio ? <MicOffIcon /> : <MicIcon /> }
+            </IconButton>
+          </Tooltip> }
+
+          { this.props.app.publishState === 'success' && <div
+            className={`${styles.muteAudio} ${styles.volume}`}
+            id="volume"
+          >
+            <Slider
+              onChange={this.setVolume}
+              value={this.state.volume}
+            />
+          </div> }
           </div>
         </div> }
 

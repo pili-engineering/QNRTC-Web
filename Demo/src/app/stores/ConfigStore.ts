@@ -1,10 +1,11 @@
 import { observable, action } from 'mobx';
 import store from 'store';
+import { RecordConfig } from "pili-rtc-web";
 import { RecordOptions } from '../constants';
 
 interface RecordOption {
   key: string;
-  config: MediaStreamConstraints;
+  config: RecordConfig;
 }
 
 export class ConfigStore {
@@ -25,8 +26,8 @@ export class ConfigStore {
       this.recordOption = record;
     } else {
       this.recordOption = {
-        config: RecordOptions['720p'],
-        key: '720p',
+        config: RecordOptions['640*480'],
+        key: '640*480',
       };
     }
   }

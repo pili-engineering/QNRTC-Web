@@ -25,8 +25,6 @@ export class LocalPlayer extends React.Component<Props, State> {
       <div className={this.props.className}>
         <video
           className={`${this.props.videoClassName || ''} ${styles.video}`}
-          autoPlay
-          muted
           ref={ref => this.video = ref}
         />
       </div>
