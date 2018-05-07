@@ -19,6 +19,7 @@
     top: 0;
     left: 0;
     object-fit: cover;
+    z-index: 9;
   }
 }
 
@@ -27,8 +28,13 @@
   color: #FFFFFF;
   letter-spacing: 0.85px;
   text-align: center;
+  height: 150px;
   line-height: 150px;
   width: 100%;
+  z-index: 8;
+  position: absolute;
+  bottom: 30px;
+  left: 0;
 }
 
 .mic {

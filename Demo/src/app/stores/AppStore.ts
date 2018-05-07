@@ -1,4 +1,4 @@
-import { User, Stream, RoomInfo } from 'pili-rtc-web';
+import { User, Stream } from 'pili-rtc-web';
 import { observable, action, computed } from 'mobx';
 import { ErrorStore } from './ErrorStore';
 import { ConfigStore } from './ConfigStore';
@@ -27,13 +27,9 @@ export class AppStore {
   public publishState: State;
   @observable
   public subscription: Map<string, {
-    subscribeState: State,
+    stream?: Stream,
     userId: string,
-    streamId: string | null,
-    muteAudio?: boolean,
-    muteVideo?: boolean,
-    video?: HTMLVideoElement,
-    videoReadyCb?: (video: HTMLVideoElement) => void,
+    subscribeState: State,
   }>;
 
 
@@ -42,7 +38,7 @@ export class AppStore {
   @observable
   public roomToken?: string;
   @observable
-  public roomInfo?: RoomInfo;
+  public users: User[];
 
   @computed
   public get userId(): string {
@@ -56,7 +52,7 @@ export class AppStore {
     this.isLogin = false;
     this.isAdmin = false;
     this.roomToken = null;
-    this.roomInfo = piliRTC.roomInfo;
+    this.users = piliRTC.users;
 
     this.muteAudio = false;
     this.muteVideo = false;
@@ -71,24 +67,30 @@ export class AppStore {
 
     piliRTC.on('user-join', user => this.updateUser(user, true));
     piliRTC.on('user-leave', user => this.updateUser(user, false));
-    piliRTC.on('add-stream', stream => this.updateStream(stream, true));
-    piliRTC.on('remove-stream', stream => this.updateStream(stream, false));
-    piliRTC.on('mute', this.handleMute);
-    piliRTC.on('room-state-change', state => console.log('state change', state));
+    piliRTC.on('user-publish', user => this.updateStream(user, true));
+    piliRTC.on('user-unpublish', user => this.updateStream(user, false));
+    piliRTC.on('mute', this.updateStateFromSDK);
     console.log(piliRTC);
   }
 
   @action
-  private handleMute = (d: any) => {
-    this.roomInfo = piliRTC.roomInfo;
-    const subscription = this.subscription.get(d.userId);
-    if (subscription) {
-      this.subscription.set(d.userId, {
-        ...subscription,
-        muteAudio: d.muteAudio,
-        muteVideo: d.muteVideo,
+  private updateStateFromSDK = () => {
+    const subUserIds = Object.keys(piliRTC.subscribedUsers);
+    const localSubUserIds = Array.from(this.subscription.keys());
+    localSubUserIds.forEach(userId => {
+      if (subUserIds.indexOf(userId) === -1) {
+        this.subscription.delete(userId);
+      }
+    });
+    for (const userId in piliRTC.subscribedUsers) {
+      this.subscription.set(userId, {
+        subscribeState: "success",
+        userId,
+        stream: piliRTC.subscribedUsers[userId],
       });
     }
+
+    this.users = piliRTC.users;
   }
 
   @action
@@ -104,19 +106,17 @@ export class AppStore {
     this.muteAudio = false;
     this.muteVideo = false;
     this.roomToken = null;
-    this.roomInfo = { users: [], streams: [] };
+    this.users = piliRTC.users;
   }
 
   @action
   private updateUser = (user: User, isAdd: boolean) => {
-    console.log('upadet player', user, isAdd);
     if (!isAdd) {
       this.errorStore.showToast({ show: true, content: `用户${user.userId}离开房间`});
-      this.subscription.delete(user.userId);
     } else {
       this.errorStore.showToast({ show: true, content: `用户${user.userId}加入房间`});
     }
-    this.roomInfo = piliRTC.roomInfo;
+    this.updateStateFromSDK();
     if (isAdd) {
       this.autoSubscribe();
     }
@@ -124,15 +124,7 @@ export class AppStore {
 
   @action
   private updateStream = (stream: Stream, isAdd: boolean) => {
-    console.log('update stream', stream, isAdd);
-    this.roomInfo = piliRTC.roomInfo;
-    const subscription = this.subscription.get(stream.userId);
-    if (subscription) {
-      this.subscription.set(stream.userId, {
-        ...subscription,
-        streamId: isAdd ? stream.streamId : null,
-      });
-    }
+    this.updateStateFromSDK();
     if (isAdd) {
       this.autoSubscribe();
     }
@@ -140,17 +132,10 @@ export class AppStore {
 
   @action
   public autoSubscribe = () => {
-    console.log('auto sub', this.roomInfo);
-    for (let i = 0; i < this.roomInfo.users.length; i += 1) {
-      const user = this.roomInfo.users[i];
-      for (let j = 0; j < this.roomInfo.streams.length; j += 1) {
-        const stream = this.roomInfo.streams[j];
-        if (stream.userId === user.userId) {
-          console.log('user', user);
-          if (!this.subscription.has(user.userId)) {
-            this.startSubscribe(user);
-          }
-        }
+    for (let i = 0; i < this.users.length; i += 1) {
+      const user = this.users[i];
+      if (user.published && !user.stream) {
+        this.subscribe(user);
       }
     }
   }
@@ -179,8 +164,8 @@ export class AppStore {
       this.isAdmin = !!isAdmin;
       this.roomName = roomName;
 
-      this.roomInfo = yield piliRTC.joinRoomWithToken(this.roomToken);
-      this.roomInfo = observable(this.roomInfo);
+      this.users = yield piliRTC.joinRoomWithToken(this.roomToken);
+      this.users = observable(this.users);
       this.errorStore.closeLoading();
       this.autoSubscribe();
     } catch (e) {
@@ -194,16 +179,8 @@ export class AppStore {
     }
   }
 
-  @computed
-  public get users(): User[] {
-    if (!this.roomInfo || !this.roomInfo.users) {
-      return [];
-    }
-    return this.roomInfo.users;
-  }
-
   @asyncAction
-  public *publish(stream: MediaStream): any {
+  public *publish(stream: Stream): any {
     this.publishState = 'pending';
     try {
       yield piliRTC.publish(stream);
@@ -238,39 +215,22 @@ export class AppStore {
     }
   }
 
-  @action
-  public startSubscribe(user: User): void {
-    if (this.subscription.has(user.userId) || !user.publishStream) {
-      console.log('重复订阅或者没有流', user, this.subscription);
-      return;
-    }
-    console.log('startSubscribe', user.userId);
+  @asyncAction
+  public *subscribe(user: User): any {
     this.subscription.set(user.userId, {
       subscribeState: 'pending',
       userId: user.userId,
-      streamId: user.publishStream.streamId,
-      muteAudio: user.publishStream.muteAudio,
-      muteVideo: user.publishStream.muteVideo,
-    });
-  }
-
-  @asyncAction
-  public *subscribe(userId: string, video: HTMLVideoElement): any {
-    console.log('subscribe', userId, video);
-    const subscription = this.subscription.get(userId);
-    this.subscription.set(userId, {
-      ...subscription,
-      video,
     });
     try {
-      yield piliRTC.subscribe(subscription.userId, video);
-      this.subscription.set(userId, {
-        ...subscription,
+      const stream = yield piliRTC.subscribe(user.userId);
+      this.subscription.set(user.userId, {
+        stream,
+        userId: user.userId,
         subscribeState: 'success',
       });
     } catch (e) {
       console.log(e);
-      this.subscription.delete(userId);
+      this.subscription.delete(user.userId);
       this.errorStore.showAlert({
         show: true,
         title: '订阅失败!',
@@ -283,7 +243,9 @@ export class AppStore {
   @asyncAction
   public *unsubscribe(userId: string): any {
     try {
-      yield piliRTC.unsubscribe(userId);
+      if (piliRTC.subscribedUsers[userId]) {
+        yield piliRTC.unsubscribe(userId);
+      }
       this.subscription.delete(userId);
     } catch (e) {
       console.log(e);

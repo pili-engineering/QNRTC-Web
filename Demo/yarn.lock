@@ -36,6 +36,10 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
 
+"@types/detect-browser@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/detect-browser/-/detect-browser-2.0.1.tgz#ae49b3b3f5fae163f0988487fe76fb121b56ac53"
+
 "@types/history@*":
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
@@ -86,6 +90,10 @@
   version "16.0.40"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.40.tgz#caabc2296886f40b67f6fc80f0f3464476461df9"
 
+"@types/semver@^5.5.0":
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-5.5.0.tgz#146c2a29ee7d3bae4bf2fcb274636e264c813c45"
+
 "@types/tapable@*":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-0.2.4.tgz#8181a228da46185439300e600c5ae3b3b3982585"
@@ -104,6 +112,10 @@
     "@types/tapable" "*"
     "@types/uglify-js" "*"
     source-map "^0.6.0"
+
+"@types/webrtc@^0.0.23":
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/@types/webrtc/-/webrtc-0.0.23.tgz#bd5aea5aab67b7ba9f0ce659340793d5cead7596"
 
 abab@^1.0.4:
   version "1.0.4"
@@ -1553,7 +1565,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.3, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -2274,6 +2286,10 @@ des.js@^1.0.0:
 destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
+
+detect-browser@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-2.4.0.tgz#030dfaa40fa94492a3eacb035cc4d3cec732f476"
 
 detect-conflict@^1.0.0:
   version "1.0.1"
@@ -3150,6 +3166,10 @@ getpass@^0.1.1:
   resolved "https://registry.yarnpkg.com/getpass/-/getpass-0.1.7.tgz#5eff8e3e684d569ae4cb2b1282604e8ba62149fa"
   dependencies:
     assert-plus "^1.0.0"
+
+getstats@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/getstats/-/getstats-1.0.6.tgz#ca6f5ce991a411d9de95816a69af6a4dc2c2592f"
 
 gh-got@^6.0.0:
   version "6.0.0"
@@ -6011,26 +6031,20 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-0.1.0.tgz#7b2c35d108c3ad6f0f2016a5873689900879d66c"
+pili-rtc-web@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-0.1.1.tgz#697d8e663a70bf4c0ff85837626e55253e6a6bbc"
   dependencies:
+    "@types/detect-browser" "^2.0.1"
     "@types/lodash.uniqby" "^4.7.3"
+    "@types/semver" "^5.5.0"
+    "@types/webrtc" "^0.0.23"
+    detect-browser "^2.4.0"
     fetch-jsonp "^1.1.3"
+    getstats "^1.0.6"
     lodash.uniqby "^4.7.0"
-    pili-rtc-web "^0.1.0-beta.2"
+    semver "^5.5.0"
     typescript "^2.8.1"
-    webrtc-adapter "^6.1.3"
-    wolfy87-eventemitter "^5.2.4"
-
-pili-rtc-web@^0.1.0-beta.2:
-  version "0.1.0-beta.2"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-0.1.0-beta.2.tgz#43dcade95e67e0f2ad8e29aecc82ca645dfc97dd"
-  dependencies:
-    "@types/lodash.uniqby" "^4.7.3"
-    fetch-jsonp "^1.1.3"
-    lodash.uniqby "^4.7.0"
-    typescript "^2.8.0-dev.20180314"
     webrtc-adapter "^6.1.3"
     wolfy87-eventemitter "^5.2.4"
 
@@ -7011,6 +7025,13 @@ react-popper@^0.8.0:
     popper.js "^1.12.9"
     prop-types "^15.6.0"
 
+react-rangeslider@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-rangeslider/-/react-rangeslider-2.2.0.tgz#4362b01f4f5a455f0815d371d496f69ca4c6b5aa"
+  dependencies:
+    classnames "^2.2.3"
+    resize-observer-polyfill "^1.4.2"
+
 react-router@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.2.0.tgz#61f7b3e3770daeb24062dae3eedef1b054155986"
@@ -7368,6 +7389,10 @@ require-main-filename@^1.0.1:
 requires-port@1.0.x, requires-port@1.x.x, requires-port@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+
+resize-observer-polyfill@^1.4.2:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.0.tgz#660ff1d9712a2382baa2cad450a4716209f9ca69"
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
@@ -8396,7 +8421,7 @@ typescript@^2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.7.2.tgz#2d615a1ef4aee4f574425cdff7026edf81919836"
 
-typescript@^2.8.0-dev.20180314, typescript@^2.8.1:
+typescript@^2.8.1:
   version "2.8.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.1.tgz#6160e4f8f195d5ba81d4876f9c0cc1fbc0820624"
 
