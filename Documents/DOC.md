@@ -118,7 +118,10 @@ try {
 
 ```javascript
 // 使用内置的 deviceManager 对象采集本地媒体数据
-const stream = await QNRTC.deviceManager.getLocalStream();
+const stream = await QNRTC.deviceManager.getLocalStream({
+  audio: { enabled: true },
+  video: { enabled: true },
+});
 
 // 页面上的 vide 元素
 const localVideo = document.getElementById('localplayer');
