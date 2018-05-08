@@ -59,6 +59,32 @@ var myRTC = new QNRTC.QNRTCSession();
 
 ### 6.1 简单开始，第一次发布
 
+这里教程我们会使用 async/await 的方式来编写，请确保下面的代码运行在一个 async
+函数包裹之下。比如 async iife。
+
+```javascript
+(async () => {
+  // code goes here
+})();
+```
+
+如果你想使用 promise，可以对下面的代码做一些简单的替换
+
+```javascript
+try {
+  const a = await some_method();
+} catch(e) {
+  console.log(e);
+}
+
+// promise 写法
+some_method().then(a => {
+  
+}).catch(e => {
+  console.log(e);
+})
+```
+
 好了，准备就绪之后，让我们准备开始进行第一次发布吧。 首先准备一个带 `<video>` 标签的页面，我们将会把摄像头预览放在这个元素中
 ```html
 <body>
