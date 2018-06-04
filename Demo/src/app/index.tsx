@@ -18,6 +18,7 @@ export const App = hot(module)(({ history }) => (
       <Router history={history}>
         <Switch>
           <Route path="/" component={HomePage} exact />
+          <Route path="/roomtoken" component={HomePage} exact />
           <Route path="/room/:roomName" component={RoomPage} />
         </Switch>
       </Router>

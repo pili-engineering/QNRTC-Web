@@ -24,7 +24,7 @@ interface State {
 }
 
 export class RemotePlayer extends React.Component<Props, State> {
-  public video: HTMLVideoElement | HTMLAudioElement;
+  public video: HTMLElement;
 
   public constructor(props: Props) {
     super(props);
@@ -64,17 +64,12 @@ export class RemotePlayer extends React.Component<Props, State> {
           id={this.props.id}
         >
           { this.props.stream && !this.props.stream.muteAudio ? <MicIcon className={styles.mic} /> : <MicOffIcon className={styles.mic} /> }
-          { this.props.stream && this.props.stream.enableVideo ?
-            <video
-              ref={ref => this.video = ref}
-              style={{
-                visibility: !!this.props.stream && !this.props.stream.muteVideo ? 'visible' : 'hidden',
-              }}
-            /> :
-            <audio
-              ref={ref => this.video = ref}
-            />
-          }
+          <div
+            ref={ref => this.video = ref}
+            style={{
+              visibility: !!this.props.stream && !this.props.stream.muteVideo ? 'visible' : 'hidden',
+            }}
+          />
           { this.props.stream && !this.props.stream.isDestroyed && <AudioWave
             className={styles.wave}
             color={this.props.color}

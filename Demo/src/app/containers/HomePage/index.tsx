@@ -4,9 +4,11 @@ import SettingsIcon from 'material-ui-icons/Settings';
 import UndoIcon from 'material-ui-icons/Undo';
 import IconButton from 'material-ui/IconButton';
 import { inject, observer } from 'mobx-react';
+import { Link } from 'react-router-dom';
 import { RoomStore, AppStore, RouterStore } from '../../stores';
 import ButtonBase from 'material-ui/ButtonBase';
 import { RecordOptions } from '../../constants';
+import { piliRTC } from '../../models/pili';
 
 
 import * as styles from './style.css';
@@ -21,7 +23,9 @@ interface State {
   roomName: string;
   userName: string;
   recordkey: string;
+  appId: string;
   config: boolean;
+  roomToken: string;
 }
 
 @inject('room', 'app', 'router')
@@ -30,10 +34,12 @@ export class HomePage extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props);
     this.state = {
-      roomName: '',
+      roomName: props.app.roomName || '',
       userName: '',
       recordkey: props.app.config.recordOption.key,
+      appId: '',
       config: false,
+      roomToken: '',
     };
   }
 
@@ -41,10 +47,15 @@ export class HomePage extends React.Component<Props, State> {
     this.props.app.login(userId);
   }
 
-  private handleJoinRoom = async () => {
+  private handleJoinRoom = async (roomToken?: string) => {
     try {
+      if (roomToken) {
+        await this.props.app.enterRoom(undefined, roomToken);
+        this.props.router.push(`/room/${piliRTC.roomName}`);
+        return;
+      }
       const roomName = this.state.roomName;
-      await this.props.app.enterRoom(roomName, true);
+      await this.props.app.enterRoom(roomName, roomToken);
       this.props.router.push(`/room/${roomName}`);
     } catch (e) {
     }
@@ -52,6 +63,20 @@ export class HomePage extends React.Component<Props, State> {
 
   private handleNext = async (e: any) => {
     e.preventDefault();
+    if (this.state.userName && !this.state.userName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
+      this.props.app.errorStore.showToast({
+        show: true,
+        content: "用户名最少 3 个字符，并且只能包含字母、数字或下划线",
+      });
+      return;
+    }
+    if (this.state.roomName && !this.state.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
+      this.props.app.errorStore.showToast({
+        show: true,
+        content: "房间名最少 3 个字符，并且只能包含字母、数字或下划线",
+      });
+      return;
+    }
     if (this.state.config) {
       if (!!this.state.userName) {
         this.props.app.config.setUserId(this.state.userName);
@@ -60,11 +85,24 @@ export class HomePage extends React.Component<Props, State> {
         key: this.state.recordkey,
         config: RecordOptions[this.state.recordkey],
       });
+      if (this.state.appId) {
+        this.props.app.config.setAppId(this.state.appId).then().catch(e => {
+          this.props.app.errorStore.showAlert({
+            show: true,
+            title: '设置AppId失败',
+            content: e.toString(),
+          });
+        });
+      }
 
       this.setState({
         config: false,
         userName: "",
       });
+      return;
+    }
+    if (this.props.router.location.pathname === "/roomtoken") {
+      await this.handleJoinRoom(this.state.roomToken);
       return;
     }
     if (!this.props.app.userId) {
@@ -81,6 +119,9 @@ export class HomePage extends React.Component<Props, State> {
   }
 
   private renderInput = () => {
+    if (this.props.router.location.pathname === '/roomtoken') {
+      return this.renderRoomTokenInput();
+    }
     if (this.state.config) {
       return (
         <div>
@@ -94,6 +135,7 @@ export class HomePage extends React.Component<Props, State> {
               id="modify_username"
             />
           </div>
+          <p className={styles.hint}>名称中带有 admin 字段的用户会被分配管理员权限</p>
           <div
             className={styles.input}
           >
@@ -107,22 +149,35 @@ export class HomePage extends React.Component<Props, State> {
               ))}
             </select>
           </div>
+          <div
+            className={styles.input}
+          >
+            <input
+              value={this.state.appId}
+              onChange={e => this.setState({appId: e.target.value}) }
+              placeholder="修改APP_ID"
+              id="modify_appid"
+            />
+          </div>
         </div>
       );
 
     }
     if (!this.props.app.userId) {
       return (
-        <div
-          className={styles.input}
-        >
-          <input
-            value={this.state.userName}
-            onChange={e => this.setState({userName: e.target.value}) }
-            placeholder="给自己起个名字吧"
-            id="username_input"
-            required
-          />
+        <div>
+          <div
+            className={styles.input}
+          >
+            <input
+              value={this.state.userName}
+              onChange={e => this.setState({userName: e.target.value}) }
+              placeholder="给自己起个名字吧"
+              id="username_input"
+              required
+            />
+          </div>
+          <p className={styles.hint}>名称中带有 admin 字段的用户会被分配管理员权限</p>
         </div>
       );
     } else {
@@ -140,6 +195,22 @@ export class HomePage extends React.Component<Props, State> {
         </div>
       );
     }
+  }
+
+  public renderRoomTokenInput(): JSX.Element {
+    return (
+      <div
+        className={styles.input}
+      >
+        <input
+          value={this.state.roomToken}
+          onChange={e => this.setState({roomToken: e.target.value}) }
+          placeholder="请输入 roomToken"
+          id="roomtolen_input"
+          required
+        />
+      </div>
+    );
   }
 
   public render(): JSX.Element {
@@ -170,7 +241,7 @@ export class HomePage extends React.Component<Props, State> {
           >
             { this.renderInput() }
           </form>
-          { userId && <p className={styles.hint}>如果房间尚未创建，将会自动创建一个房间</p> }
+          { userId && !this.state.config && <p className={styles.hint}>如果房间尚未创建，将会自动创建一个房间</p> }
           <ButtonBase
             className={styles.btn}
             focusRipple
@@ -181,6 +252,10 @@ export class HomePage extends React.Component<Props, State> {
             { this.state.config ? '完成' : (!!userId ? '进入房间' : '下一步') }
           </ButtonBase>
         </div>
+        { this.props.router.location.pathname === '/roomtoken' ?
+          <Link className={styles.link} to="/">使用房间名</Link> :
+          <Link className={styles.link} to="/roomtoken">使用 roomToken</Link>
+        }
       </div>
     );
   }

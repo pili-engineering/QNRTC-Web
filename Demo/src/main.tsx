@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
-import { createHashHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { RouterStore, ErrorStore, RoomStore, AppStore, ConfigStore } from 'app/stores';
 import { App } from 'app';
 
@@ -10,7 +10,7 @@ import { App } from 'app';
 useStrict(true);
 
 // prepare MobX stores
-const history = createHashHistory();
+const history = createBrowserHistory();
 const errorStore = new ErrorStore();
 const configStore = new ConfigStore();
 const rootStore = {

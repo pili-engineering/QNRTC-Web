@@ -1,7 +1,10 @@
 import { observable, action } from 'mobx';
 import store from 'store';
 import { RecordConfig } from "pili-rtc-web";
-import { RecordOptions } from '../constants';
+import { asyncAction } from "mobx-utils";
+import { RecordOptions, RTC_APP_ID } from '../constants';
+import { request } from "../utils/request";
+import { API } from "../constants";
 
 interface RecordOption {
   key: string;
@@ -14,6 +17,12 @@ export class ConfigStore {
 
   @observable
   public recordOption: RecordOption;
+
+  @observable
+  public appId: string = RTC_APP_ID;
+
+  public mergeStreamWidth: number = 480;
+  public mergeStreamHeight: number = 848;
 
   public constructor() {
     const userId = store.get('userid');
@@ -42,5 +51,18 @@ export class ConfigStore {
   public setRecordOption(value: RecordOption): void {
     this.recordOption = value;
     store.set('record', value);
+  }
+
+  @asyncAction
+  public *setAppId(value: string): any {
+    try {
+      const res = yield request(API.GET_APP_CONFIG(value), 'json');
+      this.mergeStreamHeight = res.mergePublishRtmp.height;
+      this.mergeStreamWidth = res.mergePublishRtmp.width;
+    } catch (e) {
+      console.log(e);
+      throw new Error(`输入的 AppId 无效, ${e.toString()}`);
+    }
+    this.appId = value;
   }
 }

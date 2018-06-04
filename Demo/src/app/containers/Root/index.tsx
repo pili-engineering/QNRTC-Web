@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { browserReport } from "pili-rtc-web";
 import Snackbar from 'material-ui/Snackbar';
 import IconButton from 'material-ui/IconButton';
 import CloseIcon from 'material-ui-icons/Close';
@@ -12,20 +13,49 @@ import Dialog, {
 import { CircularProgress } from 'material-ui/Progress';
 
 import { inject, observer } from 'mobx-react';
+import { WechatPage } from '../WechatPage';
+
 import { ErrorStore } from '../../stores';
 
 import * as styles from './style.css';
 
 interface State {
+  showWechatTooltip: boolean;
 }
 
 interface Props {
-  error?: ErrorStore,
+  error?: ErrorStore;
 }
 
 @inject('error')
 @observer
 export class Root extends React.Component<Props, State> {
+  state = {
+    showWechatTooltip: false,
+  }
+
+  componentDidMount() {
+    if((window as any).WeixinJSBridge) {
+      this.setState({
+        showWechatTooltip: true,
+      });
+      return;
+    }
+    document.addEventListener("WeixinJSBridgeReady", () => {
+      this.setState({
+        showWechatTooltip: true,
+      });
+    }, false);
+
+    if (!browserReport.support) {
+      this.props.error.showAlert({
+        show: true,
+        title: '浏览器不兼容',
+        content: 'SDK 暂时不支持您的浏览器，或者您的浏览器不支持 WebRTC。请使用最新版 Chrome 访问',
+      });
+    }
+  }
+
   renderDevTool() {
     if (process.env.NODE_ENV !== 'production') {
       const DevTools = require('mobx-react-devtools').default;
@@ -34,6 +64,14 @@ export class Root extends React.Component<Props, State> {
   }
 
   render() {
+    if (this.state.showWechatTooltip) {
+      return (
+        <div className="container">
+          <WechatPage />
+        </div>
+      );
+    }
+
     return (
       <div className="container">
         <Snackbar

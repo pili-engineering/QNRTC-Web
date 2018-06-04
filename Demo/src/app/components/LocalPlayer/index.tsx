@@ -16,14 +16,14 @@ interface State {
 }
 
 export class LocalPlayer extends React.Component<Props, State> {
-  video: HTMLVideoElement
+  video: HTMLElement
 
   getVideoElement = () => this.video
 
   render() {
     return (
       <div className={this.props.className}>
-        <video
+        <div
           className={`${this.props.videoClassName || ''} ${styles.video}`}
           ref={ref => this.video = ref}
         />

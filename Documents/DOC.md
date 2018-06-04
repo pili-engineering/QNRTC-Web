@@ -19,8 +19,6 @@
 ## 3 使用前提
 开发者需要通过 [Server-API](https://github.com/pili-engineering/QNRTC-Server/blob/master/docs/api.md) 的说明，在后台搭建一个后台服务。前端通过请求搭建好的后台服务获取到一个房间的 `roomToken` 后，就开始进入该 SDK 工作流程。
 
-*请使用 Chrome 56 以上版本进行开发以支持 WebRTC*
-
 ## 4 引入方式
 我们为开发者提供了 2 种引用方式
 
@@ -38,7 +36,7 @@ const myRTC = new QNRTC.QNRTCSession();
 ```
 
 ### 4.2 直接引入
-[下载地址](../Release/pili-rtc-web.js)  
+[下载地址](https://github.com/pili-engineering/QNRTC-Web/releases)  
 ```
 <script src="./build/pili-rtc-web.js"></script>
 <script>
@@ -95,6 +93,7 @@ some_method().then(a => {
 在开始发布之前，我们必须先加入一个房间。      
 因为发布/订阅/控制等操作都是对应一个房间完成的，也就是说我们在一个房间内开始发布，房间的其他用户都可以获取到我们的数据流。      
 在这里我们需要 1 个已知参数，`roomToken`， 关于这个参数的获取请参照上文提到的 [Server-API](https://github.com/pili-engineering/QNRTC-Server/blob/master/docs/api.md)    
+
 
 ```javascript
 const myRTC = new QNRTC.QNRTCSession(); // 初始化我们的 SDK (QNRTC的引入方式见上)
@@ -212,16 +211,16 @@ Stream 将媒体流进行了包装并结合了一些实际的业务数据
 #### play 播放媒体流 (同步)
 |参数|类型|备注|
 |----|----|----|
-|mediaElement|HTMLVideoElement/HTMLAudioElement|video/audio 元素的 DOM 对象|
+|containerElement|HTMLElement|用来放置 video/audio 元素的上层 DOM 对象|
 |isMute|boolean|是否用 静音模式 播放|
 
-指定媒体流在一个 video/audio 元素上播放   
-纯音频连麦请使用 audio 元素，其余情况使用 video 元素
+SDK 会在指定的元素下自动创建相应的 video/audio 元素播放媒体流   
+自动创建的元素有一个公共的 class 名称，`qnrtc-stream-player`   
 
 ```javascript
-const mediaElement = document.get...
+const containerElement = document.get...
 
-stream.play(mediaElement);
+stream.play(containerElement);
 ```
 
 #### onAudioBuffer 获取音频 PCM 数据 (同步)
@@ -259,8 +258,6 @@ stream.onAudioBuffer(buffer => {
 
 包括丢包率，实时码率等信息    
 返回的具体格式参考下面的返回类型介绍    
-
-*Safari 暂时不支持此功能*
 
 返回: [StatsReport](#statsreport-状态信息)
 
@@ -445,6 +442,48 @@ myRTC.kickoutUser(userId).then(() => {}).catch(e => {
 myRTC.leaveRoom();
 ```
 
+#### setDefaultMergeStream 使用默认布局开启合流 (同步)
+使用 SDK 默认的模版布局开启合流，默认布局会展示所有发布用户的流并铺满整个画布   
+SDK 会默认监听房间内所有流的状态，将其排版在合流画布上    
+如果您想自定义画布布局或者控制某些用户的流是否显示的话，请使用下面的手动合流接口    
+
+*如果使用默认布局，请确认房间内同时只有一个用户调用*
+
+|参数|类型|介绍|
+|----|----|----|
+|width|number|合流画布的宽度（app的设定）|
+|height|number|合流画布的高度（app的设定）|
+
+```javascript
+myRTC.setDefaultMergeStream(1920, 1080); // 尺寸请对应 app 的合流设定
+```
+
+#### setMergeStreamLayout 设置合流参数 (同步)
+通过调用这个接口，客户端可以设置特定用户在合流画布上的尺寸和位置   
+指定的用户必须处于`正在发布`的状态，否则不会有任何作用。
+
+|参数|类型|介绍|
+|----|----|----|
+|userId|string|指定用户的用户 id|
+|option|[MergeOption](#mergeoption-合流配置)|合流配置，具体见类型介绍|
+
+
+```javascript
+// 当有用户发布时，设置其合流参数
+myRTC.on("user-publish", (user) => {
+  myRTC.setMergeStreamLayout(user.userId, {
+    x: 0, y: 0, w: 1920, h: 1080, visible: true,
+  });
+});
+```
+
+#### stopMergeStream 停止合流 (同步)
+停止当前的合流，如果需要重新开始合流，再次调用相应的 `setMergeStreamLayout` 即可。  
+
+```javascript
+myRTC.stopMergeStream();
+```
+
 #### on / off / once / removeAllListeners 事件操作
 通过 QNRTCSession 实例可以给各种事件挂钩子，具体的事件实现参考 [EventEmitter](https://github.com/Olical/EventEmitter)
 具体的事件列表参考下文
@@ -512,6 +551,8 @@ deviceManager 是一个用来管理本地媒体设备的对象，一般用来捕
 |返回|类型|备注|
 |----|----|----|
 |stream|[Stream](#71-stream)|本地的 stream 对象|
+
+如果不传入参数则使用默认参数：开启音视频、视频分辨率 640*480、码率 600 kbps。
 
 ```javascript
 try {
@@ -625,6 +666,20 @@ StatsReport {
   audioPacketLossRate: number; // 音频丢包率
 }
 ```
+
+### MergeOption 合流配置
+
+```typescript
+MergeOption {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  z: number; // z 控制画面的覆盖等级，z 值大的流会盖住 z 值小的流
+  visible: boolean; // 是否显示
+}
+```
+
 
 ### RoomState 房间状态
 

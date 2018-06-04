@@ -6,7 +6,9 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 
 - 基本的音视频通话功能
 - 支持内置音视频采集
+- 支持合流配置
 - 支持 Typescript
+- 支持大部分主流桌面浏览器(Firefox 50+, Safari 11+, Chrome 56+)
 - 支持踢人功能 
 - 支持静音功能 
 - 支持帧率配置 
@@ -115,7 +117,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 
 ## 8.1 如何体验 Demo？
 
-您可以直接使用 Safari 11 或者 Chrome 56 及以上版本[访问我们 Web 版 Demo 来体验通话效果](http://s.qnsdk.com/s/qZZag)，我们后续将逐步支持 Firefox 等浏览器。
+您可以直接使用主流浏览器[访问我们 Web 版 Demo 来体验通话效果](http://s.qnsdk.com/s/qZZag)
 
 ## 8.2 实时通话功能是否收费？
 
