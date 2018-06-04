@@ -100,6 +100,7 @@
   text-align: left;
   width: 100%;
   padding-left: 35px;
+  margin-bottom: 5px;
 }
 
 .configIcon {
@@ -110,3 +111,26 @@
   height: 28px !important;
   color: #fff !important;
 }
+
+.link {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+
+@media (max-width: 500px) {
+  .btn {
+    width: 300px;
+  }
+
+  .input {
+    width: 300px;
+  }
+
+  .hint {
+    padding-left: 30px;
+  }
+}
+

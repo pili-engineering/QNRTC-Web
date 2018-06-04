@@ -73,6 +73,21 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-router-dom@^4.2.6":
+  version "4.2.6"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.2.6.tgz#9f7eb3c0e6661a9607d878ff8675cc4ea95cd276"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "4.0.25"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.25.tgz#1e25490780b80e0d8f96bf649379cca8638c1e5a"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-router@^4.0.22":
   version "4.0.22"
   resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.22.tgz#2b97336eddfdf5886973539539b8ce7037cf629b"
@@ -6031,9 +6046,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-0.1.1.tgz#697d8e663a70bf4c0ff85837626e55253e6a6bbc"
+pili-rtc-web@0.1.2-beta.1:
+  version "0.1.2-beta.1"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-0.1.2-beta.1.tgz#2613228667ce0c5189088e1ab943beb19b8250e1"
   dependencies:
     "@types/detect-browser" "^2.0.1"
     "@types/lodash.uniqby" "^4.7.3"
@@ -7031,6 +7046,17 @@ react-rangeslider@^2.2.0:
   dependencies:
     classnames "^2.2.3"
     resize-observer-polyfill "^1.4.2"
+
+react-router-dom@^4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.2.2.tgz#c8a81df3adc58bba8a76782e946cbd4eae649b8d"
+  dependencies:
+    history "^4.7.2"
+    invariant "^2.2.2"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.4"
+    react-router "^4.2.0"
+    warning "^3.0.0"
 
 react-router@^4.2.0:
   version "4.2.0"

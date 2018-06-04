@@ -15,18 +15,6 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
       height: 720,
     },
   },
-  "960*540": {
-    audio: {
-      enabled: true,
-    },
-    video: {
-      enabled: true,
-      bitrate: 800,
-      width: 960,
-      frameRate: 20,
-      height: 540,
-    },
-  },
   "640*480": {
     audio: {
       enabled: true,

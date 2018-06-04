@@ -20,6 +20,7 @@ import MicOffIcon from 'material-ui-icons/MicOff';
 import VideocamIcon from 'material-ui-icons/Videocam';
 import PhoneIcon from 'material-ui-icons/Phone';
 import VideocamOffIcon from 'material-ui-icons/VideocamOff';
+import { Time } from "./Time";
 import { LocalPlayer, RemotePlayer } from '../../components';
 import { inject, observer } from 'mobx-react';
 import { AppStore, RouterStore } from '../../stores';
@@ -52,8 +53,8 @@ interface State {
   currentAudio?: string;
   currentVideo?: string;
   stats: {
-    videoPackageLoss: number,
-    audioPackageLoss: number,
+    videoPackageLossRate: number,
+    audioPackageLossRate: number,
     videoBitrate: number,
     audioBitrate: number,
   };
@@ -64,9 +65,10 @@ interface State {
 export class RoomPage extends React.Component<Props, State> {
   private localPlayer: LocalPlayer;
   private stream: Stream;
-  private clipboard: any;
   private redirect: boolean;
+  private clipboard: any;
   private statInterval: any;
+  private joinTime: number = Date.now();
 
   public constructor(props: Props) {
     super(props);
@@ -79,26 +81,33 @@ export class RoomPage extends React.Component<Props, State> {
       currentAudio: "默认",
       currentVideo: "默认",
       stats: {
-        videoPackageLoss: 0,
-        audioPackageLoss: 0,
+        videoPackageLossRate: 0,
+        audioPackageLossRate: 0,
         videoBitrate: 0,
         audioBitrate: 0,
       },
     };
 
-    if (!props.app.roomToken) {
+    if (!props.app.roomToken && !props.app.config.userId) {
+      props.app.setRoomName(props.match.params.roomName);
       this.redirect = true;
       props.router.push('/');
     }
+
   }
 
   public async componentDidMount(): Promise<void> {
     if (this.redirect) {
       return;
     }
+    if (!this.props.app.roomToken) {
+      await this.props.app.enterRoom(this.props.match.params.roomName);
+    }
+
     this.setState({ showPublish: false });
     piliRTC.on('kicked', this.handleLeaveRoom);
     piliRTC.on('closeroom', this.handleLeaveRoom);
+    (window as any).onbeforeunload = this.leaveRoomWithUserAction.bind(this);
     this.handleCopy();
 
     await this.handlePublish();
@@ -146,7 +155,7 @@ export class RoomPage extends React.Component<Props, State> {
     this.clipboard.on('success', () => {
       this.props.app.errorStore.showToast({
         show: true,
-        content: '房间名称已经复制到剪贴板',
+        content: '加会链接已经复制到剪贴板',
       });
     });
   }
@@ -195,8 +204,8 @@ export class RoomPage extends React.Component<Props, State> {
         }
         this.setState({
           stats: {
-            videoPackageLoss: 0,
-            audioPackageLoss: 0,
+            videoPackageLossRate: 0,
+            audioPackageLossRate: 0,
             videoBitrate: 0,
             audioBitrate: 0,
           },
@@ -211,8 +220,8 @@ export class RoomPage extends React.Component<Props, State> {
     const report = await this.stream.getStats();
     this.setState({
       stats: {
-        videoPackageLoss: report.videoPacketLoss,
-        audioPackageLoss: report.audioPacketLoss,
+        videoPackageLossRate: Number((report.videoPacketLossRate * 100).toFixed(2)),
+        audioPackageLossRate: Number((report.audioPacketLossRate * 100).toFixed(2)),
         videoBitrate: Number((report.videoBitrate / 1024).toFixed(2)),
         audioBitrate: Number((report.audioBitrate / 1024).toFixed(2)),
       },
@@ -264,10 +273,14 @@ export class RoomPage extends React.Component<Props, State> {
     deviceManager.setVolume(value);
   }
 
-  public componentWillUnmount(): void {
+  private leaveRoomWithUserAction(): void {
     if (this.props.app.roomToken) {
       this.props.app.leaveRoom(true);
     }
+  }
+
+  public componentWillUnmount(): void {
+    this.leaveRoomWithUserAction();
   }
 
   public render(): JSX.Element {
@@ -275,16 +288,20 @@ export class RoomPage extends React.Component<Props, State> {
       <div className={styles.page}>
         <header className={styles.header}>
           <p className={styles.roomName}>
-            房间: {this.props.match.params.roomName}
+            房间: {this.props.match.params.roomName}({this.props.app.config.appId})
           </p>
           <div className={styles.blank} />
         </header>
         <div className={styles.stats}>
-          <p>视频丢包: {this.state.stats.videoPackageLoss}</p>
-          <p>音频丢包: {this.state.stats.audioPackageLoss}</p>
+          <p>视频丢包率: {this.state.stats.videoPackageLossRate} %</p>
+          <p>音频丢包率: {this.state.stats.audioPackageLossRate} %</p>
           <p>视频实时码率: {this.state.stats.videoBitrate} kbps</p>
           <p>音频实时码率: {this.state.stats.audioBitrate} kbps</p>
         </div>
+        <Time
+          startTime={this.joinTime}
+          className={styles.time}
+        />
         <Menu
           anchorEl={this.state.anchorEl}
           open={!!this.state.anchorEl}
@@ -342,24 +359,27 @@ export class RoomPage extends React.Component<Props, State> {
 
         { this.state.showPublish && <div className={styles.btnsWrapper}>
           <div className={styles.btns}>
+          { this.props.app.publishState === 'success' &&
           <Tooltip
-            title="点击复制房间名称"
+            title="点击复制加会链接"
             placement="top-end"
+            className={styles.btn_item}
           >
             <IconButton
               id="copy"
-              data-clipboard-text={this.props.app.roomName}
+              data-clipboard-text={window.location.href}
               className={styles.copy}
             >
               <ContentCopyIcon
                 className={styles.copy}
               />
             </IconButton>
-          </Tooltip>
+          </Tooltip> }
           { this.props.app.publishState === 'success' &&
           <Tooltip
             title={this.state.currentVideo}
             placement="top-end"
+            className={styles.btn_item}
           >
             <IconButton
               className={styles.muteVideo}
@@ -371,7 +391,7 @@ export class RoomPage extends React.Component<Props, State> {
           </Tooltip> }
 
           <Button
-            className={`${styles.publishbtn} ${this.props.app.publishState === 'success' ? styles.isPublish : ''}`}
+            className={`${styles.btn_item} ${styles.publishbtn} ${this.props.app.publishState === 'success' ? styles.isPublish : ''}`}
             variant="fab"
             id="publish"
             onClick={this.handlePublish}
@@ -383,6 +403,7 @@ export class RoomPage extends React.Component<Props, State> {
           <Tooltip
             title={this.state.currentAudio}
             placement="top-end"
+            className={styles.btn_item}
           >
             <IconButton
               id="mute_audio"
@@ -394,12 +415,13 @@ export class RoomPage extends React.Component<Props, State> {
           </Tooltip> }
 
           { this.props.app.publishState === 'success' && <div
-            className={`${styles.muteAudio} ${styles.volume}`}
+            className={`${styles.volume} ${styles.btn_item}`}
             id="volume"
           >
             <Slider
               onChange={this.setVolume}
               value={this.state.volume}
+              orientation={'vertical'}
             />
           </div> }
           </div>

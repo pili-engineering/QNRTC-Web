@@ -9,7 +9,6 @@ npm run start
 
 ## 注意事项
 - Chrome 只允许 localhost 或者 https 页面访问媒体设备(摄像头)，开发时请确保通过 localhost 来访问
-- 请使用 Chrome 56 以上版本访问
 
 ## 代码说明
 

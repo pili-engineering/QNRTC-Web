@@ -16,7 +16,7 @@ export class AppStore {
   public userColor: string;
   @observable
   public isLogin: boolean;
-  @observable
+
   public isAdmin: boolean;
 
   @observable
@@ -50,7 +50,6 @@ export class AppStore {
 
   public constructor(errorStore: ErrorStore, configStore: ConfigStore) {
     this.isLogin = false;
-    this.isAdmin = false;
     this.roomToken = null;
     this.users = piliRTC.users;
 
@@ -98,6 +97,9 @@ export class AppStore {
     if (!this.roomToken) {
       return;
     }
+    if (this.isAdmin) {
+      piliRTC.stopMergeStream();
+    }
     if (isUserAction) {
       piliRTC.leaveRoom();
     }
@@ -134,14 +136,16 @@ export class AppStore {
   public autoSubscribe = () => {
     for (let i = 0; i < this.users.length; i += 1) {
       const user = this.users[i];
-      if (user.published && !user.stream) {
+      if (user.published && !user.stream && user.userId !== this.userId) {
         this.subscribe(user);
       }
     }
   }
 
   @asyncAction
-  public *enterRoom(roomName: string, isAdmin: boolean = false): any {
+  public *enterRoom(roomName: string, roomToken?: string): any {
+    this.isAdmin = !!this.config.userId.match(/admin/i);
+
     try {
       if (!this.userId) {
         this.errorStore.showAlert({
@@ -152,20 +156,27 @@ export class AppStore {
         throw null;
       }
       this.errorStore.showLoading({ content: '加入房间中', show: true });
-      const api = isAdmin ? API.CREATE_ROOM_TOKEN : API.JOIN_ROOM_TOKEN;
+      if (!roomToken) {
+        const api = this.isAdmin ? API.CREATE_ROOM_TOKEN : API.JOIN_ROOM_TOKEN;
 
-      // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
-      // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
-      // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
-      const requestURL = `${api(roomName, this.userId)}?bundleId=demo-rtc.qnsdk.com`;
+        // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
+        // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
+        // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
+        const requestURL = `${api(roomName, this.userId, this.config.appId)}?bundleId=demo-rtc.qnsdk.com`;
 
-      const token: string = yield request(requestURL, 'text');
-      this.roomToken = token;
-      this.isAdmin = !!isAdmin;
-      this.roomName = roomName;
+        const token: string = yield request(requestURL, 'text');
+        this.roomToken = token;
+        this.roomName = roomName;
+      } else {
+        this.roomToken = roomToken;
+      }
 
       this.users = yield piliRTC.joinRoomWithToken(this.roomToken);
       this.users = observable(this.users);
+      this.roomName = piliRTC.roomName;
+      if (this.isAdmin) {
+        piliRTC.setDefaultMergeStream(this.config.mergeStreamWidth, this.config.mergeStreamHeight);
+      }
       this.errorStore.closeLoading();
       this.autoSubscribe();
     } catch (e) {
@@ -296,4 +307,8 @@ export class AppStore {
     this.config.setUserId(userId);
   }
 
+  @action
+  public setRoomName(roomName: string): void {
+    this.roomName = roomName;
+  }
 }

@@ -1,6 +1,6 @@
 import {
   HOST, PREFIX,
-  HTTP_STATUS_ERROR, FETCH_ERROR,
+  HTTP_STATUS_ERROR,
 } from '../constants';
 
 
@@ -27,7 +27,6 @@ export async function request(path: string, dataType?: 'json' | 'text', method?:
     }
 
   } catch (e) {
-    console.error(e);
-    throw FETCH_ERROR(e);
+    throw e;
   }
 }

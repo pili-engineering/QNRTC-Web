@@ -32,27 +32,47 @@ export class ScrollView extends React.Component<Props, State> {
   container: HTMLDivElement
   initPos?: position
 
+  getPositionFromEvent = (e) => {
+    if (e.touches) {
+      const touch = e.touches.item(0);
+
+      return {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+      };
+    } else {
+      return {
+        clientX: e.clientX,
+        clientY: e.clientY,
+      };
+    }
+  }
+
   handleMouseDown = (e) => {
+    const pos = this.getPositionFromEvent(e);
     this.initPos = {
-      x: e.clientX,
-      y: e.clientY,
+      x: pos.clientX,
+      y: pos.clientY,
     };
     window.addEventListener('mouseup', this.handleMouseUp);
+    window.addEventListener('touchend', this.handleMouseUp);
     window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('touchmove', this.handleMouseMove);
   }
 
   handleMouseMove = (e) => {
+    const pos = this.getPositionFromEvent(e);
     if (this.initPos) {
       this.setState({
         offset: {
-          x: this.state.offset.x + e.clientX - this.initPos.x,
-          y: this.state.offset.y + e.clientY - this.initPos.y,
+          x: this.state.offset.x + pos.clientX - this.initPos.x,
+          y: this.state.offset.y + pos.clientY - this.initPos.y,
         },
         isMove: true,
       });
       this.initPos = {
-        x: e.clientX,
-        y: e.clientY,
+        x: pos.clientX,
+        y: pos.clientY,
       };
     }
   }
@@ -92,6 +112,7 @@ export class ScrollView extends React.Component<Props, State> {
         <Motion defaultStyle={{x: 0}} style={{x: spring(this.state.offset.x)}}>
           {value => <div
             onMouseDown={this.handleMouseDown}
+            onTouchStart={this.handleMouseDown}
             style={{
               display: 'inline-flex',
               transform: `translate(${this.state.isMove ? this.state.offset.x : value.x}px, 0px)`,
