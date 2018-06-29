@@ -63,6 +63,11 @@ export class ConfigStore {
       console.log(e);
       throw new Error(`输入的 AppId 无效, ${e.toString()}`);
     }
+    this.changeAppId(value);
+  }
+
+  @action
+  public changeAppId(value: string): void {
     this.appId = value;
   }
 }

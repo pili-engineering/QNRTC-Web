@@ -1,6 +1,6 @@
 {
   "name": "pili-rtc-web-demo",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --progress --colors --port 4000 --open",
@@ -55,7 +55,7 @@
     "mobx-react": "^4.4.2",
     "mobx-react-router": "^4.0.1",
     "mobx-utils": "^3.2.2",
-    "pili-rtc-web": "^0.2.0-patch.1",
+    "pili-rtc-web": "1.0.0",
     "react": "^16.2.0",
     "react-avatar": "^2.5.1",
     "react-dom": "^16.2.0",
