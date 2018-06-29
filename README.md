@@ -13,6 +13,8 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 - 支持静音功能 
 - 支持帧率配置 
 - 支持音视频码率的配置 
+- 支持屏幕共享/窗口共享
+- 支持外部音频导入
 - 支持 USB 外置媒体设备
 - 支持 Mac Safari(11.0以上)
 - 支持视频尺寸配置 
@@ -54,7 +56,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 关于 roomToken 的计算方法及 RTC Server API 的说明请查阅[《七牛实时音视频云服务端 API 接口规范》](https://github.com/pili-engineering/QNRTC-Server/blob/master/docs/api.md)，另外，我们也开源了一份 [App Server 的实现代码供开发者参考](https://github.com/pili-engineering/QNRTC-Server)。
 
 ### 3.3 房间管理
-关于音视频通话房间的 API 主要分为两个部分，一部分在客户端，另一部分在服务端。在客户端 SDK 中，只有加入/离开连麦房间的接口。我们把创建/销毁连麦房间的功能放到了服务端，由 App Server 向七牛的服务器发送请求来完成。关于服务端 API 的详细内容，请查阅[《七牛实时音视频云服务端 API 接口规范》](https://github.com/pili-engineering/QNRTC-Server/blob/master/docs/api.md)。
+关于音视频通话房间的 API 主要分为两个部分，一部分在客户端，另一部分在服务端。在客户端 SDK 中，只有加入/离开连麦房间的接口。我们把创建/销毁连麦房间的功能放到了服务端，由 App Server 向七牛的服务器发送请求来完成。关于服务端 API 的详细内容，请查阅[《七牛实时音视频云服务端 API 接口规范》](https://developer.qiniu.com/rtn/sdk/4538/server-api-reference)。
 
 # 4 方案优势
 - 实时互动对网络的稳定性和连通性要求非常苛刻，所以必须购买数据中心建设基础网络。而使用七牛的实时音视频云服务，不需要投入大量资金做传输网络的基础建设，按量计费灵活方便。
@@ -105,7 +107,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 - 提供云端存储空间及海量数据的处理能力，提供高可用的技术和高稳定的平台
 
 # 6 开发文档
-请参考开发文档：[QNRTCWeb 开发文档](Documents/DOC.md)
+请参考开发文档：[QNRTCWeb 开发文档](https://developer.qiniu.com/rtn/sdk/4412/description-of-web-sdk)
 
 # 7 反馈及意见
 
