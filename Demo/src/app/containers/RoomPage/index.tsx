@@ -21,11 +21,10 @@ import VideocamIcon from 'material-ui-icons/Videocam';
 import PhoneIcon from 'material-ui-icons/Phone';
 import VideocamOffIcon from 'material-ui-icons/VideocamOff';
 import { Time } from "./Time";
-import { LocalPlayer, RemotePlayer } from '../../components';
+import { LocalPlayer, RemotePlayer, ScrollView, MusicSelect } from '../../components';
 import { inject, observer } from 'mobx-react';
 import { AppStore, RouterStore } from '../../stores';
 import { piliRTC } from '../../models';
-import { ScrollView } from '../../components';
 import { getElementFromArray, getColorFromUserId } from '../../utils';
 
 import * as styles from './style.css';
@@ -52,6 +51,7 @@ interface State {
   volume: any;
   currentAudio?: string;
   currentVideo?: string;
+  showMusicSelect: boolean;
   stats: {
     videoPackageLossRate: number,
     audioPackageLossRate: number,
@@ -75,6 +75,7 @@ export class RoomPage extends React.Component<Props, State> {
 
     this.state = {
       showPublish: false,
+      showMusicSelect: false,
       anchorEl: null,
       menulist: [],
       volume: 1,
@@ -128,15 +129,34 @@ export class RoomPage extends React.Component<Props, State> {
   private getStream = async () => {
     try {
       this.stream = await deviceManager.getLocalStream(this.props.app.config.recordOption.config);
+      if (this.props.app.config.recordOption.key === "PCM-audio") {
+        this.setState({
+          showMusicSelect: true,
+        });
+      }
       this.stream.play(this.localPlayer.video, true);
       this.setState({ showPublish: true });
     } catch (e) {
-      switch (e.name) {
-        case 'NotAllowedError':
+      switch (e.code) {
+        case 11010:
           this.props.app.errorStore.showAlert({
             show: true,
             title: '没有权限',
             content: '获取摄像头权限被拒绝，请手动打开摄像头权限后重新进入房间',
+          });
+          break;
+        case 11009:
+          this.props.app.errorStore.showAlert({
+            show: true,
+            title: 'Chrome 插件异常',
+            content: 'Chrome 屏幕分享需要安装浏览器插件。下载地址：http://sdk-release.qnsdk.com/QNRTCWebExtension.crx .安装完成后需要重新启动浏览器',
+          });
+          break;
+        case 11008:
+          this.props.app.errorStore.showAlert({
+            show: true,
+            title: '浏览器不支持',
+            content: '抱歉，您的浏览器不支持屏幕共享，请使用 Chrome 或者 Firefox',
           });
           break;
         default:
@@ -248,6 +268,17 @@ export class RoomPage extends React.Component<Props, State> {
     });
   }
 
+  private handleAudioBuffer = (buffer: AudioBuffer) => {
+    console.log(buffer);
+    this.stream.setAudioBufferData(buffer);
+  }
+  
+  private handleMusicSelectClose = () => {
+    this.setState({
+      showMusicSelect: false,
+    });
+  }
+
   private handleDelete = async (userId: string) => {
     this.setState({
       anchorEl: null,
@@ -314,6 +345,13 @@ export class RoomPage extends React.Component<Props, State> {
             </MenuItem>
           ))}
         </Menu>
+
+        <MusicSelect
+          show={this.state.showMusicSelect}
+          onClose={this.handleMusicSelectClose}
+          handleBuffer={this.handleAudioBuffer}
+        />
+
         <ul className={styles.avatars} id="avatars">
           { this.props.app.users.map(user => (
             <li

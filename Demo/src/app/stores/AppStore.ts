@@ -173,6 +173,7 @@ export class AppStore {
 
       this.users = yield piliRTC.joinRoomWithToken(this.roomToken);
       this.users = observable(this.users);
+      this.config.changeAppId(piliRTC.appId);
       this.roomName = piliRTC.roomName;
       if (this.isAdmin) {
         piliRTC.setDefaultMergeStream(this.config.mergeStreamWidth, this.config.mergeStreamHeight);

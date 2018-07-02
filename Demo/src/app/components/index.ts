@@ -9,3 +9,4 @@
  export * from './LocalPlayer';
  export * from './RemotePlayer';
  export * from './ScrollView';
+ export * from './MusicSelect';

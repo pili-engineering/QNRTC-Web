@@ -1,4 +1,5 @@
 export * from './request';
+
 import seedrandom from 'seedrandom';
 
 export function getElementFromArray<T>(array: T[], key: string, value: any): T | null {

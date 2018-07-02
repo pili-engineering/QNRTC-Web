@@ -27,12 +27,23 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
       frameRate: 20,
     },
   },
-  "audio-only": {
+  "PCM-audio": {
+    audio: {
+      enabled: true,
+      buffer: true,
+    },
+  },
+  "screen-share": {
     audio: {
       enabled: true,
     },
-    video: {
-      enabled: false,
+    screen: {
+      enabled: true,
+    },
+  },
+  "audio-only": {
+    audio: {
+      enabled: true,
     },
   },
 };
