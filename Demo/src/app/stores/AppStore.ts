@@ -288,13 +288,6 @@ export class AppStore {
     if (muteVideo === undefined) {
       muteVideo = this.muteVideo;
     }
-    if (muteAudio && muteVideo) {
-      this.errorStore.showToast({
-        show: false,
-        content: '不能同时关闭音频和视频',
-      });
-      throw null;
-    }
     this.muteAudio = muteAudio;
     this.muteVideo = muteVideo;
     if (this.publishState === 'success') {

@@ -7,7 +7,7 @@ import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { RoomStore, AppStore, RouterStore } from '../../stores';
 import ButtonBase from 'material-ui/ButtonBase';
-import { RecordOptions } from '../../constants';
+import { RecordOptions, RTC_APP_ID } from '../../constants';
 import { piliRTC } from '../../models/pili';
 
 
@@ -37,7 +37,7 @@ export class HomePage extends React.Component<Props, State> {
       roomName: props.app.roomName || '',
       userName: '',
       recordkey: props.app.config.recordOption.key,
-      appId: '',
+      appId: props.app.config.appId === RTC_APP_ID ? "" : props.app.config.appId,
       config: false,
       roomToken: '',
     };
@@ -87,6 +87,14 @@ export class HomePage extends React.Component<Props, State> {
       });
       if (this.state.appId) {
         this.props.app.config.setAppId(this.state.appId).then().catch(e => {
+          this.props.app.errorStore.showAlert({
+            show: true,
+            title: '设置AppId失败',
+            content: e.toString(),
+          });
+        });
+      } else if (this.props.app.config.appId !== RTC_APP_ID) {
+        this.props.app.config.setAppId(RTC_APP_ID).then().catch(e => {
           this.props.app.errorStore.showAlert({
             show: true,
             title: '设置AppId失败',

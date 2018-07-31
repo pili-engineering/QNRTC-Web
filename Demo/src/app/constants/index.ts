@@ -39,6 +39,20 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
     },
     screen: {
       enabled: true,
+      source: "screen",
+      width: 1280,
+      height: 720,
+    },
+  },
+  "window-share": {
+    audio: {
+      enabled: true,
+    },
+    screen: {
+      enabled: true,
+      source: "window",
+      width: 640,
+      height: 480,
     },
   },
   "audio-only": {

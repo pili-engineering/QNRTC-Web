@@ -114,6 +114,7 @@ export class RoomPage extends React.Component<Props, State> {
     await this.handlePublish();
     this.updateDevice();
     deviceManager.on("device-update", () => {
+      console.log("update", deviceManager.deviceInfo);
       this.updateDevice();
     });
 
@@ -149,7 +150,7 @@ export class RoomPage extends React.Component<Props, State> {
           this.props.app.errorStore.showAlert({
             show: true,
             title: 'Chrome 插件异常',
-            content: 'Chrome 屏幕分享需要安装浏览器插件。下载地址：http://sdk-release.qnsdk.com/QNRTCWebExtension.crx .安装完成后需要重新启动浏览器',
+            content: '您可能没有安装录屏插件或者录屏插件没有升级，请到这里安装最新的录屏插件 https://developer.qiniu.com/rtn/sdk/4582/screen-sharing',
           });
           break;
         case 11008:
@@ -457,6 +458,8 @@ export class RoomPage extends React.Component<Props, State> {
             id="volume"
           >
             <Slider
+              min={1}
+              max={5}
               onChange={this.setVolume}
               value={this.state.volume}
               orientation={'vertical'}
