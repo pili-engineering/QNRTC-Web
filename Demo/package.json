@@ -4,24 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --progress --colors --port 4000 --open",
-    "build": "webpack -p --progress --colors",
-    "test": "jest"
+    "build": "webpack -p --progress --colors"
   },
   "license": "MIT",
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
-  },
   "devDependencies": {
     "@types/classnames": "^2.2.3",
     "@types/node": "^9.4.6",
