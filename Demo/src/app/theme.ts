@@ -4,7 +4,7 @@
  *
  * Distributed under terms of the MIT license.
 */
-import { createMuiTheme } from 'material-ui';
+import { createMuiTheme } from '@material-ui/core';
 
 export const theme = createMuiTheme({
   palette: {

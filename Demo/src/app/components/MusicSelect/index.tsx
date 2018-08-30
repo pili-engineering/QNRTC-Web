@@ -5,7 +5,9 @@
  * Distributed under terms of the MIT license.
  */
 import * as React from 'react';
-import Dialog, { DialogTitle, DialogContent } from 'material-ui/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import { decodeAudioData } from 'pili-rtc-web';
 
 interface Props {

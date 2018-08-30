@@ -112,12 +112,17 @@
   color: #fff !important;
 }
 
-.link {
+.link, .build {
   position: absolute;
   bottom: 5px;
   right: 5px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 10px;
+}
+
+.build {
+  right: initial;
+  left: 5px;
 }
 
 @media (max-width: 500px) {

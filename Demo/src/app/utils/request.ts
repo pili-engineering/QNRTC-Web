@@ -30,3 +30,30 @@ export async function request(path: string, dataType?: 'json' | 'text', method?:
     throw e;
   }
 }
+
+export async function waitResponse(url: string, timeout: number): Promise<void> {
+  let flag = true;
+  const fetchPromise = async () => {
+    while (flag) {
+      try {
+        const res = await fetch(url);
+        if (res.status !== 200) {
+          throw new Error(res.status.toString());
+        }
+        break;
+      } catch (e) {
+        console.log(e, flag);
+      }
+    }
+  };
+  const timeoutPromise = () => new Promise(resolve => {
+    setTimeout(resolve, timeout, "timeout");
+  });
+
+  const v = await Promise.race([fetchPromise(), timeoutPromise()]);
+  flag = false;
+  console.log('v', v);
+  if (v === "timeout") {
+    throw new Error('timeout!');
+  }
+}

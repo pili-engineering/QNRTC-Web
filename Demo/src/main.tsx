@@ -13,9 +13,10 @@ useStrict(true);
 const history = createBrowserHistory();
 const errorStore = new ErrorStore();
 const configStore = new ConfigStore();
+const routerStore = new RouterStore(history);
 const rootStore = {
-  router: new RouterStore(history),
-  app: new AppStore(errorStore, configStore),
+  router: routerStore,
+  app: new AppStore(errorStore, configStore, routerStore),
   room: new RoomStore(errorStore),
   error: errorStore,
 };

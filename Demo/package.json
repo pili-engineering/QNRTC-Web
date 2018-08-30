@@ -1,12 +1,27 @@
 {
   "name": "pili-rtc-web-demo",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --progress --colors --port 4000 --open",
-    "build": "webpack -p --progress --colors"
+    "build": "webpack -p --progress --colors",
+    "test": "jest"
   },
   "license": "MIT",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
   "devDependencies": {
     "@types/classnames": "^2.2.3",
     "@types/node": "^9.4.6",
@@ -38,7 +53,7 @@
     "ts-loader": "^4.0.0",
     "tslint": "^5.9.1",
     "tslint-react": "^3.5.1",
-    "typescript": "^2.7.2",
+    "typescript": "^3.0.1",
     "url-loader": "^1.0.0-beta.0",
     "webpack": "^4.0.1",
     "webpack-cleanup-plugin": "^0.5.1",
@@ -47,24 +62,27 @@
     "webpack-hot-middleware": "^2.21.1"
   },
   "dependencies": {
+    "@material-ui/core": "^1.4.2",
+    "@material-ui/icons": "^2.0.0",
     "classnames": "^2.2.5",
     "clipboard": "^2.0.0",
-    "material-ui": "^1.0.0-beta.36",
-    "material-ui-icons": "^1.0.0-beta.36",
+    "flv.js": "^1.4.2",
     "mobx": "^3.6.1",
     "mobx-react": "^4.4.2",
     "mobx-react-router": "^4.0.1",
     "mobx-utils": "^3.2.2",
-    "pili-rtc-web": "^1.1.1",
-    "react": "^16.2.0",
+    "pili-rtc-web": "^1.2.0",
+    "react": "^16.4.2",
     "react-avatar": "^2.5.1",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.4.2",
     "react-draggable": "^3.0.5",
     "react-motion": "^0.5.2",
     "react-rangeslider": "^2.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "seedrandom": "^2.4.3",
-    "store": "^2.0.12"
+    "store": "^2.0.12",
+    "video.js": "^7.1.0",
+    "videojs-flvjs": "^0.2.0"
   }
 }

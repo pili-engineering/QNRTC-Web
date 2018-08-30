@@ -2,6 +2,7 @@ import { User, Stream } from 'pili-rtc-web';
 import { observable, action, computed } from 'mobx';
 import { ErrorStore } from './ErrorStore';
 import { ConfigStore } from './ConfigStore';
+import { RouterStore } from './RouterStore';
 import { asyncAction } from 'mobx-utils';
 import { request } from '../utils';
 import { piliRTC } from '../models';
@@ -12,6 +13,7 @@ type State = 'idle' | 'pending' | 'success' | 'fail';
 
 export class AppStore {
   public readonly errorStore: ErrorStore;
+  public readonly routerStore: RouterStore;
 
   public userColor: string;
   @observable
@@ -39,16 +41,32 @@ export class AppStore {
   public roomToken?: string;
   @observable
   public users: User[];
+  @observable
+  public liveRoomAdmin: boolean = true;
+
+  private roomMode: "live" | "rtc" = "rtc";
 
   @computed
   public get userId(): string {
     return this.config.userId;
   }
 
+  @computed
+  public get pubilshedUser(): User[] {
+    const users = [];
+    this.users.forEach(user => {
+      if (user.userId !== piliRTC.userId && user.published) {
+        users.push(user);
+      }
+    });
+
+    return users;
+  }
+
   @observable
   public config: ConfigStore;
 
-  public constructor(errorStore: ErrorStore, configStore: ConfigStore) {
+  public constructor(errorStore: ErrorStore, configStore: ConfigStore, routerStore: RouterStore) {
     this.isLogin = false;
     this.roomToken = null;
     this.users = piliRTC.users;
@@ -59,6 +77,7 @@ export class AppStore {
     this.subscription = observable(new Map());
 
     this.errorStore = errorStore;
+    this.routerStore = routerStore;
     this.config = configStore;
     if (this.config.userId) {
       this.isLogin = true;
@@ -68,37 +87,37 @@ export class AppStore {
     piliRTC.on('user-leave', user => this.updateUser(user, false));
     piliRTC.on('user-publish', user => this.updateStream(user, true));
     piliRTC.on('user-unpublish', user => this.updateStream(user, false));
+    piliRTC.on('kicked', userId => this.onKicked(userId));
+    piliRTC.on('closeroom', () => this.leaveRoom());
     piliRTC.on('mute', this.updateStateFromSDK);
+    (window as any).onbeforeunload = () => this.leaveRoom(true);
     console.log(piliRTC);
   }
 
   @action
   private updateStateFromSDK = () => {
-    const subUserIds = Object.keys(piliRTC.subscribedUsers);
+    this.users = piliRTC.users;
+    const userIds = this.users.map(user => user.userId);
     const localSubUserIds = Array.from(this.subscription.keys());
     localSubUserIds.forEach(userId => {
-      if (subUserIds.indexOf(userId) === -1) {
+      if (userIds.indexOf(userId) === -1) {
         this.subscription.delete(userId);
       }
     });
-    for (const userId in piliRTC.subscribedUsers) {
-      this.subscription.set(userId, {
-        subscribeState: "success",
-        userId,
-        stream: piliRTC.subscribedUsers[userId],
-      });
-    }
+  }
 
-    this.users = piliRTC.users;
+  private onKicked(userId: string): void {
+    this.errorStore.showToast({
+      show: true,
+      content: userId ? `您被${userId}踢出房间` : '房间被关闭',
+    });
+    this.leaveRoom();
   }
 
   @action
   public leaveRoom = (isUserAction?: boolean) => {
     if (!this.roomToken) {
       return;
-    }
-    if (this.isAdmin) {
-      piliRTC.stopMergeStream();
     }
     if (isUserAction) {
       piliRTC.leaveRoom();
@@ -109,6 +128,8 @@ export class AppStore {
     this.muteVideo = false;
     this.roomToken = null;
     this.users = piliRTC.users;
+    this.roomMode = "rtc";
+    this.routerStore.push('/');
   }
 
   @action
@@ -119,13 +140,10 @@ export class AppStore {
       this.errorStore.showToast({ show: true, content: `用户${user.userId}加入房间`});
     }
     this.updateStateFromSDK();
-    if (isAdd) {
-      this.autoSubscribe();
-    }
   }
 
   @action
-  private updateStream = (stream: Stream, isAdd: boolean) => {
+  private updateStream = (user: User, isAdd: boolean) => {
     this.updateStateFromSDK();
     if (isAdd) {
       this.autoSubscribe();
@@ -134,19 +152,39 @@ export class AppStore {
 
   @action
   public autoSubscribe = () => {
+    console.log(this.roomMode);
+    if (this.roomMode === "live") {
+      return;
+    }
     for (let i = 0; i < this.users.length; i += 1) {
       const user = this.users[i];
-      if (user.published && !user.stream && user.userId !== this.userId) {
+      if (user.published && user.userId !== piliRTC.userId && !this.subscription.has(user.userId)) {
         this.subscribe(user);
       }
     }
   }
 
+  /**
+   * 加入连麦房间
+   *
+   * @param {string} roomName 房间名称
+   * @param {string} roomToken? 传入代表使用roomToken直接加会，将忽略roomName
+   * @param {boolean} liveMode? 代表使用直播房间模式，以admin加入只控制合流
+   */
   @asyncAction
-  public *enterRoom(roomName: string, roomToken?: string): any {
-    this.isAdmin = !!this.config.userId.match(/admin/i);
+  public *enterRoom(roomName: string, roomToken?: string, liveMode?: boolean): any {
+    const isAdmin = name => name === "admin";
 
     try {
+      if (liveMode) {
+        const data = yield request(`${API.LIST_USERS(this.config.appId, roomName)}`);
+        this.liveRoomAdmin = true;
+        data.users.forEach(user => {
+          if (user.userId === "admin") {
+            this.liveRoomAdmin = isAdmin(this.userId);
+          }
+        });
+      }
       if (!this.userId) {
         this.errorStore.showAlert({
           show: true,
@@ -155,6 +193,8 @@ export class AppStore {
         });
         throw null;
       }
+      const userId = this.liveRoomAdmin && liveMode ? 'admin' : this.userId;
+      this.isAdmin = isAdmin(userId);
       this.errorStore.showLoading({ content: '加入房间中', show: true });
       if (!roomToken) {
         const api = this.isAdmin ? API.CREATE_ROOM_TOKEN : API.JOIN_ROOM_TOKEN;
@@ -162,7 +202,7 @@ export class AppStore {
         // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
         // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
         // 此处服务器 URL 仅用于 Demo 测试！随时可能 修改/失效，请勿用于 App 线上环境！
-        const requestURL = `${api(roomName, this.userId, this.config.appId)}?bundleId=demo-rtc.qnsdk.com`;
+        const requestURL = `${api(roomName, userId, this.config.appId)}?bundleId=demo-rtc.qnsdk.com`;
 
         const token: string = yield request(requestURL, 'text');
         this.roomToken = token;
@@ -173,6 +213,11 @@ export class AppStore {
 
       this.users = yield piliRTC.joinRoomWithToken(this.roomToken);
       this.users = observable(this.users);
+      if (liveMode) {
+        this.roomMode = "live";
+      } else {
+        this.roomMode = "rtc";
+      }
       this.config.changeAppId(piliRTC.appId);
       this.roomName = piliRTC.roomName;
       if (this.isAdmin) {
@@ -188,6 +233,10 @@ export class AppStore {
         content: e.message,
       });
       throw e;
+    }
+
+    if (liveMode) {
+      this.roomMode = "live";
     }
   }
 
@@ -208,8 +257,13 @@ export class AppStore {
     }
   }
 
-  @asyncAction
-  public *unpublish(): any {
+  @action
+  public setPublishState(state: 'pending' | 'success' | 'fail' | 'idle'): void {
+    this.publishState = state;
+  }
+
+  @action
+  public unpublish(): void {
     this.publishState = 'pending';
     try {
       piliRTC.unpublish();
@@ -217,7 +271,7 @@ export class AppStore {
       this.muteAudio = false;
       this.muteVideo = false;
     } catch (e) {
-      this.publishState = 'fail';
+      this.publishState = 'success';
       this.errorStore.showAlert({
         show: true,
         title: '下麦失败!',
@@ -229,12 +283,16 @@ export class AppStore {
 
   @asyncAction
   public *subscribe(user: User): any {
+    if (this.roomMode === "live") {
+      return;
+    }
     this.subscription.set(user.userId, {
       subscribeState: 'pending',
       userId: user.userId,
     });
     try {
-      const stream = yield piliRTC.subscribe(user.userId);
+      console.log("auto subscribe", user.userId);
+      const stream = yield piliRTC.subscribe(user.userId, true);
       this.subscription.set(user.userId, {
         stream,
         userId: user.userId,
@@ -252,11 +310,11 @@ export class AppStore {
     }
   }
 
-  @asyncAction
-  public *unsubscribe(userId: string): any {
+  @action
+  public unsubscribe(userId: string): any {
     try {
       if (piliRTC.subscribedUsers[userId]) {
-        yield piliRTC.unsubscribe(userId);
+        piliRTC.unsubscribe(userId);
       }
       this.subscription.delete(userId);
     } catch (e) {
@@ -293,6 +351,15 @@ export class AppStore {
     if (this.publishState === 'success') {
       piliRTC.mute(this.muteAudio, this.muteVideo);
     }
+  }
+
+  @action
+  public setMergeOptions(userId: string, options: any): void {
+    piliRTC.setMergeStreamLayout(userId, options);
+    this.errorStore.showToast({
+      show: true,
+      content: '已发送合流配置，请等待合流画面生效',
+    });
   }
 
   @action
