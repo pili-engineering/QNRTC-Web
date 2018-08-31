@@ -3,6 +3,15 @@
 ## 简介
 QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK，提供了包括音视频通话、静音、发布、订阅多种功能，提供灵活的接口，支持高度定制以及二次开发。
 
+## API 变动
+
+### 取消发布/取消订阅 更变为同步方法
+
+```javascript
+myRTC.unpublish()
+myRTC.unsubscribe(xxx)
+```
+
 ## 功能
 
 ### 增加持续订阅模式
@@ -15,13 +24,6 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 // 这里 myRTC 指的是实例化的 QNRTCSession 对象
 // 第二个参数为 true，代表使用持续订阅模式订阅
 const stream = await myRTC.subscribe(userId, true);
-```
-
-### 取消发布/取消订阅 更变为同步方法
-
-```javascript
-myRTC.unpublish()
-myRTC.unsubscribe(xxx)
 ```
 
 ### 自动切换媒体设备的逻辑可以配置
