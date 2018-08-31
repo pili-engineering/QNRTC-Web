@@ -102,3 +102,8 @@ deviceManager.getLocalStream({
 当你遇到任何问题时，可以通过在 GitHub 的 repo 提交 `issues` 来反馈问题，请尽可能的描述清楚遇到的问题，如果有错误信息也一同附带，并且在 ```Labels``` 中指明类型为 bug 或者其他。
 
 [通过这里查看已有的 issues 和提交 bug](https://github.com/pili-engineering/QNRTC-Web/issues)
+
+## 更新方式
+
+* 直接引入，将项目中的 pili-rtc-web.js 替换为最新版本 https://github.com/pili-engineering/QNRTC-Web/blob/master/Release/pili-rtc-web.js
+* npm 更新，运行 npm install pili-rtc-web@latest 安装最新版本
