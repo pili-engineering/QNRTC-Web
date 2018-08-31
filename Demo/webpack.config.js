@@ -114,6 +114,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.TEST_ENV': JSON.stringify(process.env.TEST_ENV),
+      'process.env.BUILD_TIME': JSON.stringify(new Date().toLocaleString()),
     }),
   ],
   devServer: {

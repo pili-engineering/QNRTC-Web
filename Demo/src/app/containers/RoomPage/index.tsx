@@ -9,22 +9,22 @@ import { Stream, User, deviceManager } from 'pili-rtc-web';
 import Slider from 'react-rangeslider';
 import ClipboardJS from 'clipboard';
 import Draggable from 'react-draggable';
-import Menu, { MenuItem } from 'material-ui/Menu';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import AvatarIcon from 'react-avatar';
-import ContentCopyIcon from 'material-ui-icons/ContentCopy';
-import Tooltip from 'material-ui/Tooltip';
-import MicIcon from 'material-ui-icons/Mic';
-import MicOffIcon from 'material-ui-icons/MicOff';
-import VideocamIcon from 'material-ui-icons/Videocam';
-import PhoneIcon from 'material-ui-icons/Phone';
-import VideocamOffIcon from 'material-ui-icons/VideocamOff';
+import Tooltip from '@material-ui/core/Tooltip';
+import MicIcon from '@material-ui/icons/Mic';
+import MicOffIcon from '@material-ui/icons/MicOff';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import PhoneIcon from '@material-ui/icons/Phone';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import { Time } from "./Time";
 import { LocalPlayer, RemotePlayer, ScrollView, MusicSelect } from '../../components';
 import { inject, observer } from 'mobx-react';
 import { AppStore, RouterStore } from '../../stores';
-import { piliRTC } from '../../models';
 import { getElementFromArray, getColorFromUserId } from '../../utils';
 
 import * as styles from './style.css';
@@ -106,15 +106,12 @@ export class RoomPage extends React.Component<Props, State> {
     }
 
     this.setState({ showPublish: false });
-    piliRTC.on('kicked', this.handleLeaveRoom);
-    piliRTC.on('closeroom', this.handleLeaveRoom);
-    (window as any).onbeforeunload = this.leaveRoomWithUserAction.bind(this);
     this.handleCopy();
 
     await this.handlePublish();
     this.updateDevice();
+    (window as any).device = deviceManager;
     deviceManager.on("device-update", () => {
-      console.log("update", deviceManager.deviceInfo);
       this.updateDevice();
     });
 
@@ -181,15 +178,6 @@ export class RoomPage extends React.Component<Props, State> {
     });
   }
 
-  private handleLeaveRoom = (userId?: string) => {
-    this.props.app.errorStore.showToast({
-      show: true,
-      content: userId ? `您被${userId}踢出房间` : '房间被关闭',
-    });
-    this.props.app.leaveRoom();
-    this.props.router.push('/');
-  }
-
   private handleSubscrible = async (user: User) => {
     this.setState({
       anchorEl: null,
@@ -204,13 +192,15 @@ export class RoomPage extends React.Component<Props, State> {
     this.setState({
       anchorEl: null,
     });
-    await this.props.app.unsubscribe(userId);
+    this.props.app.unsubscribe(userId);
   }
 
   private handlePublish = async () => {
+    console.log(this.props.app.publishState);
     switch (this.props.app.publishState) {
       case 'idle':
       case 'fail':
+        this.props.app.setPublishState("pending");
         await this.getStream();
         await this.props.app.publish(this.stream);
         if (this.statInterval) {
@@ -219,7 +209,7 @@ export class RoomPage extends React.Component<Props, State> {
         this.statInterval = setInterval(this.handleStats, 1000);
         break;
       case 'success':
-        await this.props.app.unpublish();
+        this.props.app.unpublish();
         if (this.statInterval) {
           clearInterval(this.statInterval);
         }

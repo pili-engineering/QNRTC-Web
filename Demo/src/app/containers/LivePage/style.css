@@ -1,0 +1,53 @@
+/*
+ * style.css
+ * Copyright (C) 2018 disoul
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.roomName {
+  position: absolute;
+  font-size: 14px;
+  color: #FFFFFF;
+  letter-spacing: 0.72px;
+  text-align: left;
+  top: 20px;
+  left: 30px;
+}
+
+.videoContainer {
+  flex: 5;
+  height :100%;
+}
+
+.users {
+  width: 318px;
+  height: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.configTitle {
+  opacity: 0.69;
+  font-size: 14px;
+  color: #FAFAFA;
+  letter-spacing: 0.66px;
+  text-align: left;
+}

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Avatar from 'react-avatar';
-import SettingsIcon from 'material-ui-icons/Settings';
-import UndoIcon from 'material-ui-icons/Undo';
-import IconButton from 'material-ui/IconButton';
+import SettingsIcon from '@material-ui/icons/SettingsApplications';
+import UndoIcon from '@material-ui/icons/Undo';
+import IconButton from '@material-ui/core/IconButton';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
 import { RoomStore, AppStore, RouterStore } from '../../stores';
-import ButtonBase from 'material-ui/ButtonBase';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import { RecordOptions, RTC_APP_ID } from '../../constants';
 import { piliRTC } from '../../models/pili';
 
@@ -63,14 +63,15 @@ export class HomePage extends React.Component<Props, State> {
 
   private handleNext = async (e: any) => {
     e.preventDefault();
-    if (this.state.userName && !this.state.userName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
+    const roomTokenMode = this.props.router.location.pathname === "/roomtoken";
+    if (!roomTokenMode && this.state.userName && !this.state.userName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
       this.props.app.errorStore.showToast({
         show: true,
         content: "用户名最少 3 个字符，并且只能包含字母、数字或下划线",
       });
       return;
     }
-    if (this.state.roomName && !this.state.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
+    if (!roomTokenMode && this.state.roomName && !this.state.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
       this.props.app.errorStore.showToast({
         show: true,
         content: "房间名最少 3 个字符，并且只能包含字母、数字或下划线",
@@ -109,7 +110,7 @@ export class HomePage extends React.Component<Props, State> {
       });
       return;
     }
-    if (this.props.router.location.pathname === "/roomtoken") {
+    if (roomTokenMode) {
       await this.handleJoinRoom(this.state.roomToken);
       return;
     }
@@ -118,6 +119,12 @@ export class HomePage extends React.Component<Props, State> {
     } else {
       await this.handleJoinRoom();
     }
+  }
+
+  private handleJoinLiveRoom = async (): Promise<void> => {
+    const roomName = this.state.roomName;
+    await this.props.app.enterRoom(roomName, undefined, true);
+    this.props.router.push(`/live/${roomName}`);
   }
 
   private handleSwitchConfig = () => {
@@ -257,13 +264,22 @@ export class HomePage extends React.Component<Props, State> {
             type="submit"
             id="next_button"
           >
-            { this.state.config ? '完成' : (!!userId ? '进入房间' : '下一步') }
+            { this.state.config ? '完成' : (!!userId ? '会议房间' : '下一步') }
           </ButtonBase>
+          { !this.state.config && this.props.app.userId && <ButtonBase
+            className={styles.btn}
+            focusRipple
+            onClick={this.handleJoinLiveRoom}
+            id="live_button"
+          >
+            直播房间
+          </ButtonBase> }
         </div>
         { this.props.router.location.pathname === '/roomtoken' ?
           <Link className={styles.link} to="/">使用房间名</Link> :
           <Link className={styles.link} to="/roomtoken">使用 roomToken</Link>
         }
+        <p className={styles.build}>构建时间: {process.env.BUILD_TIME}</p>
       </div>
     );
   }
