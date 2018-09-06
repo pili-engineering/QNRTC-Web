@@ -5313,9 +5313,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-1.2.0.tgz#a41fd03852d0256f061de4fb6be3a0b4c648fb22"
+pili-rtc-web@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-1.2.1.tgz#a28af574406bb3fa50258d649de8217b26c7b564"
   dependencies:
     "@types/detect-browser" "^2.0.1"
     "@types/lodash.uniqby" "^4.7.3"
