@@ -9,3 +9,4 @@
  export * from './ScrollView';
  export * from './MusicSelect';
  export * from './UserMergeConfig';
+ export * from './RTMPInput';

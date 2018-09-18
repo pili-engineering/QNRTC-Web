@@ -3,7 +3,7 @@ export * from './qiniu';
 export * from './error';
 
 export const RecordOptions: { [key: string]: RecordConfig } = {
-  "1280*720": {
+  "1280*720 1200kbps 20fps": {
     audio: {
       enabled: true,
     },
@@ -15,39 +15,7 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
       height: 720,
     },
   },
-  "1280*640/exact": {
-    audio: {
-      enabled: true,
-    },
-    video: {
-      enabled: true,
-      bitrate: 1200,
-      width: { exact: 1280 },
-      height: { exact: 640 },
-    },
-  },
-  "640*480 ~ 1280*720": {
-    audio: {
-      enabled: true,
-    },
-    video: {
-      enabled: true,
-      width: { min: 640, max: 1280, ideal: 1000 },
-      height: { min: 480, max: 720, ideal: 600 },
-    },
-  },
-  "640*480 ~ 1280*720/window-sharing": {
-    audio: {
-      enabled: true,
-    },
-    screen: {
-      enabled: true,
-      source: "window",
-      width: { min: 640, max: 1280, ideal: 1000 },
-      height: { min: 480, max: 720, ideal: 600 },
-    },
-  },
-  "640*480": {
+  "640*480 600kbps 20fps": {
     audio: {
       enabled: true,
     },
@@ -59,13 +27,13 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
       frameRate: 20,
     },
   },
-  "PCM-audio": {
+  "音乐文件输入": {
     audio: {
       enabled: true,
       buffer: true,
     },
   },
-  "screen-share": {
+  "屏幕共享(需要麦克风)": {
     audio: {
       enabled: true,
     },
@@ -76,7 +44,7 @@ export const RecordOptions: { [key: string]: RecordConfig } = {
       height: 1080,
     },
   },
-  "window-share": {
+  "窗口共享(需要麦克风)": {
     audio: {
       enabled: true,
     },
