@@ -31,12 +31,12 @@ export class ConfigStore {
     }
 
     const record = store.get('record');
-    if (record) {
+    if (record && RecordOptions[record.key]) {
       this.recordOption = record;
     } else {
       this.recordOption = {
-        config: RecordOptions['640*480'],
-        key: '640*480',
+        config: RecordOptions['640*480 600kbps 20fps'],
+        key: '640*480 600kbps 20fps',
       };
     }
 

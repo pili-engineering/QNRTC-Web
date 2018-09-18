@@ -150,7 +150,7 @@ export class HomePage extends React.Component<Props, State> {
               id="modify_username"
             />
           </div>
-          <p className={styles.hint}>名称中带有 admin 字段的用户会被分配管理员权限</p>
+          <p className={styles.hint}>名称为 admin 的用户会被分配管理员权限</p>
           <div
             className={styles.input}
           >
@@ -192,7 +192,7 @@ export class HomePage extends React.Component<Props, State> {
               required
             />
           </div>
-          <p className={styles.hint}>名称中带有 admin 字段的用户会被分配管理员权限</p>
+          <p className={styles.hint}>名称为 admin 的用户会被分配管理员权限</p>
         </div>
       );
     } else {

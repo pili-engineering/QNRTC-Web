@@ -3,6 +3,7 @@ import { observable, action, computed } from 'mobx';
 import { ErrorStore } from './ErrorStore';
 import { ConfigStore } from './ConfigStore';
 import { RouterStore } from './RouterStore';
+import { ALL_USER } from '../components/RTMPInput';
 import { asyncAction } from 'mobx-utils';
 import { request } from '../utils';
 import { piliRTC } from '../models';
@@ -26,7 +27,13 @@ export class AppStore {
   @observable
   public muteVideo: boolean;
   @observable
+  public enableAudio: boolean = true;
+  @observable
+  public enableVideo: boolean = true;
+  @observable
   public publishState: State;
+  @observable
+  public publishMergeJob?: string;
   @observable
   public subscription: Map<string, {
     stream?: Stream,
@@ -55,7 +62,7 @@ export class AppStore {
   public get pubilshedUser(): User[] {
     const users = [];
     this.users.forEach(user => {
-      if (user.userId !== piliRTC.userId && user.published) {
+      if (user.published) {
         users.push(user);
       }
     });
@@ -90,6 +97,15 @@ export class AppStore {
     piliRTC.on('kicked', userId => this.onKicked(userId));
     piliRTC.on('closeroom', () => this.leaveRoom());
     piliRTC.on('mute', this.updateStateFromSDK);
+    piliRTC.on('republish', () => {
+      if (!this.publishMergeJob) {
+        return;
+      }
+      piliRTC.setMergeStreamLayout(piliRTC.userId, {
+        id: this.publishMergeJob,
+        x: 0, y: 0, w: 1080, h: 720, z: 1,
+      });
+    });
     (window as any).onbeforeunload = () => this.leaveRoom(true);
     console.log(piliRTC);
   }
@@ -119,6 +135,7 @@ export class AppStore {
     if (!this.roomToken) {
       return;
     }
+    this.stopPublishMergeJob();
     if (isUserAction) {
       piliRTC.leaveRoom();
     }
@@ -232,6 +249,7 @@ export class AppStore {
         title: '加入房间失败!',
         content: e.message,
       });
+      console.log(e);
       throw e;
     }
 
@@ -245,7 +263,10 @@ export class AppStore {
     this.publishState = 'pending';
     try {
       yield piliRTC.publish(stream);
+      this.enableAudio = stream.enableAudio;
+      this.enableVideo = stream.enableVideo;
       this.publishState = 'success';
+      this.updateStateFromSDK();
     } catch (e) {
       this.publishState = 'fail';
       this.errorStore.showAlert({
@@ -267,6 +288,7 @@ export class AppStore {
     this.publishState = 'pending';
     try {
       piliRTC.unpublish();
+      this.stopPublishMergeJob();
       this.publishState = 'idle';
       this.muteAudio = false;
       this.muteVideo = false;
@@ -359,6 +381,40 @@ export class AppStore {
     this.errorStore.showToast({
       show: true,
       content: '已发送合流配置，请等待合流画面生效',
+    });
+  }
+
+  @asyncAction
+  public *startPublishMergeJob(publishUrl: string, targetUser: string): any {
+    if (this.publishMergeJob) {
+      return;
+    }
+    this.publishMergeJob = targetUser + publishUrl;
+    yield piliRTC.createMergeJob(this.publishMergeJob, { publishUrl });
+    if (targetUser !== ALL_USER) {
+      piliRTC.setMergeStreamLayout(targetUser, {
+        id: this.publishMergeJob,
+        x: 0, y: 0, w: 1080, h: 720, z: 1,
+      });
+    } else {
+      piliRTC.setDefaultMergeStream(1080, 720, this.publishMergeJob);
+    }
+    this.errorStore.showToast({
+      show: true,
+      content: '已开启单路转推',
+    });
+  }
+
+  @action
+  public stopPublishMergeJob(): void {
+    if (!this.publishMergeJob) {
+      return;
+    }
+    piliRTC.stopMergeStream(this.publishMergeJob);
+    this.publishMergeJob = undefined;
+    this.errorStore.showToast({
+      show: true,
+      content: '单路转推停止',
     });
   }
 

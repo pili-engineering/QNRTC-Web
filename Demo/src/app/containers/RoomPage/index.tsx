@@ -16,13 +16,15 @@ import IconButton from '@material-ui/core/IconButton';
 import AvatarIcon from 'react-avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import MicIcon from '@material-ui/icons/Mic';
+import CastIcon from '@material-ui/icons/Cast';
+import CastConnectedIcon from '@material-ui/icons/CastConnected';
 import MicOffIcon from '@material-ui/icons/MicOff';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import PhoneIcon from '@material-ui/icons/Phone';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
 import ContentCopyIcon from '@material-ui/icons/FileCopy';
 import { Time } from "./Time";
-import { LocalPlayer, RemotePlayer, ScrollView, MusicSelect } from '../../components';
+import { LocalPlayer, RemotePlayer, ScrollView, MusicSelect, RTMPInput } from '../../components';
 import { inject, observer } from 'mobx-react';
 import { AppStore, RouterStore } from '../../stores';
 import { getElementFromArray, getColorFromUserId } from '../../utils';
@@ -52,6 +54,7 @@ interface State {
   currentAudio?: string;
   currentVideo?: string;
   showMusicSelect: boolean;
+  showRTMPinput: boolean;
   stats: {
     videoPackageLossRate: number,
     audioPackageLossRate: number,
@@ -64,6 +67,8 @@ interface State {
 @observer
 export class RoomPage extends React.Component<Props, State> {
   private localPlayer: LocalPlayer;
+  private firstRemote: RemotePlayer;
+  private minmaxSwitch: boolean = false;
   private stream: Stream;
   private redirect: boolean;
   private clipboard: any;
@@ -76,6 +81,7 @@ export class RoomPage extends React.Component<Props, State> {
     this.state = {
       showPublish: false,
       showMusicSelect: false,
+      showRTMPinput: false,
       anchorEl: null,
       menulist: [],
       volume: 1,
@@ -114,7 +120,13 @@ export class RoomPage extends React.Component<Props, State> {
     deviceManager.on("device-update", () => {
       this.updateDevice();
     });
+  }
 
+  public componentWillUpdate(props: Props, state: State): Promise<void> {
+    if (props.app.subscription.size !== 1 && this.minmaxSwitch) {
+      this.switchMinMax();
+      return;
+    }
   }
 
   private updateDevice = () => {
@@ -127,7 +139,7 @@ export class RoomPage extends React.Component<Props, State> {
   private getStream = async () => {
     try {
       this.stream = await deviceManager.getLocalStream(this.props.app.config.recordOption.config);
-      if (this.props.app.config.recordOption.key === "PCM-audio") {
+      if (this.props.app.config.recordOption.config.audio.buffer) {
         this.setState({
           showMusicSelect: true,
         });
@@ -140,7 +152,7 @@ export class RoomPage extends React.Component<Props, State> {
           this.props.app.errorStore.showAlert({
             show: true,
             title: '没有权限',
-            content: '获取摄像头权限被拒绝，请手动打开摄像头权限后重新进入房间',
+            content: '获取摄像头/麦克风权限被拒绝，请手动打开摄像头/麦克风权限后重新进入房间',
           });
           break;
         case 11009:
@@ -157,15 +169,39 @@ export class RoomPage extends React.Component<Props, State> {
             content: '抱歉，您的浏览器不支持屏幕共享，请使用 Chrome 或者 Firefox',
           });
           break;
+        case 11013:
+          this.props.app.errorStore.showAlert({
+            show: true,
+            title: '获取录屏权限被拒绝',
+            content: '请刷新页面手动重新发布',
+          });
+          break;
         default:
           this.props.app.errorStore.showAlert({
             show: true,
             title: '没有数据',
-            content: `无法获取摄像头数据，错误代码: ${e.name}`,
+            content: `无法获取摄像头/麦克风数据，错误代码: ${e.name}`,
           });
       }
       throw e;
     }
+  }
+
+  private switchMinMax = () => {
+    this.setState({
+      anchorEl: null,
+    });
+    const key = Array.from(this.props.app.subscription.keys())[0];
+    if (!this.minmaxSwitch) {
+      this.stream.play(this.firstRemote.video);
+      this.props.app.subscription.get(key).stream.play(this.localPlayer.video);
+    } else {
+      this.stream.play(this.localPlayer.video);
+      if (this.props.app.subscription.get(key)) {
+        this.props.app.subscription.get(key).stream.play(this.firstRemote.video);
+      }
+    }
+    this.minmaxSwitch = !this.minmaxSwitch;
   }
 
   private handleCopy = () => {
@@ -183,6 +219,11 @@ export class RoomPage extends React.Component<Props, State> {
       anchorEl: null,
     });
     if (!user.published) {
+      this.props.app.errorStore.showAlert({
+        show: true,
+        title: "无法订阅",
+        content: "目标用户没有发布",
+      });
       return;
     }
     await this.props.app.subscribe(user);
@@ -209,6 +250,9 @@ export class RoomPage extends React.Component<Props, State> {
         this.statInterval = setInterval(this.handleStats, 1000);
         break;
       case 'success':
+        if (this.minmaxSwitch) {
+          this.switchMinMax();
+        }
         this.props.app.unpublish();
         if (this.statInterval) {
           clearInterval(this.statInterval);
@@ -247,6 +291,13 @@ export class RoomPage extends React.Component<Props, State> {
     ] : [
       { content: '踢出房间', handleFunc: () => this.handleDelete(userId) },
     ];
+    if (this.props.app.subscription.size === 1 && this.props.app.subscription.get(userId)) {
+      // 大小窗切换时无法取消订阅
+      if (this.minmaxSwitch && menulist[0].content === "取消订阅") {
+        menulist.pop();
+      }
+      menulist.push({ content: '大小窗切换', handleFunc: () => this.switchMinMax() });
+    }
     if (!isunsub && !subscription) {
       const user = getElementFromArray(this.props.app.users, 'userId', userId);
       if (user) {
@@ -263,7 +314,7 @@ export class RoomPage extends React.Component<Props, State> {
     console.log(buffer);
     this.stream.setAudioBufferData(buffer);
   }
-  
+
   private handleMusicSelectClose = () => {
     this.setState({
       showMusicSelect: false,
@@ -274,6 +325,9 @@ export class RoomPage extends React.Component<Props, State> {
     this.setState({
       anchorEl: null,
     });
+    if (this.minmaxSwitch) {
+      this.switchMinMax();
+    }
     await this.props.app.kickplayer(userId);
   }
 
@@ -286,6 +340,26 @@ export class RoomPage extends React.Component<Props, State> {
 
   private handleMenuClose = () => {
     this.setState({ anchorEl: null });
+  }
+
+  private handleMergeJob = () => {
+    if (this.props.app.publishMergeJob) {
+      this.props.app.stopPublishMergeJob();
+    } else {
+      this.setState({
+        showRTMPinput: true,
+      });
+    }
+  }
+
+  private handlePublishRTMPInput = async (url?: string, targetUser?: string) => {
+    console.log('rtmp publish', url, targetUser);
+    if (url) {
+      await this.props.app.startPublishMergeJob(url, targetUser);
+    }
+    this.setState({
+      showRTMPinput: false,
+    });
   }
 
   private setVolume = (value: any): void => {
@@ -343,6 +417,13 @@ export class RoomPage extends React.Component<Props, State> {
           handleBuffer={this.handleAudioBuffer}
         />
 
+        <RTMPInput
+          show={this.state.showRTMPinput}
+          users={this.props.app.pubilshedUser.map(user => user.userId)}
+          onClose={() => this.handlePublishRTMPInput()}
+          onEnter={(url, user) => this.handlePublishRTMPInput(url, user)}
+        />
+
         <ul className={styles.avatars} id="avatars">
           { this.props.app.users.map(user => (
             <li
@@ -368,13 +449,18 @@ export class RoomPage extends React.Component<Props, State> {
           <div className={styles.remotePlayer}>
             <ScrollView
             >
-              {Array.from(this.props.app.subscription.keys()).map(k => {
+              {Array.from(this.props.app.subscription.keys()).map((k, i) => {
                 const subscription = this.props.app.subscription.get(k);
                 const stream = subscription.stream;
                 return (
                   <RemotePlayer
                     id={`remote-player-${subscription.userId}`}
                     onContextMenu={e => this.handleContextMenu(e, subscription.userId, true)}
+                    ref={ref => {
+                      if (i === 0) {
+                        this.firstRemote = ref;
+                      }
+                    }}
                     key={subscription.userId}
                     userId={subscription.userId}
                     stream={stream}
@@ -413,9 +499,10 @@ export class RoomPage extends React.Component<Props, State> {
             <IconButton
               className={styles.muteVideo}
               id="mute_video"
+              disabled={!this.props.app.enableVideo}
               onClick={() => this.handleMute(this.props.app.muteAudio, !this.props.app.muteVideo)}
             >
-              { this.props.app.muteVideo ? <VideocamOffIcon /> : <VideocamIcon /> }
+              { this.props.app.muteVideo || !this.props.app.enableVideo ? <VideocamOffIcon /> : <VideocamIcon /> }
             </IconButton>
           </Tooltip> }
 
@@ -455,6 +542,22 @@ export class RoomPage extends React.Component<Props, State> {
               orientation={'vertical'}
             />
           </div> }
+
+          { false && this.props.app.publishState === 'success' &&
+          <Tooltip
+            title="单路转推"
+            placement="top-end"
+            className={styles.btn_item}
+          >
+            <IconButton
+              id="rtmpjob"
+              className={styles.muteAudio}
+              onClick={this.handleMergeJob}
+            >
+              { this.props.app.publishMergeJob ? <CastConnectedIcon /> : <CastIcon /> }
+            </IconButton>
+          </Tooltip> }
+
           </div>
         </div> }
 
