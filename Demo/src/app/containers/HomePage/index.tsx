@@ -17,6 +17,11 @@ interface Props {
   room: RoomStore;
   app: AppStore;
   router: RouterStore;
+  match: {
+    params: {
+      roomToken: string,
+    },
+  };
 }
 
 interface State {
@@ -41,6 +46,12 @@ export class HomePage extends React.Component<Props, State> {
       config: false,
       roomToken: '',
     };
+  }
+
+  public componentDidMount(): void {
+    if (this.props.match.params.roomToken) {
+      this.handleJoinRoom(this.props.match.params.roomToken);
+    }
   }
 
   private handleLogin = (userId: string) => {
