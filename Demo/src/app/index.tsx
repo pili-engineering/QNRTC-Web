@@ -20,6 +20,7 @@ export const App = hot(module)(({ history }) => (
         <Switch>
           <Route path="/" component={HomePage} exact />
           <Route path="/roomtoken" component={HomePage} exact />
+          <Route path="/roomtoken/:roomToken" component={HomePage} exact />
           <Route path="/room/:roomName" component={RoomPage} />
           <Route path="/live/:roomName" component={LivePage} />
         </Switch>

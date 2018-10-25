@@ -202,7 +202,7 @@ export class AppStore {
           }
         });
       }
-      if (!this.userId) {
+      if (!this.userId && !roomToken) {
         this.errorStore.showAlert({
           show: true,
           title: '错误',
@@ -268,6 +268,11 @@ export class AppStore {
       this.publishState = 'success';
       this.updateStateFromSDK();
     } catch (e) {
+      if (e.code === 10051) {
+        stream.release();
+        this.publishState = 'idle';
+        return;
+      }
       this.publishState = 'fail';
       this.errorStore.showAlert({
         show: true,
