@@ -47,8 +47,8 @@ export class RemotePlayer extends React.Component<Props, State> {
       return;
     }
 
-    if (this.video.webkitRequestFullscreen) {
-      this.video.webkitRequestFullscreen();
+    if ((this.video as any).webkitRequestFullscreen) {
+      (this.video as any).webkitRequestFullscreen();
     }
   }
 

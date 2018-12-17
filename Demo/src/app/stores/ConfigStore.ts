@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import store from 'store';
 import { RecordConfig } from "pili-rtc-web";
 import { asyncAction } from "mobx-utils";
-import { RecordOptions, RTC_APP_ID } from '../constants';
+import { RecordOptions, RTC_APP_ID, RECORD_KEYS } from '../constants';
 import { request } from "../utils/request";
 import { API } from "../constants";
 
@@ -35,8 +35,8 @@ export class ConfigStore {
       this.recordOption = record;
     } else {
       this.recordOption = {
-        config: RecordOptions['640*480 600kbps 20fps'],
-        key: '640*480 600kbps 20fps',
+        config: RecordOptions[RECORD_KEYS.middle1],
+        key: RECORD_KEYS.middle1,
       };
     }
 

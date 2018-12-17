@@ -214,6 +214,24 @@ export class RoomPage extends React.Component<Props, State> {
     });
   }
 
+  private getUserMediaFrame = (userId: string): void => {
+    this.setState({
+      anchorEl: null,
+    });
+    const subscription = this.props.app.subscription.get(userId);
+    if (!subscription) {
+      return;
+    }
+    const dataURL = subscription.stream.getCurrentFrameDataURL();
+    const link = document.createElement("a");
+    link.download = `frame-${userId}.png`;
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.remove();
+  }
+
   private handleSubscrible = async (user: User) => {
     this.setState({
       anchorEl: null,
@@ -286,15 +304,16 @@ export class RoomPage extends React.Component<Props, State> {
   private handleContextMenu = (e: any, userId: string, isunsub?: boolean) => {
     e.preventDefault();
     const subscription = this.props.app.subscription.get(userId);
-    const menulist: Menu[] = isunsub ? [
+    let menulist: Menu[] = isunsub ? [
       { content: '取消订阅', handleFunc: () => this.handleUnsubscible(userId) },
+      { content: '截帧', handleFunc: () => this.getUserMediaFrame(userId) },
     ] : [
       { content: '踢出房间', handleFunc: () => this.handleDelete(userId) },
     ];
     if (this.props.app.subscription.size === 1 && this.props.app.subscription.get(userId)) {
       // 大小窗切换时无法取消订阅
       if (this.minmaxSwitch && menulist[0].content === "取消订阅") {
-        menulist.pop();
+        menulist = [];
       }
       menulist.push({ content: '大小窗切换', handleFunc: () => this.switchMinMax() });
     }
@@ -436,7 +455,7 @@ export class RoomPage extends React.Component<Props, State> {
                 color={getColorFromUserId(user.userId)}
                 className={styles.avatarIcon}
                 round
-                size={48}
+                size="48"
               />
               <p className={styles.userName}>{user.userId}</p>
             </li>

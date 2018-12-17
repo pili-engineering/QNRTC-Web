@@ -85,7 +85,7 @@ export class UserMergeConfig extends React.Component<Props, State> {
             color={getColorFromUserId(this.props.userId)}
             className={styles.userAvatar}
             round
-            size={48}
+            size="48"
           />
           <p className={styles.userName}>{this.props.userId}</p>
         </div>
