@@ -995,7 +995,7 @@ babel-register@^6.26.0, babel-register@^6.9.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@>=5.0.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
+babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -5313,9 +5313,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-1.2.3.tgz#aa00ffa24586d37d3929743dd751814d1f42b1e5"
+pili-rtc-web@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-1.2.4.tgz#cd78abf70048bab7a6596aa3b45ea333b01b341d"
   dependencies:
     "@types/detect-browser" "^2.0.1"
     "@types/lodash.uniqby" "^4.7.3"
@@ -6203,11 +6203,11 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-avatar@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/react-avatar/-/react-avatar-2.5.1.tgz#5bbe8c1d0a52593d4608fb3d8629da995eeb7095"
+react-avatar@^3.4.6:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/react-avatar/-/react-avatar-3.4.6.tgz#0bbfdecc5231537bc433c09f12182e03f7daccfa"
   dependencies:
-    babel-runtime ">=5.0.0"
+    core-js "^2.5.7"
     is-retina "^1.0.3"
     md5 "^2.0.0"
 

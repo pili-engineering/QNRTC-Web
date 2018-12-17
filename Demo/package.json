@@ -1,6 +1,6 @@
 {
   "name": "pili-rtc-web-demo",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --hot --progress --colors --port 4000 --open",
@@ -40,9 +40,9 @@
     "tslint-react": "^3.5.1",
     "typescript": "^3.0.1",
     "url-loader": "^1.0.0-beta.0",
-    "webpack": "^4.0.1",
+    "webpack": "4.0.1",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^2.0.10",
+    "webpack-cli": "2.0.10",
     "webpack-dev-server": "^3.1.0",
     "webpack-hot-middleware": "^2.21.1"
   },
@@ -56,9 +56,9 @@
     "mobx-react": "^4.4.2",
     "mobx-react-router": "^4.0.1",
     "mobx-utils": "^3.2.2",
-    "pili-rtc-web": "^1.2.3",
+    "pili-rtc-web": "^1.2.4",
     "react": "^16.4.2",
-    "react-avatar": "^2.5.1",
+    "react-avatar": "^3.4.6",
     "react-dom": "^16.4.2",
     "react-draggable": "^3.0.5",
     "react-motion": "^0.5.2",
