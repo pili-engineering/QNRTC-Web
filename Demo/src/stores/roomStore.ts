@@ -1,4 +1,4 @@
-import { observable, action, runInAction } from 'mobx';
+import { observable, action, runInAction, computed } from 'mobx';
 import {
   TrackModeSession,
   RoomState,
@@ -7,6 +7,7 @@ import {
   TrackBaseInfo,
   RecordConfig,
   deviceManager,
+  AudioTrack,
 } from 'pili-rtc-web';
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -27,35 +28,77 @@ const match = matchPath<{roomid:string}>(window.location.pathname, {
 
 export class RoomStore {
 
+  /** session.roomName */
   @observable
   public id: string = match && match.params.roomid || '';
 
+  /** session.roomToken */
   @observable
   public token: string = '';
 
+  /** appid */
   @observable
   public appId: string = RTC_APP_ID;
 
+  /** 房间中的用户 */
   @observable.deep
   public users: Map<string, User> = new Map();
 
+  /** 已选择要采集的 Track配置 */
   public selectTracks: (RecordConfig | undefined)[] = [];
 
+  /** 已选择的清晰度 */
   @observable
   public selectVideoConfig: keyof publishVideoConfigs = '480p';
 
+  /** 已发布的 Track */
   @observable.deep
   public publishedTracks: Map<string, Track> = new Map();
 
+  /** 已发布的 AudioTrack */
+  @computed
+  public get publishedAudioTracks (): Track[] {
+    return Array.from(this.publishedTracks.values())
+      .filter(v => v.rtcTrack.info.kind === 'audio');
+  }
+
+  /** 已发布的 VideoTrack */
+  @computed
+  public get publishedVideoTracks (): Track[] {
+    return Array.from(this.publishedTracks.values())
+      .filter(v => v.rtcTrack.info.kind === 'video');
+  }
+
+  /** 切换已发布的 VideoTrack Mute状态 */
+  @action.bound
+  public toggleMutePublishedVideo() {
+    const publishedVideoTracks = this.publishedVideoTracks;
+    this.muteTracks(publishedVideoTracks.map(v => v.trackId), publishedVideoTracks.some(v => !v.muted));
+  }
+
+  /** 切换已发布的 AudioTrack Mute状态 */
+  @action.bound
+  public toggleMutePublishedAudio() {
+    const publishedAudioTracks = this.publishedAudioTracks;
+    this.muteTracks(publishedAudioTracks.map(v => v.trackId), publishedAudioTracks.some(v => !v.muted));
+  }
+
+  /** 已订阅的 Track Map */
   @observable.deep
   public subscribedTracks: Map<string, Track> = new Map();
 
+  /** session.roomState 同步更新 */
   @observable
   public state: RoomState = RoomState.Idle;
 
+  /** TrackModeSession */
   public session: TrackModeSession = new TrackModeSession();
 
+  /** 房间内已发布的 TrackBaseInfo */
   public publishedTrackInfos: Map<string, TrackBaseInfo> = new Map();
+
+  /** 使用 deviceManager 采集的 sdk 中的 AudioTrack | Track 离开房间释放用 */
+  public localTracks: (RTCTrack | AudioTrack)[] = [];
 
   constructor() {
     this.session.on('room-state-change', this.setState);
@@ -194,6 +237,7 @@ export class RoomStore {
     this.users.clear();
     if (!token) return;
     const users = await this.session.joinRoomWithToken(token);
+    routerStore.replace(`/room/${this.session.roomName}`);
     userStore.setId(this.session.userId as string);
     if (this.id !== this.session.roomName) {
       runInAction(() => {
@@ -228,6 +272,8 @@ export class RoomStore {
       const track = this.publishedTracks.get(trackid);
       if (!track) continue;
       track.updateTrack();
+      this.publishedTracks.delete(trackid);
+      this.publishedTracks.set(trackid, track);
     }
   }
   @action.bound
@@ -250,29 +296,33 @@ export class RoomStore {
     let videoCount = 0;
     let audioCount = 0;
     for (const config of this.selectTracks) {
-      if (config) {
-        if (config.video) {
-          Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video )
-        }
-        const [ track ] = await deviceManager.getLocalTracks(config);
-        if (track.info.kind === 'video' && videoCount === 0) {
-          track.setMaster(true);
-          videoCount++;
-        }
-        if (track.info.kind === 'audio' && audioCount === 0) {
-          track.setMaster(true);
-          audioCount++;
-        }
-        if (config.audio && config.audio.buffer) {
-          track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
-          track.playAudioBuffer(true);
-        }
-        tracks.push(track);
+      if (!config) {
+        continue;
       }
+      if (config.video) {
+        Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video )
+      }
+      // 每次只采集了一路流
+      const [ track ] = await deviceManager.getLocalTracks(config);
+      this.localTracks.push(track);
+      if (track.info.kind === 'video' && videoCount === 0) {
+        track.setMaster(true);
+        videoCount++;
+      }
+      if (track.info.kind === 'audio' && audioCount === 0) {
+        track.setMaster(true);
+        audioCount++;
+      }
+      if (config.audio && config.audio.buffer) {
+        track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
+        track.playAudioBuffer(true);
+      }
+      tracks.push(track);
     }
     await this.publish(tracks);
   }
 
+  /** 订阅 */
   @action
   public async subscribe(trackids: string[]): Promise<void> {
     let innerfunc ;
@@ -308,7 +358,7 @@ export class RoomStore {
     }
   }
 
-
+  /** 订阅房间内所有 Track */
   @action
   public async subscribeAll(): Promise<void> {
     const trackids = Array.from(this.publishedTrackInfos.values())
@@ -317,6 +367,8 @@ export class RoomStore {
     await this.subscribe(trackids);
   }
 
+
+  /** 取消订阅 */
   @action
   public async unsubscribe(trackids: string[]): Promise<void> {
     await this.session.unsubscribe(trackids);
@@ -332,6 +384,7 @@ export class RoomStore {
     });
   }
 
+  /** 离开房间触发，释放所有房间内的 Track */
   @action
   public leaveRoom(): void {
     this.session.leaveRoom();
@@ -340,11 +393,14 @@ export class RoomStore {
     this.subscribedTracks.clear();
     this.publishedTrackInfos.clear();
     this.users.clear();
+    this.localTracks.forEach(t => t && t.release());
+    this.localTracks = [];
     this.token = '';
     this.id = '';
     routerStore.push('/');
   }
 
+  /** 监听 session 的 disconnect 事件 */
   @action.bound
   private handleDisconnect(d: any): void {
     console.log('handleDiconnect', d);

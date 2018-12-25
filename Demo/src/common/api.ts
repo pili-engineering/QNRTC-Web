@@ -1,8 +1,8 @@
 import request from './request';
 
-export const RTC_APP_ID = 'd8lk7l4ed';
+export const RTC_APP_ID = process.env.REACT_APP_TEST_APPID || 'd8lk7l4ed';
 
-export const HOST = 'https://api-demo.qnsdk.com';
+export const HOST = process.env.REACT_APP_TEST_HOST || 'https://api-demo.qnsdk.com';
 
 export const PREFIX = '/v1/rtc';
 

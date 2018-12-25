@@ -13,8 +13,10 @@ import Select from "../components/Select";
 import Input from "../components/Input";
 import { UserStore } from '../stores/userStore';
 import { RoomStore } from '../stores/roomStore';
+import { MessageStore } from '../stores/messageStore';
 import { RouterStore } from 'mobx-react-router';
-import { PublishRecordOptions, videoConfig, publishVideoConfigs } from '../common/config';
+import {  videoConfig, publishVideoConfigs } from '../common/config';
+import { verifyId } from '../common/utils';
 
 const styles = (theme: Theme) => createStyles({
   avatar: {
@@ -48,6 +50,7 @@ interface Props extends WithStyles<typeof styles> {
   routerStore: RouterStore;
   userStore: UserStore;
   roomStore: RoomStore;
+  messageStore: MessageStore;
 }
 
 interface State {
@@ -58,7 +61,7 @@ interface State {
 }
 
 
-@inject('routerStore', 'userStore', 'roomStore')
+@inject('routerStore', 'userStore', 'roomStore', 'messageStore')
 @observer
 class Settings extends Component<Props, State> {
   
@@ -73,7 +76,11 @@ class Settings extends Component<Props, State> {
   }
 
   handleSave = () => {
+    
     if (this.state.userid) {
+      if (!verifyId(this.state.userid)) {
+        return this.props.messageStore.show('用户名最少 3 个字符，并且只能包含字母、数字或下划线');
+      }
       this.props.userStore.setId(this.state.userid);
     }
     if (this.state.appid) {

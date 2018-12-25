@@ -3,6 +3,7 @@ import store from 'store';
 
 export class UserStore {
 
+  /** session.userId */
   @observable
   public id: string = store.get('userid') || '';
 

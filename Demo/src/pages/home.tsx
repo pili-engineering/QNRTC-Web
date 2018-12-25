@@ -19,8 +19,6 @@ import {
   ButtonBase,
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
-
-import Snackbar from '../components/Snackbar';
 import Input from '../components/Input';
 import "../styles/home.css";
 
@@ -32,6 +30,8 @@ import { verifyId, decodeAudioFileToBuffer, getColorFromUserId } from '../common
 import { MessageStore } from '../stores/messageStore';
 import {  PublishRecordOptions } from '../common/config';
 import { Link } from 'react-router-dom';
+import niu from '../assets/niu.svg';
+import qiniu from '../assets/qiniu.png';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -47,6 +47,7 @@ const styles = (theme: Theme) => createStyles({
   root: {
     overflow: 'hidden',
     height: '100vh',
+    minHeight: '700px',
     [theme.breakpoints.down('xs')]: {
       height: 'auto',
     },
@@ -196,12 +197,16 @@ class Home extends Component<Props, State> {
     const { userid, roomid } = this.state;
     const isValidUserid = verifyId(userid);
     const isValidRoomid = verifyId(roomid);
-    if (!isValidUserid && !!userid) {
+    if (!isValidUserid && isValidRoomid) {
       this.showMessage('用户名最少 3 个字符，并且只能包含字母、数字或下划线');
       return false;
     }
-    if (!isValidRoomid && !!roomid) {
+    if (!isValidRoomid && isValidUserid) {
       this.showMessage('房间名最少 3 个字符，并且只能包含字母、数字或下划线');
+      return false;
+    }
+    if (!isValidRoomid && !isValidUserid) {
+      this.showMessage('用户名和房间名最少 3 个字符，并且只能包含字母、数字或下划线');
       return false;
     }
     return true;
@@ -211,17 +216,25 @@ class Home extends Component<Props, State> {
     e.preventDefault();
     const { userid, roomid, roomToken } = this.state;
     if (roomToken) {
-      this.props.routerStore.push('/room/?roomToken=' + roomToken);
+      return this.props.routerStore.push('/room/?roomToken=' + roomToken);
     }
-    if (this.verifyState()) {
-      if (this.state.joinRoomStep === 0) {
-        this.props.userStore.setId(userid);
-        this.setState({ joinRoomStep: 1 });
+    if (this.state.joinRoomStep === 0) {
+      const isValidUserid = verifyId(userid);
+      if (!isValidUserid) {
+        this.showMessage('用户名最少 3 个字符，并且只能包含字母、数字或下划线');
         return;
-      } else {
-        this.props.roomStore.setId(roomid);
-        this.props.routerStore.push('/room/' + roomid);
       }
+      this.props.userStore.setId(userid);
+      this.setState({ joinRoomStep: 1 });
+      return;
+    } else {
+      const isValidRoomid = verifyId(roomid);
+      if (!isValidRoomid) {
+        this.showMessage('房间名最少 3 个字符，并且只能包含字母、数字或下划线');
+        return;
+      }
+      this.props.roomStore.setId(roomid);
+      this.props.routerStore.push('/room/' + roomid);
     }
   };
 
@@ -261,7 +274,7 @@ class Home extends Component<Props, State> {
                 {this.props.userStore.id ? <Avatar style={{
                   backgroundColor: getColorFromUserId(this.props.userStore.id)
                 }} className={classes.avatar}>{this.props.userStore.id[0].toUpperCase()}</Avatar> :
-                  <Avatar className={classes.avatar} src={require("../assets/qiniu.png")}></Avatar>
+                  <Avatar className={classes.avatar} src={qiniu}></Avatar>
                 }
                 <p className="home_user">{ this.props.userStore.id ? `账户名称: ${this.props.userStore.id}` : ''}</p>
               </Grid>
@@ -381,9 +394,8 @@ class Home extends Component<Props, State> {
               </Grid>
             </Grid>
           </Grid>
-          <img className="niu" src={require("../assets/niu.svg")} />
+          <img className="niu" src={niu} />
         </Grid>
-        <Snackbar messageStore={this.props.messageStore}/>
         <input
           ref={this.fileinput}
           type="file"

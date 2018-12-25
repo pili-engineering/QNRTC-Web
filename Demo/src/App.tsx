@@ -44,7 +44,7 @@ function App() {
                 exact
               />
               <Route
-                path="/room/:roomid"
+                path="/room/:roomid?"
                 component={Room}
               />
               <Route

@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '../components/Snackbar';
 
 import { MessageStore } from '../stores/messageStore';
 import { inject, observer } from 'mobx-react';
@@ -36,6 +37,7 @@ export default class Layout extends React.Component<Props> {
           >好的</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar messageStore={message}/>
       { this.props.children }
     </>);
   }

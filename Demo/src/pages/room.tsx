@@ -104,10 +104,6 @@ interface Props extends WithStyles<typeof styles> {
 }
 
 interface State {
-  userid: string;
-  roomid: string;
-  audioMuted: boolean;
-  videoMuted: boolean;
   dialogOpen: boolean;
   dialogText: string;
   anchorEl?: null | HTMLElement | ((element: HTMLElement) => HTMLElement),
@@ -120,10 +116,6 @@ interface State {
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, State> {
 
   state: State = {
-    userid: '',
-    roomid: '',
-    audioMuted: false,
-    videoMuted: false,
     dialogOpen: true,
     dialogText: "获取 RoomToken",
     anchorEl: null,
@@ -132,10 +124,10 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, State
 
   async componentDidMount() {
     const roomid = this.props.match.params.roomid;
-    const qsobj = qs.parse(this.props.routerStore.location.search);
+    const qsobj = qs.parse(this.props.routerStore.location.search.substr(1));
     if (!qsobj.roomToken && !verifyId(roomid)) return this.props.routerStore.push('/');
     if (this.props.roomStore.state !== RoomState.Idle) {
-      this.setState(Object.assign({...this.state}, { dialogOpen: false }));
+      this.setState({ dialogOpen: false });
       return;
     }
 
@@ -281,30 +273,11 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, State
     this.setState({ anchorEl: e.target as HTMLElement, menulist });
   }
 
-  handleMuteVideo = () => {
-    const trackids = this.publishedVideoTracks.map(v => v.trackId);
-    this.props.roomStore.muteTracks(trackids, !this.state.videoMuted);
-    this.setState({ videoMuted: !this.state.videoMuted });
-  }
-
-  handleMuteAudio = () => {
-    const trackids = this.publishedAudioTracks.map(v => v.trackId);
-    this.props.roomStore.muteTracks(trackids, !this.state.audioMuted);
-    this.setState({ audioMuted: !this.state.audioMuted });
-  }
-
-  publishedAudioTracks: Track[] = [];
-  publishedVideoTracks: Track[] = [];
-
   render() {
     const { classes, roomStore } = this.props;
     const { anchorEl } = this.state;
-    const publishedAudioTracks = Array.from(this.props.roomStore.publishedTracks.values())
-      .filter(v => v.rtcTrack.info.kind === 'audio');
-    const publishedVideoTracks = Array.from(this.props.roomStore.publishedTracks.values())
-      .filter(v => v.rtcTrack.info.kind === 'video');
-    this.publishedAudioTracks = publishedAudioTracks;
-    this.publishedVideoTracks = publishedVideoTracks;
+    const publishedAudioTracks = roomStore.publishedAudioTracks;
+    const publishedVideoTracks = roomStore.publishedVideoTracks;
     return (
     <div className={classes.root}>
       <div className={classes.screen}>
@@ -413,9 +386,9 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, State
                   placement="top-end"
                 >
                   <IconButton
-                    onClick={ this.handleMuteVideo }
+                    onClick={ roomStore.toggleMutePublishedVideo }
                   >
-                    {this.state.videoMuted ? <VideocamOffIcon/> : <VideocamIcon/> }
+                    {!publishedVideoTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
                   </IconButton>
               </Tooltip>) : <></> }
             </Grid>
@@ -437,9 +410,9 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, State
                   placement="top-end"
                 >
                   <IconButton
-                    onClick={ this.handleMuteAudio }
+                    onClick={ roomStore.toggleMutePublishedAudio }
                   >
-                    {this.state.audioMuted ? <MicOff/> : <MicNone/> }
+                    {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
                   </IconButton>
               </Tooltip>) : <></> }
             </Grid>
