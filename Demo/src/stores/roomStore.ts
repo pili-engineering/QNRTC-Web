@@ -19,6 +19,7 @@ import { getToken } from '../common/api';
 import { PublishRecordOptions, publishVideoConfigs, videoConfig } from '../common/config';
 import store from 'store';
 import { matchPath } from "react-router";
+import messageStore from './messageStore';
 
 const match = matchPath<{roomid:string}>(window.location.pathname, {
   path: "/room/:roomid",
@@ -230,8 +231,6 @@ export class RoomStore {
 
   @action
   public async joinRoom(token: string = this.token): Promise<void> {
-    this.publishedTracks.forEach(t => t.rtcTrack.release());
-    this.publishedTracks.clear();
     this.subscribedTracks.clear();
     this.publishedTrackInfos.clear();
     this.users.clear();
@@ -407,6 +406,11 @@ export class RoomStore {
     switch (d.code) {
       case 10006: {
         this.leaveRoom();
+        messageStore.showAlert({
+          show: true,
+          title: '断开连接',
+          content: '被管理员踢出房间',
+        });
         return;
       }
       case 10004: {
@@ -416,12 +420,42 @@ export class RoomStore {
           const rtcTracks = Array.from(this.publishedTracks.values()).map(t => t.rtcTrack);
           this.publishedTracks.clear();
           console.log("repub");
-          return this.session.publish(rtcTracks);
+          return this.publish(rtcTracks);
         }).then(() => {
-
+          return this.subscribeAll().catch(e => {
+            console.log(e);
+            messageStore.showAlert({
+              show: true,
+              title: '订阅失败',
+              content: '自动订阅失败，请手动订阅',
+            });
+          });
         }).catch(e => {
           console.log(e);
           this.leaveRoom();
+          messageStore.showAlert({
+            show: true,
+            title: '尝试重连失败',
+            content: '与房间断开链接，请重新加入房间',
+          });
+        });
+        return;
+      }
+      case 10011: {
+        this.leaveRoom();
+        messageStore.showAlert({
+          show: true,
+          title: '断开连接',
+          content: '房间人数已满',
+        });
+        return;
+      }
+      case 10022: {
+        this.leaveRoom();
+        messageStore.showAlert({
+          show: true,
+          title: '断开连接',
+          content: '该用户在其他页面或终端登录',
         });
         return;
       }

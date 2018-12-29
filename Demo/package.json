@@ -30,7 +30,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "pili-rtc-web": "2.0.0-patch.1",
+    "pili-rtc-web": "^2.0.0-patch.4",
     "qs": "^6.6.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

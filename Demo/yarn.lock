@@ -3760,10 +3760,6 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-getstats@^1.0.6:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/getstats/-/getstats-1.0.8.tgz#e3ea6e982883beca917db0580dd35fc633f4747d"
-
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -6370,9 +6366,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@2.0.0-patch.1:
-  version "2.0.0-patch.1"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.0.0-patch.1.tgz#e808fa1abe74068b4ed76ac3cbe04e8643d6a449"
+pili-rtc-web@^2.0.0-patch.4:
+  version "2.0.0-patch.4"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.0.0-patch.4.tgz#6c96636738952bbec9bef52cf4982135a2c5e89c"
   dependencies:
     "@types/detect-browser" "^2.0.1"
     "@types/lodash.remove" "^4.7.4"
@@ -6381,7 +6377,6 @@ pili-rtc-web@2.0.0-patch.1:
     "@types/semver" "^5.5.0"
     detect-browser "^3.0.1"
     fingerprintjs2 "^1.8.1"
-    getstats "^1.0.6"
     gzip-js "^0.3.2"
     localforage "^1.7.2"
     lodash.remove "^4.7.0"
