@@ -1,0 +1,26 @@
+.input {
+  width: 500px;
+  height: 55px;
+  background: #49494B;
+  border-radius: 51px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 0 35px;
+  z-index: 10;
+  position: relative;
+}
+
+.input select {
+  opacity: 0.86;
+  font-family: PingFangSC-Light;
+  font-size: 14px;
+  color: #FAFAFA;
+  height: 100%;
+  width: 100%;
+  letter-spacing: 0.66px;
+  text-align: left;
+  background: none;
+  outline: none;
+  border: none;
+}

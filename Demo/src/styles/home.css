@@ -1,0 +1,20 @@
+.hint {
+  opacity: 0.68;
+  font-size: 12px;
+  color: #FFFFFF;
+  letter-spacing: 0.62px;
+  text-align: left;
+  width: 100%;
+  padding-left: 35px;
+  margin-bottom: 5px;
+}
+
+.home_user {
+  margin-bottom: 38px;
+  opacity: 0.61;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #FFFFFF;
+  letter-spacing: 0.41px;
+  text-align: center;
+}
