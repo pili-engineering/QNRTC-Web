@@ -86,6 +86,12 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
   },
 ]
 
+// Array
+//   0 -> 摄像头
+//   1 -> 音频（麦克风）
+//   2 -> 音频（外部数据导入）
+//   3 -> 屏幕共享
+//   4 -> 窗口共享
 export const PublishRecordOptions: PublishRecordOption<keyof publishRecordConfigs>[] =
 [
   {

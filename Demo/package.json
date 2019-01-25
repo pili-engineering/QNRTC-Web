@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "multiple track demo",
   "author": "Yu Chao Liang <liangyuchao@qiniu.com>",
@@ -8,16 +8,17 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qbox/pili-rtc-web.git"
+    "url": "git+https://github.com/pili-engineering/QNRTC-Web.git"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
   },
   "dependencies": {
-    "@material-ui/core": "^3.6.2",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "^3.8.3",
+    "@material-ui/icons": "^3.0.2",
     "@types/history": "^4.7.2",
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.12.15",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.7.13",
@@ -26,20 +27,22 @@
     "@types/seedrandom": "^2.4.27",
     "@types/store": "^2.0.1",
     "clipboard": "^2.0.4",
+    "flv.js": "^1.5.0",
     "lodash": "^4.17.11",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "pili-rtc-web": "^2.0.0-patch.4",
+    "pili-rtc-web": "^2.1.0-patch.0",
     "qs": "^6.6.0",
     "react": "^16.6.3",
+    "react-avatar": "^3.5.0",
     "react-dom": "^16.6.3",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.1",
+    "react-scripts": "^2.1.3",
     "seedrandom": "^2.4.4",
     "store": "^2.0.12",
-    "typescript": "^3.2.2"
+    "typescript": "^3.2.4"
   },
   "browserslist": [
     ">0.2%",

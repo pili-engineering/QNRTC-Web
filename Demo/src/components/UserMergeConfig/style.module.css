@@ -1,0 +1,101 @@
+/*
+ * style.css
+ * Copyright (C) 2018 disoul
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+.mergeConfig {
+  padding: 10px 0;
+  border-bottom: 1px solid #49494B;
+}
+
+.label {
+  opacity: 0.66;
+  width: 26px;
+  font-size: 11px;
+  color: #FAFAFA;
+  letter-spacing: 0.66px;
+  text-align: left;
+  margin-right: 3px;
+  line-height: 25px;
+}
+.userBlock {
+  display: flex;
+  text-align: center;
+  cursor: pointer;
+}
+
+.userAvatar {
+  margin-right: 20px;
+}
+
+.userName {
+  font-size: 14px;
+  color: #FAFAFA;
+  letter-spacing: 0.66px;
+  text-align: left;
+  line-height: 48px;
+}
+
+.configBlock {
+  overflow: hidden;
+  height: 0;
+  transition: all ease 0.3s;
+}
+.configBlock.active {
+  height: 153px;
+  margin-top: 20px;
+}
+
+.formInputs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.formInput {
+  display: flex;
+  text-align: center;
+  margin-right: 3px;
+  margin-bottom: 12px;
+}
+
+
+.formInput input {
+  background: #49494B;
+  border-radius: 8px;
+  opacity: 0.66;
+  font-size: 11px;
+  color: #FAFAFA;
+  letter-spacing: 0.66px;
+  text-align: left;
+  border: none;
+  outline: none;
+  width: 45px;
+  height: 25px;
+  padding: 5px 7px;
+}
+
+.formInput input[type=number]::-webkit-inner-spin-button,
+.formInput input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.switchArea {
+  display: flex;
+  align-items: center;
+}
+
+
+.button {
+  background: #00ACDE;
+  border-radius: 9px;
+  font-size: 12px;
+  color: #FFFFFF;
+  letter-spacing: 0.7px;
+  text-align: left;
+  width: 60px;
+  height: 26px;
+  margin-left: 16px !important;
+}

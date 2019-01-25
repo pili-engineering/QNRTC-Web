@@ -26,3 +26,7 @@ export const getToken = (appid: string, roomid: string, userid: string) => {
   const requestURL = `${api(roomid, userid, appid)}?bundleId=demo-rtc.qnsdk.com`;
   return request(requestURL, 'GET');
 }
+
+export const FLV_PATH = (roomName: string) => `https://pili-hdl.qnsdk.com/sdk-live/${roomName}.flv`;
+
+export const HLS_PATH = (roomName: string) => `https://pili-hls.qnsdk.com/sdk-live/${roomName}.m3u8`;

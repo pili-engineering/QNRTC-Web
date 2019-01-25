@@ -10,6 +10,7 @@ export interface AlertMessage {
   title: string;
   content: string;
   show: boolean;
+  onclose?: () => void;
 }
 
 export class MessageStore {
@@ -22,6 +23,7 @@ export class MessageStore {
     title: "",
     content: "",
     show: false,
+    onclose: undefined,
   };
 
   @observable
@@ -43,6 +45,9 @@ export class MessageStore {
   @action.bound
   public closeAlert(): void {
     this.alertMessage.show = false;
+    if (this.alertMessage.onclose) {
+      this.alertMessage.onclose();
+    }
   }
 
   @action.bound
@@ -73,6 +78,29 @@ export class MessageStore {
       this.messageInfo = this.stack.shift() as MessageInfo;
       this.open = true;
     }
+  }
+
+  @observable
+  loadingOpen: boolean = false;
+
+  @observable
+  loadingText: string = '';
+
+  @action.bound
+  public showLoading(text: string = 'loading') {
+    this.loadingOpen = true;
+    this.loadingText = text;
+  }
+
+  @action.bound
+  public hideLoading() {
+    this.loadingOpen = false;
+    this.loadingText = '';
+  }
+
+  @action.bound
+  public setLoadingText(text: string) {
+    this.loadingText = text;
   }
 }
 

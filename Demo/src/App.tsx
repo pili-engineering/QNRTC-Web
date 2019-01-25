@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Home from './pages/home';
 import Room from './pages/room';
+import LivePage from './pages/live';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'mobx-react';
@@ -15,6 +16,14 @@ import Layout from './layouts';
 const theme = createMuiTheme({
   palette: {
     type: 'dark', // Switching the dark mode on is a single property value change.
+    primary: {
+      main: '#34AADC',
+      contrastText: '#FAFAFA',
+    },
+    secondary: {
+      main: '#34AADC',
+      contrastText: '#FAFAFA',
+    },
   },
   typography: {
     useNextVariants: true,
@@ -30,7 +39,10 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <Provider {...stores}>
-        <Layout message={stores.messageStore}>
+        <Layout
+          messageStore={stores.messageStore}
+          menuStore={stores.menuStore}
+        >
           <Router history={history}>
             <Switch>
               <Route
@@ -46,6 +58,10 @@ function App() {
               <Route
                 path="/room/:roomid?"
                 component={Room}
+              />
+              <Route
+                path="/live/:roomid"
+                component={LivePage}
               />
               <Route
                 path="/settings"
