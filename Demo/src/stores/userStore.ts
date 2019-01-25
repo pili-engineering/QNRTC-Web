@@ -17,6 +17,11 @@ export class UserStore {
     this.id = userId;
     store.set('userid', userId)
   }
+
+  @action
+  public setIdNoStore(userId: string) {
+    this.id = userId;
+  }
 }
 
 export default new UserStore();

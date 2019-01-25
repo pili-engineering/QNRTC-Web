@@ -15,8 +15,8 @@ import { UserStore } from '../stores/userStore';
 import { RoomStore } from '../stores/roomStore';
 import { MessageStore } from '../stores/messageStore';
 import { RouterStore } from 'mobx-react-router';
-import {  videoConfig, publishVideoConfigs } from '../common/config';
-import { verifyId } from '../common/utils';
+import { videoConfig, publishVideoConfigs } from '../common/config';
+import { verifyUserId } from '../common/utils';
 
 const styles = (theme: Theme) => createStyles({
   avatar: {
@@ -70,7 +70,7 @@ class Settings extends Component<Props, State> {
     this.state = {
       userid: '',
       roomid: '',
-      appid: '',
+      appid: props.roomStore.appId,
       videoConfig: props.roomStore.selectVideoConfig,
     };
   }
@@ -78,13 +78,13 @@ class Settings extends Component<Props, State> {
   handleSave = () => {
     
     if (this.state.userid) {
-      if (!verifyId(this.state.userid)) {
+      if (!verifyUserId(this.state.userid)) {
         return this.props.messageStore.show('用户名最少 3 个字符，并且只能包含字母、数字或下划线');
       }
       this.props.userStore.setId(this.state.userid);
     }
     if (this.state.appid) {
-      this.props.roomStore.setAppId(this.state.appid);
+      this.props.roomStore.setAppId(this.state.appid, true);
     }
     this.props.routerStore.push('/');
   };

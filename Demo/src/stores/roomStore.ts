@@ -8,6 +8,7 @@ import {
   RecordConfig,
   deviceManager,
   AudioTrack,
+  TrackStatsReport,
 } from 'pili-rtc-web';
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -92,6 +93,15 @@ export class RoomStore {
   @observable
   public state: RoomState = RoomState.Idle;
 
+  /** 当前发布 Track 的实时状态，每隔 1 秒更新 */
+  @observable
+  public publishTracksReport: {
+    audio: TrackStatsReport | null;
+    video: TrackStatsReport | null;
+    screen: TrackStatsReport | null;
+  } = { audio: null, video: null, screen: null };
+
+
   /** TrackModeSession */
   public session: TrackModeSession = new TrackModeSession();
 
@@ -100,6 +110,8 @@ export class RoomStore {
 
   /** 使用 deviceManager 采集的 sdk 中的 AudioTrack | Track 离开房间释放用 */
   public localTracks: (RTCTrack | AudioTrack)[] = [];
+
+  private statusInterval?: number;
 
   constructor() {
     this.session.on('room-state-change', this.setState);
@@ -114,6 +126,10 @@ export class RoomStore {
     const selectVideoConfig = store.get('selectVideoConfig') as keyof publishVideoConfigs;
     if (selectVideoConfig) {
       this.selectVideoConfig = selectVideoConfig;
+    }
+    const storeAppId = store.get("qnrtnAppID");
+    if (storeAppId) {
+      this.setAppId(storeAppId);
     }
     window.onbeforeunload = () => this.leaveRoom();
   }
@@ -141,8 +157,11 @@ export class RoomStore {
   }
 
   @action.bound
-  public setAppId(appid: string) {
-    this.appId = appid
+  public setAppId(appid: string, isStore?: boolean) {
+    this.appId = appid;
+    if (isStore) {
+      store.set("qnrtnAppID", appid);
+    }
   }
 
   @action.bound
@@ -230,18 +249,21 @@ export class RoomStore {
   }
 
   @action
-  public async joinRoom(token: string = this.token): Promise<void> {
+  public async joinRoom(token: string = this.token, userData?: string): Promise<void> {
     this.subscribedTracks.clear();
     this.publishedTrackInfos.clear();
     this.users.clear();
     if (!token) return;
-    const users = await this.session.joinRoomWithToken(token);
-    routerStore.replace(`/room/${this.session.roomName}`);
-    userStore.setId(this.session.userId as string);
+    const users = await this.session.joinRoomWithToken(token, userData);
+    this.setAppId(this.session.appId as string);
+    userStore.setIdNoStore(this.session.userId as string);
     if (this.id !== this.session.roomName) {
       runInAction(() => {
         this.id = this.session.roomName as string;
       });
+    }
+    if (this.session.userId === 'admin') {
+      this.session.setDefaultMergeStream(480, 848);
     }
     this.syncUserList(users);
   }
@@ -255,6 +277,10 @@ export class RoomStore {
           if (track.info.trackId) this.publishedTracks.set(track.info.trackId, new Track(track));
         }
       })
+      if (this.statusInterval) {
+        window.clearInterval(this.statusInterval);
+      }
+      this.statusInterval = window.setInterval(this.updateTrackStatusReport, 1000);
     } catch (e) {
       tracks.map(t => t.release());
       throw e;
@@ -290,35 +316,64 @@ export class RoomStore {
   }
 
   @action 
-  public async publishSelected(): Promise<void> {
-    const tracks: RTCTrack[] = [];
-    let videoCount = 0;
-    let audioCount = 0;
-    for (const config of this.selectTracks) {
-      if (!config) {
-        continue;
+  public async getSelectTracks(): Promise<RTCTrack[]> {
+
+    const tracksConfig = this.selectTracks.filter(v => v) as RecordConfig[];
+    // 只发布 camera screen audio 三路流。
+    if (tracksConfig.length <= 3) {
+      const config: RecordConfig = {};
+      for (const c of tracksConfig) {
+        Object.assign(config, c);
       }
       if (config.video) {
-        Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video )
+        Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video)
       }
-      // 每次只采集了一路流
-      const [ track ] = await deviceManager.getLocalTracks(config);
-      this.localTracks.push(track);
-      if (track.info.kind === 'video' && videoCount === 0) {
-        track.setMaster(true);
-        videoCount++;
-      }
-      if (track.info.kind === 'audio' && audioCount === 0) {
-        track.setMaster(true);
-        audioCount++;
-      }
-      if (config.audio && config.audio.buffer) {
-        track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
-        track.playAudioBuffer(true);
-      }
-      tracks.push(track);
+      return deviceManager.getLocalTracks(config)
+        .then((tracks: RTCTrack[]) => {
+          for (const track of tracks) {
+            if (track.info.tag === 'camera') {
+              track.setMaster(true);
+            }
+            if (track.info.kind === 'audio') {
+              track.setMaster(true);
+            }
+            if (config.audio && config.audio.buffer) {
+              track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
+              track.playAudioBuffer(true);
+            }
+            this.localTracks.push(track);
+          }
+          return tracks;
+        });
     }
-    await this.publish(tracks);
+    // 这里是超过三路流的采集示例代码，demo里暂时不会触发
+    let videoCount = 0;
+    let audioCount = 0;
+    return Promise.all(
+      tracksConfig.map((config) => {
+        if (config.video) {
+          Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video)
+        }
+        // 每次只采集了一路流
+        return deviceManager.getLocalTracks(config)
+          .then(([ track ]: RTCTrack[] ) => {
+            // 只能发布 一个 video master 和 一个 audio master
+            if (track.info.kind === 'video' && videoCount === 0) {
+              track.setMaster(true);
+              videoCount++;
+            }
+            if (track.info.kind === 'audio' && audioCount === 0) {
+              track.setMaster(true);
+              audioCount++;
+            }
+            if (config.audio && config.audio.buffer) {
+              track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
+              track.playAudioBuffer(true);
+            }
+            this.localTracks.push(track);
+            return track;
+          });
+      }));
   }
 
   /** 订阅 */
@@ -383,6 +438,13 @@ export class RoomStore {
     });
   }
 
+  @action
+  releaseLocalTracks(): void {
+    if (this.localTracks.length === 0) return;
+    this.localTracks.forEach(t => t && t.release());
+    this.localTracks = [];
+  }
+
   /** 离开房间触发，释放所有房间内的 Track */
   @action
   public leaveRoom(): void {
@@ -392,11 +454,23 @@ export class RoomStore {
     this.subscribedTracks.clear();
     this.publishedTrackInfos.clear();
     this.users.clear();
-    this.localTracks.forEach(t => t && t.release());
-    this.localTracks = [];
+    this.releaseLocalTracks();
     this.token = '';
     this.id = '';
     routerStore.push('/');
+  }
+
+  /** 每隔 1 秒获取当前发布 Track 的状态 */
+  @action.bound
+  private updateTrackStatusReport(): void {
+    const publishedTracksList = Array.from(this.publishedTracks.values());
+    const audioTrack = publishedTracksList.find(t => t.mediaTrack.kind === "audio");
+    const videoTrack = publishedTracksList.find(t => t.tag === "camera");
+    const screenTrack = publishedTracksList.find(t => t.tag === "screen");
+
+    this.publishTracksReport.audio = audioTrack ? audioTrack.rtcTrack.getStats() : null;
+    this.publishTracksReport.video = videoTrack ? videoTrack.rtcTrack.getStats() : null;
+    this.publishTracksReport.screen = screenTrack ? screenTrack.rtcTrack.getStats() : null;
   }
 
   /** 监听 session 的 disconnect 事件 */

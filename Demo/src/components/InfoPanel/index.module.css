@@ -5,23 +5,10 @@
   color: #fff;
   left: 10px;
   position: absolute;
-  top: 10px;
+  top: 60px;
   z-index: 64;
   min-width: 22em;
   font-size: 11px;
-}
-
-.infoPanelClose {
-  cursor: pointer;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-  color: inherit;
-  text-align: inherit;
-  font-family: inherit;
 }
 
 .infoPanelContent {
@@ -33,5 +20,5 @@
   font-weight: 500;
   padding: 0 .5em;
   text-align: right;
-  width: 8em;
+  width: 9em;
 }
