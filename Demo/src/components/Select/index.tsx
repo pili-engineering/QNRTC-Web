@@ -5,6 +5,7 @@ interface Props {
   onChange: (e: any) => any;
   value: string;
   id?: string;
+  children?: JSX.Element[];
 }
 
 export default function Select(props: Props) {
@@ -15,7 +16,7 @@ export default function Select(props: Props) {
         onChange={props.onChange}
         id={props.id || ""}
       >
-        {(props as any).children}
+        {props.children}
       </select>
     </div>
   );
