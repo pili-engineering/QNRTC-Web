@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Home from './pages/home';
-import Room from './pages/room';
-import LivePage from './pages/live';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'mobx-react';
@@ -12,6 +10,18 @@ import './App.css';
 import { createBrowserHistory } from 'history';
 import Settings from './pages/settings';
 import Layout from './layouts';
+import { lazyConfirmLoading } from './components/ConfirmLoading';
+
+const LazyRoom = lazyConfirmLoading({
+    lazy: import('./pages/room'),
+    title: '加入会议房间',
+    content: '我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话',
+  });
+const LazyLivePage = lazyConfirmLoading({
+    lazy: import('./pages/live'),
+    title: '加入直播房间',
+    content: '只有同名会议房间有人发布的情况下才能观看直播，进入前请确认该房间已经有人发布',
+  });
 
 const theme = createMuiTheme({
   palette: {
@@ -57,11 +67,11 @@ function App() {
               />
               <Route
                 path="/room/:roomid?"
-                component={Room}
+                render={LazyRoom}
               />
               <Route
                 path="/live/:roomid"
-                component={LivePage}
+                render={LazyLivePage}
               />
               <Route
                 path="/settings"

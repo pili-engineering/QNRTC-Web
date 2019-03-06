@@ -108,7 +108,7 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface RoomRouterProps {
-  roomid: string;
+  roomid: string | undefined;
 }
 
 interface Props extends WithStyles<typeof styles> {
@@ -124,7 +124,7 @@ interface Props extends WithStyles<typeof styles> {
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
 
   async componentDidMount() {
-    const roomid = this.props.match.params.roomid;
+    const roomid = this.props.match.params.roomid || '';
     const qsobj = qs.parse(this.props.routerStore.location.search.substr(1));
     // 如果加入房间的时候没有用户名，随机分配一个
     if (!this.props.userStore.id) {
@@ -144,9 +144,9 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     let token: string | undefined = qsobj.roomToken;
     let tracks: RTCTrack[] | undefined;
     messageStore.setLoadingText('加入房间中');
-    roomStore.setId(roomid);
     try {
       if (!token) {
+        roomStore.setId(roomid);
         const location = this.props.routerStore.location.pathname;
         [ tracks ] = await Promise.all([
           this.selectTracks()
