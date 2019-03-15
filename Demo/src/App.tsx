@@ -13,12 +13,12 @@ import Layout from './layouts';
 import { lazyConfirmLoading } from './components/ConfirmLoading';
 
 const LazyRoom = lazyConfirmLoading({
-    lazy: import('./pages/room'),
+    lazy: () => import('./pages/room'),
     title: '加入会议房间',
     content: '我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话',
   });
 const LazyLivePage = lazyConfirmLoading({
-    lazy: import('./pages/live'),
+    lazy: () => import('./pages/live'),
     title: '加入直播房间',
     content: '只有同名会议房间有人发布的情况下才能观看直播，进入前请确认该房间已经有人发布',
   });

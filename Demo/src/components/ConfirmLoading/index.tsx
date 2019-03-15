@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 interface Props {
   title: string;
   content: string;
-  lazy: Promise<{default: React.ComponentType<any>}>;
+  lazy: () => Promise<{default: React.ComponentType<any>}>;
 }
 
 
@@ -22,7 +22,7 @@ export const lazyConfirmLoading = (props: Props) => {
   }));
 
   const handleClose = () => {
-    resolve1 && resolve1(props.lazy);
+    resolve1 && resolve1(props.lazy());
   };
 
   const FormDialog = () => {
