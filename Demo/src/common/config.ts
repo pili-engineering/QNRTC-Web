@@ -118,8 +118,10 @@ export const PublishRecordOptions: PublishRecordOption<keyof publishRecordConfig
   {
     key: 'buffer_audio',
     label: '音频（外部数据导入）',
+    /**
+     * 将采集参数留空，等待使用音频模块来导入外部音频
+     */
     config: {
-      audio: { enabled: true, tag: "audio", buffer: true },
     },
   },
   {
