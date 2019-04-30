@@ -23,7 +23,7 @@ import { observer, inject } from 'mobx-react';
 import { UserStore } from '../stores/userStore';
 import { RoomStore } from '../stores/roomStore';
 import { RouterStore } from 'mobx-react-router';
-import { verifyRoomId, verifyUserId, decodeAudioFileToBuffer, getColorFromUserId } from '../common/utils';
+import { verifyRoomId, verifyUserId, getColorFromUserId } from '../common/utils';
 import { MessageStore } from '../stores/messageStore';
 import { PublishRecordOptions } from '../common/config';
 import { Link } from 'react-router-dom';
@@ -144,8 +144,10 @@ class Home extends Component<Props, State> {
               });
             }
           });
-          const buffer = await decodeAudioFileToBuffer(file);
-          (config.audio as any).audioBuffer = buffer;
+          config.audio = {
+            enabled: true,
+            source: file,
+          };
         }
       }
       if (index < 1) {
@@ -189,8 +191,10 @@ class Home extends Component<Props, State> {
                 });
               }
             });
-            const buffer = await decodeAudioFileToBuffer(file);
-            (config.audio as any).audioBuffer = buffer;
+            config.audio = {
+              enabled: true,
+              source: file,
+            };
           }
         }
         // 配置文件置入已选择

@@ -1,7 +1,17492 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.QNRTC=t():e.QNRTC=t()}(window,function(){return function(e){var t={};function r(n){if(t[n])return t[n].exports;var i=t[n]={i:n,l:!1,exports:{}};return e[n].call(i.exports,i,i.exports,r),i.l=!0,i.exports}return r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var i in e)r.d(n,i,function(t){return e[t]}.bind(null,i));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=43)}([function(e,t,r){e.exports=r(25)},function(e,t){function r(e,t,r,n,i,a,o){try{var s=e[a](o),c=s.value}catch(e){return void r(e)}s.done?t(c):Promise.resolve(c).then(n,i)}e.exports=function(e){return function(){var t=this,n=arguments;return new Promise(function(i,a){var o=e.apply(t,n);function s(e){r(o,i,a,s,c,"next",e)}function c(e){r(o,i,a,s,c,"throw",e)}s(void 0)})}}},function(e,t){e.exports=function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}},function(e,t){function r(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}e.exports=function(e,t,n){return t&&r(e.prototype,t),n&&r(e,n),e}},function(e,t){function r(t){return e.exports=r=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)},r(t)}e.exports=r},function(e,t,r){var n=r(12),i=r(7);e.exports=function(e,t){return!t||"object"!==n(t)&&"function"!=typeof t?i(e):t}},function(e,t,r){var n=r(16);e.exports=function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&n(e,t)}},function(e,t){e.exports=function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}},function(e,t,r){(function(e,r){var n=200,i="Expected a function",a="__lodash_hash_undefined__",o=1,s=2,c=1/0,u=9007199254740991,d="[object Arguments]",p="[object Array]",f="[object Boolean]",l="[object Date]",h="[object Error]",m="[object Function]",v="[object GeneratorFunction]",g="[object Map]",y="[object Number]",k="[object Object]",b="[object RegExp]",T="[object Set]",w="[object String]",S="[object Symbol]",C="[object ArrayBuffer]",_="[object DataView]",x=/\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,R=/^\w*$/,P=/^\./,E=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g,I=/\\(\\)?/g,M=/^\[object .+?Constructor\]$/,O=/^(?:0|[1-9]\d*)$/,j={};j["[object Float32Array]"]=j["[object Float64Array]"]=j["[object Int8Array]"]=j["[object Int16Array]"]=j["[object Int32Array]"]=j["[object Uint8Array]"]=j["[object Uint8ClampedArray]"]=j["[object Uint16Array]"]=j["[object Uint32Array]"]=!0,j[d]=j[p]=j[C]=j[f]=j[_]=j[l]=j[h]=j[m]=j[g]=j[y]=j[k]=j[b]=j[T]=j[w]=j["[object WeakMap]"]=!1;var D="object"==typeof e&&e&&e.Object===Object&&e,L="object"==typeof self&&self&&self.Object===Object&&self,A=D||L||Function("return this")(),N="object"==typeof t&&t&&!t.nodeType&&t,F=N&&"object"==typeof r&&r&&!r.nodeType&&r,U=F&&F.exports===N&&D.process,G=function(){try{return U&&U.binding("util")}catch(e){}}(),B=G&&G.isTypedArray;function W(e,t){for(var r=-1,n=e?e.length:0;++r<n;)if(t(e[r],r,e))return!0;return!1}function V(e){var t=!1;if(null!=e&&"function"!=typeof e.toString)try{t=!!(e+"")}catch(e){}return t}function J(e){var t=-1,r=Array(e.size);return e.forEach(function(e,n){r[++t]=[n,e]}),r}function H(e){var t=-1,r=Array(e.size);return e.forEach(function(e){r[++t]=e}),r}var z=Array.prototype,$=Function.prototype,q=Object.prototype,Q=A["__core-js_shared__"],K=function(){var e=/[^.]+$/.exec(Q&&Q.keys&&Q.keys.IE_PROTO||"");return e?"Symbol(src)_1."+e:""}(),X=$.toString,Z=q.hasOwnProperty,Y=q.toString,ee=RegExp("^"+X.call(Z).replace(/[\\^$.*+?()[\]{}|]/g,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$"),te=A.Symbol,re=A.Uint8Array,ne=q.propertyIsEnumerable,ie=z.splice,ae=function(e,t){return function(r){return e(t(r))}}(Object.keys,Object),oe=Ae(A,"DataView"),se=Ae(A,"Map"),ce=Ae(A,"Promise"),ue=Ae(A,"Set"),de=Ae(A,"WeakMap"),pe=Ae(Object,"create"),fe=He(oe),le=He(se),he=He(ce),me=He(ue),ve=He(de),ge=te?te.prototype:void 0,ye=ge?ge.valueOf:void 0,ke=ge?ge.toString:void 0;function be(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function Te(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function we(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function Se(e){var t=-1,r=e?e.length:0;for(this.__data__=new we;++t<r;)this.add(e[t])}function Ce(e){this.__data__=new Te(e)}function _e(e,t){var r=Ke(e)||Qe(e)?function(e,t){for(var r=-1,n=Array(e);++r<e;)n[r]=t(r);return n}(e.length,String):[],n=r.length,i=!!n;for(var a in e)!t&&!Z.call(e,a)||i&&("length"==a||Fe(a,n))||r.push(a);return r}function xe(e,t){for(var r=e.length;r--;)if(qe(e[r][0],t))return r;return-1}function Re(e,t){for(var r=0,n=(t=Ue(t,e)?[t]:je(t)).length;null!=e&&r<n;)e=e[Je(t[r++])];return r&&r==n?e:void 0}function Pe(e,t){return null!=e&&t in Object(e)}function Ee(e,t,r,n,i){return e===t||(null==e||null==t||!et(e)&&!tt(t)?e!=e&&t!=t:function(e,t,r,n,i,a){var c=Ke(e),u=Ke(t),m=p,v=p;c||(m=(m=Ne(e))==d?k:m);u||(v=(v=Ne(t))==d?k:v);var x=m==k&&!V(e),R=v==k&&!V(t),P=m==v;if(P&&!x)return a||(a=new Ce),c||nt(e)?De(e,t,r,n,i,a):function(e,t,r,n,i,a,c){switch(r){case _:if(e.byteLength!=t.byteLength||e.byteOffset!=t.byteOffset)return!1;e=e.buffer,t=t.buffer;case C:return!(e.byteLength!=t.byteLength||!n(new re(e),new re(t)));case f:case l:case y:return qe(+e,+t);case h:return e.name==t.name&&e.message==t.message;case b:case w:return e==t+"";case g:var u=J;case T:var d=a&s;if(u||(u=H),e.size!=t.size&&!d)return!1;var p=c.get(e);if(p)return p==t;a|=o,c.set(e,t);var m=De(u(e),u(t),n,i,a,c);return c.delete(e),m;case S:if(ye)return ye.call(e)==ye.call(t)}return!1}(e,t,m,r,n,i,a);if(!(i&s)){var E=x&&Z.call(e,"__wrapped__"),I=R&&Z.call(t,"__wrapped__");if(E||I){var M=E?e.value():e,O=I?t.value():t;return a||(a=new Ce),r(M,O,n,i,a)}}if(!P)return!1;return a||(a=new Ce),function(e,t,r,n,i,a){var o=i&s,c=it(e),u=c.length,d=it(t).length;if(u!=d&&!o)return!1;for(var p=u;p--;){var f=c[p];if(!(o?f in t:Z.call(t,f)))return!1}var l=a.get(e);if(l&&a.get(t))return l==t;var h=!0;a.set(e,t),a.set(t,e);for(var m=o;++p<u;){f=c[p];var v=e[f],g=t[f];if(n)var y=o?n(g,v,f,t,e,a):n(v,g,f,e,t,a);if(!(void 0===y?v===g||r(v,g,n,i,a):y)){h=!1;break}m||(m="constructor"==f)}if(h&&!m){var k=e.constructor,b=t.constructor;k!=b&&"constructor"in e&&"constructor"in t&&!("function"==typeof k&&k instanceof k&&"function"==typeof b&&b instanceof b)&&(h=!1)}return a.delete(e),a.delete(t),h}(e,t,r,n,i,a)}(e,t,Ee,r,n,i))}function Ie(e){return!(!et(e)||function(e){return!!K&&K in e}(e))&&(Ze(e)||V(e)?ee:M).test(He(e))}function Me(e){return"function"==typeof e?e:null==e?at:"object"==typeof e?Ke(e)?function(e,t){if(Ue(e)&&Ge(t))return Be(Je(e),t);return function(r){var n=function(e,t,r){var n=null==e?void 0:Re(e,t);return void 0===n?r:n}(r,e);return void 0===n&&n===t?function(e,t){return null!=e&&function(e,t,r){var n,i=-1,a=(t=Ue(t,e)?[t]:je(t)).length;for(;++i<a;){var o=Je(t[i]);if(!(n=null!=e&&r(e,o)))break;e=e[o]}if(n)return n;return!!(a=e?e.length:0)&&Ye(a)&&Fe(o,a)&&(Ke(e)||Qe(e))}(e,t,Pe)}(r,e):Ee(t,n,void 0,o|s)}}(e[0],e[1]):function(e){var t=function(e){var t=it(e),r=t.length;for(;r--;){var n=t[r],i=e[n];t[r]=[n,i,Ge(i)]}return t}(e);if(1==t.length&&t[0][2])return Be(t[0][0],t[0][1]);return function(r){return r===e||function(e,t,r,n){var i=r.length,a=i,c=!n;if(null==e)return!a;for(e=Object(e);i--;){var u=r[i];if(c&&u[2]?u[1]!==e[u[0]]:!(u[0]in e))return!1}for(;++i<a;){var d=(u=r[i])[0],p=e[d],f=u[1];if(c&&u[2]){if(void 0===p&&!(d in e))return!1}else{var l=new Ce;if(n)var h=n(p,f,d,e,t,l);if(!(void 0===h?Ee(f,p,n,o|s,l):h))return!1}}return!0}(r,e,t)}}(e):function(e){return Ue(e)?function(e){return function(t){return null==t?void 0:t[e]}}(Je(e)):function(e){return function(t){return Re(t,e)}}(e)}(e)}function Oe(e){if(!function(e){var t=e&&e.constructor,r="function"==typeof t&&t.prototype||q;return e===r}(e))return ae(e);var t=[];for(var r in Object(e))Z.call(e,r)&&"constructor"!=r&&t.push(r);return t}function je(e){return Ke(e)?e:Ve(e)}function De(e,t,r,n,i,a){var c=i&s,u=e.length,d=t.length;if(u!=d&&!(c&&d>u))return!1;var p=a.get(e);if(p&&a.get(t))return p==t;var f=-1,l=!0,h=i&o?new Se:void 0;for(a.set(e,t),a.set(t,e);++f<u;){var m=e[f],v=t[f];if(n)var g=c?n(v,m,f,t,e,a):n(m,v,f,e,t,a);if(void 0!==g){if(g)continue;l=!1;break}if(h){if(!W(t,function(e,t){if(!h.has(t)&&(m===e||r(m,e,n,i,a)))return h.add(t)})){l=!1;break}}else if(m!==v&&!r(m,v,n,i,a)){l=!1;break}}return a.delete(e),a.delete(t),l}function Le(e,t){var r=e.__data__;return function(e){var t=typeof e;return"string"==t||"number"==t||"symbol"==t||"boolean"==t?"__proto__"!==e:null===e}(t)?r["string"==typeof t?"string":"hash"]:r.map}function Ae(e,t){var r=function(e,t){return null==e?void 0:e[t]}(e,t);return Ie(r)?r:void 0}be.prototype.clear=function(){this.__data__=pe?pe(null):{}},be.prototype.delete=function(e){return this.has(e)&&delete this.__data__[e]},be.prototype.get=function(e){var t=this.__data__;if(pe){var r=t[e];return r===a?void 0:r}return Z.call(t,e)?t[e]:void 0},be.prototype.has=function(e){var t=this.__data__;return pe?void 0!==t[e]:Z.call(t,e)},be.prototype.set=function(e,t){return this.__data__[e]=pe&&void 0===t?a:t,this},Te.prototype.clear=function(){this.__data__=[]},Te.prototype.delete=function(e){var t=this.__data__,r=xe(t,e);return!(r<0||(r==t.length-1?t.pop():ie.call(t,r,1),0))},Te.prototype.get=function(e){var t=this.__data__,r=xe(t,e);return r<0?void 0:t[r][1]},Te.prototype.has=function(e){return xe(this.__data__,e)>-1},Te.prototype.set=function(e,t){var r=this.__data__,n=xe(r,e);return n<0?r.push([e,t]):r[n][1]=t,this},we.prototype.clear=function(){this.__data__={hash:new be,map:new(se||Te),string:new be}},we.prototype.delete=function(e){return Le(this,e).delete(e)},we.prototype.get=function(e){return Le(this,e).get(e)},we.prototype.has=function(e){return Le(this,e).has(e)},we.prototype.set=function(e,t){return Le(this,e).set(e,t),this},Se.prototype.add=Se.prototype.push=function(e){return this.__data__.set(e,a),this},Se.prototype.has=function(e){return this.__data__.has(e)},Ce.prototype.clear=function(){this.__data__=new Te},Ce.prototype.delete=function(e){return this.__data__.delete(e)},Ce.prototype.get=function(e){return this.__data__.get(e)},Ce.prototype.has=function(e){return this.__data__.has(e)},Ce.prototype.set=function(e,t){var r=this.__data__;if(r instanceof Te){var i=r.__data__;if(!se||i.length<n-1)return i.push([e,t]),this;r=this.__data__=new we(i)}return r.set(e,t),this};var Ne=function(e){return Y.call(e)};function Fe(e,t){return!!(t=null==t?u:t)&&("number"==typeof e||O.test(e))&&e>-1&&e%1==0&&e<t}function Ue(e,t){if(Ke(e))return!1;var r=typeof e;return!("number"!=r&&"symbol"!=r&&"boolean"!=r&&null!=e&&!rt(e))||(R.test(e)||!x.test(e)||null!=t&&e in Object(t))}function Ge(e){return e==e&&!et(e)}function Be(e,t){return function(r){return null!=r&&(r[e]===t&&(void 0!==t||e in Object(r)))}}function We(e,t){return 1==t.length?e:Re(e,function(e,t,r){var n=-1,i=e.length;t<0&&(t=-t>i?0:i+t),(r=r>i?i:r)<0&&(r+=i),i=t>r?0:r-t>>>0,t>>>=0;for(var a=Array(i);++n<i;)a[n]=e[n+t];return a}(t,0,-1))}(oe&&Ne(new oe(new ArrayBuffer(1)))!=_||se&&Ne(new se)!=g||ce&&"[object Promise]"!=Ne(ce.resolve())||ue&&Ne(new ue)!=T||de&&"[object WeakMap]"!=Ne(new de))&&(Ne=function(e){var t=Y.call(e),r=t==k?e.constructor:void 0,n=r?He(r):void 0;if(n)switch(n){case fe:return _;case le:return g;case he:return"[object Promise]";case me:return T;case ve:return"[object WeakMap]"}return t});var Ve=$e(function(e){e=function(e){return null==e?"":function(e){if("string"==typeof e)return e;if(rt(e))return ke?ke.call(e):"";var t=e+"";return"0"==t&&1/e==-c?"-0":t}(e)}(e);var t=[];return P.test(e)&&t.push(""),e.replace(E,function(e,r,n,i){t.push(n?i.replace(I,"$1"):r||e)}),t});function Je(e){if("string"==typeof e||rt(e))return e;var t=e+"";return"0"==t&&1/e==-c?"-0":t}function He(e){if(null!=e){try{return X.call(e)}catch(e){}try{return e+""}catch(e){}}return""}function ze(e){var t=e?e.length:0;return t?e[t-1]:void 0}function $e(e,t){if("function"!=typeof e||t&&"function"!=typeof t)throw new TypeError(i);var r=function(){var n=arguments,i=t?t.apply(this,n):n[0],a=r.cache;if(a.has(i))return a.get(i);var o=e.apply(this,n);return r.cache=a.set(i,o),o};return r.cache=new($e.Cache||we),r}function qe(e,t){return e===t||e!=e&&t!=t}function Qe(e){return function(e){return tt(e)&&Xe(e)}(e)&&Z.call(e,"callee")&&(!ne.call(e,"callee")||Y.call(e)==d)}$e.Cache=we;var Ke=Array.isArray;function Xe(e){return null!=e&&Ye(e.length)&&!Ze(e)}function Ze(e){var t=et(e)?Y.call(e):"";return t==m||t==v}function Ye(e){return"number"==typeof e&&e>-1&&e%1==0&&e<=u}function et(e){var t=typeof e;return!!e&&("object"==t||"function"==t)}function tt(e){return!!e&&"object"==typeof e}function rt(e){return"symbol"==typeof e||tt(e)&&Y.call(e)==S}var nt=B?function(e){return function(t){return e(t)}}(B):function(e){return tt(e)&&Ye(e.length)&&!!j[Y.call(e)]};function it(e){return Xe(e)?_e(e):Oe(e)}function at(e){return e}r.exports=function(e,t){var r=[];if(!e||!e.length)return r;var n=-1,i=[],a=e.length;for(t=Me(t);++n<a;){var o=e[n];t(o,n,e)&&(r.push(o),i.push(n))}return function(e,t){for(var r=e?t.length:0,n=r-1;r--;){var i=t[r];if(r==n||i!==a){var a=i;if(Fe(i))ie.call(e,i,1);else if(Ue(i,e))delete e[Je(i)];else{var o=je(i),s=We(e,o);null!=s&&delete s[Je(ze(o))]}}}}(e,i),r}}).call(this,r(17),r(20)(e))},function(e,t,r){(function(r){var n;t=e.exports=q,n="object"==typeof r&&r.env&&r.env.NODE_DEBUG&&/\bsemver\b/i.test(r.env.NODE_DEBUG)?function(){var e=Array.prototype.slice.call(arguments,0);e.unshift("SEMVER"),console.log.apply(console,e)}:function(){},t.SEMVER_SPEC_VERSION="2.0.0";var i=256,a=Number.MAX_SAFE_INTEGER||9007199254740991,o=t.re=[],s=t.src=[],c=0,u=c++;s[u]="0|[1-9]\\d*";var d=c++;s[d]="[0-9]+";var p=c++;s[p]="\\d*[a-zA-Z-][a-zA-Z0-9-]*";var f=c++;s[f]="("+s[u]+")\\.("+s[u]+")\\.("+s[u]+")";var l=c++;s[l]="("+s[d]+")\\.("+s[d]+")\\.("+s[d]+")";var h=c++;s[h]="(?:"+s[u]+"|"+s[p]+")";var m=c++;s[m]="(?:"+s[d]+"|"+s[p]+")";var v=c++;s[v]="(?:-("+s[h]+"(?:\\."+s[h]+")*))";var g=c++;s[g]="(?:-?("+s[m]+"(?:\\."+s[m]+")*))";var y=c++;s[y]="[0-9A-Za-z-]+";var k=c++;s[k]="(?:\\+("+s[y]+"(?:\\."+s[y]+")*))";var b=c++,T="v?"+s[f]+s[v]+"?"+s[k]+"?";s[b]="^"+T+"$";var w="[v=\\s]*"+s[l]+s[g]+"?"+s[k]+"?",S=c++;s[S]="^"+w+"$";var C=c++;s[C]="((?:<|>)?=?)";var _=c++;s[_]=s[d]+"|x|X|\\*";var x=c++;s[x]=s[u]+"|x|X|\\*";var R=c++;s[R]="[v=\\s]*("+s[x]+")(?:\\.("+s[x]+")(?:\\.("+s[x]+")(?:"+s[v]+")?"+s[k]+"?)?)?";var P=c++;s[P]="[v=\\s]*("+s[_]+")(?:\\.("+s[_]+")(?:\\.("+s[_]+")(?:"+s[g]+")?"+s[k]+"?)?)?";var E=c++;s[E]="^"+s[C]+"\\s*"+s[R]+"$";var I=c++;s[I]="^"+s[C]+"\\s*"+s[P]+"$";var M=c++;s[M]="(?:^|[^\\d])(\\d{1,16})(?:\\.(\\d{1,16}))?(?:\\.(\\d{1,16}))?(?:$|[^\\d])";var O=c++;s[O]="(?:~>?)";var j=c++;s[j]="(\\s*)"+s[O]+"\\s+",o[j]=new RegExp(s[j],"g");var D=c++;s[D]="^"+s[O]+s[R]+"$";var L=c++;s[L]="^"+s[O]+s[P]+"$";var A=c++;s[A]="(?:\\^)";var N=c++;s[N]="(\\s*)"+s[A]+"\\s+",o[N]=new RegExp(s[N],"g");var F=c++;s[F]="^"+s[A]+s[R]+"$";var U=c++;s[U]="^"+s[A]+s[P]+"$";var G=c++;s[G]="^"+s[C]+"\\s*("+w+")$|^$";var B=c++;s[B]="^"+s[C]+"\\s*("+T+")$|^$";var W=c++;s[W]="(\\s*)"+s[C]+"\\s*("+w+"|"+s[R]+")",o[W]=new RegExp(s[W],"g");var V=c++;s[V]="^\\s*("+s[R]+")\\s+-\\s+("+s[R]+")\\s*$";var J=c++;s[J]="^\\s*("+s[P]+")\\s+-\\s+("+s[P]+")\\s*$";var H=c++;s[H]="(<|>)?=?\\s*\\*";for(var z=0;z<c;z++)n(z,s[z]),o[z]||(o[z]=new RegExp(s[z]));function $(e,t){if(t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1}),e instanceof q)return e;if("string"!=typeof e)return null;if(e.length>i)return null;if(!(t.loose?o[S]:o[b]).test(e))return null;try{return new q(e,t)}catch(e){return null}}function q(e,t){if(t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1}),e instanceof q){if(e.loose===t.loose)return e;e=e.version}else if("string"!=typeof e)throw new TypeError("Invalid Version: "+e);if(e.length>i)throw new TypeError("version is longer than "+i+" characters");if(!(this instanceof q))return new q(e,t);n("SemVer",e,t),this.options=t,this.loose=!!t.loose;var r=e.trim().match(t.loose?o[S]:o[b]);if(!r)throw new TypeError("Invalid Version: "+e);if(this.raw=e,this.major=+r[1],this.minor=+r[2],this.patch=+r[3],this.major>a||this.major<0)throw new TypeError("Invalid major version");if(this.minor>a||this.minor<0)throw new TypeError("Invalid minor version");if(this.patch>a||this.patch<0)throw new TypeError("Invalid patch version");r[4]?this.prerelease=r[4].split(".").map(function(e){if(/^[0-9]+$/.test(e)){var t=+e;if(t>=0&&t<a)return t}return e}):this.prerelease=[],this.build=r[5]?r[5].split("."):[],this.format()}t.parse=$,t.valid=function(e,t){var r=$(e,t);return r?r.version:null},t.clean=function(e,t){var r=$(e.trim().replace(/^[=v]+/,""),t);return r?r.version:null},t.SemVer=q,q.prototype.format=function(){return this.version=this.major+"."+this.minor+"."+this.patch,this.prerelease.length&&(this.version+="-"+this.prerelease.join(".")),this.version},q.prototype.toString=function(){return this.version},q.prototype.compare=function(e){return n("SemVer.compare",this.version,this.options,e),e instanceof q||(e=new q(e,this.options)),this.compareMain(e)||this.comparePre(e)},q.prototype.compareMain=function(e){return e instanceof q||(e=new q(e,this.options)),K(this.major,e.major)||K(this.minor,e.minor)||K(this.patch,e.patch)},q.prototype.comparePre=function(e){if(e instanceof q||(e=new q(e,this.options)),this.prerelease.length&&!e.prerelease.length)return-1;if(!this.prerelease.length&&e.prerelease.length)return 1;if(!this.prerelease.length&&!e.prerelease.length)return 0;var t=0;do{var r=this.prerelease[t],i=e.prerelease[t];if(n("prerelease compare",t,r,i),void 0===r&&void 0===i)return 0;if(void 0===i)return 1;if(void 0===r)return-1;if(r!==i)return K(r,i)}while(++t)},q.prototype.inc=function(e,t){switch(e){case"premajor":this.prerelease.length=0,this.patch=0,this.minor=0,this.major++,this.inc("pre",t);break;case"preminor":this.prerelease.length=0,this.patch=0,this.minor++,this.inc("pre",t);break;case"prepatch":this.prerelease.length=0,this.inc("patch",t),this.inc("pre",t);break;case"prerelease":0===this.prerelease.length&&this.inc("patch",t),this.inc("pre",t);break;case"major":0===this.minor&&0===this.patch&&0!==this.prerelease.length||this.major++,this.minor=0,this.patch=0,this.prerelease=[];break;case"minor":0===this.patch&&0!==this.prerelease.length||this.minor++,this.patch=0,this.prerelease=[];break;case"patch":0===this.prerelease.length&&this.patch++,this.prerelease=[];break;case"pre":if(0===this.prerelease.length)this.prerelease=[0];else{for(var r=this.prerelease.length;--r>=0;)"number"==typeof this.prerelease[r]&&(this.prerelease[r]++,r=-2);-1===r&&this.prerelease.push(0)}t&&(this.prerelease[0]===t?isNaN(this.prerelease[1])&&(this.prerelease=[t,0]):this.prerelease=[t,0]);break;default:throw new Error("invalid increment argument: "+e)}return this.format(),this.raw=this.version,this},t.inc=function(e,t,r,n){"string"==typeof r&&(n=r,r=void 0);try{return new q(e,r).inc(t,n).version}catch(e){return null}},t.diff=function(e,t){if(ee(e,t))return null;var r=$(e),n=$(t);if(r.prerelease.length||n.prerelease.length){for(var i in r)if(("major"===i||"minor"===i||"patch"===i)&&r[i]!==n[i])return"pre"+i;return"prerelease"}for(var i in r)if(("major"===i||"minor"===i||"patch"===i)&&r[i]!==n[i])return i},t.compareIdentifiers=K;var Q=/^[0-9]+$/;function K(e,t){var r=Q.test(e),n=Q.test(t);return r&&n&&(e=+e,t=+t),r&&!n?-1:n&&!r?1:e<t?-1:e>t?1:0}function X(e,t,r){return new q(e,r).compare(new q(t,r))}function Z(e,t,r){return X(e,t,r)>0}function Y(e,t,r){return X(e,t,r)<0}function ee(e,t,r){return 0===X(e,t,r)}function te(e,t,r){return 0!==X(e,t,r)}function re(e,t,r){return X(e,t,r)>=0}function ne(e,t,r){return X(e,t,r)<=0}function ie(e,t,r,n){var i;switch(t){case"===":"object"==typeof e&&(e=e.version),"object"==typeof r&&(r=r.version),i=e===r;break;case"!==":"object"==typeof e&&(e=e.version),"object"==typeof r&&(r=r.version),i=e!==r;break;case"":case"=":case"==":i=ee(e,r,n);break;case"!=":i=te(e,r,n);break;case">":i=Z(e,r,n);break;case">=":i=re(e,r,n);break;case"<":i=Y(e,r,n);break;case"<=":i=ne(e,r,n);break;default:throw new TypeError("Invalid operator: "+t)}return i}function ae(e,t){if(t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1}),e instanceof ae){if(e.loose===!!t.loose)return e;e=e.value}if(!(this instanceof ae))return new ae(e,t);n("comparator",e,t),this.options=t,this.loose=!!t.loose,this.parse(e),this.semver===oe?this.value="":this.value=this.operator+this.semver.version,n("comp",this)}t.rcompareIdentifiers=function(e,t){return K(t,e)},t.major=function(e,t){return new q(e,t).major},t.minor=function(e,t){return new q(e,t).minor},t.patch=function(e,t){return new q(e,t).patch},t.compare=X,t.compareLoose=function(e,t){return X(e,t,!0)},t.rcompare=function(e,t,r){return X(t,e,r)},t.sort=function(e,r){return e.sort(function(e,n){return t.compare(e,n,r)})},t.rsort=function(e,r){return e.sort(function(e,n){return t.rcompare(e,n,r)})},t.gt=Z,t.lt=Y,t.eq=ee,t.neq=te,t.gte=re,t.lte=ne,t.cmp=ie,t.Comparator=ae;var oe={};function se(e,t){if(t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1}),e instanceof se)return e.loose===!!t.loose&&e.includePrerelease===!!t.includePrerelease?e:new se(e.raw,t);if(e instanceof ae)return new se(e.value,t);if(!(this instanceof se))return new se(e,t);if(this.options=t,this.loose=!!t.loose,this.includePrerelease=!!t.includePrerelease,this.raw=e,this.set=e.split(/\s*\|\|\s*/).map(function(e){return this.parseRange(e.trim())},this).filter(function(e){return e.length}),!this.set.length)throw new TypeError("Invalid SemVer Range: "+e);this.format()}function ce(e){return!e||"x"===e.toLowerCase()||"*"===e}function ue(e,t,r,n,i,a,o,s,c,u,d,p,f){return((t=ce(r)?"":ce(n)?">="+r+".0.0":ce(i)?">="+r+"."+n+".0":">="+t)+" "+(s=ce(c)?"":ce(u)?"<"+(+c+1)+".0.0":ce(d)?"<"+c+"."+(+u+1)+".0":p?"<="+c+"."+u+"."+d+"-"+p:"<="+s)).trim()}function de(e,t,r){for(var i=0;i<e.length;i++)if(!e[i].test(t))return!1;if(r||(r={}),t.prerelease.length&&!r.includePrerelease){for(i=0;i<e.length;i++)if(n(e[i].semver),e[i].semver!==oe&&e[i].semver.prerelease.length>0){var a=e[i].semver;if(a.major===t.major&&a.minor===t.minor&&a.patch===t.patch)return!0}return!1}return!0}function pe(e,t,r){try{t=new se(t,r)}catch(e){return!1}return t.test(e)}function fe(e,t,r,n){var i,a,o,s,c;switch(e=new q(e,n),t=new se(t,n),r){case">":i=Z,a=ne,o=Y,s=">",c=">=";break;case"<":i=Y,a=re,o=Z,s="<",c="<=";break;default:throw new TypeError('Must provide a hilo val of "<" or ">"')}if(pe(e,t,n))return!1;for(var u=0;u<t.set.length;++u){var d=null,p=null;if(t.set[u].forEach(function(e){e.semver===oe&&(e=new ae(">=0.0.0")),d=d||e,p=p||e,i(e.semver,d.semver,n)?d=e:o(e.semver,p.semver,n)&&(p=e)}),d.operator===s||d.operator===c)return!1;if((!p.operator||p.operator===s)&&a(e,p.semver))return!1;if(p.operator===c&&o(e,p.semver))return!1}return!0}ae.prototype.parse=function(e){var t=this.options.loose?o[G]:o[B],r=e.match(t);if(!r)throw new TypeError("Invalid comparator: "+e);this.operator=r[1],"="===this.operator&&(this.operator=""),r[2]?this.semver=new q(r[2],this.options.loose):this.semver=oe},ae.prototype.toString=function(){return this.value},ae.prototype.test=function(e){return n("Comparator.test",e,this.options.loose),this.semver===oe||("string"==typeof e&&(e=new q(e,this.options)),ie(e,this.operator,this.semver,this.options))},ae.prototype.intersects=function(e,t){if(!(e instanceof ae))throw new TypeError("a Comparator is required");var r;if(t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1}),""===this.operator)return r=new se(e.value,t),pe(this.value,r,t);if(""===e.operator)return r=new se(this.value,t),pe(e.semver,r,t);var n=!(">="!==this.operator&&">"!==this.operator||">="!==e.operator&&">"!==e.operator),i=!("<="!==this.operator&&"<"!==this.operator||"<="!==e.operator&&"<"!==e.operator),a=this.semver.version===e.semver.version,o=!(">="!==this.operator&&"<="!==this.operator||">="!==e.operator&&"<="!==e.operator),s=ie(this.semver,"<",e.semver,t)&&(">="===this.operator||">"===this.operator)&&("<="===e.operator||"<"===e.operator),c=ie(this.semver,">",e.semver,t)&&("<="===this.operator||"<"===this.operator)&&(">="===e.operator||">"===e.operator);return n||i||a&&o||s||c},t.Range=se,se.prototype.format=function(){return this.range=this.set.map(function(e){return e.join(" ").trim()}).join("||").trim(),this.range},se.prototype.toString=function(){return this.range},se.prototype.parseRange=function(e){var t=this.options.loose;e=e.trim();var r=t?o[J]:o[V];e=e.replace(r,ue),n("hyphen replace",e),e=e.replace(o[W],"$1$2$3"),n("comparator trim",e,o[W]),e=(e=(e=e.replace(o[j],"$1~")).replace(o[N],"$1^")).split(/\s+/).join(" ");var i=t?o[G]:o[B],a=e.split(" ").map(function(e){return function(e,t){return n("comp",e,t),e=function(e,t){return e.trim().split(/\s+/).map(function(e){return function(e,t){n("caret",e,t),t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1});var r=t.loose?o[U]:o[F];return e.replace(r,function(t,r,i,a,o){var s;return n("caret",e,t,r,i,a,o),ce(r)?s="":ce(i)?s=">="+r+".0.0 <"+(+r+1)+".0.0":ce(a)?s="0"===r?">="+r+"."+i+".0 <"+r+"."+(+i+1)+".0":">="+r+"."+i+".0 <"+(+r+1)+".0.0":o?(n("replaceCaret pr",o),"-"!==o.charAt(0)&&(o="-"+o),s="0"===r?"0"===i?">="+r+"."+i+"."+a+o+" <"+r+"."+i+"."+(+a+1):">="+r+"."+i+"."+a+o+" <"+r+"."+(+i+1)+".0":">="+r+"."+i+"."+a+o+" <"+(+r+1)+".0.0"):(n("no pr"),s="0"===r?"0"===i?">="+r+"."+i+"."+a+" <"+r+"."+i+"."+(+a+1):">="+r+"."+i+"."+a+" <"+r+"."+(+i+1)+".0":">="+r+"."+i+"."+a+" <"+(+r+1)+".0.0"),n("caret return",s),s})}(e,t)}).join(" ")}(e,t),n("caret",e),e=function(e,t){return e.trim().split(/\s+/).map(function(e){return function(e,t){t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1});var r=t.loose?o[L]:o[D];return e.replace(r,function(t,r,i,a,o){var s;return n("tilde",e,t,r,i,a,o),ce(r)?s="":ce(i)?s=">="+r+".0.0 <"+(+r+1)+".0.0":ce(a)?s=">="+r+"."+i+".0 <"+r+"."+(+i+1)+".0":o?(n("replaceTilde pr",o),"-"!==o.charAt(0)&&(o="-"+o),s=">="+r+"."+i+"."+a+o+" <"+r+"."+(+i+1)+".0"):s=">="+r+"."+i+"."+a+" <"+r+"."+(+i+1)+".0",n("tilde return",s),s})}(e,t)}).join(" ")}(e,t),n("tildes",e),e=function(e,t){return n("replaceXRanges",e,t),e.split(/\s+/).map(function(e){return function(e,t){e=e.trim(),t&&"object"==typeof t||(t={loose:!!t,includePrerelease:!1});var r=t.loose?o[I]:o[E];return e.replace(r,function(t,r,i,a,o,s){n("xRange",e,t,r,i,a,o,s);var c=ce(i),u=c||ce(a),d=u||ce(o),p=d;return"="===r&&p&&(r=""),c?t=">"===r||"<"===r?"<0.0.0":"*":r&&p?(u&&(a=0),d&&(o=0),">"===r?(r=">=",u?(i=+i+1,a=0,o=0):d&&(a=+a+1,o=0)):"<="===r&&(r="<",u?i=+i+1:a=+a+1),t=r+i+"."+a+"."+o):u?t=">="+i+".0.0 <"+(+i+1)+".0.0":d&&(t=">="+i+"."+a+".0 <"+i+"."+(+a+1)+".0"),n("xRange return",t),t})}(e,t)}).join(" ")}(e,t),n("xrange",e),e=function(e,t){return n("replaceStars",e,t),e.trim().replace(o[H],"")}(e,t),n("stars",e),e}(e,this.options)},this).join(" ").split(/\s+/);return this.options.loose&&(a=a.filter(function(e){return!!e.match(i)})),a=a.map(function(e){return new ae(e,this.options)},this)},se.prototype.intersects=function(e,t){if(!(e instanceof se))throw new TypeError("a Range is required");return this.set.some(function(r){return r.every(function(r){return e.set.some(function(e){return e.every(function(e){return r.intersects(e,t)})})})})},t.toComparators=function(e,t){return new se(e,t).set.map(function(e){return e.map(function(e){return e.value}).join(" ").trim().split(" ")})},se.prototype.test=function(e){if(!e)return!1;"string"==typeof e&&(e=new q(e,this.options));for(var t=0;t<this.set.length;t++)if(de(this.set[t],e,this.options))return!0;return!1},t.satisfies=pe,t.maxSatisfying=function(e,t,r){var n=null,i=null;try{var a=new se(t,r)}catch(e){return null}return e.forEach(function(e){a.test(e)&&(n&&-1!==i.compare(e)||(i=new q(n=e,r)))}),n},t.minSatisfying=function(e,t,r){var n=null,i=null;try{var a=new se(t,r)}catch(e){return null}return e.forEach(function(e){a.test(e)&&(n&&1!==i.compare(e)||(i=new q(n=e,r)))}),n},t.validRange=function(e,t){try{return new se(e,t).range||"*"}catch(e){return null}},t.ltr=function(e,t,r){return fe(e,t,"<",r)},t.gtr=function(e,t,r){return fe(e,t,">",r)},t.outside=fe,t.prerelease=function(e,t){var r=$(e,t);return r&&r.prerelease.length?r.prerelease:null},t.intersects=function(e,t,r){return e=new se(e,r),t=new se(t,r),e.intersects(t)},t.coerce=function(e){if(e instanceof q)return e;if("string"!=typeof e)return null;var t=e.match(o[M]);return null==t?null:$((t[1]||"0")+"."+(t[2]||"0")+"."+(t[3]||"0"))}}).call(this,r(21))},function(e,t,r){var n=r(24);e.exports=function(e){for(var t=1;t<arguments.length;t++){var r=null!=arguments[t]?arguments[t]:{},i=Object.keys(r);"function"==typeof Object.getOwnPropertySymbols&&(i=i.concat(Object.getOwnPropertySymbols(r).filter(function(e){return Object.getOwnPropertyDescriptor(r,e).enumerable}))),i.forEach(function(t){n(e,t,r[t])})}return e}},function(e,t,r){var n;
-/*!
- * EventEmitter v5.2.5 - git.io/ee
- * Unlicense - http://unlicense.org/
- * Oliver Caldwell - http://oli.me.uk/
- * @preserve
- */!function(t){"use strict";function i(){}var a=i.prototype,o=t.EventEmitter;function s(e,t){for(var r=e.length;r--;)if(e[r].listener===t)return r;return-1}function c(e){return function(){return this[e].apply(this,arguments)}}a.getListeners=function(e){var t,r,n=this._getEvents();if(e instanceof RegExp)for(r in t={},n)n.hasOwnProperty(r)&&e.test(r)&&(t[r]=n[r]);else t=n[e]||(n[e]=[]);return t},a.flattenListeners=function(e){var t,r=[];for(t=0;t<e.length;t+=1)r.push(e[t].listener);return r},a.getListenersAsObject=function(e){var t,r=this.getListeners(e);return r instanceof Array&&((t={})[e]=r),t||r},a.addListener=function(e,t){if(!function e(t){return"function"==typeof t||t instanceof RegExp||!(!t||"object"!=typeof t)&&e(t.listener)}(t))throw new TypeError("listener must be a function");var r,n=this.getListenersAsObject(e),i="object"==typeof t;for(r in n)n.hasOwnProperty(r)&&-1===s(n[r],t)&&n[r].push(i?t:{listener:t,once:!1});return this},a.on=c("addListener"),a.addOnceListener=function(e,t){return this.addListener(e,{listener:t,once:!0})},a.once=c("addOnceListener"),a.defineEvent=function(e){return this.getListeners(e),this},a.defineEvents=function(e){for(var t=0;t<e.length;t+=1)this.defineEvent(e[t]);return this},a.removeListener=function(e,t){var r,n,i=this.getListenersAsObject(e);for(n in i)i.hasOwnProperty(n)&&-1!==(r=s(i[n],t))&&i[n].splice(r,1);return this},a.off=c("removeListener"),a.addListeners=function(e,t){return this.manipulateListeners(!1,e,t)},a.removeListeners=function(e,t){return this.manipulateListeners(!0,e,t)},a.manipulateListeners=function(e,t,r){var n,i,a=e?this.removeListener:this.addListener,o=e?this.removeListeners:this.addListeners;if("object"!=typeof t||t instanceof RegExp)for(n=r.length;n--;)a.call(this,t,r[n]);else for(n in t)t.hasOwnProperty(n)&&(i=t[n])&&("function"==typeof i?a.call(this,n,i):o.call(this,n,i));return this},a.removeEvent=function(e){var t,r=typeof e,n=this._getEvents();if("string"===r)delete n[e];else if(e instanceof RegExp)for(t in n)n.hasOwnProperty(t)&&e.test(t)&&delete n[t];else delete this._events;return this},a.removeAllListeners=c("removeEvent"),a.emitEvent=function(e,t){var r,n,i,a,o=this.getListenersAsObject(e);for(a in o)if(o.hasOwnProperty(a))for(r=o[a].slice(0),i=0;i<r.length;i++)!0===(n=r[i]).once&&this.removeListener(e,n.listener),n.listener.apply(this,t||[])===this._getOnceReturnValue()&&this.removeListener(e,n.listener);return this},a.trigger=c("emitEvent"),a.emit=function(e){var t=Array.prototype.slice.call(arguments,1);return this.emitEvent(e,t)},a.setOnceReturnValue=function(e){return this._onceReturnValue=e,this},a._getOnceReturnValue=function(){return!this.hasOwnProperty("_onceReturnValue")||this._onceReturnValue},a._getEvents=function(){return this._events||(this._events={})},i.noConflict=function(){return t.EventEmitter=o,i},void 0===(n=function(){return i}.call(t,r,t,e))||(e.exports=n)}("undefined"!=typeof window?window:this||{})},function(e,t){function r(e){return(r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function n(t){return"function"==typeof Symbol&&"symbol"===r(Symbol.iterator)?e.exports=n=function(e){return r(e)}:e.exports=n=function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":r(e)},n(t)}e.exports=n},function(e,t,r){"use strict";var n=!0,i=!0;function a(e,t,r){var n=e.match(t);return n&&n.length>=r&&parseInt(n[r],10)}e.exports={extractVersion:a,wrapPeerConnectionEvent:function(e,t,r){if(e.RTCPeerConnection){var n=e.RTCPeerConnection.prototype,i=n.addEventListener;n.addEventListener=function(e,n){if(e!==t)return i.apply(this,arguments);var a=function(e){var t=r(e);t&&n(t)};return this._eventMap=this._eventMap||{},this._eventMap[n]=a,i.apply(this,[e,a])};var a=n.removeEventListener;n.removeEventListener=function(e,r){if(e!==t||!this._eventMap||!this._eventMap[r])return a.apply(this,arguments);var n=this._eventMap[r];return delete this._eventMap[r],a.apply(this,[e,n])},Object.defineProperty(n,"on"+t,{get:function(){return this["_on"+t]},set:function(e){this["_on"+t]&&(this.removeEventListener(t,this["_on"+t]),delete this["_on"+t]),e&&this.addEventListener(t,this["_on"+t]=e)},enumerable:!0,configurable:!0})}},disableLog:function(e){return"boolean"!=typeof e?new Error("Argument type: "+typeof e+". Please use a boolean."):(n=e,e?"adapter.js logging disabled":"adapter.js logging enabled")},disableWarnings:function(e){return"boolean"!=typeof e?new Error("Argument type: "+typeof e+". Please use a boolean."):(i=!e,"adapter.js deprecation warnings "+(e?"disabled":"enabled"))},log:function(){if("object"==typeof window){if(n)return;"undefined"!=typeof console&&"function"==typeof console.log&&console.log.apply(console,arguments)}},deprecated:function(e,t){i&&console.warn(e+" is deprecated, please use "+t+" instead.")},detectBrowser:function(e){var t=e&&e.navigator,r={browser:null,version:null};if(void 0===e||!e.navigator)return r.browser="Not a browser.",r;if(t.mozGetUserMedia)r.browser="firefox",r.version=a(t.userAgent,/Firefox\/(\d+)\./,1);else if(t.webkitGetUserMedia)r.browser="chrome",r.version=a(t.userAgent,/Chrom(e|ium)\/(\d+)\./,2);else if(t.mediaDevices&&t.userAgent.match(/Edge\/(\d+).(\d+)$/))r.browser="edge",r.version=a(t.userAgent,/Edge\/(\d+).(\d+)$/,2);else{if(!e.RTCPeerConnection||!t.userAgent.match(/AppleWebKit\/(\d+)\./))return r.browser="Not a supported browser.",r;r.browser="safari",r.version=a(t.userAgent,/AppleWebKit\/(\d+)\./,1)}return r}}},function(e,t,r){var n=r(41),i=r(42);t.write=i,t.parse=n.parse,t.parseFmtpConfig=n.parseFmtpConfig,t.parseParams=n.parseParams,t.parsePayloads=n.parsePayloads,t.parseRemoteCandidates=n.parseRemoteCandidates,t.parseImageAttributes=n.parseImageAttributes,t.parseSimulcastStreamList=n.parseSimulcastStreamList},function(e,t,r){(function(e,r){var n=200,i="Expected a function",a="__lodash_hash_undefined__",o=1,s=2,c=1/0,u=9007199254740991,d="[object Arguments]",p="[object Array]",f="[object Boolean]",l="[object Date]",h="[object Error]",m="[object Function]",v="[object GeneratorFunction]",g="[object Map]",y="[object Number]",k="[object Object]",b="[object RegExp]",T="[object Set]",w="[object String]",S="[object Symbol]",C="[object ArrayBuffer]",_="[object DataView]",x=/\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,R=/^\w*$/,P=/^\./,E=/[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g,I=/\\(\\)?/g,M=/^\[object .+?Constructor\]$/,O=/^(?:0|[1-9]\d*)$/,j={};j["[object Float32Array]"]=j["[object Float64Array]"]=j["[object Int8Array]"]=j["[object Int16Array]"]=j["[object Int32Array]"]=j["[object Uint8Array]"]=j["[object Uint8ClampedArray]"]=j["[object Uint16Array]"]=j["[object Uint32Array]"]=!0,j[d]=j[p]=j[C]=j[f]=j[_]=j[l]=j[h]=j[m]=j[g]=j[y]=j[k]=j[b]=j[T]=j[w]=j["[object WeakMap]"]=!1;var D="object"==typeof e&&e&&e.Object===Object&&e,L="object"==typeof self&&self&&self.Object===Object&&self,A=D||L||Function("return this")(),N="object"==typeof t&&t&&!t.nodeType&&t,F=N&&"object"==typeof r&&r&&!r.nodeType&&r,U=F&&F.exports===N&&D.process,G=function(){try{return U&&U.binding("util")}catch(e){}}(),B=G&&G.isTypedArray;function W(e,t){return!!(e?e.length:0)&&function(e,t,r){if(t!=t)return function(e,t,r,n){var i=e.length,a=r+(n?1:-1);for(;n?a--:++a<i;)if(t(e[a],a,e))return a;return-1}(e,H,r);var n=r-1,i=e.length;for(;++n<i;)if(e[n]===t)return n;return-1}(e,t,0)>-1}function V(e,t,r){for(var n=-1,i=e?e.length:0;++n<i;)if(r(t,e[n]))return!0;return!1}function J(e,t){for(var r=-1,n=e?e.length:0;++r<n;)if(t(e[r],r,e))return!0;return!1}function H(e){return e!=e}function z(e,t){return e.has(t)}function $(e){var t=!1;if(null!=e&&"function"!=typeof e.toString)try{t=!!(e+"")}catch(e){}return t}function q(e){var t=-1,r=Array(e.size);return e.forEach(function(e,n){r[++t]=[n,e]}),r}function Q(e){var t=-1,r=Array(e.size);return e.forEach(function(e){r[++t]=e}),r}var K=Array.prototype,X=Function.prototype,Z=Object.prototype,Y=A["__core-js_shared__"],ee=function(){var e=/[^.]+$/.exec(Y&&Y.keys&&Y.keys.IE_PROTO||"");return e?"Symbol(src)_1."+e:""}(),te=X.toString,re=Z.hasOwnProperty,ne=Z.toString,ie=RegExp("^"+te.call(re).replace(/[\\^$.*+?()[\]{}|]/g,"\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g,"$1.*?")+"$"),ae=A.Symbol,oe=A.Uint8Array,se=Z.propertyIsEnumerable,ce=K.splice,ue=function(e,t){return function(r){return e(t(r))}}(Object.keys,Object),de=Be(A,"DataView"),pe=Be(A,"Map"),fe=Be(A,"Promise"),le=Be(A,"Set"),he=Be(A,"WeakMap"),me=Be(Object,"create"),ve=Qe(de),ge=Qe(pe),ye=Qe(fe),ke=Qe(le),be=Qe(he),Te=ae?ae.prototype:void 0,we=Te?Te.valueOf:void 0,Se=Te?Te.toString:void 0;function Ce(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function _e(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function xe(e){var t=-1,r=e?e.length:0;for(this.clear();++t<r;){var n=e[t];this.set(n[0],n[1])}}function Re(e){var t=-1,r=e?e.length:0;for(this.__data__=new xe;++t<r;)this.add(e[t])}function Pe(e){this.__data__=new _e(e)}function Ee(e,t){var r=Ye(e)||Ze(e)?function(e,t){for(var r=-1,n=Array(e);++r<e;)n[r]=t(r);return n}(e.length,String):[],n=r.length,i=!!n;for(var a in e)!t&&!re.call(e,a)||i&&("length"==a||Ve(a,n))||r.push(a);return r}function Ie(e,t){for(var r=e.length;r--;)if(Xe(e[r][0],t))return r;return-1}function Me(e,t){for(var r=0,n=(t=Je(t,e)?[t]:Ne(t)).length;null!=e&&r<n;)e=e[qe(t[r++])];return r&&r==n?e:void 0}function Oe(e,t){return null!=e&&t in Object(e)}function je(e,t,r,n,i){return e===t||(null==e||null==t||!nt(e)&&!it(t)?e!=e&&t!=t:function(e,t,r,n,i,a){var c=Ye(e),u=Ye(t),m=p,v=p;c||(m=(m=We(e))==d?k:m);u||(v=(v=We(t))==d?k:v);var x=m==k&&!$(e),R=v==k&&!$(t),P=m==v;if(P&&!x)return a||(a=new Pe),c||ot(e)?Ue(e,t,r,n,i,a):function(e,t,r,n,i,a,c){switch(r){case _:if(e.byteLength!=t.byteLength||e.byteOffset!=t.byteOffset)return!1;e=e.buffer,t=t.buffer;case C:return!(e.byteLength!=t.byteLength||!n(new oe(e),new oe(t)));case f:case l:case y:return Xe(+e,+t);case h:return e.name==t.name&&e.message==t.message;case b:case w:return e==t+"";case g:var u=q;case T:var d=a&s;if(u||(u=Q),e.size!=t.size&&!d)return!1;var p=c.get(e);if(p)return p==t;a|=o,c.set(e,t);var m=Ue(u(e),u(t),n,i,a,c);return c.delete(e),m;case S:if(we)return we.call(e)==we.call(t)}return!1}(e,t,m,r,n,i,a);if(!(i&s)){var E=x&&re.call(e,"__wrapped__"),I=R&&re.call(t,"__wrapped__");if(E||I){var M=E?e.value():e,O=I?t.value():t;return a||(a=new Pe),r(M,O,n,i,a)}}if(!P)return!1;return a||(a=new Pe),function(e,t,r,n,i,a){var o=i&s,c=st(e),u=c.length,d=st(t).length;if(u!=d&&!o)return!1;for(var p=u;p--;){var f=c[p];if(!(o?f in t:re.call(t,f)))return!1}var l=a.get(e);if(l&&a.get(t))return l==t;var h=!0;a.set(e,t),a.set(t,e);for(var m=o;++p<u;){f=c[p];var v=e[f],g=t[f];if(n)var y=o?n(g,v,f,t,e,a):n(v,g,f,e,t,a);if(!(void 0===y?v===g||r(v,g,n,i,a):y)){h=!1;break}m||(m="constructor"==f)}if(h&&!m){var k=e.constructor,b=t.constructor;k!=b&&"constructor"in e&&"constructor"in t&&!("function"==typeof k&&k instanceof k&&"function"==typeof b&&b instanceof b)&&(h=!1)}return a.delete(e),a.delete(t),h}(e,t,r,n,i,a)}(e,t,je,r,n,i))}function De(e){return!(!nt(e)||function(e){return!!ee&&ee in e}(e))&&(tt(e)||$(e)?ie:M).test(Qe(e))}function Le(e){return"function"==typeof e?e:null==e?ct:"object"==typeof e?Ye(e)?function(e,t){if(Je(e)&&He(t))return ze(qe(e),t);return function(r){var n=function(e,t,r){var n=null==e?void 0:Me(e,t);return void 0===n?r:n}(r,e);return void 0===n&&n===t?function(e,t){return null!=e&&function(e,t,r){var n,i=-1,a=(t=Je(t,e)?[t]:Ne(t)).length;for(;++i<a;){var o=qe(t[i]);if(!(n=null!=e&&r(e,o)))break;e=e[o]}if(n)return n;return!!(a=e?e.length:0)&&rt(a)&&Ve(o,a)&&(Ye(e)||Ze(e))}(e,t,Oe)}(r,e):je(t,n,void 0,o|s)}}(e[0],e[1]):function(e){var t=function(e){var t=st(e),r=t.length;for(;r--;){var n=t[r],i=e[n];t[r]=[n,i,He(i)]}return t}(e);if(1==t.length&&t[0][2])return ze(t[0][0],t[0][1]);return function(r){return r===e||function(e,t,r,n){var i=r.length,a=i,c=!n;if(null==e)return!a;for(e=Object(e);i--;){var u=r[i];if(c&&u[2]?u[1]!==e[u[0]]:!(u[0]in e))return!1}for(;++i<a;){var d=(u=r[i])[0],p=e[d],f=u[1];if(c&&u[2]){if(void 0===p&&!(d in e))return!1}else{var l=new Pe;if(n)var h=n(p,f,d,e,t,l);if(!(void 0===h?je(f,p,n,o|s,l):h))return!1}}return!0}(r,e,t)}}(e):function(e){return Je(e)?function(e){return function(t){return null==t?void 0:t[e]}}(qe(e)):function(e){return function(t){return Me(t,e)}}(e)}(e)}function Ae(e){if(!function(e){var t=e&&e.constructor,r="function"==typeof t&&t.prototype||Z;return e===r}(e))return ue(e);var t=[];for(var r in Object(e))re.call(e,r)&&"constructor"!=r&&t.push(r);return t}function Ne(e){return Ye(e)?e:$e(e)}Ce.prototype.clear=function(){this.__data__=me?me(null):{}},Ce.prototype.delete=function(e){return this.has(e)&&delete this.__data__[e]},Ce.prototype.get=function(e){var t=this.__data__;if(me){var r=t[e];return r===a?void 0:r}return re.call(t,e)?t[e]:void 0},Ce.prototype.has=function(e){var t=this.__data__;return me?void 0!==t[e]:re.call(t,e)},Ce.prototype.set=function(e,t){return this.__data__[e]=me&&void 0===t?a:t,this},_e.prototype.clear=function(){this.__data__=[]},_e.prototype.delete=function(e){var t=this.__data__,r=Ie(t,e);return!(r<0||(r==t.length-1?t.pop():ce.call(t,r,1),0))},_e.prototype.get=function(e){var t=this.__data__,r=Ie(t,e);return r<0?void 0:t[r][1]},_e.prototype.has=function(e){return Ie(this.__data__,e)>-1},_e.prototype.set=function(e,t){var r=this.__data__,n=Ie(r,e);return n<0?r.push([e,t]):r[n][1]=t,this},xe.prototype.clear=function(){this.__data__={hash:new Ce,map:new(pe||_e),string:new Ce}},xe.prototype.delete=function(e){return Ge(this,e).delete(e)},xe.prototype.get=function(e){return Ge(this,e).get(e)},xe.prototype.has=function(e){return Ge(this,e).has(e)},xe.prototype.set=function(e,t){return Ge(this,e).set(e,t),this},Re.prototype.add=Re.prototype.push=function(e){return this.__data__.set(e,a),this},Re.prototype.has=function(e){return this.__data__.has(e)},Pe.prototype.clear=function(){this.__data__=new _e},Pe.prototype.delete=function(e){return this.__data__.delete(e)},Pe.prototype.get=function(e){return this.__data__.get(e)},Pe.prototype.has=function(e){return this.__data__.has(e)},Pe.prototype.set=function(e,t){var r=this.__data__;if(r instanceof _e){var i=r.__data__;if(!pe||i.length<n-1)return i.push([e,t]),this;r=this.__data__=new xe(i)}return r.set(e,t),this};var Fe=le&&1/Q(new le([,-0]))[1]==c?function(e){return new le(e)}:function(){};function Ue(e,t,r,n,i,a){var c=i&s,u=e.length,d=t.length;if(u!=d&&!(c&&d>u))return!1;var p=a.get(e);if(p&&a.get(t))return p==t;var f=-1,l=!0,h=i&o?new Re:void 0;for(a.set(e,t),a.set(t,e);++f<u;){var m=e[f],v=t[f];if(n)var g=c?n(v,m,f,t,e,a):n(m,v,f,e,t,a);if(void 0!==g){if(g)continue;l=!1;break}if(h){if(!J(t,function(e,t){if(!h.has(t)&&(m===e||r(m,e,n,i,a)))return h.add(t)})){l=!1;break}}else if(m!==v&&!r(m,v,n,i,a)){l=!1;break}}return a.delete(e),a.delete(t),l}function Ge(e,t){var r=e.__data__;return function(e){var t=typeof e;return"string"==t||"number"==t||"symbol"==t||"boolean"==t?"__proto__"!==e:null===e}(t)?r["string"==typeof t?"string":"hash"]:r.map}function Be(e,t){var r=function(e,t){return null==e?void 0:e[t]}(e,t);return De(r)?r:void 0}var We=function(e){return ne.call(e)};function Ve(e,t){return!!(t=null==t?u:t)&&("number"==typeof e||O.test(e))&&e>-1&&e%1==0&&e<t}function Je(e,t){if(Ye(e))return!1;var r=typeof e;return!("number"!=r&&"symbol"!=r&&"boolean"!=r&&null!=e&&!at(e))||(R.test(e)||!x.test(e)||null!=t&&e in Object(t))}function He(e){return e==e&&!nt(e)}function ze(e,t){return function(r){return null!=r&&(r[e]===t&&(void 0!==t||e in Object(r)))}}(de&&We(new de(new ArrayBuffer(1)))!=_||pe&&We(new pe)!=g||fe&&"[object Promise]"!=We(fe.resolve())||le&&We(new le)!=T||he&&"[object WeakMap]"!=We(new he))&&(We=function(e){var t=ne.call(e),r=t==k?e.constructor:void 0,n=r?Qe(r):void 0;if(n)switch(n){case ve:return _;case ge:return g;case ye:return"[object Promise]";case ke:return T;case be:return"[object WeakMap]"}return t});var $e=Ke(function(e){e=function(e){return null==e?"":function(e){if("string"==typeof e)return e;if(at(e))return Se?Se.call(e):"";var t=e+"";return"0"==t&&1/e==-c?"-0":t}(e)}(e);var t=[];return P.test(e)&&t.push(""),e.replace(E,function(e,r,n,i){t.push(n?i.replace(I,"$1"):r||e)}),t});function qe(e){if("string"==typeof e||at(e))return e;var t=e+"";return"0"==t&&1/e==-c?"-0":t}function Qe(e){if(null!=e){try{return te.call(e)}catch(e){}try{return e+""}catch(e){}}return""}function Ke(e,t){if("function"!=typeof e||t&&"function"!=typeof t)throw new TypeError(i);var r=function(){var n=arguments,i=t?t.apply(this,n):n[0],a=r.cache;if(a.has(i))return a.get(i);var o=e.apply(this,n);return r.cache=a.set(i,o),o};return r.cache=new(Ke.Cache||xe),r}function Xe(e,t){return e===t||e!=e&&t!=t}function Ze(e){return function(e){return it(e)&&et(e)}(e)&&re.call(e,"callee")&&(!se.call(e,"callee")||ne.call(e)==d)}Ke.Cache=xe;var Ye=Array.isArray;function et(e){return null!=e&&rt(e.length)&&!tt(e)}function tt(e){var t=nt(e)?ne.call(e):"";return t==m||t==v}function rt(e){return"number"==typeof e&&e>-1&&e%1==0&&e<=u}function nt(e){var t=typeof e;return!!e&&("object"==t||"function"==t)}function it(e){return!!e&&"object"==typeof e}function at(e){return"symbol"==typeof e||it(e)&&ne.call(e)==S}var ot=B?function(e){return function(t){return e(t)}}(B):function(e){return it(e)&&rt(e.length)&&!!j[ne.call(e)]};function st(e){return et(e)?Ee(e):Ae(e)}function ct(e){return e}r.exports=function(e,t){return e&&e.length?function(e,t,r){var i=-1,a=W,o=e.length,s=!0,c=[],u=c;if(r)s=!1,a=V;else if(o>=n){var d=t?null:Fe(e);if(d)return Q(d);s=!1,a=z,u=new Re}else u=t?[]:c;e:for(;++i<o;){var p=e[i],f=t?t(p):p;if(p=r||0!==p?p:0,s&&f==f){for(var l=u.length;l--;)if(u[l]===f)continue e;t&&u.push(f),c.push(p)}else a(u,f,r)||(u!==c&&u.push(f),c.push(p))}return c}(e,Le(t)):[]}}).call(this,r(17),r(20)(e))},function(e,t){function r(t,n){return e.exports=r=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e},r(t,n)}e.exports=r},function(e,t){var r;r=function(){return this}();try{r=r||Function("return this")()||(0,eval)("this")}catch(e){"object"==typeof window&&(r=window)}e.exports=r},function(e,t,r){var n=r(4),i=r(16),a=r(39),o=r(40);function s(t){var r="function"==typeof Map?new Map:void 0;return e.exports=s=function(e){if(null===e||!a(e))return e;if("function"!=typeof e)throw new TypeError("Super expression must either be null or a function");if(void 0!==r){if(r.has(e))return r.get(e);r.set(e,t)}function t(){return o(e,arguments,n(this).constructor)}return t.prototype=Object.create(e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),i(t,e)},s(t)}e.exports=s},function(e,t,r){"use strict";var n={generateIdentifier:function(){return Math.random().toString(36).substr(2,10)}};n.localCName=n.generateIdentifier(),n.splitLines=function(e){return e.trim().split("\n").map(function(e){return e.trim()})},n.splitSections=function(e){return e.split("\nm=").map(function(e,t){return(t>0?"m="+e:e).trim()+"\r\n"})},n.getDescription=function(e){var t=n.splitSections(e);return t&&t[0]},n.getMediaSections=function(e){var t=n.splitSections(e);return t.shift(),t},n.matchPrefix=function(e,t){return n.splitLines(e).filter(function(e){return 0===e.indexOf(t)})},n.parseCandidate=function(e){for(var t,r={foundation:(t=0===e.indexOf("a=candidate:")?e.substring(12).split(" "):e.substring(10).split(" "))[0],component:parseInt(t[1],10),protocol:t[2].toLowerCase(),priority:parseInt(t[3],10),ip:t[4],address:t[4],port:parseInt(t[5],10),type:t[7]},n=8;n<t.length;n+=2)switch(t[n]){case"raddr":r.relatedAddress=t[n+1];break;case"rport":r.relatedPort=parseInt(t[n+1],10);break;case"tcptype":r.tcpType=t[n+1];break;case"ufrag":r.ufrag=t[n+1],r.usernameFragment=t[n+1];break;default:r[t[n]]=t[n+1]}return r},n.writeCandidate=function(e){var t=[];t.push(e.foundation),t.push(e.component),t.push(e.protocol.toUpperCase()),t.push(e.priority),t.push(e.address||e.ip),t.push(e.port);var r=e.type;return t.push("typ"),t.push(r),"host"!==r&&e.relatedAddress&&e.relatedPort&&(t.push("raddr"),t.push(e.relatedAddress),t.push("rport"),t.push(e.relatedPort)),e.tcpType&&"tcp"===e.protocol.toLowerCase()&&(t.push("tcptype"),t.push(e.tcpType)),(e.usernameFragment||e.ufrag)&&(t.push("ufrag"),t.push(e.usernameFragment||e.ufrag)),"candidate:"+t.join(" ")},n.parseIceOptions=function(e){return e.substr(14).split(" ")},n.parseRtpMap=function(e){var t=e.substr(9).split(" "),r={payloadType:parseInt(t.shift(),10)};return t=t[0].split("/"),r.name=t[0],r.clockRate=parseInt(t[1],10),r.channels=3===t.length?parseInt(t[2],10):1,r.numChannels=r.channels,r},n.writeRtpMap=function(e){var t=e.payloadType;void 0!==e.preferredPayloadType&&(t=e.preferredPayloadType);var r=e.channels||e.numChannels||1;return"a=rtpmap:"+t+" "+e.name+"/"+e.clockRate+(1!==r?"/"+r:"")+"\r\n"},n.parseExtmap=function(e){var t=e.substr(9).split(" ");return{id:parseInt(t[0],10),direction:t[0].indexOf("/")>0?t[0].split("/")[1]:"sendrecv",uri:t[1]}},n.writeExtmap=function(e){return"a=extmap:"+(e.id||e.preferredId)+(e.direction&&"sendrecv"!==e.direction?"/"+e.direction:"")+" "+e.uri+"\r\n"},n.parseFmtp=function(e){for(var t,r={},n=e.substr(e.indexOf(" ")+1).split(";"),i=0;i<n.length;i++)r[(t=n[i].trim().split("="))[0].trim()]=t[1];return r},n.writeFmtp=function(e){var t="",r=e.payloadType;if(void 0!==e.preferredPayloadType&&(r=e.preferredPayloadType),e.parameters&&Object.keys(e.parameters).length){var n=[];Object.keys(e.parameters).forEach(function(t){e.parameters[t]?n.push(t+"="+e.parameters[t]):n.push(t)}),t+="a=fmtp:"+r+" "+n.join(";")+"\r\n"}return t},n.parseRtcpFb=function(e){var t=e.substr(e.indexOf(" ")+1).split(" ");return{type:t.shift(),parameter:t.join(" ")}},n.writeRtcpFb=function(e){var t="",r=e.payloadType;return void 0!==e.preferredPayloadType&&(r=e.preferredPayloadType),e.rtcpFeedback&&e.rtcpFeedback.length&&e.rtcpFeedback.forEach(function(e){t+="a=rtcp-fb:"+r+" "+e.type+(e.parameter&&e.parameter.length?" "+e.parameter:"")+"\r\n"}),t},n.parseSsrcMedia=function(e){var t=e.indexOf(" "),r={ssrc:parseInt(e.substr(7,t-7),10)},n=e.indexOf(":",t);return n>-1?(r.attribute=e.substr(t+1,n-t-1),r.value=e.substr(n+1)):r.attribute=e.substr(t+1),r},n.parseSsrcGroup=function(e){var t=e.substr(13).split(" ");return{semantics:t.shift(),ssrcs:t.map(function(e){return parseInt(e,10)})}},n.getMid=function(e){var t=n.matchPrefix(e,"a=mid:")[0];if(t)return t.substr(6)},n.parseFingerprint=function(e){var t=e.substr(14).split(" ");return{algorithm:t[0].toLowerCase(),value:t[1]}},n.getDtlsParameters=function(e,t){return{role:"auto",fingerprints:n.matchPrefix(e+t,"a=fingerprint:").map(n.parseFingerprint)}},n.writeDtlsParameters=function(e,t){var r="a=setup:"+t+"\r\n";return e.fingerprints.forEach(function(e){r+="a=fingerprint:"+e.algorithm+" "+e.value+"\r\n"}),r},n.getIceParameters=function(e,t){var r=n.splitLines(e);return{usernameFragment:(r=r.concat(n.splitLines(t))).filter(function(e){return 0===e.indexOf("a=ice-ufrag:")})[0].substr(12),password:r.filter(function(e){return 0===e.indexOf("a=ice-pwd:")})[0].substr(10)}},n.writeIceParameters=function(e){return"a=ice-ufrag:"+e.usernameFragment+"\r\na=ice-pwd:"+e.password+"\r\n"},n.parseRtpParameters=function(e){for(var t={codecs:[],headerExtensions:[],fecMechanisms:[],rtcp:[]},r=n.splitLines(e)[0].split(" "),i=3;i<r.length;i++){var a=r[i],o=n.matchPrefix(e,"a=rtpmap:"+a+" ")[0];if(o){var s=n.parseRtpMap(o),c=n.matchPrefix(e,"a=fmtp:"+a+" ");switch(s.parameters=c.length?n.parseFmtp(c[0]):{},s.rtcpFeedback=n.matchPrefix(e,"a=rtcp-fb:"+a+" ").map(n.parseRtcpFb),t.codecs.push(s),s.name.toUpperCase()){case"RED":case"ULPFEC":t.fecMechanisms.push(s.name.toUpperCase())}}}return n.matchPrefix(e,"a=extmap:").forEach(function(e){t.headerExtensions.push(n.parseExtmap(e))}),t},n.writeRtpDescription=function(e,t){var r="";r+="m="+e+" ",r+=t.codecs.length>0?"9":"0",r+=" UDP/TLS/RTP/SAVPF ",r+=t.codecs.map(function(e){return void 0!==e.preferredPayloadType?e.preferredPayloadType:e.payloadType}).join(" ")+"\r\n",r+="c=IN IP4 0.0.0.0\r\n",r+="a=rtcp:9 IN IP4 0.0.0.0\r\n",t.codecs.forEach(function(e){r+=n.writeRtpMap(e),r+=n.writeFmtp(e),r+=n.writeRtcpFb(e)});var i=0;return t.codecs.forEach(function(e){e.maxptime>i&&(i=e.maxptime)}),i>0&&(r+="a=maxptime:"+i+"\r\n"),r+="a=rtcp-mux\r\n",t.headerExtensions&&t.headerExtensions.forEach(function(e){r+=n.writeExtmap(e)}),r},n.parseRtpEncodingParameters=function(e){var t,r=[],i=n.parseRtpParameters(e),a=-1!==i.fecMechanisms.indexOf("RED"),o=-1!==i.fecMechanisms.indexOf("ULPFEC"),s=n.matchPrefix(e,"a=ssrc:").map(function(e){return n.parseSsrcMedia(e)}).filter(function(e){return"cname"===e.attribute}),c=s.length>0&&s[0].ssrc,u=n.matchPrefix(e,"a=ssrc-group:FID").map(function(e){return e.substr(17).split(" ").map(function(e){return parseInt(e,10)})});u.length>0&&u[0].length>1&&u[0][0]===c&&(t=u[0][1]),i.codecs.forEach(function(e){if("RTX"===e.name.toUpperCase()&&e.parameters.apt){var n={ssrc:c,codecPayloadType:parseInt(e.parameters.apt,10)};c&&t&&(n.rtx={ssrc:t}),r.push(n),a&&((n=JSON.parse(JSON.stringify(n))).fec={ssrc:c,mechanism:o?"red+ulpfec":"red"},r.push(n))}}),0===r.length&&c&&r.push({ssrc:c});var d=n.matchPrefix(e,"b=");return d.length&&(d=0===d[0].indexOf("b=TIAS:")?parseInt(d[0].substr(7),10):0===d[0].indexOf("b=AS:")?1e3*parseInt(d[0].substr(5),10)*.95-16e3:void 0,r.forEach(function(e){e.maxBitrate=d})),r},n.parseRtcpParameters=function(e){var t={},r=n.matchPrefix(e,"a=ssrc:").map(function(e){return n.parseSsrcMedia(e)}).filter(function(e){return"cname"===e.attribute})[0];r&&(t.cname=r.value,t.ssrc=r.ssrc);var i=n.matchPrefix(e,"a=rtcp-rsize");t.reducedSize=i.length>0,t.compound=0===i.length;var a=n.matchPrefix(e,"a=rtcp-mux");return t.mux=a.length>0,t},n.parseMsid=function(e){var t,r=n.matchPrefix(e,"a=msid:");if(1===r.length)return{stream:(t=r[0].substr(7).split(" "))[0],track:t[1]};var i=n.matchPrefix(e,"a=ssrc:").map(function(e){return n.parseSsrcMedia(e)}).filter(function(e){return"msid"===e.attribute});return i.length>0?{stream:(t=i[0].value.split(" "))[0],track:t[1]}:void 0},n.generateSessionId=function(){return Math.random().toString().substr(2,21)},n.writeSessionBoilerplate=function(e,t,r){var i,a=void 0!==t?t:2;return i=e||n.generateSessionId(),"v=0\r\no="+(r||"thisisadapterortc")+" "+i+" "+a+" IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\n"},n.writeMediaSection=function(e,t,r,i){var a=n.writeRtpDescription(e.kind,t);if(a+=n.writeIceParameters(e.iceGatherer.getLocalParameters()),a+=n.writeDtlsParameters(e.dtlsTransport.getLocalParameters(),"offer"===r?"actpass":"active"),a+="a=mid:"+e.mid+"\r\n",e.direction?a+="a="+e.direction+"\r\n":e.rtpSender&&e.rtpReceiver?a+="a=sendrecv\r\n":e.rtpSender?a+="a=sendonly\r\n":e.rtpReceiver?a+="a=recvonly\r\n":a+="a=inactive\r\n",e.rtpSender){var o="msid:"+i.id+" "+e.rtpSender.track.id+"\r\n";a+="a="+o,a+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" "+o,e.sendEncodingParameters[0].rtx&&(a+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" "+o,a+="a=ssrc-group:FID "+e.sendEncodingParameters[0].ssrc+" "+e.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return a+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" cname:"+n.localCName+"\r\n",e.rtpSender&&e.sendEncodingParameters[0].rtx&&(a+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" cname:"+n.localCName+"\r\n"),a},n.getDirection=function(e,t){for(var r=n.splitLines(e),i=0;i<r.length;i++)switch(r[i]){case"a=sendrecv":case"a=sendonly":case"a=recvonly":case"a=inactive":return r[i].substr(2)}return t?n.getDirection(t):"sendrecv"},n.getKind=function(e){return n.splitLines(e)[0].split(" ")[0].substr(2)},n.isRejected=function(e){return"0"===e.split(" ",2)[1]},n.parseMLine=function(e){var t=n.splitLines(e)[0].substr(2).split(" ");return{kind:t[0],port:parseInt(t[1],10),protocol:t[2],fmt:t.slice(3).join(" ")}},n.parseOLine=function(e){var t=n.matchPrefix(e,"o=")[0].substr(2).split(" ");return{username:t[0],sessionId:t[1],sessionVersion:parseInt(t[2],10),netType:t[3],addressType:t[4],address:t[5]}},n.isValidSDP=function(e){if("string"!=typeof e||0===e.length)return!1;for(var t=n.splitLines(e),r=0;r<t.length;r++)if(t[r].length<2||"="!==t[r].charAt(1))return!1;return!0},e.exports=n},function(e,t){e.exports=function(e){return e.webpackPolyfill||(e.deprecate=function(){},e.paths=[],e.children||(e.children=[]),Object.defineProperty(e,"loaded",{enumerable:!0,get:function(){return e.l}}),Object.defineProperty(e,"id",{enumerable:!0,get:function(){return e.i}}),e.webpackPolyfill=1),e}},function(e,t){var r,n,i=e.exports={};function a(){throw new Error("setTimeout has not been defined")}function o(){throw new Error("clearTimeout has not been defined")}function s(e){if(r===setTimeout)return setTimeout(e,0);if((r===a||!r)&&setTimeout)return r=setTimeout,setTimeout(e,0);try{return r(e,0)}catch(t){try{return r.call(null,e,0)}catch(t){return r.call(this,e,0)}}}!function(){try{r="function"==typeof setTimeout?setTimeout:a}catch(e){r=a}try{n="function"==typeof clearTimeout?clearTimeout:o}catch(e){n=o}}();var c,u=[],d=!1,p=-1;function f(){d&&c&&(d=!1,c.length?u=c.concat(u):p=-1,u.length&&l())}function l(){if(!d){var e=s(f);d=!0;for(var t=u.length;t;){for(c=u,u=[];++p<t;)c&&c[p].run();p=-1,t=u.length}c=null,d=!1,function(e){if(n===clearTimeout)return clearTimeout(e);if((n===o||!n)&&clearTimeout)return n=clearTimeout,clearTimeout(e);try{n(e)}catch(t){try{return n.call(null,e)}catch(t){return n.call(this,e)}}}(e)}}function h(e,t){this.fun=e,this.array=t}function m(){}i.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var r=1;r<arguments.length;r++)t[r-1]=arguments[r];u.push(new h(e,t)),1!==u.length||d||s(l)},h.prototype.run=function(){this.fun.apply(null,this.array)},i.title="browser",i.browser=!0,i.env={},i.argv=[],i.version="",i.versions={},i.on=m,i.addListener=m,i.once=m,i.off=m,i.removeListener=m,i.removeAllListeners=m,i.emit=m,i.prependListener=m,i.prependOnceListener=m,i.listeners=function(e){return[]},i.binding=function(e){throw new Error("process.binding is not supported")},i.cwd=function(){return"/"},i.chdir=function(e){throw new Error("process.chdir is not supported")},i.umask=function(){return 0}},function(e,t){var r=e.exports={v:[{name:"version",reg:/^(\d*)$/}],o:[{name:"origin",reg:/^(\S*) (\d*) (\d*) (\S*) IP(\d) (\S*)/,names:["username","sessionId","sessionVersion","netType","ipVer","address"],format:"%s %s %d %s IP%d %s"}],s:[{name:"name"}],i:[{name:"description"}],u:[{name:"uri"}],e:[{name:"email"}],p:[{name:"phone"}],z:[{name:"timezones"}],r:[{name:"repeats"}],t:[{name:"timing",reg:/^(\d*) (\d*)/,names:["start","stop"],format:"%d %d"}],c:[{name:"connection",reg:/^IN IP(\d) (\S*)/,names:["version","ip"],format:"IN IP%d %s"}],b:[{push:"bandwidth",reg:/^(TIAS|AS|CT|RR|RS):(\d*)/,names:["type","limit"],format:"%s:%s"}],m:[{reg:/^(\w*) (\d*) ([\w\/]*)(?: (.*))?/,names:["type","port","protocol","payloads"],format:"%s %d %s %s"}],a:[{push:"rtp",reg:/^rtpmap:(\d*) ([\w\-\.]*)(?:\s*\/(\d*)(?:\s*\/(\S*))?)?/,names:["payload","codec","rate","encoding"],format:function(e){return e.encoding?"rtpmap:%d %s/%s/%s":e.rate?"rtpmap:%d %s/%s":"rtpmap:%d %s"}},{push:"fmtp",reg:/^fmtp:(\d*) ([\S| ]*)/,names:["payload","config"],format:"fmtp:%d %s"},{name:"control",reg:/^control:(.*)/,format:"control:%s"},{name:"rtcp",reg:/^rtcp:(\d*)(?: (\S*) IP(\d) (\S*))?/,names:["port","netType","ipVer","address"],format:function(e){return null!=e.address?"rtcp:%d %s IP%d %s":"rtcp:%d"}},{push:"rtcpFbTrrInt",reg:/^rtcp-fb:(\*|\d*) trr-int (\d*)/,names:["payload","value"],format:"rtcp-fb:%d trr-int %d"},{push:"rtcpFb",reg:/^rtcp-fb:(\*|\d*) ([\w-_]*)(?: ([\w-_]*))?/,names:["payload","type","subtype"],format:function(e){return null!=e.subtype?"rtcp-fb:%s %s %s":"rtcp-fb:%s %s"}},{push:"ext",reg:/^extmap:(\d+)(?:\/(\w+))? (\S*)(?: (\S*))?/,names:["value","direction","uri","config"],format:function(e){return"extmap:%d"+(e.direction?"/%s":"%v")+" %s"+(e.config?" %s":"")}},{push:"crypto",reg:/^crypto:(\d*) ([\w_]*) (\S*)(?: (\S*))?/,names:["id","suite","config","sessionConfig"],format:function(e){return null!=e.sessionConfig?"crypto:%d %s %s %s":"crypto:%d %s %s"}},{name:"setup",reg:/^setup:(\w*)/,format:"setup:%s"},{name:"mid",reg:/^mid:([^\s]*)/,format:"mid:%s"},{name:"msid",reg:/^msid:(.*)/,format:"msid:%s"},{name:"ptime",reg:/^ptime:(\d*)/,format:"ptime:%d"},{name:"maxptime",reg:/^maxptime:(\d*)/,format:"maxptime:%d"},{name:"direction",reg:/^(sendrecv|recvonly|sendonly|inactive)/},{name:"icelite",reg:/^(ice-lite)/},{name:"iceUfrag",reg:/^ice-ufrag:(\S*)/,format:"ice-ufrag:%s"},{name:"icePwd",reg:/^ice-pwd:(\S*)/,format:"ice-pwd:%s"},{name:"fingerprint",reg:/^fingerprint:(\S*) (\S*)/,names:["type","hash"],format:"fingerprint:%s %s"},{push:"candidates",reg:/^candidate:(\S*) (\d*) (\S*) (\d*) (\S*) (\d*) typ (\S*)(?: raddr (\S*) rport (\d*))?(?: tcptype (\S*))?(?: generation (\d*))?(?: network-id (\d*))?(?: network-cost (\d*))?/,names:["foundation","component","transport","priority","ip","port","type","raddr","rport","tcptype","generation","network-id","network-cost"],format:function(e){var t="candidate:%s %d %s %d %s %d typ %s";return t+=null!=e.raddr?" raddr %s rport %d":"%v%v",t+=null!=e.tcptype?" tcptype %s":"%v",null!=e.generation&&(t+=" generation %d"),t+=null!=e["network-id"]?" network-id %d":"%v",t+=null!=e["network-cost"]?" network-cost %d":"%v"}},{name:"endOfCandidates",reg:/^(end-of-candidates)/},{name:"remoteCandidates",reg:/^remote-candidates:(.*)/,format:"remote-candidates:%s"},{name:"iceOptions",reg:/^ice-options:(\S*)/,format:"ice-options:%s"},{push:"ssrcs",reg:/^ssrc:(\d*) ([\w_-]*)(?::(.*))?/,names:["id","attribute","value"],format:function(e){var t="ssrc:%d";return null!=e.attribute&&(t+=" %s",null!=e.value&&(t+=":%s")),t}},{push:"ssrcGroups",reg:/^ssrc-group:([\x21\x23\x24\x25\x26\x27\x2A\x2B\x2D\x2E\w]*) (.*)/,names:["semantics","ssrcs"],format:"ssrc-group:%s %s"},{name:"msidSemantic",reg:/^msid-semantic:\s?(\w*) (\S*)/,names:["semantic","token"],format:"msid-semantic: %s %s"},{push:"groups",reg:/^group:(\w*) (.*)/,names:["type","mids"],format:"group:%s %s"},{name:"rtcpMux",reg:/^(rtcp-mux)/},{name:"rtcpRsize",reg:/^(rtcp-rsize)/},{name:"sctpmap",reg:/^sctpmap:([\w_\/]*) (\S*)(?: (\S*))?/,names:["sctpmapNumber","app","maxMessageSize"],format:function(e){return null!=e.maxMessageSize?"sctpmap:%s %s %s":"sctpmap:%s %s"}},{name:"xGoogleFlag",reg:/^x-google-flag:([^\s]*)/,format:"x-google-flag:%s"},{push:"rids",reg:/^rid:([\d\w]+) (\w+)(?: ([\S| ]*))?/,names:["id","direction","params"],format:function(e){return e.params?"rid:%s %s %s":"rid:%s %s"}},{push:"imageattrs",reg:new RegExp("^imageattr:(\\d+|\\*)[\\s\\t]+(send|recv)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*)(?:[\\s\\t]+(recv|send)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*))?"),names:["pt","dir1","attrs1","dir2","attrs2"],format:function(e){return"imageattr:%s %s %s"+(e.dir2?" %s %s":"")}},{name:"simulcast",reg:new RegExp("^simulcast:(send|recv) ([a-zA-Z0-9\\-_~;,]+)(?:\\s?(send|recv) ([a-zA-Z0-9\\-_~;,]+))?$"),names:["dir1","list1","dir2","list2"],format:function(e){return"simulcast:%s %s"+(e.dir2?" %s %s":"")}},{name:"simulcast_03",reg:/^simulcast:[\s\t]+([\S+\s\t]+)$/,names:["value"],format:"simulcast: %s"},{name:"framerate",reg:/^framerate:(\d+(?:$|\.\d+))/,format:"framerate:%s"},{name:"sourceFilter",reg:/^source-filter: *(excl|incl) (\S*) (IP4|IP6|\*) (\S*) (.*)/,names:["filterMode","netType","addressTypes","destAddress","srcList"],format:"source-filter: %s %s %s %s %s"},{name:"bundleOnly",reg:/^(bundle-only)/},{name:"label",reg:/^label:(.+)/,format:"label:%s"},{name:"sctpPort",reg:/^sctp-port:(\d+)$/,format:"sctp-port:%s"},{name:"maxMessageSize",reg:/^max-message-size:(\d+)$/,format:"max-message-size:%s"},{push:"invalid",names:["value"]}]};Object.keys(r).forEach(function(e){r[e].forEach(function(e){e.reg||(e.reg=/(.*)/),e.format||(e.format="%s")})})},function(e,t,r){(function(t){function r(e){var t=a([["iOS",/iP(hone|od|ad)/],["Android OS",/Android/],["BlackBerry OS",/BlackBerry|BB10/],["Windows Mobile",/IEMobile/],["Amazon OS",/Kindle/],["Windows 3.11",/Win16/],["Windows 95",/(Windows 95)|(Win95)|(Windows_95)/],["Windows 98",/(Windows 98)|(Win98)/],["Windows 2000",/(Windows NT 5.0)|(Windows 2000)/],["Windows XP",/(Windows NT 5.1)|(Windows XP)/],["Windows Server 2003",/(Windows NT 5.2)/],["Windows Vista",/(Windows NT 6.0)/],["Windows 7",/(Windows NT 6.1)/],["Windows 8",/(Windows NT 6.2)/],["Windows 8.1",/(Windows NT 6.3)/],["Windows 10",/(Windows NT 10.0)/],["Windows ME",/Windows ME/],["Open BSD",/OpenBSD/],["Sun OS",/SunOS/],["Linux",/(Linux)|(X11)/],["Mac OS",/(Mac_PowerPC)|(Macintosh)/],["QNX",/QNX/],["BeOS",/BeOS/],["OS/2",/OS\/2/],["Search Bot",/(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/]]).filter(function(t){return t.rule&&t.rule.test(e)})[0];return t?t.name:null}function n(){return void 0!==t&&t.version&&{name:"node",version:t.version.slice(1),os:t.platform}}function i(e){var t=a([["aol",/AOLShield\/([0-9\._]+)/],["edge",/Edge\/([0-9\._]+)/],["yandexbrowser",/YaBrowser\/([0-9\._]+)/],["vivaldi",/Vivaldi\/([0-9\.]+)/],["kakaotalk",/KAKAOTALK\s([0-9\.]+)/],["samsung",/SamsungBrowser\/([0-9\.]+)/],["chrome",/(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],["phantomjs",/PhantomJS\/([0-9\.]+)(:?\s|$)/],["crios",/CriOS\/([0-9\.]+)(:?\s|$)/],["firefox",/Firefox\/([0-9\.]+)(?:\s|$)/],["fxios",/FxiOS\/([0-9\.]+)/],["opera",/Opera\/([0-9\.]+)(?:\s|$)/],["opera",/OPR\/([0-9\.]+)(:?\s|$)$/],["ie",/Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],["ie",/MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],["ie",/MSIE\s(7\.0)/],["bb10",/BB10;\sTouch.*Version\/([0-9\.]+)/],["android",/Android\s([0-9\.]+)/],["ios",/Version\/([0-9\._]+).*Mobile.*Safari.*/],["safari",/Version\/([0-9\._]+).*Safari/],["facebook",/FBAV\/([0-9\.]+)/],["instagram",/Instagram\s([0-9\.]+)/],["ios-webview",/AppleWebKit\/([0-9\.]+).*Mobile/]]);if(!e)return null;var n=t.map(function(t){var r=t.rule.exec(e),n=r&&r[1].split(/[._]/).slice(0,3);return n&&n.length<3&&(n=n.concat(1==n.length?[0,0]:[0])),r&&{name:t.name,version:n.join(".")}}).filter(Boolean)[0]||null;return n&&(n.os=r(e)),/alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/i.test(e)&&((n=n||{}).bot=!0),n}function a(e){return e.map(function(e){return{name:e[0],rule:e[1]}})}e.exports={detect:function(){return"undefined"!=typeof navigator?i(navigator.userAgent):n()},detectOS:r,getNodeVersion:n,parseUserAgent:i}}).call(this,r(21))},function(e,t){e.exports=function(e,t,r){return t in e?Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!0}):e[t]=r,e}},function(e,t,r){var n=function(){return this||"object"==typeof self&&self}()||Function("return this")(),i=n.regeneratorRuntime&&Object.getOwnPropertyNames(n).indexOf("regeneratorRuntime")>=0,a=i&&n.regeneratorRuntime;if(n.regeneratorRuntime=void 0,e.exports=r(26),i)n.regeneratorRuntime=a;else try{delete n.regeneratorRuntime}catch(e){n.regeneratorRuntime=void 0}},function(e,t){!function(t){"use strict";var r,n=Object.prototype,i=n.hasOwnProperty,a="function"==typeof Symbol?Symbol:{},o=a.iterator||"@@iterator",s=a.asyncIterator||"@@asyncIterator",c=a.toStringTag||"@@toStringTag",u="object"==typeof e,d=t.regeneratorRuntime;if(d)u&&(e.exports=d);else{(d=t.regeneratorRuntime=u?e.exports:{}).wrap=b;var p="suspendedStart",f="suspendedYield",l="executing",h="completed",m={},v={};v[o]=function(){return this};var g=Object.getPrototypeOf,y=g&&g(g(M([])));y&&y!==n&&i.call(y,o)&&(v=y);var k=C.prototype=w.prototype=Object.create(v);S.prototype=k.constructor=C,C.constructor=S,C[c]=S.displayName="GeneratorFunction",d.isGeneratorFunction=function(e){var t="function"==typeof e&&e.constructor;return!!t&&(t===S||"GeneratorFunction"===(t.displayName||t.name))},d.mark=function(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,C):(e.__proto__=C,c in e||(e[c]="GeneratorFunction")),e.prototype=Object.create(k),e},d.awrap=function(e){return{__await:e}},_(x.prototype),x.prototype[s]=function(){return this},d.AsyncIterator=x,d.async=function(e,t,r,n){var i=new x(b(e,t,r,n));return d.isGeneratorFunction(t)?i:i.next().then(function(e){return e.done?e.value:i.next()})},_(k),k[c]="Generator",k[o]=function(){return this},k.toString=function(){return"[object Generator]"},d.keys=function(e){var t=[];for(var r in e)t.push(r);return t.reverse(),function r(){for(;t.length;){var n=t.pop();if(n in e)return r.value=n,r.done=!1,r}return r.done=!0,r}},d.values=M,I.prototype={constructor:I,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=r,this.done=!1,this.delegate=null,this.method="next",this.arg=r,this.tryEntries.forEach(E),!e)for(var t in this)"t"===t.charAt(0)&&i.call(this,t)&&!isNaN(+t.slice(1))&&(this[t]=r)},stop:function(){this.done=!0;var e=this.tryEntries[0].completion;if("throw"===e.type)throw e.arg;return this.rval},dispatchException:function(e){if(this.done)throw e;var t=this;function n(n,i){return s.type="throw",s.arg=e,t.next=n,i&&(t.method="next",t.arg=r),!!i}for(var a=this.tryEntries.length-1;a>=0;--a){var o=this.tryEntries[a],s=o.completion;if("root"===o.tryLoc)return n("end");if(o.tryLoc<=this.prev){var c=i.call(o,"catchLoc"),u=i.call(o,"finallyLoc");if(c&&u){if(this.prev<o.catchLoc)return n(o.catchLoc,!0);if(this.prev<o.finallyLoc)return n(o.finallyLoc)}else if(c){if(this.prev<o.catchLoc)return n(o.catchLoc,!0)}else{if(!u)throw new Error("try statement without catch or finally");if(this.prev<o.finallyLoc)return n(o.finallyLoc)}}}},abrupt:function(e,t){for(var r=this.tryEntries.length-1;r>=0;--r){var n=this.tryEntries[r];if(n.tryLoc<=this.prev&&i.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var a=n;break}}a&&("break"===e||"continue"===e)&&a.tryLoc<=t&&t<=a.finallyLoc&&(a=null);var o=a?a.completion:{};return o.type=e,o.arg=t,a?(this.method="next",this.next=a.finallyLoc,m):this.complete(o)},complete:function(e,t){if("throw"===e.type)throw e.arg;return"break"===e.type||"continue"===e.type?this.next=e.arg:"return"===e.type?(this.rval=this.arg=e.arg,this.method="return",this.next="end"):"normal"===e.type&&t&&(this.next=t),m},finish:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.finallyLoc===e)return this.complete(r.completion,r.afterLoc),E(r),m}},catch:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.tryLoc===e){var n=r.completion;if("throw"===n.type){var i=n.arg;E(r)}return i}}throw new Error("illegal catch attempt")},delegateYield:function(e,t,n){return this.delegate={iterator:M(e),resultName:t,nextLoc:n},"next"===this.method&&(this.arg=r),m}}}function b(e,t,r,n){var i=t&&t.prototype instanceof w?t:w,a=Object.create(i.prototype),o=new I(n||[]);return a._invoke=function(e,t,r){var n=p;return function(i,a){if(n===l)throw new Error("Generator is already running");if(n===h){if("throw"===i)throw a;return O()}for(r.method=i,r.arg=a;;){var o=r.delegate;if(o){var s=R(o,r);if(s){if(s===m)continue;return s}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(n===p)throw n=h,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);n=l;var c=T(e,t,r);if("normal"===c.type){if(n=r.done?h:f,c.arg===m)continue;return{value:c.arg,done:r.done}}"throw"===c.type&&(n=h,r.method="throw",r.arg=c.arg)}}}(e,r,o),a}function T(e,t,r){try{return{type:"normal",arg:e.call(t,r)}}catch(e){return{type:"throw",arg:e}}}function w(){}function S(){}function C(){}function _(e){["next","throw","return"].forEach(function(t){e[t]=function(e){return this._invoke(t,e)}})}function x(e){var t;this._invoke=function(r,n){function a(){return new Promise(function(t,a){!function t(r,n,a,o){var s=T(e[r],e,n);if("throw"!==s.type){var c=s.arg,u=c.value;return u&&"object"==typeof u&&i.call(u,"__await")?Promise.resolve(u.__await).then(function(e){t("next",e,a,o)},function(e){t("throw",e,a,o)}):Promise.resolve(u).then(function(e){c.value=e,a(c)},function(e){return t("throw",e,a,o)})}o(s.arg)}(r,n,t,a)})}return t=t?t.then(a,a):a()}}function R(e,t){var n=e.iterator[t.method];if(n===r){if(t.delegate=null,"throw"===t.method){if(e.iterator.return&&(t.method="return",t.arg=r,R(e,t),"throw"===t.method))return m;t.method="throw",t.arg=new TypeError("The iterator does not provide a 'throw' method")}return m}var i=T(n,e.iterator,t.arg);if("throw"===i.type)return t.method="throw",t.arg=i.arg,t.delegate=null,m;var a=i.arg;return a?a.done?(t[e.resultName]=a.value,t.next=e.nextLoc,"return"!==t.method&&(t.method="next",t.arg=r),t.delegate=null,m):a:(t.method="throw",t.arg=new TypeError("iterator result is not an object"),t.delegate=null,m)}function P(e){var t={tryLoc:e[0]};1 in e&&(t.catchLoc=e[1]),2 in e&&(t.finallyLoc=e[2],t.afterLoc=e[3]),this.tryEntries.push(t)}function E(e){var t=e.completion||{};t.type="normal",delete t.arg,e.completion=t}function I(e){this.tryEntries=[{tryLoc:"root"}],e.forEach(P,this),this.reset(!0)}function M(e){if(e){var t=e[o];if(t)return t.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var n=-1,a=function t(){for(;++n<e.length;)if(i.call(e,n))return t.value=e[n],t.done=!1,t;return t.value=r,t.done=!0,t};return a.next=a}}return{next:O}}function O(){return{value:r,done:!0}}}(function(){return this||"object"==typeof self&&self}()||Function("return this")())},function(e,t,r){"use strict";(function(t){var n=r(28);e.exports=n({window:t.window})}).call(this,r(17))},function(e,t,r){"use strict";var n=r(13);e.exports=function(e,t){var i=e&&e.window,a={shimChrome:!0,shimFirefox:!0,shimEdge:!0,shimSafari:!0};for(var o in t)hasOwnProperty.call(t,o)&&(a[o]=t[o]);var s=n.log,c=n.detectBrowser(i),u=r(29)||null,d=r(31)||null,p=r(35)||null,f=r(37)||null,l=r(38)||null,h={browserDetails:c,commonShim:l,extractVersion:n.extractVersion,disableLog:n.disableLog,disableWarnings:n.disableWarnings};switch(c.browser){case"chrome":if(!u||!u.shimPeerConnection||!a.shimChrome)return s("Chrome shim is not included in this adapter release."),h;s("adapter.js shimming chrome."),h.browserShim=u,l.shimCreateObjectURL(i),u.shimGetUserMedia(i),u.shimMediaStream(i),u.shimSourceObject(i),u.shimPeerConnection(i),u.shimOnTrack(i),u.shimAddTrackRemoveTrack(i),u.shimGetSendersWithDtmf(i),u.shimSenderReceiverGetStats(i),u.fixNegotiationNeeded(i),l.shimRTCIceCandidate(i),l.shimMaxMessageSize(i),l.shimSendThrowTypeError(i);break;case"firefox":if(!p||!p.shimPeerConnection||!a.shimFirefox)return s("Firefox shim is not included in this adapter release."),h;s("adapter.js shimming firefox."),h.browserShim=p,l.shimCreateObjectURL(i),p.shimGetUserMedia(i),p.shimSourceObject(i),p.shimPeerConnection(i),p.shimOnTrack(i),p.shimRemoveStream(i),p.shimSenderGetStats(i),p.shimReceiverGetStats(i),p.shimRTCDataChannel(i),l.shimRTCIceCandidate(i),l.shimMaxMessageSize(i),l.shimSendThrowTypeError(i);break;case"edge":if(!d||!d.shimPeerConnection||!a.shimEdge)return s("MS edge shim is not included in this adapter release."),h;s("adapter.js shimming edge."),h.browserShim=d,l.shimCreateObjectURL(i),d.shimGetUserMedia(i),d.shimPeerConnection(i),d.shimReplaceTrack(i),d.shimGetDisplayMedia(i),l.shimMaxMessageSize(i),l.shimSendThrowTypeError(i);break;case"safari":if(!f||!a.shimSafari)return s("Safari shim is not included in this adapter release."),h;s("adapter.js shimming safari."),h.browserShim=f,l.shimCreateObjectURL(i),f.shimRTCIceServerUrls(i),f.shimCreateOfferLegacy(i),f.shimCallbacksAPI(i),f.shimLocalStreamsAPI(i),f.shimRemoteStreamsAPI(i),f.shimTrackEventTransceiver(i),f.shimGetUserMedia(i),l.shimRTCIceCandidate(i),l.shimMaxMessageSize(i),l.shimSendThrowTypeError(i);break;default:s("Unsupported browser!")}return h}},function(e,t,r){"use strict";var n=r(13),i=n.log;function a(e,t,r){var n=r?"outbound-rtp":"inbound-rtp",i=new Map;if(null===t)return i;var a=[];return e.forEach(function(e){"track"===e.type&&e.trackIdentifier===t.id&&a.push(e)}),a.forEach(function(t){e.forEach(function(r){r.type===n&&r.trackId===t.id&&function e(t,r,n){r&&!n.has(r.id)&&(n.set(r.id,r),Object.keys(r).forEach(function(i){i.endsWith("Id")?e(t,t.get(r[i]),n):i.endsWith("Ids")&&r[i].forEach(function(r){e(t,t.get(r),n)})}))}(e,r,i)})}),i}e.exports={shimGetUserMedia:r(30),shimMediaStream:function(e){e.MediaStream=e.MediaStream||e.webkitMediaStream},shimOnTrack:function(e){if("object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype)n.wrapPeerConnectionEvent(e,"track",function(e){return e.transceiver||Object.defineProperty(e,"transceiver",{value:{receiver:e.receiver}}),e});else{Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(e){this._ontrack&&this.removeEventListener("track",this._ontrack),this.addEventListener("track",this._ontrack=e)},enumerable:!0,configurable:!0});var t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){var r=this;return r._ontrackpoly||(r._ontrackpoly=function(t){t.stream.addEventListener("addtrack",function(n){var i;i=e.RTCPeerConnection.prototype.getReceivers?r.getReceivers().find(function(e){return e.track&&e.track.id===n.track.id}):{track:n.track};var a=new Event("track");a.track=n.track,a.receiver=i,a.transceiver={receiver:i},a.streams=[t.stream],r.dispatchEvent(a)}),t.stream.getTracks().forEach(function(n){var i;i=e.RTCPeerConnection.prototype.getReceivers?r.getReceivers().find(function(e){return e.track&&e.track.id===n.id}):{track:n};var a=new Event("track");a.track=n,a.receiver=i,a.transceiver={receiver:i},a.streams=[t.stream],r.dispatchEvent(a)})},r.addEventListener("addstream",r._ontrackpoly)),t.apply(r,arguments)}}},shimGetSendersWithDtmf:function(e){if("object"==typeof e&&e.RTCPeerConnection&&!("getSenders"in e.RTCPeerConnection.prototype)&&"createDTMFSender"in e.RTCPeerConnection.prototype){var t=function(e,t){return{track:t,get dtmf(){return void 0===this._dtmf&&("audio"===t.kind?this._dtmf=e.createDTMFSender(t):this._dtmf=null),this._dtmf},_pc:e}};if(!e.RTCPeerConnection.prototype.getSenders){e.RTCPeerConnection.prototype.getSenders=function(){return this._senders=this._senders||[],this._senders.slice()};var r=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,n){var i=r.apply(this,arguments);return i||(i=t(this,e),this._senders.push(i)),i};var n=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){n.apply(this,arguments);var t=this._senders.indexOf(e);-1!==t&&this._senders.splice(t,1)}}var i=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){var r=this;r._senders=r._senders||[],i.apply(r,[e]),e.getTracks().forEach(function(e){r._senders.push(t(r,e))})};var a=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;t._senders=t._senders||[],a.apply(t,[e]),e.getTracks().forEach(function(e){var r=t._senders.find(function(t){return t.track===e});r&&t._senders.splice(t._senders.indexOf(r),1)})}}else if("object"==typeof e&&e.RTCPeerConnection&&"getSenders"in e.RTCPeerConnection.prototype&&"createDTMFSender"in e.RTCPeerConnection.prototype&&e.RTCRtpSender&&!("dtmf"in e.RTCRtpSender.prototype)){var o=e.RTCPeerConnection.prototype.getSenders;e.RTCPeerConnection.prototype.getSenders=function(){var e=this,t=o.apply(e,[]);return t.forEach(function(t){t._pc=e}),t},Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=this._pc.createDTMFSender(this.track):this._dtmf=null),this._dtmf}})}},shimSenderReceiverGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&e.RTCRtpReceiver){if(!("getStats"in e.RTCRtpSender.prototype)){var t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){var e=this,r=t.apply(e,[]);return r.forEach(function(t){t._pc=e}),r});var r=e.RTCPeerConnection.prototype.addTrack;r&&(e.RTCPeerConnection.prototype.addTrack=function(){var e=r.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){var e=this;return this._pc.getStats().then(function(t){return a(t,e.track,!0)})}}if(!("getStats"in e.RTCRtpReceiver.prototype)){var i=e.RTCPeerConnection.prototype.getReceivers;i&&(e.RTCPeerConnection.prototype.getReceivers=function(){var e=this,t=i.apply(e,[]);return t.forEach(function(t){t._pc=e}),t}),n.wrapPeerConnectionEvent(e,"track",function(e){return e.receiver._pc=e.srcElement,e}),e.RTCRtpReceiver.prototype.getStats=function(){var e=this;return this._pc.getStats().then(function(t){return a(t,e.track,!1)})}}if("getStats"in e.RTCRtpSender.prototype&&"getStats"in e.RTCRtpReceiver.prototype){var o=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(){if(arguments.length>0&&arguments[0]instanceof e.MediaStreamTrack){var t,r,n,i=arguments[0];return this.getSenders().forEach(function(e){e.track===i&&(t?n=!0:t=e)}),this.getReceivers().forEach(function(e){return e.track===i&&(r?n=!0:r=e),e.track===i}),n||t&&r?Promise.reject(new DOMException("There are more than one sender or receiver for the track.","InvalidAccessError")):t?t.getStats():r?r.getStats():Promise.reject(new DOMException("There is no sender or receiver for the track.","InvalidAccessError"))}return o.apply(this,arguments)}}}},shimSourceObject:function(e){var t=e&&e.URL;"object"==typeof e&&(!e.HTMLMediaElement||"srcObject"in e.HTMLMediaElement.prototype||Object.defineProperty(e.HTMLMediaElement.prototype,"srcObject",{get:function(){return this._srcObject},set:function(e){var r=this;this._srcObject=e,this.src&&t.revokeObjectURL(this.src),e?(this.src=t.createObjectURL(e),e.addEventListener("addtrack",function(){r.src&&t.revokeObjectURL(r.src),r.src=t.createObjectURL(e)}),e.addEventListener("removetrack",function(){r.src&&t.revokeObjectURL(r.src),r.src=t.createObjectURL(e)})):this.src=""}}))},shimAddTrackRemoveTrackWithNative:function(e){e.RTCPeerConnection.prototype.getLocalStreams=function(){var e=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},Object.keys(this._shimmedLocalStreams).map(function(t){return e._shimmedLocalStreams[t][0]})};var t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addTrack=function(e,r){if(!r)return t.apply(this,arguments);this._shimmedLocalStreams=this._shimmedLocalStreams||{};var n=t.apply(this,arguments);return this._shimmedLocalStreams[r.id]?-1===this._shimmedLocalStreams[r.id].indexOf(n)&&this._shimmedLocalStreams[r.id].push(n):this._shimmedLocalStreams[r.id]=[r,n],n};var r=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(e){var t=this;this._shimmedLocalStreams=this._shimmedLocalStreams||{},e.getTracks().forEach(function(e){if(t.getSenders().find(function(t){return t.track===e}))throw new DOMException("Track already exists.","InvalidAccessError")});var n=t.getSenders();r.apply(this,arguments);var i=t.getSenders().filter(function(e){return-1===n.indexOf(e)});this._shimmedLocalStreams[e.id]=[e].concat(i)};var n=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){return this._shimmedLocalStreams=this._shimmedLocalStreams||{},delete this._shimmedLocalStreams[e.id],n.apply(this,arguments)};var i=e.RTCPeerConnection.prototype.removeTrack;e.RTCPeerConnection.prototype.removeTrack=function(e){var t=this;return this._shimmedLocalStreams=this._shimmedLocalStreams||{},e&&Object.keys(this._shimmedLocalStreams).forEach(function(r){var n=t._shimmedLocalStreams[r].indexOf(e);-1!==n&&t._shimmedLocalStreams[r].splice(n,1),1===t._shimmedLocalStreams[r].length&&delete t._shimmedLocalStreams[r]}),i.apply(this,arguments)}},shimAddTrackRemoveTrack:function(e){if(e.RTCPeerConnection){var t=n.detectBrowser(e);if(e.RTCPeerConnection.prototype.addTrack&&t.version>=65)return this.shimAddTrackRemoveTrackWithNative(e);var r=e.RTCPeerConnection.prototype.getLocalStreams;e.RTCPeerConnection.prototype.getLocalStreams=function(){var e=this,t=r.apply(this);return e._reverseStreams=e._reverseStreams||{},t.map(function(t){return e._reverseStreams[t.id]})};var i=e.RTCPeerConnection.prototype.addStream;e.RTCPeerConnection.prototype.addStream=function(t){var r=this;if(r._streams=r._streams||{},r._reverseStreams=r._reverseStreams||{},t.getTracks().forEach(function(e){if(r.getSenders().find(function(t){return t.track===e}))throw new DOMException("Track already exists.","InvalidAccessError")}),!r._reverseStreams[t.id]){var n=new e.MediaStream(t.getTracks());r._streams[t.id]=n,r._reverseStreams[n.id]=t,t=n}i.apply(r,[t])};var a=e.RTCPeerConnection.prototype.removeStream;e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;t._streams=t._streams||{},t._reverseStreams=t._reverseStreams||{},a.apply(t,[t._streams[e.id]||e]),delete t._reverseStreams[t._streams[e.id]?t._streams[e.id].id:e.id],delete t._streams[e.id]},e.RTCPeerConnection.prototype.addTrack=function(t,r){var n=this;if("closed"===n.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");var i=[].slice.call(arguments,1);if(1!==i.length||!i[0].getTracks().find(function(e){return e===t}))throw new DOMException("The adapter.js addTrack polyfill only supports a single  stream which is associated with the specified track.","NotSupportedError");if(n.getSenders().find(function(e){return e.track===t}))throw new DOMException("Track already exists.","InvalidAccessError");n._streams=n._streams||{},n._reverseStreams=n._reverseStreams||{};var a=n._streams[r.id];if(a)a.addTrack(t),Promise.resolve().then(function(){n.dispatchEvent(new Event("negotiationneeded"))});else{var o=new e.MediaStream([t]);n._streams[r.id]=o,n._reverseStreams[o.id]=r,n.addStream(o)}return n.getSenders().find(function(e){return e.track===t})},["createOffer","createAnswer"].forEach(function(t){var r=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){var e=this,t=arguments;return arguments.length&&"function"==typeof arguments[0]?r.apply(e,[function(r){var n=c(e,r);t[0].apply(null,[n])},function(e){t[1]&&t[1].apply(null,e)},arguments[2]]):r.apply(e,arguments).then(function(t){return c(e,t)})}});var o=e.RTCPeerConnection.prototype.setLocalDescription;e.RTCPeerConnection.prototype.setLocalDescription=function(){return arguments.length&&arguments[0].type?(arguments[0]=function(e,t){var r=t.sdp;return Object.keys(e._reverseStreams||[]).forEach(function(t){var n=e._reverseStreams[t],i=e._streams[n.id];r=r.replace(new RegExp(n.id,"g"),i.id)}),new RTCSessionDescription({type:t.type,sdp:r})}(this,arguments[0]),o.apply(this,arguments)):o.apply(this,arguments)};var s=Object.getOwnPropertyDescriptor(e.RTCPeerConnection.prototype,"localDescription");Object.defineProperty(e.RTCPeerConnection.prototype,"localDescription",{get:function(){var e=s.get.apply(this);return""===e.type?e:c(this,e)}}),e.RTCPeerConnection.prototype.removeTrack=function(e){var t,r=this;if("closed"===r.signalingState)throw new DOMException("The RTCPeerConnection's signalingState is 'closed'.","InvalidStateError");if(!e._pc)throw new DOMException("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.","TypeError");if(!(e._pc===r))throw new DOMException("Sender was not created by this connection.","InvalidAccessError");r._streams=r._streams||{},Object.keys(r._streams).forEach(function(n){r._streams[n].getTracks().find(function(t){return e.track===t})&&(t=r._streams[n])}),t&&(1===t.getTracks().length?r.removeStream(r._reverseStreams[t.id]):t.removeTrack(e.track),r.dispatchEvent(new Event("negotiationneeded")))}}function c(e,t){var r=t.sdp;return Object.keys(e._reverseStreams||[]).forEach(function(t){var n=e._reverseStreams[t],i=e._streams[n.id];r=r.replace(new RegExp(i.id,"g"),n.id)}),new RTCSessionDescription({type:t.type,sdp:r})}},shimPeerConnection:function(e){var t=n.detectBrowser(e);if(!e.RTCPeerConnection&&e.webkitRTCPeerConnection&&(e.RTCPeerConnection=function(t,r){return i("PeerConnection"),t&&t.iceTransportPolicy&&(t.iceTransports=t.iceTransportPolicy),new e.webkitRTCPeerConnection(t,r)},e.RTCPeerConnection.prototype=e.webkitRTCPeerConnection.prototype,e.webkitRTCPeerConnection.generateCertificate&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return e.webkitRTCPeerConnection.generateCertificate}})),e.RTCPeerConnection){var r=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(e,t,n){var i=this,a=arguments;if(arguments.length>0&&"function"==typeof e)return r.apply(this,arguments);if(0===r.length&&(0===arguments.length||"function"!=typeof arguments[0]))return r.apply(this,[]);var o=function(e){var t={};return e.result().forEach(function(e){var r={id:e.id,timestamp:e.timestamp,type:{localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[e.type]||e.type};e.names().forEach(function(t){r[t]=e.stat(t)}),t[r.id]=r}),t},s=function(e){return new Map(Object.keys(e).map(function(t){return[t,e[t]]}))};if(arguments.length>=2){return r.apply(this,[function(e){a[1](s(o(e)))},arguments[0]])}return new Promise(function(e,t){r.apply(i,[function(t){e(s(o(t)))},t])}).then(t,n)},t.version<51&&["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){var r=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){var e=arguments,t=this,n=new Promise(function(n,i){r.apply(t,[e[0],n,i])});return e.length<2?n:n.then(function(){e[1].apply(null,[])},function(t){e.length>=3&&e[2].apply(null,[t])})}}),t.version<52&&["createOffer","createAnswer"].forEach(function(t){var r=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){var e=this;if(arguments.length<1||1===arguments.length&&"object"==typeof arguments[0]){var t=1===arguments.length?arguments[0]:void 0;return new Promise(function(n,i){r.apply(e,[n,i,t])})}return r.apply(this,arguments)}}),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){var r=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),r.apply(this,arguments)}});var a=e.RTCPeerConnection.prototype.addIceCandidate;e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?a.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())}}},fixNegotiationNeeded:function(e){n.wrapPeerConnectionEvent(e,"negotiationneeded",function(e){if("stable"===e.target.signalingState)return e})},shimGetDisplayMedia:function(e,t){!e.navigator||!e.navigator.mediaDevices||"getDisplayMedia"in e.navigator.mediaDevices||("function"==typeof t?(e.navigator.mediaDevices.getDisplayMedia=function(r){return t(r).then(function(t){var n=r.video&&r.video.width,i=r.video&&r.video.height,a=r.video&&r.video.frameRate;return r.video={mandatory:{chromeMediaSource:"desktop",chromeMediaSourceId:t,maxFrameRate:a||3}},n&&(r.video.mandatory.maxWidth=n),i&&(r.video.mandatory.maxHeight=i),e.navigator.mediaDevices.getUserMedia(r)})},e.navigator.getDisplayMedia=function(t){return n.deprecated("navigator.getDisplayMedia","navigator.mediaDevices.getDisplayMedia"),e.navigator.mediaDevices.getDisplayMedia(t)}):console.error("shimGetDisplayMedia: getSourceId argument is not a function"))}}},function(e,t,r){"use strict";var n=r(13),i=n.log;e.exports=function(e){var t=n.detectBrowser(e),r=e&&e.navigator,a=function(e){if("object"!=typeof e||e.mandatory||e.optional)return e;var t={};return Object.keys(e).forEach(function(r){if("require"!==r&&"advanced"!==r&&"mediaSource"!==r){var n="object"==typeof e[r]?e[r]:{ideal:e[r]};void 0!==n.exact&&"number"==typeof n.exact&&(n.min=n.max=n.exact);var i=function(e,t){return e?e+t.charAt(0).toUpperCase()+t.slice(1):"deviceId"===t?"sourceId":t};if(void 0!==n.ideal){t.optional=t.optional||[];var a={};"number"==typeof n.ideal?(a[i("min",r)]=n.ideal,t.optional.push(a),(a={})[i("max",r)]=n.ideal,t.optional.push(a)):(a[i("",r)]=n.ideal,t.optional.push(a))}void 0!==n.exact&&"number"!=typeof n.exact?(t.mandatory=t.mandatory||{},t.mandatory[i("",r)]=n.exact):["min","max"].forEach(function(e){void 0!==n[e]&&(t.mandatory=t.mandatory||{},t.mandatory[i(e,r)]=n[e])})}}),e.advanced&&(t.optional=(t.optional||[]).concat(e.advanced)),t},o=function(e,n){if(t.version>=61)return n(e);if((e=JSON.parse(JSON.stringify(e)))&&"object"==typeof e.audio){var o=function(e,t,r){t in e&&!(r in e)&&(e[r]=e[t],delete e[t])};o((e=JSON.parse(JSON.stringify(e))).audio,"autoGainControl","googAutoGainControl"),o(e.audio,"noiseSuppression","googNoiseSuppression"),e.audio=a(e.audio)}if(e&&"object"==typeof e.video){var s=e.video.facingMode;s=s&&("object"==typeof s?s:{ideal:s});var c,u=t.version<66;if(s&&("user"===s.exact||"environment"===s.exact||"user"===s.ideal||"environment"===s.ideal)&&(!r.mediaDevices.getSupportedConstraints||!r.mediaDevices.getSupportedConstraints().facingMode||u))if(delete e.video.facingMode,"environment"===s.exact||"environment"===s.ideal?c=["back","rear"]:"user"!==s.exact&&"user"!==s.ideal||(c=["front"]),c)return r.mediaDevices.enumerateDevices().then(function(t){var r=(t=t.filter(function(e){return"videoinput"===e.kind})).find(function(e){return c.some(function(t){return-1!==e.label.toLowerCase().indexOf(t)})});return!r&&t.length&&-1!==c.indexOf("back")&&(r=t[t.length-1]),r&&(e.video.deviceId=s.exact?{exact:r.deviceId}:{ideal:r.deviceId}),e.video=a(e.video),i("chrome: "+JSON.stringify(e)),n(e)});e.video=a(e.video)}return i("chrome: "+JSON.stringify(e)),n(e)},s=function(e){return t.version>=64?e:{name:{PermissionDeniedError:"NotAllowedError",PermissionDismissedError:"NotAllowedError",InvalidStateError:"NotAllowedError",DevicesNotFoundError:"NotFoundError",ConstraintNotSatisfiedError:"OverconstrainedError",TrackStartError:"NotReadableError",MediaDeviceFailedDueToShutdown:"NotAllowedError",MediaDeviceKillSwitchOn:"NotAllowedError",TabCaptureError:"AbortError",ScreenCaptureError:"AbortError",DeviceCaptureError:"AbortError"}[e.name]||e.name,message:e.message,constraint:e.constraint||e.constraintName,toString:function(){return this.name+(this.message&&": ")+this.message}}};r.getUserMedia=function(e,t,n){o(e,function(e){r.webkitGetUserMedia(e,t,function(e){n&&n(s(e))})})};var c=function(e){return new Promise(function(t,n){r.getUserMedia(e,t,n)})};if(r.mediaDevices||(r.mediaDevices={getUserMedia:c,enumerateDevices:function(){return new Promise(function(t){var r={audio:"audioinput",video:"videoinput"};return e.MediaStreamTrack.getSources(function(e){t(e.map(function(e){return{label:e.label,kind:r[e.kind],deviceId:e.id,groupId:""}}))})})},getSupportedConstraints:function(){return{deviceId:!0,echoCancellation:!0,facingMode:!0,frameRate:!0,height:!0,width:!0}}}),r.mediaDevices.getUserMedia){var u=r.mediaDevices.getUserMedia.bind(r.mediaDevices);r.mediaDevices.getUserMedia=function(e){return o(e,function(e){return u(e).then(function(t){if(e.audio&&!t.getAudioTracks().length||e.video&&!t.getVideoTracks().length)throw t.getTracks().forEach(function(e){e.stop()}),new DOMException("","NotFoundError");return t},function(e){return Promise.reject(s(e))})})}}else r.mediaDevices.getUserMedia=function(e){return c(e)};void 0===r.mediaDevices.addEventListener&&(r.mediaDevices.addEventListener=function(){i("Dummy mediaDevices.addEventListener called.")}),void 0===r.mediaDevices.removeEventListener&&(r.mediaDevices.removeEventListener=function(){i("Dummy mediaDevices.removeEventListener called.")})}},function(e,t,r){"use strict";var n=r(13),i=r(32),a=r(33);e.exports={shimGetUserMedia:r(34),shimPeerConnection:function(e){var t=n.detectBrowser(e);if(e.RTCIceGatherer&&(e.RTCIceCandidate||(e.RTCIceCandidate=function(e){return e}),e.RTCSessionDescription||(e.RTCSessionDescription=function(e){return e}),t.version<15025)){var r=Object.getOwnPropertyDescriptor(e.MediaStreamTrack.prototype,"enabled");Object.defineProperty(e.MediaStreamTrack.prototype,"enabled",{set:function(e){r.set.call(this,e);var t=new Event("enabled");t.enabled=e,this.dispatchEvent(t)}})}!e.RTCRtpSender||"dtmf"in e.RTCRtpSender.prototype||Object.defineProperty(e.RTCRtpSender.prototype,"dtmf",{get:function(){return void 0===this._dtmf&&("audio"===this.track.kind?this._dtmf=new e.RTCDtmfSender(this):"video"===this.track.kind&&(this._dtmf=null)),this._dtmf}}),e.RTCDtmfSender&&!e.RTCDTMFSender&&(e.RTCDTMFSender=e.RTCDtmfSender);var o=a(e,t.version);e.RTCPeerConnection=function(e){return e&&e.iceServers&&(e.iceServers=i(e.iceServers)),new o(e)},e.RTCPeerConnection.prototype=o.prototype},shimReplaceTrack:function(e){!e.RTCRtpSender||"replaceTrack"in e.RTCRtpSender.prototype||(e.RTCRtpSender.prototype.replaceTrack=e.RTCRtpSender.prototype.setTrack)},shimGetDisplayMedia:function(e,t){if("getDisplayMedia"in e.navigator&&e.navigator.mediaDevices&&!("getDisplayMedia"in e.navigator.mediaDevices)){var r=e.navigator.getDisplayMedia;e.navigator.mediaDevices.getDisplayMedia=function(t){return r.call(e.navigator,t)},e.navigator.getDisplayMedia=function(t){return n.deprecated("navigator.getDisplayMedia","navigator.mediaDevices.getDisplayMedia"),r.call(e.navigator,t)}}}}},function(e,t,r){"use strict";var n=r(13);e.exports=function(e,t){var r=!1;return(e=JSON.parse(JSON.stringify(e))).filter(function(e){if(e&&(e.urls||e.url)){var i=e.urls||e.url;e.url&&!e.urls&&n.deprecated("RTCIceServer.url","RTCIceServer.urls");var a="string"==typeof i;return a&&(i=[i]),i=i.filter(function(e){return 0===e.indexOf("turn:")&&-1!==e.indexOf("transport=udp")&&-1===e.indexOf("turn:[")&&!r?(r=!0,!0):0===e.indexOf("stun:")&&t>=14393&&-1===e.indexOf("?transport=udp")}),delete e.url,e.urls=a?i[0]:i,!!i.length}})}},function(e,t,r){"use strict";var n=r(19);function i(e,t,r,i,a){var o=n.writeRtpDescription(e.kind,t);if(o+=n.writeIceParameters(e.iceGatherer.getLocalParameters()),o+=n.writeDtlsParameters(e.dtlsTransport.getLocalParameters(),"offer"===r?"actpass":a||"active"),o+="a=mid:"+e.mid+"\r\n",e.rtpSender&&e.rtpReceiver?o+="a=sendrecv\r\n":e.rtpSender?o+="a=sendonly\r\n":e.rtpReceiver?o+="a=recvonly\r\n":o+="a=inactive\r\n",e.rtpSender){var s=e.rtpSender._initialTrackId||e.rtpSender.track.id;e.rtpSender._initialTrackId=s;var c="msid:"+(i?i.id:"-")+" "+s+"\r\n";o+="a="+c,o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" "+c,e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" "+c,o+="a=ssrc-group:FID "+e.sendEncodingParameters[0].ssrc+" "+e.sendEncodingParameters[0].rtx.ssrc+"\r\n")}return o+="a=ssrc:"+e.sendEncodingParameters[0].ssrc+" cname:"+n.localCName+"\r\n",e.rtpSender&&e.sendEncodingParameters[0].rtx&&(o+="a=ssrc:"+e.sendEncodingParameters[0].rtx.ssrc+" cname:"+n.localCName+"\r\n"),o}function a(e,t){var r={codecs:[],headerExtensions:[],fecMechanisms:[]},n=function(e,t){e=parseInt(e,10);for(var r=0;r<t.length;r++)if(t[r].payloadType===e||t[r].preferredPayloadType===e)return t[r]},i=function(e,t,r,i){var a=n(e.parameters.apt,r),o=n(t.parameters.apt,i);return a&&o&&a.name.toLowerCase()===o.name.toLowerCase()};return e.codecs.forEach(function(n){for(var a=0;a<t.codecs.length;a++){var o=t.codecs[a];if(n.name.toLowerCase()===o.name.toLowerCase()&&n.clockRate===o.clockRate){if("rtx"===n.name.toLowerCase()&&n.parameters&&o.parameters.apt&&!i(n,o,e.codecs,t.codecs))continue;(o=JSON.parse(JSON.stringify(o))).numChannels=Math.min(n.numChannels,o.numChannels),r.codecs.push(o),o.rtcpFeedback=o.rtcpFeedback.filter(function(e){for(var t=0;t<n.rtcpFeedback.length;t++)if(n.rtcpFeedback[t].type===e.type&&n.rtcpFeedback[t].parameter===e.parameter)return!0;return!1});break}}}),e.headerExtensions.forEach(function(e){for(var n=0;n<t.headerExtensions.length;n++){var i=t.headerExtensions[n];if(e.uri===i.uri){r.headerExtensions.push(i);break}}}),r}function o(e,t,r){return-1!=={offer:{setLocalDescription:["stable","have-local-offer"],setRemoteDescription:["stable","have-remote-offer"]},answer:{setLocalDescription:["have-remote-offer","have-local-pranswer"],setRemoteDescription:["have-local-offer","have-remote-pranswer"]}}[t][e].indexOf(r)}function s(e,t){var r=e.getRemoteCandidates().find(function(e){return t.foundation===e.foundation&&t.ip===e.ip&&t.port===e.port&&t.priority===e.priority&&t.protocol===e.protocol&&t.type===e.type});return r||e.addRemoteCandidate(t),!r}function c(e,t){var r=new Error(t);return r.name=e,r.code={NotSupportedError:9,InvalidStateError:11,InvalidAccessError:15,TypeError:void 0,OperationError:void 0}[e],r}e.exports=function(e,t){function r(t,r){r.addTrack(t),r.dispatchEvent(new e.MediaStreamTrackEvent("addtrack",{track:t}))}function u(t,r,n,i){var a=new Event("track");a.track=r,a.receiver=n,a.transceiver={receiver:n},a.streams=i,e.setTimeout(function(){t._dispatchEvent("track",a)})}var d=function(r){var i=this,a=document.createDocumentFragment();if(["addEventListener","removeEventListener","dispatchEvent"].forEach(function(e){i[e]=a[e].bind(a)}),this.canTrickleIceCandidates=null,this.needNegotiation=!1,this.localStreams=[],this.remoteStreams=[],this._localDescription=null,this._remoteDescription=null,this.signalingState="stable",this.iceConnectionState="new",this.connectionState="new",this.iceGatheringState="new",r=JSON.parse(JSON.stringify(r||{})),this.usingBundle="max-bundle"===r.bundlePolicy,"negotiate"===r.rtcpMuxPolicy)throw c("NotSupportedError","rtcpMuxPolicy 'negotiate' is not supported");switch(r.rtcpMuxPolicy||(r.rtcpMuxPolicy="require"),r.iceTransportPolicy){case"all":case"relay":break;default:r.iceTransportPolicy="all"}switch(r.bundlePolicy){case"balanced":case"max-compat":case"max-bundle":break;default:r.bundlePolicy="balanced"}if(r.iceServers=function(e,t){var r=!1;return(e=JSON.parse(JSON.stringify(e))).filter(function(e){if(e&&(e.urls||e.url)){var n=e.urls||e.url;e.url&&!e.urls&&console.warn("RTCIceServer.url is deprecated! Use urls instead.");var i="string"==typeof n;return i&&(n=[n]),n=n.filter(function(e){return 0!==e.indexOf("turn:")||-1===e.indexOf("transport=udp")||-1!==e.indexOf("turn:[")||r?0===e.indexOf("stun:")&&t>=14393&&-1===e.indexOf("?transport=udp"):(r=!0,!0)}),delete e.url,e.urls=i?n[0]:n,!!n.length}})}(r.iceServers||[],t),this._iceGatherers=[],r.iceCandidatePoolSize)for(var o=r.iceCandidatePoolSize;o>0;o--)this._iceGatherers.push(new e.RTCIceGatherer({iceServers:r.iceServers,gatherPolicy:r.iceTransportPolicy}));else r.iceCandidatePoolSize=0;this._config=r,this.transceivers=[],this._sdpSessionId=n.generateSessionId(),this._sdpSessionVersion=0,this._dtlsRole=void 0,this._isClosed=!1};Object.defineProperty(d.prototype,"localDescription",{configurable:!0,get:function(){return this._localDescription}}),Object.defineProperty(d.prototype,"remoteDescription",{configurable:!0,get:function(){return this._remoteDescription}}),d.prototype.onicecandidate=null,d.prototype.onaddstream=null,d.prototype.ontrack=null,d.prototype.onremovestream=null,d.prototype.onsignalingstatechange=null,d.prototype.oniceconnectionstatechange=null,d.prototype.onconnectionstatechange=null,d.prototype.onicegatheringstatechange=null,d.prototype.onnegotiationneeded=null,d.prototype.ondatachannel=null,d.prototype._dispatchEvent=function(e,t){this._isClosed||(this.dispatchEvent(t),"function"==typeof this["on"+e]&&this["on"+e](t))},d.prototype._emitGatheringStateChange=function(){var e=new Event("icegatheringstatechange");this._dispatchEvent("icegatheringstatechange",e)},d.prototype.getConfiguration=function(){return this._config},d.prototype.getLocalStreams=function(){return this.localStreams},d.prototype.getRemoteStreams=function(){return this.remoteStreams},d.prototype._createTransceiver=function(e,t){var r=this.transceivers.length>0,n={track:null,iceGatherer:null,iceTransport:null,dtlsTransport:null,localCapabilities:null,remoteCapabilities:null,rtpSender:null,rtpReceiver:null,kind:e,mid:null,sendEncodingParameters:null,recvEncodingParameters:null,stream:null,associatedRemoteMediaStreams:[],wantReceive:!0};if(this.usingBundle&&r)n.iceTransport=this.transceivers[0].iceTransport,n.dtlsTransport=this.transceivers[0].dtlsTransport;else{var i=this._createIceAndDtlsTransports();n.iceTransport=i.iceTransport,n.dtlsTransport=i.dtlsTransport}return t||this.transceivers.push(n),n},d.prototype.addTrack=function(t,r){if(this._isClosed)throw c("InvalidStateError","Attempted to call addTrack on a closed peerconnection.");var n;if(this.transceivers.find(function(e){return e.track===t}))throw c("InvalidAccessError","Track already exists.");for(var i=0;i<this.transceivers.length;i++)this.transceivers[i].track||this.transceivers[i].kind!==t.kind||(n=this.transceivers[i]);return n||(n=this._createTransceiver(t.kind)),this._maybeFireNegotiationNeeded(),-1===this.localStreams.indexOf(r)&&this.localStreams.push(r),n.track=t,n.stream=r,n.rtpSender=new e.RTCRtpSender(t,n.dtlsTransport),n.rtpSender},d.prototype.addStream=function(e){var r=this;if(t>=15025)e.getTracks().forEach(function(t){r.addTrack(t,e)});else{var n=e.clone();e.getTracks().forEach(function(e,t){var r=n.getTracks()[t];e.addEventListener("enabled",function(e){r.enabled=e.enabled})}),n.getTracks().forEach(function(e){r.addTrack(e,n)})}},d.prototype.removeTrack=function(t){if(this._isClosed)throw c("InvalidStateError","Attempted to call removeTrack on a closed peerconnection.");if(!(t instanceof e.RTCRtpSender))throw new TypeError("Argument 1 of RTCPeerConnection.removeTrack does not implement interface RTCRtpSender.");var r=this.transceivers.find(function(e){return e.rtpSender===t});if(!r)throw c("InvalidAccessError","Sender was not created by this connection.");var n=r.stream;r.rtpSender.stop(),r.rtpSender=null,r.track=null,r.stream=null,-1===this.transceivers.map(function(e){return e.stream}).indexOf(n)&&this.localStreams.indexOf(n)>-1&&this.localStreams.splice(this.localStreams.indexOf(n),1),this._maybeFireNegotiationNeeded()},d.prototype.removeStream=function(e){var t=this;e.getTracks().forEach(function(e){var r=t.getSenders().find(function(t){return t.track===e});r&&t.removeTrack(r)})},d.prototype.getSenders=function(){return this.transceivers.filter(function(e){return!!e.rtpSender}).map(function(e){return e.rtpSender})},d.prototype.getReceivers=function(){return this.transceivers.filter(function(e){return!!e.rtpReceiver}).map(function(e){return e.rtpReceiver})},d.prototype._createIceGatherer=function(t,r){var n=this;if(r&&t>0)return this.transceivers[0].iceGatherer;if(this._iceGatherers.length)return this._iceGatherers.shift();var i=new e.RTCIceGatherer({iceServers:this._config.iceServers,gatherPolicy:this._config.iceTransportPolicy});return Object.defineProperty(i,"state",{value:"new",writable:!0}),this.transceivers[t].bufferedCandidateEvents=[],this.transceivers[t].bufferCandidates=function(e){var r=!e.candidate||0===Object.keys(e.candidate).length;i.state=r?"completed":"gathering",null!==n.transceivers[t].bufferedCandidateEvents&&n.transceivers[t].bufferedCandidateEvents.push(e)},i.addEventListener("localcandidate",this.transceivers[t].bufferCandidates),i},d.prototype._gather=function(t,r){var i=this,a=this.transceivers[r].iceGatherer;if(!a.onlocalcandidate){var o=this.transceivers[r].bufferedCandidateEvents;this.transceivers[r].bufferedCandidateEvents=null,a.removeEventListener("localcandidate",this.transceivers[r].bufferCandidates),a.onlocalcandidate=function(e){if(!(i.usingBundle&&r>0)){var o=new Event("icecandidate");o.candidate={sdpMid:t,sdpMLineIndex:r};var s=e.candidate,c=!s||0===Object.keys(s).length;if(c)"new"!==a.state&&"gathering"!==a.state||(a.state="completed");else{"new"===a.state&&(a.state="gathering"),s.component=1,s.ufrag=a.getLocalParameters().usernameFragment;var u=n.writeCandidate(s);o.candidate=Object.assign(o.candidate,n.parseCandidate(u)),o.candidate.candidate=u,o.candidate.toJSON=function(){return{candidate:o.candidate.candidate,sdpMid:o.candidate.sdpMid,sdpMLineIndex:o.candidate.sdpMLineIndex,usernameFragment:o.candidate.usernameFragment}}}var d=n.getMediaSections(i._localDescription.sdp);d[o.candidate.sdpMLineIndex]+=c?"a=end-of-candidates\r\n":"a="+o.candidate.candidate+"\r\n",i._localDescription.sdp=n.getDescription(i._localDescription.sdp)+d.join("");var p=i.transceivers.every(function(e){return e.iceGatherer&&"completed"===e.iceGatherer.state});"gathering"!==i.iceGatheringState&&(i.iceGatheringState="gathering",i._emitGatheringStateChange()),c||i._dispatchEvent("icecandidate",o),p&&(i._dispatchEvent("icecandidate",new Event("icecandidate")),i.iceGatheringState="complete",i._emitGatheringStateChange())}},e.setTimeout(function(){o.forEach(function(e){a.onlocalcandidate(e)})},0)}},d.prototype._createIceAndDtlsTransports=function(){var t=this,r=new e.RTCIceTransport(null);r.onicestatechange=function(){t._updateIceConnectionState(),t._updateConnectionState()};var n=new e.RTCDtlsTransport(r);return n.ondtlsstatechange=function(){t._updateConnectionState()},n.onerror=function(){Object.defineProperty(n,"state",{value:"failed",writable:!0}),t._updateConnectionState()},{iceTransport:r,dtlsTransport:n}},d.prototype._disposeIceAndDtlsTransports=function(e){var t=this.transceivers[e].iceGatherer;t&&(delete t.onlocalcandidate,delete this.transceivers[e].iceGatherer);var r=this.transceivers[e].iceTransport;r&&(delete r.onicestatechange,delete this.transceivers[e].iceTransport);var n=this.transceivers[e].dtlsTransport;n&&(delete n.ondtlsstatechange,delete n.onerror,delete this.transceivers[e].dtlsTransport)},d.prototype._transceive=function(e,r,i){var o=a(e.localCapabilities,e.remoteCapabilities);r&&e.rtpSender&&(o.encodings=e.sendEncodingParameters,o.rtcp={cname:n.localCName,compound:e.rtcpParameters.compound},e.recvEncodingParameters.length&&(o.rtcp.ssrc=e.recvEncodingParameters[0].ssrc),e.rtpSender.send(o)),i&&e.rtpReceiver&&o.codecs.length>0&&("video"===e.kind&&e.recvEncodingParameters&&t<15019&&e.recvEncodingParameters.forEach(function(e){delete e.rtx}),e.recvEncodingParameters.length?o.encodings=e.recvEncodingParameters:o.encodings=[{}],o.rtcp={compound:e.rtcpParameters.compound},e.rtcpParameters.cname&&(o.rtcp.cname=e.rtcpParameters.cname),e.sendEncodingParameters.length&&(o.rtcp.ssrc=e.sendEncodingParameters[0].ssrc),e.rtpReceiver.receive(o))},d.prototype.setLocalDescription=function(e){var t,r,i=this;if(-1===["offer","answer"].indexOf(e.type))return Promise.reject(c("TypeError",'Unsupported type "'+e.type+'"'));if(!o("setLocalDescription",e.type,i.signalingState)||i._isClosed)return Promise.reject(c("InvalidStateError","Can not set local "+e.type+" in state "+i.signalingState));if("offer"===e.type)t=n.splitSections(e.sdp),r=t.shift(),t.forEach(function(e,t){var r=n.parseRtpParameters(e);i.transceivers[t].localCapabilities=r}),i.transceivers.forEach(function(e,t){i._gather(e.mid,t)});else if("answer"===e.type){t=n.splitSections(i._remoteDescription.sdp),r=t.shift();var s=n.matchPrefix(r,"a=ice-lite").length>0;t.forEach(function(e,t){var o=i.transceivers[t],c=o.iceGatherer,u=o.iceTransport,d=o.dtlsTransport,p=o.localCapabilities,f=o.remoteCapabilities;if(!(n.isRejected(e)&&0===n.matchPrefix(e,"a=bundle-only").length)&&!o.rejected){var l=n.getIceParameters(e,r),h=n.getDtlsParameters(e,r);s&&(h.role="server"),i.usingBundle&&0!==t||(i._gather(o.mid,t),"new"===u.state&&u.start(c,l,s?"controlling":"controlled"),"new"===d.state&&d.start(h));var m=a(p,f);i._transceive(o,m.codecs.length>0,!1)}})}return i._localDescription={type:e.type,sdp:e.sdp},"offer"===e.type?i._updateSignalingState("have-local-offer"):i._updateSignalingState("stable"),Promise.resolve()},d.prototype.setRemoteDescription=function(i){var d=this;if(-1===["offer","answer"].indexOf(i.type))return Promise.reject(c("TypeError",'Unsupported type "'+i.type+'"'));if(!o("setRemoteDescription",i.type,d.signalingState)||d._isClosed)return Promise.reject(c("InvalidStateError","Can not set remote "+i.type+" in state "+d.signalingState));var p={};d.remoteStreams.forEach(function(e){p[e.id]=e});var f=[],l=n.splitSections(i.sdp),h=l.shift(),m=n.matchPrefix(h,"a=ice-lite").length>0,v=n.matchPrefix(h,"a=group:BUNDLE ").length>0;d.usingBundle=v;var g=n.matchPrefix(h,"a=ice-options:")[0];return d.canTrickleIceCandidates=!!g&&g.substr(14).split(" ").indexOf("trickle")>=0,l.forEach(function(o,c){var u=n.splitLines(o),l=n.getKind(o),g=n.isRejected(o)&&0===n.matchPrefix(o,"a=bundle-only").length,y=u[0].substr(2).split(" ")[2],k=n.getDirection(o,h),b=n.parseMsid(o),T=n.getMid(o)||n.generateIdentifier();if(g||"application"===l&&("DTLS/SCTP"===y||"UDP/DTLS/SCTP"===y))d.transceivers[c]={mid:T,kind:l,protocol:y,rejected:!0};else{var w,S,C,_,x,R,P,E,I;!g&&d.transceivers[c]&&d.transceivers[c].rejected&&(d.transceivers[c]=d._createTransceiver(l,!0));var M,O,j=n.parseRtpParameters(o);g||(M=n.getIceParameters(o,h),(O=n.getDtlsParameters(o,h)).role="client"),P=n.parseRtpEncodingParameters(o);var D=n.parseRtcpParameters(o),L=n.matchPrefix(o,"a=end-of-candidates",h).length>0,A=n.matchPrefix(o,"a=candidate:").map(function(e){return n.parseCandidate(e)}).filter(function(e){return 1===e.component});if(("offer"===i.type||"answer"===i.type)&&!g&&v&&c>0&&d.transceivers[c]&&(d._disposeIceAndDtlsTransports(c),d.transceivers[c].iceGatherer=d.transceivers[0].iceGatherer,d.transceivers[c].iceTransport=d.transceivers[0].iceTransport,d.transceivers[c].dtlsTransport=d.transceivers[0].dtlsTransport,d.transceivers[c].rtpSender&&d.transceivers[c].rtpSender.setTransport(d.transceivers[0].dtlsTransport),d.transceivers[c].rtpReceiver&&d.transceivers[c].rtpReceiver.setTransport(d.transceivers[0].dtlsTransport)),"offer"!==i.type||g){if("answer"===i.type&&!g){S=(w=d.transceivers[c]).iceGatherer,C=w.iceTransport,_=w.dtlsTransport,x=w.rtpReceiver,R=w.sendEncodingParameters,E=w.localCapabilities,d.transceivers[c].recvEncodingParameters=P,d.transceivers[c].remoteCapabilities=j,d.transceivers[c].rtcpParameters=D,A.length&&"new"===C.state&&(!m&&!L||v&&0!==c?A.forEach(function(e){s(w.iceTransport,e)}):C.setRemoteCandidates(A)),v&&0!==c||("new"===C.state&&C.start(S,M,"controlling"),"new"===_.state&&_.start(O)),!a(w.localCapabilities,w.remoteCapabilities).codecs.filter(function(e){return"rtx"===e.name.toLowerCase()}).length&&w.sendEncodingParameters[0].rtx&&delete w.sendEncodingParameters[0].rtx,d._transceive(w,"sendrecv"===k||"recvonly"===k,"sendrecv"===k||"sendonly"===k),!x||"sendrecv"!==k&&"sendonly"!==k?delete w.rtpReceiver:(I=x.track,b?(p[b.stream]||(p[b.stream]=new e.MediaStream),r(I,p[b.stream]),f.push([I,x,p[b.stream]])):(p.default||(p.default=new e.MediaStream),r(I,p.default),f.push([I,x,p.default])))}}else{(w=d.transceivers[c]||d._createTransceiver(l)).mid=T,w.iceGatherer||(w.iceGatherer=d._createIceGatherer(c,v)),A.length&&"new"===w.iceTransport.state&&(!L||v&&0!==c?A.forEach(function(e){s(w.iceTransport,e)}):w.iceTransport.setRemoteCandidates(A)),E=e.RTCRtpReceiver.getCapabilities(l),t<15019&&(E.codecs=E.codecs.filter(function(e){return"rtx"!==e.name})),R=w.sendEncodingParameters||[{ssrc:1001*(2*c+2)}];var N,F=!1;if("sendrecv"===k||"sendonly"===k){if(F=!w.rtpReceiver,x=w.rtpReceiver||new e.RTCRtpReceiver(w.dtlsTransport,l),F)I=x.track,b&&"-"===b.stream||(b?(p[b.stream]||(p[b.stream]=new e.MediaStream,Object.defineProperty(p[b.stream],"id",{get:function(){return b.stream}})),Object.defineProperty(I,"id",{get:function(){return b.track}}),N=p[b.stream]):(p.default||(p.default=new e.MediaStream),N=p.default)),N&&(r(I,N),w.associatedRemoteMediaStreams.push(N)),f.push([I,x,N])}else w.rtpReceiver&&w.rtpReceiver.track&&(w.associatedRemoteMediaStreams.forEach(function(t){var r=t.getTracks().find(function(e){return e.id===w.rtpReceiver.track.id});r&&function(t,r){r.removeTrack(t),r.dispatchEvent(new e.MediaStreamTrackEvent("removetrack",{track:t}))}(r,t)}),w.associatedRemoteMediaStreams=[]);w.localCapabilities=E,w.remoteCapabilities=j,w.rtpReceiver=x,w.rtcpParameters=D,w.sendEncodingParameters=R,w.recvEncodingParameters=P,d._transceive(d.transceivers[c],!1,F)}}}),void 0===d._dtlsRole&&(d._dtlsRole="offer"===i.type?"active":"passive"),d._remoteDescription={type:i.type,sdp:i.sdp},"offer"===i.type?d._updateSignalingState("have-remote-offer"):d._updateSignalingState("stable"),Object.keys(p).forEach(function(t){var r=p[t];if(r.getTracks().length){if(-1===d.remoteStreams.indexOf(r)){d.remoteStreams.push(r);var n=new Event("addstream");n.stream=r,e.setTimeout(function(){d._dispatchEvent("addstream",n)})}f.forEach(function(e){var t=e[0],n=e[1];r.id===e[2].id&&u(d,t,n,[r])})}}),f.forEach(function(e){e[2]||u(d,e[0],e[1],[])}),e.setTimeout(function(){d&&d.transceivers&&d.transceivers.forEach(function(e){e.iceTransport&&"new"===e.iceTransport.state&&e.iceTransport.getRemoteCandidates().length>0&&(console.warn("Timeout for addRemoteCandidate. Consider sending an end-of-candidates notification"),e.iceTransport.addRemoteCandidate({}))})},4e3),Promise.resolve()},d.prototype.close=function(){this.transceivers.forEach(function(e){e.iceTransport&&e.iceTransport.stop(),e.dtlsTransport&&e.dtlsTransport.stop(),e.rtpSender&&e.rtpSender.stop(),e.rtpReceiver&&e.rtpReceiver.stop()}),this._isClosed=!0,this._updateSignalingState("closed")},d.prototype._updateSignalingState=function(e){this.signalingState=e;var t=new Event("signalingstatechange");this._dispatchEvent("signalingstatechange",t)},d.prototype._maybeFireNegotiationNeeded=function(){var t=this;"stable"===this.signalingState&&!0!==this.needNegotiation&&(this.needNegotiation=!0,e.setTimeout(function(){if(t.needNegotiation){t.needNegotiation=!1;var e=new Event("negotiationneeded");t._dispatchEvent("negotiationneeded",e)}},0))},d.prototype._updateIceConnectionState=function(){var e,t={new:0,closed:0,checking:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach(function(e){t[e.iceTransport.state]++}),e="new",t.failed>0?e="failed":t.checking>0?e="checking":t.disconnected>0?e="disconnected":t.new>0?e="new":t.connected>0?e="connected":t.completed>0&&(e="completed"),e!==this.iceConnectionState){this.iceConnectionState=e;var r=new Event("iceconnectionstatechange");this._dispatchEvent("iceconnectionstatechange",r)}},d.prototype._updateConnectionState=function(){var e,t={new:0,closed:0,connecting:0,connected:0,completed:0,disconnected:0,failed:0};if(this.transceivers.forEach(function(e){t[e.iceTransport.state]++,t[e.dtlsTransport.state]++}),t.connected+=t.completed,e="new",t.failed>0?e="failed":t.connecting>0?e="connecting":t.disconnected>0?e="disconnected":t.new>0?e="new":t.connected>0&&(e="connected"),e!==this.connectionState){this.connectionState=e;var r=new Event("connectionstatechange");this._dispatchEvent("connectionstatechange",r)}},d.prototype.createOffer=function(){var r=this;if(r._isClosed)return Promise.reject(c("InvalidStateError","Can not call createOffer after close"));var a=r.transceivers.filter(function(e){return"audio"===e.kind}).length,o=r.transceivers.filter(function(e){return"video"===e.kind}).length,s=arguments[0];if(s){if(s.mandatory||s.optional)throw new TypeError("Legacy mandatory/optional constraints not supported.");void 0!==s.offerToReceiveAudio&&(a=!0===s.offerToReceiveAudio?1:!1===s.offerToReceiveAudio?0:s.offerToReceiveAudio),void 0!==s.offerToReceiveVideo&&(o=!0===s.offerToReceiveVideo?1:!1===s.offerToReceiveVideo?0:s.offerToReceiveVideo)}for(r.transceivers.forEach(function(e){"audio"===e.kind?--a<0&&(e.wantReceive=!1):"video"===e.kind&&--o<0&&(e.wantReceive=!1)});a>0||o>0;)a>0&&(r._createTransceiver("audio"),a--),o>0&&(r._createTransceiver("video"),o--);var u=n.writeSessionBoilerplate(r._sdpSessionId,r._sdpSessionVersion++);r.transceivers.forEach(function(i,a){var o=i.track,s=i.kind,c=i.mid||n.generateIdentifier();i.mid=c,i.iceGatherer||(i.iceGatherer=r._createIceGatherer(a,r.usingBundle));var u=e.RTCRtpSender.getCapabilities(s);t<15019&&(u.codecs=u.codecs.filter(function(e){return"rtx"!==e.name})),u.codecs.forEach(function(e){"H264"===e.name&&void 0===e.parameters["level-asymmetry-allowed"]&&(e.parameters["level-asymmetry-allowed"]="1"),i.remoteCapabilities&&i.remoteCapabilities.codecs&&i.remoteCapabilities.codecs.forEach(function(t){e.name.toLowerCase()===t.name.toLowerCase()&&e.clockRate===t.clockRate&&(e.preferredPayloadType=t.payloadType)})}),u.headerExtensions.forEach(function(e){(i.remoteCapabilities&&i.remoteCapabilities.headerExtensions||[]).forEach(function(t){e.uri===t.uri&&(e.id=t.id)})});var d=i.sendEncodingParameters||[{ssrc:1001*(2*a+1)}];o&&t>=15019&&"video"===s&&!d[0].rtx&&(d[0].rtx={ssrc:d[0].ssrc+1}),i.wantReceive&&(i.rtpReceiver=new e.RTCRtpReceiver(i.dtlsTransport,s)),i.localCapabilities=u,i.sendEncodingParameters=d}),"max-compat"!==r._config.bundlePolicy&&(u+="a=group:BUNDLE "+r.transceivers.map(function(e){return e.mid}).join(" ")+"\r\n"),u+="a=ice-options:trickle\r\n",r.transceivers.forEach(function(e,t){u+=i(e,e.localCapabilities,"offer",e.stream,r._dtlsRole),u+="a=rtcp-rsize\r\n",!e.iceGatherer||"new"===r.iceGatheringState||0!==t&&r.usingBundle||(e.iceGatherer.getLocalCandidates().forEach(function(e){e.component=1,u+="a="+n.writeCandidate(e)+"\r\n"}),"completed"===e.iceGatherer.state&&(u+="a=end-of-candidates\r\n"))});var d=new e.RTCSessionDescription({type:"offer",sdp:u});return Promise.resolve(d)},d.prototype.createAnswer=function(){var r=this;if(r._isClosed)return Promise.reject(c("InvalidStateError","Can not call createAnswer after close"));if("have-remote-offer"!==r.signalingState&&"have-local-pranswer"!==r.signalingState)return Promise.reject(c("InvalidStateError","Can not call createAnswer in signalingState "+r.signalingState));var o=n.writeSessionBoilerplate(r._sdpSessionId,r._sdpSessionVersion++);r.usingBundle&&(o+="a=group:BUNDLE "+r.transceivers.map(function(e){return e.mid}).join(" ")+"\r\n"),o+="a=ice-options:trickle\r\n";var s=n.getMediaSections(r._remoteDescription.sdp).length;r.transceivers.forEach(function(e,n){if(!(n+1>s)){if(e.rejected)return"application"===e.kind?"DTLS/SCTP"===e.protocol?o+="m=application 0 DTLS/SCTP 5000\r\n":o+="m=application 0 "+e.protocol+" webrtc-datachannel\r\n":"audio"===e.kind?o+="m=audio 0 UDP/TLS/RTP/SAVPF 0\r\na=rtpmap:0 PCMU/8000\r\n":"video"===e.kind&&(o+="m=video 0 UDP/TLS/RTP/SAVPF 120\r\na=rtpmap:120 VP8/90000\r\n"),void(o+="c=IN IP4 0.0.0.0\r\na=inactive\r\na=mid:"+e.mid+"\r\n");var c;if(e.stream)"audio"===e.kind?c=e.stream.getAudioTracks()[0]:"video"===e.kind&&(c=e.stream.getVideoTracks()[0]),c&&t>=15019&&"video"===e.kind&&!e.sendEncodingParameters[0].rtx&&(e.sendEncodingParameters[0].rtx={ssrc:e.sendEncodingParameters[0].ssrc+1});var u=a(e.localCapabilities,e.remoteCapabilities);!u.codecs.filter(function(e){return"rtx"===e.name.toLowerCase()}).length&&e.sendEncodingParameters[0].rtx&&delete e.sendEncodingParameters[0].rtx,o+=i(e,u,"answer",e.stream,r._dtlsRole),e.rtcpParameters&&e.rtcpParameters.reducedSize&&(o+="a=rtcp-rsize\r\n")}});var u=new e.RTCSessionDescription({type:"answer",sdp:o});return Promise.resolve(u)},d.prototype.addIceCandidate=function(e){var t,r=this;return e&&void 0===e.sdpMLineIndex&&!e.sdpMid?Promise.reject(new TypeError("sdpMLineIndex or sdpMid required")):new Promise(function(i,a){if(!r._remoteDescription)return a(c("InvalidStateError","Can not add ICE candidate without a remote description"));if(e&&""!==e.candidate){var o=e.sdpMLineIndex;if(e.sdpMid)for(var u=0;u<r.transceivers.length;u++)if(r.transceivers[u].mid===e.sdpMid){o=u;break}var d=r.transceivers[o];if(!d)return a(c("OperationError","Can not add ICE candidate"));if(d.rejected)return i();var p=Object.keys(e.candidate).length>0?n.parseCandidate(e.candidate):{};if("tcp"===p.protocol&&(0===p.port||9===p.port))return i();if(p.component&&1!==p.component)return i();if((0===o||o>0&&d.iceTransport!==r.transceivers[0].iceTransport)&&!s(d.iceTransport,p))return a(c("OperationError","Can not add ICE candidate"));var f=e.candidate.trim();0===f.indexOf("a=")&&(f=f.substr(2)),(t=n.getMediaSections(r._remoteDescription.sdp))[o]+="a="+(p.type?f:"end-of-candidates")+"\r\n",r._remoteDescription.sdp=n.getDescription(r._remoteDescription.sdp)+t.join("")}else for(var l=0;l<r.transceivers.length&&(r.transceivers[l].rejected||(r.transceivers[l].iceTransport.addRemoteCandidate({}),(t=n.getMediaSections(r._remoteDescription.sdp))[l]+="a=end-of-candidates\r\n",r._remoteDescription.sdp=n.getDescription(r._remoteDescription.sdp)+t.join(""),!r.usingBundle));l++);i()})},d.prototype.getStats=function(t){if(t&&t instanceof e.MediaStreamTrack){var r=null;if(this.transceivers.forEach(function(e){e.rtpSender&&e.rtpSender.track===t?r=e.rtpSender:e.rtpReceiver&&e.rtpReceiver.track===t&&(r=e.rtpReceiver)}),!r)throw c("InvalidAccessError","Invalid selector.");return r.getStats()}var n=[];return this.transceivers.forEach(function(e){["rtpSender","rtpReceiver","iceGatherer","iceTransport","dtlsTransport"].forEach(function(t){e[t]&&n.push(e[t].getStats())})}),Promise.all(n).then(function(e){var t=new Map;return e.forEach(function(e){e.forEach(function(e){t.set(e.id,e)})}),t})};["RTCRtpSender","RTCRtpReceiver","RTCIceGatherer","RTCIceTransport","RTCDtlsTransport"].forEach(function(t){var r=e[t];if(r&&r.prototype&&r.prototype.getStats){var n=r.prototype.getStats;r.prototype.getStats=function(){return n.apply(this).then(function(e){var t=new Map;return Object.keys(e).forEach(function(r){e[r].type=function(e){return{inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"}[e.type]||e.type}(e[r]),t.set(r,e[r])}),t})}}});var p=["createOffer","createAnswer"];return p.forEach(function(e){var t=d.prototype[e];d.prototype[e]=function(){var e=arguments;return"function"==typeof e[0]||"function"==typeof e[1]?t.apply(this,[arguments[2]]).then(function(t){"function"==typeof e[0]&&e[0].apply(null,[t])},function(t){"function"==typeof e[1]&&e[1].apply(null,[t])}):t.apply(this,arguments)}}),(p=["setLocalDescription","setRemoteDescription","addIceCandidate"]).forEach(function(e){var t=d.prototype[e];d.prototype[e]=function(){var e=arguments;return"function"==typeof e[1]||"function"==typeof e[2]?t.apply(this,arguments).then(function(){"function"==typeof e[1]&&e[1].apply(null)},function(t){"function"==typeof e[2]&&e[2].apply(null,[t])}):t.apply(this,arguments)}}),["getStats"].forEach(function(e){var t=d.prototype[e];d.prototype[e]=function(){var e=arguments;return"function"==typeof e[1]?t.apply(this,arguments).then(function(){"function"==typeof e[1]&&e[1].apply(null)}):t.apply(this,arguments)}}),d}},function(e,t,r){"use strict";e.exports=function(e){var t=e&&e.navigator,r=t.mediaDevices.getUserMedia.bind(t.mediaDevices);t.mediaDevices.getUserMedia=function(e){return r(e).catch(function(e){return Promise.reject(function(e){return{name:{PermissionDeniedError:"NotAllowedError"}[e.name]||e.name,message:e.message,constraint:e.constraint,toString:function(){return this.name}}}(e))})}}},function(e,t,r){"use strict";var n=r(13);e.exports={shimGetUserMedia:r(36),shimOnTrack:function(e){"object"!=typeof e||!e.RTCPeerConnection||"ontrack"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"ontrack",{get:function(){return this._ontrack},set:function(e){this._ontrack&&(this.removeEventListener("track",this._ontrack),this.removeEventListener("addstream",this._ontrackpoly)),this.addEventListener("track",this._ontrack=e),this.addEventListener("addstream",this._ontrackpoly=function(e){e.stream.getTracks().forEach(function(t){var r=new Event("track");r.track=t,r.receiver={track:t},r.transceiver={receiver:r.receiver},r.streams=[e.stream],this.dispatchEvent(r)}.bind(this))}.bind(this))},enumerable:!0,configurable:!0}),"object"==typeof e&&e.RTCTrackEvent&&"receiver"in e.RTCTrackEvent.prototype&&!("transceiver"in e.RTCTrackEvent.prototype)&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimSourceObject:function(e){"object"==typeof e&&(!e.HTMLMediaElement||"srcObject"in e.HTMLMediaElement.prototype||Object.defineProperty(e.HTMLMediaElement.prototype,"srcObject",{get:function(){return this.mozSrcObject},set:function(e){this.mozSrcObject=e}}))},shimPeerConnection:function(e){var t=n.detectBrowser(e);if("object"==typeof e&&(e.RTCPeerConnection||e.mozRTCPeerConnection)){e.RTCPeerConnection||(e.RTCPeerConnection=function(r,n){if(t.version<38&&r&&r.iceServers){for(var i=[],a=0;a<r.iceServers.length;a++){var o=r.iceServers[a];if(o.hasOwnProperty("urls"))for(var s=0;s<o.urls.length;s++){var c={url:o.urls[s]};0===o.urls[s].indexOf("turn")&&(c.username=o.username,c.credential=o.credential),i.push(c)}else i.push(r.iceServers[a])}r.iceServers=i}return new e.mozRTCPeerConnection(r,n)},e.RTCPeerConnection.prototype=e.mozRTCPeerConnection.prototype,e.mozRTCPeerConnection.generateCertificate&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return e.mozRTCPeerConnection.generateCertificate}}),e.RTCSessionDescription=e.mozRTCSessionDescription,e.RTCIceCandidate=e.mozRTCIceCandidate),["setLocalDescription","setRemoteDescription","addIceCandidate"].forEach(function(t){var r=e.RTCPeerConnection.prototype[t];e.RTCPeerConnection.prototype[t]=function(){return arguments[0]=new("addIceCandidate"===t?e.RTCIceCandidate:e.RTCSessionDescription)(arguments[0]),r.apply(this,arguments)}});var r=e.RTCPeerConnection.prototype.addIceCandidate;e.RTCPeerConnection.prototype.addIceCandidate=function(){return arguments[0]?r.apply(this,arguments):(arguments[1]&&arguments[1].apply(null),Promise.resolve())};var i={inboundrtp:"inbound-rtp",outboundrtp:"outbound-rtp",candidatepair:"candidate-pair",localcandidate:"local-candidate",remotecandidate:"remote-candidate"},a=e.RTCPeerConnection.prototype.getStats;e.RTCPeerConnection.prototype.getStats=function(e,r,n){return a.apply(this,[e||null]).then(function(e){if(t.version<48&&(e=function(e){var t=new Map;return Object.keys(e).forEach(function(r){t.set(r,e[r]),t[r]=e[r]}),t}(e)),t.version<53&&!r)try{e.forEach(function(e){e.type=i[e.type]||e.type})}catch(t){if("TypeError"!==t.name)throw t;e.forEach(function(t,r){e.set(r,Object.assign({},t,{type:i[t.type]||t.type}))})}return e}).then(r,n)}}},shimSenderGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&!(e.RTCRtpSender&&"getStats"in e.RTCRtpSender.prototype)){var t=e.RTCPeerConnection.prototype.getSenders;t&&(e.RTCPeerConnection.prototype.getSenders=function(){var e=this,r=t.apply(e,[]);return r.forEach(function(t){t._pc=e}),r});var r=e.RTCPeerConnection.prototype.addTrack;r&&(e.RTCPeerConnection.prototype.addTrack=function(){var e=r.apply(this,arguments);return e._pc=this,e}),e.RTCRtpSender.prototype.getStats=function(){return this.track?this._pc.getStats(this.track):Promise.resolve(new Map)}}},shimReceiverGetStats:function(e){if("object"==typeof e&&e.RTCPeerConnection&&e.RTCRtpSender&&!(e.RTCRtpSender&&"getStats"in e.RTCRtpReceiver.prototype)){var t=e.RTCPeerConnection.prototype.getReceivers;t&&(e.RTCPeerConnection.prototype.getReceivers=function(){var e=this,r=t.apply(e,[]);return r.forEach(function(t){t._pc=e}),r}),n.wrapPeerConnectionEvent(e,"track",function(e){return e.receiver._pc=e.srcElement,e}),e.RTCRtpReceiver.prototype.getStats=function(){return this._pc.getStats(this.track)}}},shimRemoveStream:function(e){!e.RTCPeerConnection||"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){var t=this;n.deprecated("removeStream","removeTrack"),this.getSenders().forEach(function(r){r.track&&-1!==e.getTracks().indexOf(r.track)&&t.removeTrack(r)})})},shimRTCDataChannel:function(e){e.DataChannel&&!e.RTCDataChannel&&(e.RTCDataChannel=e.DataChannel)},shimGetDisplayMedia:function(e,t){!e.navigator||!e.navigator.mediaDevices||"getDisplayMedia"in e.navigator.mediaDevices||(e.navigator.mediaDevices.getDisplayMedia=function(r){if(!r||!r.video){var n=new DOMException("getDisplayMedia without video constraints is undefined");return n.name="NotFoundError",n.code=8,Promise.reject(n)}return!0===r.video?r.video={mediaSource:t}:r.video.mediaSource=t,e.navigator.mediaDevices.getUserMedia(r)},e.navigator.getDisplayMedia=function(t){return n.deprecated("navigator.getDisplayMedia","navigator.mediaDevices.getDisplayMedia"),e.navigator.mediaDevices.getDisplayMedia(t)})}}},function(e,t,r){"use strict";var n=r(13),i=n.log;e.exports=function(e){var t=n.detectBrowser(e),r=e&&e.navigator,a=e&&e.MediaStreamTrack,o=function(e){return{name:{InternalError:"NotReadableError",NotSupportedError:"TypeError",PermissionDeniedError:"NotAllowedError",SecurityError:"NotAllowedError"}[e.name]||e.name,message:{"The operation is insecure.":"The request is not allowed by the user agent or the platform in the current context."}[e.message]||e.message,constraint:e.constraint,toString:function(){return this.name+(this.message&&": ")+this.message}}},s=function(e,n,a){var s=function(e){if("object"!=typeof e||e.require)return e;var t=[];return Object.keys(e).forEach(function(r){if("require"!==r&&"advanced"!==r&&"mediaSource"!==r){var n=e[r]="object"==typeof e[r]?e[r]:{ideal:e[r]};if(void 0===n.min&&void 0===n.max&&void 0===n.exact||t.push(r),void 0!==n.exact&&("number"==typeof n.exact?n.min=n.max=n.exact:e[r]=n.exact,delete n.exact),void 0!==n.ideal){e.advanced=e.advanced||[];var i={};"number"==typeof n.ideal?i[r]={min:n.ideal,max:n.ideal}:i[r]=n.ideal,e.advanced.push(i),delete n.ideal,Object.keys(n).length||delete e[r]}}}),t.length&&(e.require=t),e};return e=JSON.parse(JSON.stringify(e)),t.version<38&&(i("spec: "+JSON.stringify(e)),e.audio&&(e.audio=s(e.audio)),e.video&&(e.video=s(e.video)),i("ff37: "+JSON.stringify(e))),r.mozGetUserMedia(e,n,function(e){a(o(e))})};if(r.mediaDevices||(r.mediaDevices={getUserMedia:function(e){return new Promise(function(t,r){s(e,t,r)})},addEventListener:function(){},removeEventListener:function(){}}),r.mediaDevices.enumerateDevices=r.mediaDevices.enumerateDevices||function(){return new Promise(function(e){e([{kind:"audioinput",deviceId:"default",label:"",groupId:""},{kind:"videoinput",deviceId:"default",label:"",groupId:""}])})},t.version<41){var c=r.mediaDevices.enumerateDevices.bind(r.mediaDevices);r.mediaDevices.enumerateDevices=function(){return c().then(void 0,function(e){if("NotFoundError"===e.name)return[];throw e})}}if(t.version<49){var u=r.mediaDevices.getUserMedia.bind(r.mediaDevices);r.mediaDevices.getUserMedia=function(e){return u(e).then(function(t){if(e.audio&&!t.getAudioTracks().length||e.video&&!t.getVideoTracks().length)throw t.getTracks().forEach(function(e){e.stop()}),new DOMException("The object can not be found here.","NotFoundError");return t},function(e){return Promise.reject(o(e))})}}if(!(t.version>55&&"autoGainControl"in r.mediaDevices.getSupportedConstraints())){var d=function(e,t,r){t in e&&!(r in e)&&(e[r]=e[t],delete e[t])},p=r.mediaDevices.getUserMedia.bind(r.mediaDevices);if(r.mediaDevices.getUserMedia=function(e){return"object"==typeof e&&"object"==typeof e.audio&&(e=JSON.parse(JSON.stringify(e)),d(e.audio,"autoGainControl","mozAutoGainControl"),d(e.audio,"noiseSuppression","mozNoiseSuppression")),p(e)},a&&a.prototype.getSettings){var f=a.prototype.getSettings;a.prototype.getSettings=function(){var e=f.apply(this,arguments);return d(e,"mozAutoGainControl","autoGainControl"),d(e,"mozNoiseSuppression","noiseSuppression"),e}}if(a&&a.prototype.applyConstraints){var l=a.prototype.applyConstraints;a.prototype.applyConstraints=function(e){return"audio"===this.kind&&"object"==typeof e&&(e=JSON.parse(JSON.stringify(e)),d(e,"autoGainControl","mozAutoGainControl"),d(e,"noiseSuppression","mozNoiseSuppression")),l.apply(this,[e])}}}r.getUserMedia=function(e,i,a){if(t.version<44)return s(e,i,a);n.deprecated("navigator.getUserMedia","navigator.mediaDevices.getUserMedia"),r.mediaDevices.getUserMedia(e).then(i,a)}}},function(e,t,r){"use strict";var n=r(13);e.exports={shimLocalStreamsAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection){if("getLocalStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getLocalStreams=function(){return this._localStreams||(this._localStreams=[]),this._localStreams}),"getStreamById"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getStreamById=function(e){var t=null;return this._localStreams&&this._localStreams.forEach(function(r){r.id===e&&(t=r)}),this._remoteStreams&&this._remoteStreams.forEach(function(r){r.id===e&&(t=r)}),t}),!("addStream"in e.RTCPeerConnection.prototype)){var t=e.RTCPeerConnection.prototype.addTrack;e.RTCPeerConnection.prototype.addStream=function(e){this._localStreams||(this._localStreams=[]),-1===this._localStreams.indexOf(e)&&this._localStreams.push(e);var r=this;e.getTracks().forEach(function(n){t.call(r,n,e)})},e.RTCPeerConnection.prototype.addTrack=function(e,r){return r&&(this._localStreams?-1===this._localStreams.indexOf(r)&&this._localStreams.push(r):this._localStreams=[r]),t.call(this,e,r)}}"removeStream"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.removeStream=function(e){this._localStreams||(this._localStreams=[]);var t=this._localStreams.indexOf(e);if(-1!==t){this._localStreams.splice(t,1);var r=this,n=e.getTracks();this.getSenders().forEach(function(e){-1!==n.indexOf(e.track)&&r.removeTrack(e)})}})}},shimRemoteStreamsAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection&&("getRemoteStreams"in e.RTCPeerConnection.prototype||(e.RTCPeerConnection.prototype.getRemoteStreams=function(){return this._remoteStreams?this._remoteStreams:[]}),!("onaddstream"in e.RTCPeerConnection.prototype))){Object.defineProperty(e.RTCPeerConnection.prototype,"onaddstream",{get:function(){return this._onaddstream},set:function(e){this._onaddstream&&this.removeEventListener("addstream",this._onaddstream),this.addEventListener("addstream",this._onaddstream=e)}});var t=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){var e=this;return this._onaddstreampoly||this.addEventListener("track",this._onaddstreampoly=function(t){t.streams.forEach(function(t){if(e._remoteStreams||(e._remoteStreams=[]),!(e._remoteStreams.indexOf(t)>=0)){e._remoteStreams.push(t);var r=new Event("addstream");r.stream=t,e.dispatchEvent(r)}})}),t.apply(e,arguments)}}},shimCallbacksAPI:function(e){if("object"==typeof e&&e.RTCPeerConnection){var t=e.RTCPeerConnection.prototype,r=t.createOffer,n=t.createAnswer,i=t.setLocalDescription,a=t.setRemoteDescription,o=t.addIceCandidate;t.createOffer=function(e,t){var n=arguments.length>=2?arguments[2]:arguments[0],i=r.apply(this,[n]);return t?(i.then(e,t),Promise.resolve()):i},t.createAnswer=function(e,t){var r=arguments.length>=2?arguments[2]:arguments[0],i=n.apply(this,[r]);return t?(i.then(e,t),Promise.resolve()):i};var s=function(e,t,r){var n=i.apply(this,[e]);return r?(n.then(t,r),Promise.resolve()):n};t.setLocalDescription=s,s=function(e,t,r){var n=a.apply(this,[e]);return r?(n.then(t,r),Promise.resolve()):n},t.setRemoteDescription=s,s=function(e,t,r){var n=o.apply(this,[e]);return r?(n.then(t,r),Promise.resolve()):n},t.addIceCandidate=s}},shimGetUserMedia:function(e){var t=e&&e.navigator;t.getUserMedia||(t.webkitGetUserMedia?t.getUserMedia=t.webkitGetUserMedia.bind(t):t.mediaDevices&&t.mediaDevices.getUserMedia&&(t.getUserMedia=function(e,r,n){t.mediaDevices.getUserMedia(e).then(r,n)}.bind(t)))},shimRTCIceServerUrls:function(e){var t=e.RTCPeerConnection;e.RTCPeerConnection=function(e,r){if(e&&e.iceServers){for(var i=[],a=0;a<e.iceServers.length;a++){var o=e.iceServers[a];!o.hasOwnProperty("urls")&&o.hasOwnProperty("url")?(n.deprecated("RTCIceServer.url","RTCIceServer.urls"),(o=JSON.parse(JSON.stringify(o))).urls=o.url,delete o.url,i.push(o)):i.push(e.iceServers[a])}e.iceServers=i}return new t(e,r)},e.RTCPeerConnection.prototype=t.prototype,"generateCertificate"in e.RTCPeerConnection&&Object.defineProperty(e.RTCPeerConnection,"generateCertificate",{get:function(){return t.generateCertificate}})},shimTrackEventTransceiver:function(e){"object"==typeof e&&e.RTCPeerConnection&&"receiver"in e.RTCTrackEvent.prototype&&!e.RTCTransceiver&&Object.defineProperty(e.RTCTrackEvent.prototype,"transceiver",{get:function(){return{receiver:this.receiver}}})},shimCreateOfferLegacy:function(e){var t=e.RTCPeerConnection.prototype.createOffer;e.RTCPeerConnection.prototype.createOffer=function(e){var r=this;if(e){void 0!==e.offerToReceiveAudio&&(e.offerToReceiveAudio=!!e.offerToReceiveAudio);var n=r.getTransceivers().find(function(e){return e.sender.track&&"audio"===e.sender.track.kind});!1===e.offerToReceiveAudio&&n?"sendrecv"===n.direction?n.setDirection?n.setDirection("sendonly"):n.direction="sendonly":"recvonly"===n.direction&&(n.setDirection?n.setDirection("inactive"):n.direction="inactive"):!0!==e.offerToReceiveAudio||n||r.addTransceiver("audio"),void 0!==e.offerToReceiveVideo&&(e.offerToReceiveVideo=!!e.offerToReceiveVideo);var i=r.getTransceivers().find(function(e){return e.sender.track&&"video"===e.sender.track.kind});!1===e.offerToReceiveVideo&&i?"sendrecv"===i.direction?i.setDirection("sendonly"):"recvonly"===i.direction&&i.setDirection("inactive"):!0!==e.offerToReceiveVideo||i||r.addTransceiver("video")}return t.apply(r,arguments)}}}},function(e,t,r){"use strict";var n=r(19),i=r(13);e.exports={shimRTCIceCandidate:function(e){if(e.RTCIceCandidate&&!(e.RTCIceCandidate&&"foundation"in e.RTCIceCandidate.prototype)){var t=e.RTCIceCandidate;e.RTCIceCandidate=function(e){if("object"==typeof e&&e.candidate&&0===e.candidate.indexOf("a=")&&((e=JSON.parse(JSON.stringify(e))).candidate=e.candidate.substr(2)),e.candidate&&e.candidate.length){var r=new t(e),i=n.parseCandidate(e.candidate),a=Object.assign(r,i);return a.toJSON=function(){return{candidate:a.candidate,sdpMid:a.sdpMid,sdpMLineIndex:a.sdpMLineIndex,usernameFragment:a.usernameFragment}},a}return new t(e)},e.RTCIceCandidate.prototype=t.prototype,i.wrapPeerConnectionEvent(e,"icecandidate",function(t){return t.candidate&&Object.defineProperty(t,"candidate",{value:new e.RTCIceCandidate(t.candidate),writable:"false"}),t})}},shimCreateObjectURL:function(e){var t=e&&e.URL;if("object"==typeof e&&e.HTMLMediaElement&&"srcObject"in e.HTMLMediaElement.prototype&&t.createObjectURL&&t.revokeObjectURL){var r=t.createObjectURL.bind(t),n=t.revokeObjectURL.bind(t),a=new Map,o=0;t.createObjectURL=function(e){if("getTracks"in e){var t="polyblob:"+ ++o;return a.set(t,e),i.deprecated("URL.createObjectURL(stream)","elem.srcObject = stream"),t}return r(e)},t.revokeObjectURL=function(e){n(e),a.delete(e)};var s=Object.getOwnPropertyDescriptor(e.HTMLMediaElement.prototype,"src");Object.defineProperty(e.HTMLMediaElement.prototype,"src",{get:function(){return s.get.apply(this)},set:function(e){return this.srcObject=a.get(e)||null,s.set.apply(this,[e])}});var c=e.HTMLMediaElement.prototype.setAttribute;e.HTMLMediaElement.prototype.setAttribute=function(){return 2===arguments.length&&"src"===(""+arguments[0]).toLowerCase()&&(this.srcObject=a.get(arguments[1])||null),c.apply(this,arguments)}}},shimMaxMessageSize:function(e){if(!e.RTCSctpTransport&&e.RTCPeerConnection){var t=i.detectBrowser(e);"sctp"in e.RTCPeerConnection.prototype||Object.defineProperty(e.RTCPeerConnection.prototype,"sctp",{get:function(){return void 0===this._sctp?null:this._sctp}});var r=e.RTCPeerConnection.prototype.setRemoteDescription;e.RTCPeerConnection.prototype.setRemoteDescription=function(){if(this._sctp=null,function(e){var t=n.splitSections(e.sdp);return t.shift(),t.some(function(e){var t=n.parseMLine(e);return t&&"application"===t.kind&&-1!==t.protocol.indexOf("SCTP")})}(arguments[0])){var e,i=function(e){var t=e.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);if(null===t||t.length<2)return-1;var r=parseInt(t[1],10);return r!=r?-1:r}(arguments[0]),a=function(e){var r=65536;return"firefox"===t.browser&&(r=t.version<57?-1===e?16384:2147483637:t.version<60?57===t.version?65535:65536:2147483637),r}(i),o=function(e,r){var i=65536;"firefox"===t.browser&&57===t.version&&(i=65535);var a=n.matchPrefix(e.sdp,"a=max-message-size:");return a.length>0?i=parseInt(a[0].substr(19),10):"firefox"===t.browser&&-1!==r&&(i=2147483637),i}(arguments[0],i);e=0===a&&0===o?Number.POSITIVE_INFINITY:0===a||0===o?Math.max(a,o):Math.min(a,o);var s={};Object.defineProperty(s,"maxMessageSize",{get:function(){return e}}),this._sctp=s}return r.apply(this,arguments)}}},shimSendThrowTypeError:function(e){if(e.RTCPeerConnection&&"createDataChannel"in e.RTCPeerConnection.prototype){var t=e.RTCPeerConnection.prototype.createDataChannel;e.RTCPeerConnection.prototype.createDataChannel=function(){var e=t.apply(this,arguments);return r(e,this),e},i.wrapPeerConnectionEvent(e,"datachannel",function(e){return r(e.channel,e.target),e})}function r(e,t){var r=e.send;e.send=function(){var n=arguments[0],i=n.length||n.size||n.byteLength;if("open"===e.readyState&&t.sctp&&i>t.sctp.maxMessageSize)throw new TypeError("Message too large (can send a maximum of "+t.sctp.maxMessageSize+" bytes)");return r.apply(e,arguments)}}}}},function(e,t){e.exports=function(e){return-1!==Function.toString.call(e).indexOf("[native code]")}},function(e,t,r){var n=r(16);function i(t,r,a){return!function(){if("undefined"==typeof Reflect||!Reflect.construct)return!1;if(Reflect.construct.sham)return!1;if("function"==typeof Proxy)return!0;try{return Date.prototype.toString.call(Reflect.construct(Date,[],function(){})),!0}catch(e){return!1}}()?e.exports=i=function(e,t,r){var i=[null];i.push.apply(i,t);var a=new(Function.bind.apply(e,i));return r&&n(a,r.prototype),a}:e.exports=i=Reflect.construct,i.apply(null,arguments)}e.exports=i},function(e,t,r){var n=function(e){return String(Number(e))===e?Number(e):e},i=function(e,t,r){var i=e.name&&e.names;e.push&&!t[e.push]?t[e.push]=[]:i&&!t[e.name]&&(t[e.name]={});var a=e.push?{}:i?t[e.name]:t;!function(e,t,r,i){if(i&&!r)t[i]=n(e[1]);else for(var a=0;a<r.length;a+=1)null!=e[a+1]&&(t[r[a]]=n(e[a+1]))}(r.match(e.reg),a,e.names,e.name),e.push&&t[e.push].push(a)},a=r(22),o=RegExp.prototype.test.bind(/^([a-z])=(.*)/);t.parse=function(e){var t={},r=[],n=t;return e.split(/(\r\n|\r|\n)/).filter(o).forEach(function(e){var t=e[0],o=e.slice(2);"m"===t&&(r.push({rtp:[],fmtp:[]}),n=r[r.length-1]);for(var s=0;s<(a[t]||[]).length;s+=1){var c=a[t][s];if(c.reg.test(o))return i(c,n,o)}}),t.media=r,t};var s=function(e,t){var r=t.split(/=(.+)/,2);return 2===r.length?e[r[0]]=n(r[1]):1===r.length&&t.length>1&&(e[r[0]]=void 0),e};t.parseParams=function(e){return e.split(/\;\s?/).reduce(s,{})},t.parseFmtpConfig=t.parseParams,t.parsePayloads=function(e){return e.split(" ").map(Number)},t.parseRemoteCandidates=function(e){for(var t=[],r=e.split(" ").map(n),i=0;i<r.length;i+=3)t.push({component:r[i],ip:r[i+1],port:r[i+2]});return t},t.parseImageAttributes=function(e){return e.split(" ").map(function(e){return e.substring(1,e.length-1).split(",").reduce(s,{})})},t.parseSimulcastStreamList=function(e){return e.split(";").map(function(e){return e.split(",").map(function(e){var t,r=!1;return"~"!==e[0]?t=n(e):(t=n(e.substring(1,e.length)),r=!0),{scid:t,paused:r}})})}},function(e,t,r){var n=r(22),i=/%[sdv%]/g,a=function(e,t,r){var n=[e+"="+(t.format instanceof Function?t.format(t.push?r:r[t.name]):t.format)];if(t.names)for(var a=0;a<t.names.length;a+=1){var o=t.names[a];t.name?n.push(r[t.name][o]):n.push(r[t.names[a]])}else n.push(r[t.name]);return function(e){var t=1,r=arguments,n=r.length;return e.replace(i,function(e){if(t>=n)return e;var i=r[t];switch(t+=1,e){case"%%":return"%";case"%s":return String(i);case"%d":return Number(i);case"%v":return""}})}.apply(null,n)},o=["v","o","s","i","u","e","p","c","b","t","r","z","a"],s=["i","c","b","a"];e.exports=function(e,t){t=t||{},null==e.version&&(e.version=0),null==e.name&&(e.name=" "),e.media.forEach(function(e){null==e.payloads&&(e.payloads="")});var r=t.outerOrder||o,i=t.innerOrder||s,c=[];return r.forEach(function(t){n[t].forEach(function(r){r.name in e&&null!=e[r.name]?c.push(a(t,r,e)):r.push in e&&null!=e[r.push]&&e[r.push].forEach(function(e){c.push(a(t,r,e))})})}),e.media.forEach(function(e){c.push(a("m",n.m[0],e)),i.forEach(function(t){n[t].forEach(function(r){r.name in e&&null!=e[r.name]?c.push(a(t,r,e)):r.push in e&&null!=e[r.push]&&e[r.push].forEach(function(e){c.push(a(t,r,e))})})})}),c.join("\r\n")+"\r\n"}},function(e,t,r){"use strict";r.r(t);var n=r(10),i=r.n(n),a=r(0),o=r.n(a),s=r(1),c=r.n(s),u=r(2),d=r.n(u),p=r(3),f=r.n(p),l=r(5),h=r.n(l),m=r(4),v=r.n(m),g=r(6),y=r.n(g),k=r(12),b=r.n(k),T=(r(27),r(11)),w=r.n(T),S=r(15),C=r.n(S),_=r(8),x=r.n(_),R=r(7),P=r.n(R),E=r(18),I=r.n(E),M=function(e){function t(e,r){var n;return d()(this,t),(n=h()(this,v()(t).call(this,r))).code=e,n.error=r,n}return y()(t,e),t}(I()(Error)),O=function(e){return new M(11e3,"piliRTC: unexpected error ".concat(e))},j=function(e){return new M(11001,"enterRoom error, can not get accessToken. Error: ".concat(e,"\n please check enterRoom arguments"))},D=function(e,t){return new M(e,"publish error, signaling code: ".concat(e,", msg: ").concat(t))},L=function(e,t){return new M(e,"create merge job error, signaling code: ".concat(e,", msg: ").concat(t))},A=function(e){return new M(11007,"media format not support, ".concat(e))},N=function(e,t){return new M(e,"subscribe error, signaling code: ".concat(e,", msg: ").concat(t))},F=function(e,t){return new M(e,"send control error, code: ".concat(e,", msg: ").concat(t))},U=function(e){return new M(11008,"not support! ".concat(e))},G=function(){return new M(10052,"server unavailable")},B=function(e){return new M(11009,"plugin not avaliable! ".concat(e))},W=function(e){return new M(11010,"NotAllowedError: no permission to access media device. ".concat(e))},V=function(e){return new M(11012,"can not set merge layout stream, no merge job id ".concat(e))},J=function(){return new M(11013,"can not sharing screen/window on chrome")},H=function(){return new M(11014,"subscribe/publish operation is aborted")},z=function(){return new M(30001,"websocket abort")},$=function(e){function t(e){var r;return d()(this,t),(r=h()(this,v()(t).call(this,e))).name="InvalidStateError",Error.hasOwnProperty("captureStackTrace")?Error.captureStackTrace(P()(P()(r)),t):r.stack=new Error(e).stack,r}return y()(t,e),t}(I()(Error));function q(e){return Q.apply(this,arguments)}function Q(){return(Q=c()(o.a.mark(function e(t){var r,n;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,fetch(t);case 2:if(!((r=e.sent).status>=400&&r.status<500)){e.next=5;break}throw{retry:!1,message:r.status.toString()};case 5:if(200===r.status){e.next=7;break}throw{retry:!0,message:r.status.toString()};case 7:return e.next=9,r.json();case 9:return n=e.sent,e.abrupt("return",n);case 11:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}var K=r(23),X=r(9),Z=navigator.userAgent.toLowerCase().indexOf("firefox")>-1,Y=!!window.chrome,ee=navigator.userAgent.match(/iPad/i)||navigator.userAgent.match(/iPhone/i),te=Object(K.detect)()||{};function re(){try{return!!RTCPeerConnection&&(!!WebSocket&&!!navigator.mediaDevices.getUserMedia)}catch(e){return!1}}var ne=function(){if(!te)return{support:re(),supportRestartICE:!0};switch(te.name){case"chrome":return{support:X.gte(te.version,"55.0.0"),mediaStreamDest:X.gte(te.version,"55.0.0"),replaceTrack:X.gte(te.version,"65.0.0"),screenSharing:X.gte(te.version,"55.0.0"),connectionState:!1,stats:X.gte(te.version,"67.0.0"),ondevicechange:X.gte(te.version,"57.0.0"),minMaxWithIdeal:X.gte(te.version,"56.0.0"),unifiedPlan:!1,supportRestartICE:!0};case"safari":return{support:X.gte(te.version,"11.0.0"),replaceTrack:X.gte(te.version,"11.0.0"),stats:!1,ondevicechange:!1,connectionState:!0,mediaStreamDest:!1,screenSharing:!1,minMaxWithIdeal:!1,supportRestartICE:!0};case"firefox":return{support:re()&&X.gte(te.version,"59.0.0"),replaceTrack:!0,stats:!0,ondevicechange:X.gte(te.version,"52.0.0"),connectionState:!0,mediaStreamDest:!0,screenSharing:!0,minMaxWithIdeal:!0,unifiedPlan:X.gte(te.version,"59.0.0"),supportRestartICE:!1};default:return{support:re(),supportRestartICE:!0}}}(),ie=new(function(){function e(t){d()(this,e),this.level=t}return f()(e,[{key:"setLevel",value:function(e){this.level=e}},{key:"log",value:function(){var e;if("log"===this.level){for(var t=arguments.length,r=new Array(t),n=0;n<t;n++)r[n]=arguments[n];(e=console).info.apply(e,["%cLOG-QNRTC","color: #66ccff; font-weight: bold;"].concat(r))}}},{key:"debug",value:function(){var e;if("log"===this.level||"debug"===this.level){for(var t=arguments.length,r=new Array(t),n=0;n<t;n++)r[n]=arguments[n];(e=console).info.apply(e,["%cDEBUG-QNRTC","color: #A28148; font-weight: bold;"].concat(r))}}},{key:"warning",value:function(){var e;if("disable"!==this.level){for(var t=arguments.length,r=new Array(t),n=0;n<t;n++)r[n]=arguments[n];(e=console).warn.apply(e,["%cWARNING-QNRTC","color: #E44F44; font-weight: bold;"].concat(r))}}}]),e}())("log"),ae=(Date.now(),function(){return{packetLossRate:0,bitrate:0,bytes:0,packets:0,packetLoss:0,timestamp:Date.now()}});function oe(e,t,r){return se.apply(this,arguments)}function se(){return(se=c()(o.a.mark(function e(t,r,n){var i,a,s,c,u,d,p,f,l,h,m,v,g;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return i=ae(),e.prev=1,e.next=4,t.getStats(r);case 4:a=e.sent,e.next=11;break;case 7:return e.prev=7,e.t0=e.catch(1),ie.debug("get stats error, fallback to default",e.t0),e.abrupt("return",ae());case 11:if(a){e.next=14;break}return ie.debug("get null stats, fallback to default"),e.abrupt("return",ae());case 14:for(s=!0,c=!1,u=void 0,e.prev=17,d=a.values()[Symbol.iterator]();!(s=(p=d.next()).done);s=!0)f=p.value,("send"===n&&"outbound-rtp"===f.type&&!f.isRemote||"recv"===n&&"inbound-rtp"===f.type&&!f.isRemote)&&(l=a.get(f.remoteId),h="send"===n?f.packetsSent:f.packetsReceived,m="send"===n?f.bytesSent:f.bytesReceived,v=0,l&&(g="send"===n?l.packetsReceived:l.packetsSent,v="send"===n?l.packetsLost:g-h),i.bytes=m,i.packets=h,i.packetLoss=v);e.next=25;break;case 21:e.prev=21,e.t1=e.catch(17),c=!0,u=e.t1;case 25:e.prev=25,e.prev=26,s||null==d.return||d.return();case 28:if(e.prev=28,!c){e.next=31;break}throw u;case 31:return e.finish(28);case 32:return e.finish(25);case 33:return e.abrupt("return",i);case 34:case"end":return e.stop()}},e,this,[[1,7],[17,21,25,33],[26,,28,32]])}))).apply(this,arguments)}function ce(){var e={bundlePolicy:"max-bundle",rtcpMuxPolicy:"require"};return ne.unifiedPlan?e.sdpSemantics="unified-plan":e.sdpSemantics="plan-b",new RTCPeerConnection(e)}function ue(e,t){return de.apply(this,arguments)}function de(){return(de=c()(o.a.mark(function e(t,r){var n;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!(n=r.getTransceivers().find(function(e){return"inactive"===e.direction&&e.receiver.track.kind===t.kind}))){e.next=8;break}return n.direction="sendonly",e.next=5,n.sender.replaceTrack(t);case 5:return e.abrupt("return",n);case 8:return e.next=10,r.addTransceiver(t,{direction:"sendonly"});case 10:return e.abrupt("return",e.sent);case 11:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function pe(e,t,r,n){return fe.apply(this,arguments)}function fe(){return(fe=c()(o.a.mark(function e(t,r,n,i){var a;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!ne.stats){e.next=7;break}return e.next=3,oe(t,r,n);case 3:return a=e.sent,e.abrupt("return",le(a,i));case 7:return gt(function(){ie.warning("your browser does not support getStats")},"not-support-stats-warning"),e.abrupt("return",ae());case 9:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function le(e,t){if(!t)return e;var r=i()({},e),n=e.packets-t.packets,a=e.packetLoss-t.packetLoss;a>0&&(r.packetLossRate=a/n,r.packetLossRate>1&&(r.packetLossRate=1));var o=(e.timestamp-t.timestamp)/1e3;return o<=0?e:(r.bitrate=8*(e.bytes-t.bytes)/o,r.bitrate<0?t:r)}var he,me=function(e){return!!e&&!!e.audio&&e.audio.enabled},ve=function(e){return!!e&&!!e.video&&e.video.enabled},ge=function(e){return!!e&&!!e.screen&&e.screen.enabled};!function(e){e[e.Idle=0]="Idle",e[e.Connecting=1]="Connecting",e[e.Connect=2]="Connect"}(he||(he={}));var ye={publishUrl:"",height:720,width:1080,fps:25,kbps:1e3,audioOnly:!1,stretchMode:"aspectFill"};window.addEventListener("message",function(e){e.origin===window.location.origin&&function(e){if("PermissionDeniedError"===e){if(Te="PermissionDeniedError",be)return be("PermissionDeniedError");throw J()}"qnrtc:rtcmulticonnection-extension-loaded"===e&&(Te="desktop");"rtcmulticonnection-extension-loaded"===e&&(ie.warning("your chrome screen sharing plugin is not the latest version, or you have other screen sharing plugins."),!1);e.sourceId&&be&&be(ke=e.sourceId,!0===e.canRequestAudioTrack)}(e.data)});var ke,be,Te="screen";function we(){return Se.apply(this,arguments)}function Se(){return(Se=c()(o.a.mark(function e(){var t;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=function(){return new Promise(function(e,t){"desktop"!==Te?(window.postMessage("qnrtc:are-you-there","*"),setTimeout(function(){e("screen"!==Te)},2e3)):e(!0)})},e.next=3,t();case 3:return e.abrupt("return",e.sent);case 4:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function Ce(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],r=arguments.length>2&&void 0!==arguments[2]&&arguments[2];be=e,t?window.postMessage("qnrtc:get-sourceId-screen","*"):r?window.postMessage("qnrtc:get-sourceId-window","*"):window.postMessage("qnrtc:get-sourceId","*")}function _e(e){if(ke)return e(ke);be=e,window.postMessage("qnrtc:audio-plus-tab","*")}function xe(e,t){return Re.apply(this,arguments)}function Re(){return(Re=c()(o.a.mark(function e(t,r){var n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return n=r.source,i=function(){return new Promise(function(e,i){var a={mozMediaSource:n||"window",mediaSource:n||"window",height:r.height,width:r.width};if(Z)e(a);else{var o={mandatory:{chromeMediaSource:Te,maxWidth:Ze(r.width),maxHeight:Ze(r.height)},optional:[]};"desktop"!==Te?e(o):t?_e(function(t,r){o.mandatory.chromeMediaSourceId=t,r&&(o.canRequestAudioTrack=!0),"PermissionDeniedError"!==t?e(o):i(J())}):Ce(function(t){o.mandatory.chromeMediaSourceId=t,"PermissionDeniedError"!==t?e(o):i(J())},"screen"===n,"window"===n)}})},e.next=4,i();case 4:return e.abrupt("return",e.sent);case 5:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}var Pe=function(){function e(t,r){d()(this,e),this.tracks=[],this.publishedTrackInfo=[],this.userId=t,this.userData=r}return f()(e,[{key:"addTracks",value:function(e){var t=this;this.tracks=this.tracks.concat(e),this.tracks=C()(this.tracks,"mediaTrack");var r=!0,n=!1,i=void 0;try{for(var a,o=function(){var e=a.value;e.once("release",function(){x()(t.tracks,function(t){return t===e})})},s=this.tracks[Symbol.iterator]();!(r=(a=s.next()).done);r=!0)o()}catch(e){n=!0,i=e}finally{try{r||null==s.return||s.return()}finally{if(n)throw i}}}},{key:"removeTracksByTrackId",value:function(e){x()(this.tracks,function(t){return!!t.info.trackId&&-1!==e.indexOf(t.info.trackId)})}},{key:"addPublishedTrackInfo",value:function(e){this.publishedTrackInfo=this.publishedTrackInfo.concat(e),this.publishedTrackInfo=C()(this.publishedTrackInfo,"trackId")}},{key:"removePublishedTrackInfo",value:function(e){x()(this.publishedTrackInfo,function(t){return-1!==e.indexOf(t.trackId)})}},{key:"published",get:function(){return this.publishedTrackInfo.length>0}}]),e}();function Ee(e){var t=document.createElement("audio"),r=new MediaStream([e]);return t.style.visibility="hidden",t.className="qnrtc-audio-player qnrtc-stream-player",t.dataset.localid=e.id,t.autoplay=!0,t.srcObject=r,t}function Ie(e){var t=document.createElement("video"),r=new MediaStream([e]);return t.style.width="100%",t.style.height="100%",t.style.objectFit="contain",t.muted=!0,t.className="qnrtc-video-player qnrtc-stream-player",t.dataset.localid=e.id,t.setAttribute("playsinline",!0),t.autoplay=!0,t.srcObject=r,ee&&(t.setAttribute("controls",!0),dt(function(){t&&t.srcObject&&t.removeAttribute("controls")})),t}var Me=function(e){function t(){return d()(this,t),h()(this,v()(t).apply(this,arguments))}return y()(t,e),f()(t,[{key:"safeEmit",value:function(e){try{for(var t=arguments.length,r=new Array(t>1?t-1:0),n=1;n<t;n++)r[n-1]=arguments[n];this.emit.apply(this,[e].concat(r))}catch(t){ie.warning("safeEmit() | event listener threw an error [event:%s]:%o",e,t)}}},{key:"safeEmitAsPromise",value:function(e){for(var t=this,r=arguments.length,n=new Array(r>1?r-1:0),i=1;i<r;i++)n[i-1]=arguments[i];return new Promise(function(r,i){var a=r;t.safeEmit.apply(t,[e].concat(n,[a,function(t){ie.warning("safeEmitAsPromise() | errback called [event:%s]:%o",e,t),i(t)}]))})}}]),t}(w.a),Oe=function(e){function t(e,r){var n;return d()(this,t),(n=h()(this,v()(t).call(this))).master=!1,n.stats=ae(),n.mediaTrack=e,n.userId=r,n.info={kind:e.kind,muted:!e.enabled,userId:n.userId,versionid:0},n}return y()(t,e),f()(t,[{key:"play",value:function(e,t){this.removeMediaElement();var r="video"===this.info.kind?Ie:Ee;this.mediaElement=r(this.mediaTrack),"audio"===this.info.kind&&t&&(this.mediaElement.muted=!0),e.appendChild(this.mediaElement)}},{key:"resume",value:function(e){if(this.mediaTrack=e,this.mediaElement){var t=new MediaStream([e]);this.mediaElement.dataset.localid=e.id,this.mediaElement.srcObject=t}this.removeEvent("@get-stats"),this.resetStats()}},{key:"getStats",value:function(){return this.statsInterval||this.startGetStatsInterval(),this.stats}},{key:"onAudioBuffer",value:function(e,t){}},{key:"setVolume",value:function(e){}},{key:"getCurrentTimeDomainData",value:function(){return new Uint8Array}},{key:"getCurrentFrequencyData",value:function(){return new Uint8Array}},{key:"getCurrentFrameDataURL",value:function(){return this.mediaElement&&this.mediaElement instanceof HTMLVideoElement?function(e){var t=document.createElement("canvas");t.width=e.videoWidth,t.height=e.videoHeight;var r=t.getContext("2d");return r?(r.drawImage(e,0,0,e.videoWidth,e.videoHeight),t.toDataURL()):"data:,"}(this.mediaElement):"data:,"}},{key:"setAudioBuffer",value:function(e){}},{key:"playAudioBuffer",value:function(e){}},{key:"stopAudioBuffer",value:function(){}},{key:"setMaster",value:function(e){this.master=e}},{key:"setMute",value:function(e){this.info.muted=e,this.mediaTrack.enabled=!e,this.emit("mute",e)}},{key:"setKbps",value:function(e){this.info.kbps=e}},{key:"setInfo",value:function(e){this.info=i()({},this.info,e)}},{key:"removeMediaElement",value:function(){this.mediaElement&&(this.mediaElement.remove(),this.mediaElement=void 0)}},{key:"release",value:function(){this.emit("release"),this.removeEvent(),this.statsInterval&&window.clearInterval(this.statsInterval),this.mediaTrack.stop(),this.removeMediaElement()}},{key:"reset",value:function(){this.info.trackId=void 0,this.info.userId=void 0,this.info.versionid=0,this.userId=void 0,this.resetStats()}},{key:"resetStats",value:function(){this.stats=ae(),this.lastStats=void 0}},{key:"startGetStatsInterval",value:function(){var e=c()(o.a.mark(function e(){var t,r=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:t=function(){var e=c()(o.a.mark(function e(){var t;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if((t=r.getListeners("@get-stats"))&&0!==t.length){e.next=3;break}return e.abrupt("return",ae());case 3:return e.next=5,r.safeEmitAsPromise("@get-stats",r.lastStats);case 5:r.stats=e.sent,r.lastStats=i()({},r.stats);case 7:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}(),this.statsInterval=window.setInterval(t,1e3);case 2:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}()}]),t}(Me),je=function(e){function t(e){var r,n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"send",i=arguments.length>2?arguments[2]:void 0;return d()(this,t),(r=h()(this,v()(t).call(this))).trackList=[],r.isDestroyed=!1,r.enableAudio=!0,r.enableVideo=!0,r.muteAudio=!1,r.muteVideo=!1,r.direction=n,r.userId=i,e.forEach(function(e){e.setMaster(!0),e.on("mute",function(){r.updateTrackState()}),e.on("release",function(){x()(r.trackList,function(t){return t===e}),r.updateTrackState(),0===r.trackList.length&&r.release()}),r.trackList.push(e)}),r.updateTrackState(),r}return y()(t,e),f()(t,[{key:"setVolume",value:function(e){this._audioTrack&&this._audioTrack.setVolume(e)}},{key:"play",value:function(e,t){this.trackList.forEach(function(r){return r.play(e,t)}),this._audioTrack&&(this.audio=this._audioTrack.mediaElement),this._videoTrack&&(this.video=this._videoTrack.mediaElement)}},{key:"setAudioBufferData",value:function(e,t){this._audioTrack&&"buffer"===this._audioTrack.sourceType&&(this._audioTrack.setAudioBuffer(e),this._audioTrack.playAudioBuffer(t))}},{key:"onAudioBuffer",value:function(e,t){this._audioTrack&&this._audioTrack.onAudioBuffer(e,t)}},{key:"getCurrentTimeDomainData",value:function(){return this._audioTrack?this._audioTrack.getCurrentTimeDomainData():new Uint8Array(0)}},{key:"getCurrentFrequencyData",value:function(){return this._audioTrack?this._audioTrack.getCurrentFrequencyData():new Uint8Array(0)}},{key:"getStats",value:function(){var e=this._audioTrack?this._audioTrack.getStats():ae(),t=this._videoTrack?this._videoTrack.getStats():ae();return{timestamp:Date.now(),videoBitrate:t.bitrate,audioBitrate:e.bitrate,videoPacketLoss:t.packetLoss,audioPacketLoss:e.packetLoss,videoPackets:t.packets,audioPackets:e.packets,videoPacketLossRate:t.packetLossRate,audioPacketLossRate:e.packetLossRate,videoBytes:t.bytes,audioBytes:e.bytes,pctype:this.direction}}},{key:"getCurrentFrameDataURL",value:function(){return this._videoTrack?this._videoTrack.getCurrentFrameDataURL():"data:,"}},{key:"setKbps",value:function(e,t){e&&this._videoTrack&&this._videoTrack.setKbps(e),t&&this._audioTrack&&this._audioTrack.setKbps(t)}},{key:"updateTrackState",value:function(){var e=this;this.trackList.forEach(function(t){"audio"===t.info.kind?(e.audioTrack=t.mediaTrack,e._audioTrack=t):(e.videoTrack=t.mediaTrack,e._videoTrack=t)}),this.audioTrack?(this.enableAudio=!0,this.muteAudio=!this.audioTrack.enabled):this.enableAudio=!1,this.videoTrack?(this.enableVideo=!0,this.muteVideo=!this.videoTrack.enabled):this.enableVideo=!1}},{key:"release",value:function(){if(!this.isDestroyed){for(var e=0;e<this.trackList.length;e+=1){var t=this.trackList[e];t.removeAllListeners("release"),t.release()}this.trackList=[],this.isDestroyed=!0,this.emit("release"),this.removeEvent()}}},{key:"releaseTrack",value:function(e){var t=function(e,t,r){for(var n=[],i=null,a=0;a<e.length;a+=1){var o=e[a];o[t]!==r?n.push(e[a]):i=e[a]}return{removeElement:i,newArray:n}}(this.trackList,"mediaTrack",e.mediaTrack),r=t.removeElement,n=t.newArray;r&&(e.release(),this.trackList=n,0===this.trackList.length&&(this.isDestroyed=!0))}}]),t}(w.a),De=new(window.AudioContext||window.webkitAudioContext||window.Object)({latencyHint:"interactive"});window.Promise&&function(e){return new Promise(function(t,r){if("suspended"===e.state){var n=function n(){e.resume().then(function(){document.body.removeEventListener("touchstart",n),document.body.removeEventListener("touchend",n),document.body.removeEventListener("mousedown",n),document.body.removeEventListener("mouseup",n),t(!0)}).catch(r)};document.body.addEventListener("touchstart",n,!0),document.body.addEventListener("touchend",n,!0),document.body.addEventListener("mousedown",n,!0),document.body.addEventListener("mouseup",n,!0)}else t(!1)})}(De).then(function(e){ie.debug("web audio context unlocked",e)}).catch(function(e){ie.warning("can not unlock web audio context",e)});De.sampleRate;function Le(e){return Ae.apply(this,arguments)}function Ae(){return(Ae=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if("suspended"!==De.state){e.next=3;break}return e.next=3,De.resume();case 3:return r=function(){return new Promise(function(e,r){De.decodeAudioData(t,function(t){e(t)},function(e){r(e)})})},e.next=6,r();case 6:return e.abrupt("return",e.sent);case 7:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}var Ne=function(){function e(){d()(this,e)}return f()(e,[{key:"onAudioBuffer",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:4096;this.audioBufferCallback=e,this.audioBufferSize=t}},{key:"initAudioContext",value:function(){var e=c()(o.a.mark(function e(){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(ie.log("init audio context",De.state),"suspended"!==De.state){e.next=10;break}return e.prev=2,e.next=5,pt(De.resume(),1e3);case 5:e.next=10;break;case 7:e.prev=7,e.t0=e.catch(2),ie.warning("resume audiocontext timeout");case 10:ie.log("init audio finish",De.state),this.analyserNode=De.createAnalyser(),this.analyserNode.fftSize=2048,this.gainNode=De.createGain(),ne.mediaStreamDest&&(this.audioStream=De.createMediaStreamDestination()),this.initScriptNode(4096);case 16:case"end":return e.stop()}},e,this,[[2,7]])}));return function(){return e.apply(this,arguments)}}()},{key:"setMediaStreamSource",value:function(e){this.audioSource=De.createMediaStreamSource(e),this.connect()}},{key:"setAudioBufferSource",value:function(){this.audioSource=De.createBufferSource(),this.connect()}},{key:"setAudioBuffer",value:function(e){this.audioSource instanceof AudioBufferSourceNode&&(this.audioSource.buffer&&this.audioSource.stop(),this.audioSource.buffer=e)}},{key:"playAudioBuffer",value:function(e){var t=this;this.audioSource instanceof AudioBufferSourceNode&&(this.audioSource.loop=!!e,this.audioSource.start(),this.audioSource.onended=function(){t.audioBufferSourceEnd&&t.audioBufferSourceEnd()})}},{key:"stopAudioBuffer",value:function(){this.audioSource instanceof AudioBufferSourceNode&&this.audioSource.stop()}},{key:"release",value:function(){this.audioSource instanceof MediaStreamAudioSourceNode&&this.audioSource.mediaStream&&this.audioSource.mediaStream.getTracks().map(function(e){return e.stop()}),this.audioSource.disconnect(),this.gainNode.disconnect()}},{key:"connect",value:function(){this.audioSource.connect(this.analyserNode),this.audioSource.connect(this.scriptNode),this.audioSource.connect(this.gainNode),this.audioStream&&this.gainNode.connect(this.audioStream)}},{key:"handleAudioBuffer",value:function(e){var t=e.inputBuffer;this.audioBufferCallback&&this.audioBufferCallback(t)}},{key:"initScriptNode",value:function(e){this.scriptNode=De.createScriptProcessor(e),this.scriptNode.onaudioprocess=this.handleAudioBuffer.bind(this),this.scriptNode.connect(De.destination)}}]),e}(),Fe=function(e){function t(e,r){var n;if(d()(this,t),"audio"!==e.kind)throw new Error("audio track only!");return(n=h()(this,v()(t).call(this,e,r))).mediaStream=new MediaStream,n.mediaStream.addTrack(e),n}return y()(t,e),f()(t,[{key:"resume",value:function(e){this.mediaTrack=e,this.removeEvent("@get-stats"),this.resetStats();var t=new MediaStream([e]);this.mediaStream=t,this.mediaElement&&(this.mediaElement.dataset.localid=e.id,this.mediaElement.srcObject=t),this.audioManager&&(this.audioManager.release(),this.initAudioManager())}},{key:"initAudioManager",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return this.sourceType="mic",this.audioManager=new Ne,e.next=4,this.audioManager.initAudioContext();case 4:this.audioManager.setMediaStreamSource(this.mediaStream),t&&ne.mediaStreamDest&&(this.mediaStream=this.audioManager.audioStream.stream,this.mediaTrack=this.mediaStream.getTracks()[0]);case 6:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"onAudioBuffer",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:4096;this.audioManager?this.audioManager.onAudioBuffer(e,t):ie.warning("can not find audio manager")}},{key:"setVolume",value:function(e){this.audioManager&&this.audioManager.gainNode.gain.setValueAtTime(e,De.currentTime)}},{key:"getCurrentTimeDomainData",value:function(){if(!this.audioManager)return new Uint8Array(0);var e=new Uint8Array(2048);return this.audioManager.analyserNode.getByteTimeDomainData(e),e}},{key:"getCurrentFrequencyData",value:function(){if(!this.audioManager)return new Uint8Array(0);var e=new Uint8Array(2048);return this.audioManager.analyserNode.getByteFrequencyData(e),e}},{key:"setAudioBuffer",value:function(e){this.audioManager&&"buffer"===this.sourceType&&this.audioManager.setAudioBuffer(e)}},{key:"playAudioBuffer",value:function(e){this.audioManager&&"buffer"===this.sourceType&&this.audioManager.playAudioBuffer(e)}},{key:"stopAudioBuffer",value:function(){this.audioManager&&"buffer"===this.sourceType&&this.audioManager.stopAudioBuffer()}},{key:"release",value:function(){this.emit("release"),this.removeEvent(),this.statsInterval&&window.clearInterval(this.statsInterval),this.mediaTrack.stop(),this.removeMediaElement(),this.audioManager&&this.audioManager.release()}}]),t}(Oe);function Ue(){return Ge.apply(this,arguments)}function Ge(){return(Ge=c()(o.a.mark(function e(){var t,r,n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=new Ne,e.next=3,t.initAudioContext();case 3:return t.setAudioBufferSource(),r=t.audioStream.stream,n=r.getTracks()[0],(i=new Fe(n)).sourceType="buffer",i.audioManager=t,e.abrupt("return",i);case 10:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function Be(e){return{timestamp:e.msgts,data:e.text,userId:e.playerid,type:e.type}}function We(e){return{trackId:e.trackid,tag:e.tag,kind:e.kind,userId:e.playerid,muted:e.muted,versionid:e.versionid}}function Ve(e,t){return{trackid:e.trackId,kind:e.kind,master:t,muted:!!e.muted,playerid:e.userId,tag:e.tag||"",versionid:e.versionid}}function Je(e){return{localid:e.mediaTrack.id,master:e.master,kind:e.info.kind,kbps:e.info.kbps,tag:e.info.tag}}function He(e){return new Pe(e.playerid,e.playerdata)}function ze(e,t,r){return $e.apply(this,arguments)}function $e(){return($e=c()(o.a.mark(function e(t,r,n){var i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if("audio"!==t.kind){e.next=6;break}return i=new Fe(t),e.next=4,i.initAudioManager(!0);case 4:e.next=7;break;case 6:i=new Oe(t);case 7:return n&&i.setKbps(n),i.setInfo({tag:r}),e.abrupt("return",i);case 10:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function qe(e){return Qe.apply(this,arguments)}function Qe(){return(Qe=c()(o.a.mark(function e(t){var r,n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(t){e.next=2;break}return e.abrupt("return",{audio:!0,video:!0});case 2:if(!ge(t)){e.next=13;break}if(!ve(t)){e.next=5;break}throw O("can not get mediaStream with video and screen are all enabled");case 5:if(ne.screenSharing){e.next=7;break}throw U("your browser can not share screen");case 7:if(!Y){e.next=13;break}return e.next=10,we();case 10:if(e.sent){e.next=13;break}throw B("");case 13:if(r=!(!t.audio||!t.audio.enabled||t.audio.buffer)&&{deviceId:t.audio.deviceId,sampleRate:t.audio.sampleRate,sampleSize:t.audio.sampleSize,channelCount:t.audio.channelCount,autoGainControl:t.audio.autoGainControl,echoCancellation:t.audio.echoCancellation,noiseSuppression:t.audio.noiseSuppression},!t.audio||!t.audio.buffer||ne.mediaStreamDest){e.next=16;break}throw U("not support audio buffer input");case 16:if(n=!(!t.video||!t.video.enabled)&&{frameRate:t.video.frameRate,height:t.video.height,width:t.video.width,deviceId:t.video.deviceId},!t.screen){e.next=22;break}return e.next=20,xe(!1,t.screen);case 20:return i=e.sent,e.abrupt("return",Xe(Ke(ut({audio:r,video:i}))));case 22:return e.abrupt("return",Xe(Ke(ut({audio:r,video:n}))));case 23:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function Ke(e){if(ne.minMaxWithIdeal)return e;return["video","screen"].forEach(function(t){"object"===b()(e[t])&&"object"===b()(e[t].width)&&e[t].width.ideal&&delete e[t].width.ideal,"object"===b()(e[t])&&"object"===b()(e[t].height)&&e[t].height.ideal&&delete e[t].height.ideal}),e}function Xe(e){return 0===Object.keys(e.audio).length&&"boolean"!=typeof e.audio&&(e.audio=!0),0===Object.keys(e.video).length&&"boolean"!=typeof e.video&&(e.video=!0),e}function Ze(e){if(e)return"number"==typeof e?e:e.exact?e.exact:e.max?e.max:e.ideal?e.ideal:e.min?e.min:void 0}var Ye=r(14),et=r.n(Ye),tt="qiniu-rtc-client";var rt=function(){function e(t,r){d()(this,e),this.lastSubMids=[],this.sessionVersion=0,this.direction=t,this.extendedRtpCapabilities=r}return f()(e,[{key:"createRemoteAnswer",value:function(e){if(!this.transportRemoteParameters)throw O("no transportRemoteParameters!");return ne.unifiedPlan?function(e,t,r){var n=et.a.parse(r),i=(n.media||[]).filter(function(e){return e.hasOwnProperty("mid")}).map(function(e){return String(e.mid)}),a={version:0};a.origin={address:"0.0.0.0",ipVer:4,netType:"IN",sessionId:"5975129998295344376",sessionVersion:2,username:tt},a.name="-",a.timing={start:0,stop:0},a.icelite=t.iceParameters.iceLite?"ice-lite":void 0,a.msidSemantic={semantic:"WMS",token:"*"},i.length>0&&(a.groups=[{type:"BUNDLE",mids:i.join(" ")}]);a.media=[],a.fingerprint={type:t.dtlsParameters.fingerprints[0].algorithm,hash:t.dtlsParameters.fingerprints[0].value};var o=!0,s=!1,c=void 0;try{for(var u,d=function(){var r=u.value,n=(r.direction,r.type),i="audio"===n?e.codecs[0]:e.codecs[1],o=e.headerExtensions.filter(function(e){return e.kind===n}),s={type:r.type,port:7,protocol:"RTP/SAVPF",connection:{ip:"127.0.0.1",version:4},mid:r.mid,iceUfrag:t.iceParameters.usernameFragment,icePwd:t.iceParameters.password,candidates:[{component:1,foundation:t.iceCandidate.foundation,ip:t.iceCandidate.ip,port:t.iceCandidate.port,priority:t.iceCandidate.priority,transport:t.iceCandidate.protocol,type:t.iceCandidate.type}],endOfCandidates:"end-of-candidates",iceOptions:"renomination",setup:"server"===t.dtlsParameters.role?"actpass":"active",direction:"sendonly"===r.direction||"sendrecv"===r.direction?"recvonly":"inactive",rtp:[{payload:i.sendPayloadType,codec:i.name,rate:i.clockRate,encoding:i.channels>1?i.channels:void 0}],rtcpFb:[],fmtp:[{payload:i.sendPayloadType,config:Object.keys(i.parameters).map(function(e){return"".concat(e,"=").concat(i.parameters[e],";")}).join("")}],payloads:i.sendPayloadType,rtcpMux:"rtcp-mux",rtcpRsize:"rtcp-rsize",ext:o.map(function(e){return{uri:e.uri,value:e.sendId}})};i.rtcpFeedback&&i.rtcpFeedback.length>0&&i.rtcpFeedback.forEach(function(e){s.rtcpFb.push({payload:i.sendPayloadType,type:e.type,subtype:e.parameter})}),i.sendRtxPayloadType&&(s.rtp.push({payload:i.sendRtxPayloadType,codec:"rtx",rate:i.clockRate,encoding:i.channels>1?i.channels:void 0}),s.fmtp.push({payload:i.sendRtxPayloadType,config:"apt=".concat(i.sendPayloadType,";")}),s.payloads="".concat(i.sendPayloadType," ").concat(i.sendRtxPayloadType)),a.media.push(s)},p=n.media[Symbol.iterator]();!(o=(u=p.next()).done);o=!0)d()}catch(e){s=!0,c=e}finally{try{o||null==p.return||p.return()}finally{if(s)throw c}}return et.a.write(a)}(this.extendedRtpCapabilities,this.transportRemoteParameters,e):function(e,t,r){var n=et.a.parse(r);n.version=0,n.origin={address:"0.0.0.0",ipVer:4,netType:"IN",sessionId:"5975129998295344376",sessionVersion:2,username:tt},n.name="-",n.timing={start:0,stop:0},n.icelite=t.iceParameters.iceLite?"ice-lite":void 0,n.msidSemantic={semantic:"WMS",token:"*"},n.fingerprint={type:t.dtlsParameters.fingerprints[0].algorithm,hash:t.dtlsParameters.fingerprints[0].value};var i=[],a=!0,o=!1,s=void 0;try{for(var c,u=function(){var r=c.value,n=r.type,a=e.codecs.find(function(e){return e.kind===n}),o=(e.headerExtensions||[]).filter(function(e){return e.kind===n});if(!a)throw O("can not find codec"+n);var s={type:n,mid:n,port:7,protocol:"RTP/SAVPF",connection:{ip:"127.0.0.1",version:4},iceUfrag:t.iceParameters.usernameFragment,icePwd:t.iceParameters.password,candidates:[{component:1,foundation:t.iceCandidate.foundation,ip:t.iceCandidate.ip,port:t.iceCandidate.port,priority:t.iceCandidate.priority,transport:t.iceCandidate.protocol,type:t.iceCandidate.type}],endOfCandidates:"end-of-candidates",iceOptions:"renomination",setup:"server"===t.dtlsParameters.role?"actpass":"active",direction:"recvonly",rtp:[{payload:a.sendPayloadType,codec:a.name,rate:a.clockRate,encoding:a.channels>1?a.channels:void 0}],rtcpFb:[],fmtp:[{payload:a.sendPayloadType,config:Object.keys(a.parameters).map(function(e){return"".concat(e,"=").concat(a.parameters[e],";")}).join("")}],payloads:a.sendPayloadType,rtcpMux:"rtcp-mux",rtcpRsize:"rtcp-rsize",ext:o.map(function(e){return{uri:e.uri,value:e.sendId}})};a.rtcpFeedback&&a.rtcpFeedback.length>0&&a.rtcpFeedback.forEach(function(e){s.rtcpFb.push({payload:a.sendPayloadType,type:e.type,subtype:e.parameter})}),a.sendRtxPayloadType&&(s.rtp.push({payload:a.sendRtxPayloadType,codec:"rtx",rate:a.clockRate,encoding:a.channels>1?a.channels:void 0}),s.fmtp.push({payload:a.sendRtxPayloadType,config:"apt=".concat(a.sendPayloadType,";")}),s.payloads="".concat(a.sendPayloadType," ").concat(a.sendRtxPayloadType)),i.push(s)},d=n.media[Symbol.iterator]();!(a=(c=d.next()).done);a=!0)u()}catch(e){o=!0,s=e}finally{try{a||null==d.return||d.return()}finally{if(o)throw s}}return n.media=i,et.a.write(n)}(this.extendedRtpCapabilities,this.transportRemoteParameters,e)}},{key:"createRemoteOffer",value:function(e){if(!this.transportRemoteParameters)throw O("no transportRemoteParameters!");if(ne.unifiedPlan){var t=function(e,t){var r=[],n=!0,i=!1,a=void 0;try{for(var o,s=function(){var t=o.value,n=x()(e,function(e){return e.mid===t})[0];if(!n)return"continue";r.push(n)},c=t[Symbol.iterator]();!(n=(o=c.next()).done);n=!0)s()}catch(e){i=!0,a=e}finally{try{n||null==c.return||c.return()}finally{if(i)throw a}}return r=r.concat(e),t=r.map(function(e){return e.mid}),r}(e,this.lastSubMids);return this.lastSubMids=t.map(function(e){return e.mid}),this.sessionVersion+=1,function(e,t,r,n){ie.debug("consumerInfos",e);var i={},a=e.map(function(e){return e.mid});i.version=0,i.origin={address:"0.0.0.0",ipVer:4,netType:"IN",sessionId:"5975129998295344377",sessionVersion:n,username:tt},i.name="-",i.timing={start:0,stop:0},i.icelite=r.iceParameters.iceLite?"ice-lite":void 0,i.msidSemantic={semantic:"WMS",token:"*"},a.length>0&&(i.groups=[{type:"BUNDLE",mids:a.join(" ")}]);i.media=[],i.fingerprint={type:r.dtlsParameters.fingerprints[0].algorithm,hash:r.dtlsParameters.fingerprints[0].value};var o=!0,s=!1,c=void 0;try{for(var u,d=function(){var e=u.value,n="audio"===e.kind?t.codecs[0]:t.codecs[1],a=t.headerExtensions.filter(function(t){return t.kind===e.kind}),o={type:e.kind,port:7,protocol:"RTP/SAVPF",connection:{ip:"127.0.0.1",version:4},mid:e.mid,msid:"".concat(e.streamId," ").concat(e.trackId),iceUfrag:r.iceParameters.usernameFragment,icePwd:r.iceParameters.password,candidates:[{component:1,foundation:r.iceCandidate.foundation,ip:r.iceCandidate.ip,port:r.iceCandidate.port,priority:r.iceCandidate.priority,transport:r.iceCandidate.protocol,type:r.iceCandidate.type}],endOfCandidates:"end-of-candidates",iceOptions:"renomination",setup:"server"===r.dtlsParameters.role?"actpass":"active",direction:e.closed?"inactive":"sendonly",rtp:[{payload:n.recvPayloadType,codec:n.name,rate:n.clockRate,encoding:n.channels>1?n.channels:void 0}],rtcpFb:[],fmtp:[{payload:n.recvPayloadType,config:Object.keys(n.parameters).map(function(e){return"".concat(e,"=").concat(n.parameters[e],";")}).join("")}],payloads:n.recvPayloadType,rtcpMux:"rtcp-mux",rtcpRsize:"rtcp-rsize",ext:e.closed?[]:a.map(function(e){return{uri:e.uri,value:e.recvId}}),ssrcs:!e.closed&&e.ssrc?[{id:e.ssrc,attribute:"cname",value:e.cname}]:[],ssrcGroups:[]};n.rtcpFeedback&&n.rtcpFeedback.length>0&&n.rtcpFeedback.forEach(function(e){o.rtcpFb.push({payload:n.recvPayloadType,type:e.type,subtype:e.parameter})}),n.recvRtxPayloadType&&(o.rtp.push({payload:n.recvRtxPayloadType,codec:"rtx",rate:n.clockRate,encoding:n.channels>1?n.channels:void 0}),o.fmtp.push({payload:n.recvRtxPayloadType,config:"apt=".concat(n.recvPayloadType,";")}),o.payloads="".concat(n.recvPayloadType," ").concat(n.recvRtxPayloadType)),e.rtxSsrc&&!e.closed&&(o.ssrcs.push({id:e.rtxSsrc,attribute:"cname",value:e.cname}),o.ssrcGroups.push({semantics:"FID",ssrcs:"".concat(e.ssrc," ").concat(e.rtxSsrc)})),i.media.push(o)},p=e[Symbol.iterator]();!(o=(u=p.next()).done);o=!0)d()}catch(e){s=!0,c=e}finally{try{o||null==p.return||p.return()}finally{if(s)throw c}}return et.a.write(i)}(t,this.extendedRtpCapabilities,this.transportRemoteParameters,this.sessionVersion)}var r=new Set;return e.forEach(function(e){return r.add(e.kind)}),0===e.length&&(r.add("audio"),r.add("video")),function(e,t,r,n){e=["audio","video"];var i={version:0};i.origin={address:"0.0.0.0",ipVer:4,netType:"IN",sessionId:"5975129998295344377",sessionVersion:2,username:tt},i.name="-",i.timing={start:0,stop:0},i.icelite=n.iceParameters.iceLite?"ice-lite":void 0,i.msidSemantic={semantic:"WMS",token:"*"},i.groups=[{type:"BUNDLE",mids:e.join(" ")}],i.media=[],i.fingerprint={type:n.dtlsParameters.fingerprints[0].algorithm,hash:n.dtlsParameters.fingerprints[0].value};var a=!0,o=!1,s=void 0;try{for(var c,u=function(){var e=c.value,a=t.filter(function(t){return t.kind===e}),o=r.codecs.find(function(t){return t.kind===e}),s=(r.headerExtensions||[]).filter(function(t){return t.kind===e});if(!o)throw O("no codec"+e);var u={type:e,port:7,protocol:"RTP/SAVPF",connection:{ip:"127.0.0.1",version:4},mid:e,iceUfrag:n.iceParameters.usernameFragment,icePwd:n.iceParameters.password,candidates:[{component:1,foundation:n.iceCandidate.foundation,ip:n.iceCandidate.ip,port:n.iceCandidate.port,priority:n.iceCandidate.priority,transport:n.iceCandidate.protocol,type:n.iceCandidate.type}],endOfCandidates:"end-of-candidates",iceOptions:"renomination",setup:"server"===n.dtlsParameters.role?"actpass":"active",direction:"sendonly",rtp:[{payload:o.recvPayloadType,codec:o.name,rate:o.clockRate,encoding:o.channels>1?o.channels:void 0}],rtcpFb:[],fmtp:[{payload:o.recvPayloadType,config:Object.keys(o.parameters).map(function(e){return"".concat(e,"=").concat(o.parameters[e],";")}).join("")}],payloads:o.recvPayloadType,rtcpMux:"rtcp-mux",rtcpRsize:"rtcp-rsize",ssrcs:[],ssrcGroups:[],ext:s.map(function(e){return{uri:e.uri,value:e.recvId}})};o.rtcpFeedback&&o.rtcpFeedback.length>0&&o.rtcpFeedback.forEach(function(e){u.rtcpFb.push({payload:o.recvPayloadType,type:e.type,subtype:e.parameter})}),o.recvRtxPayloadType&&(u.rtp.push({payload:o.recvRtxPayloadType,codec:"rtx",rate:o.clockRate,encoding:o.channels>1?o.channels:void 0}),u.fmtp.push({payload:o.recvRtxPayloadType,config:"apt=".concat(o.recvPayloadType,";")}),u.payloads="".concat(o.recvPayloadType," ").concat(o.recvRtxPayloadType));var d=!0,p=!1,f=void 0;try{for(var l,h=a[Symbol.iterator]();!(d=(l=h.next()).done);d=!0){var m=l.value;u.ssrcs.push({id:m.ssrc,attribute:"msid",value:"".concat(m.streamId," ").concat(m.trackId)}),u.ssrcs.push({id:m.ssrc,attribute:"mslabel",value:"".concat(m.streamId)}),u.ssrcs.push({id:m.ssrc,attribute:"label",value:"".concat(m.trackId)}),u.ssrcs.push({id:m.ssrc,attribute:"cname",value:"".concat(m.cname)}),m.rtxSsrc&&(u.ssrcGroups.push({semantics:"FID",ssrcs:"".concat(m.ssrc," ").concat(m.rtxSsrc)}),u.ssrcs.push({id:m.rtxSsrc,attribute:"msid",value:"".concat(m.streamId," ").concat(m.trackId)}),u.ssrcs.push({id:m.rtxSsrc,attribute:"mslabel",value:"".concat(m.streamId)}),u.ssrcs.push({id:m.rtxSsrc,attribute:"label",value:"".concat(m.trackId)}),u.ssrcs.push({id:m.rtxSsrc,attribute:"cname",value:"".concat(m.cname)}))}}catch(e){p=!0,f=e}finally{try{d||null==h.return||h.return()}finally{if(p)throw f}}i.media.push(u)},d=e[Symbol.iterator]();!(a=(c=d.next()).done);a=!0)u()}catch(e){o=!0,s=e}finally{try{a||null==d.return||d.return()}finally{if(o)throw s}}return et.a.write(i)}(Array.from(r),e,this.extendedRtpCapabilities,this.transportRemoteParameters)}},{key:"updateICE",value:function(e,t){this.transportRemoteParameters&&(this.transportRemoteParameters.iceCandidate=t,this.transportRemoteParameters.iceParameters=e)}}]),e}();function nt(){return it.apply(this,arguments)}function it(){return(it=c()(o.a.mark(function e(){var t,r,n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=ce(),r={offerToReceiveAudio:!0,offerToReceiveVideo:!0},e.next=4,t.createOffer(r);case 4:return n=e.sent,i={capsdp:n.sdp,agent:navigator.userAgent},t.close(),e.abrupt("return",i);case 8:case"end":return e.stop()}},e,this)}))).apply(this,arguments)}function at(e){var t=e.split(".")[1];if(!t)throw new Error("parse jwt error, can not find payload string.");var r=atob(t);return JSON.parse(r)}function ot(e){try{var t=e.split(":")[2],r=atob(t);return JSON.parse(r)}catch(e){throw O("can not parse roomToken, ".concat(e))}}function st(e,t,r){if(!r)return null;for(var n=0;n<e.length;n+=1){var i=e[n];if(i[t]===r)return i}return null}function ct(e,t,r,n){return e.sendWsMsg(t,r),new Promise(function(t){e.once(n,t)})}function ut(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0;if(t>=4)return e;for(var r in e)void 0===e[r]&&delete e[r],"object"===b()(e[r])&&(e[r]=ut(e[r],t+1));return e}function dt(e){Promise.resolve().then(e)}function pt(e,t){var r=new Promise(function(e,r){window.setTimeout(function(){return r("timeout")},t)});return Promise.race([e,r])}function ft(e,t,r,n,i){var a={join:[],leave:[],add:[],remove:[],mute:[]},o=t.map(function(e){return e.trackid}),s=r.map(function(e){return e.trackid});return o.forEach(function(n,i){if(t[i].playerid!==e)if(-1===s.indexOf(n))a.remove.push(t[i]);else{var o=r.find(function(e){return e.trackid===n}),c=t[i];o.versionid!==c.versionid&&(a.remove.push(c),a.add.push(o))}}),s.forEach(function(n,i){if(r[i].playerid!==e){var s=o.indexOf(n);-1===s?(a.add.push(r[i]),a.mute.push({trackid:n,muted:r[i].muted})):r[i].muted!==t[s].muted&&a.mute.push({trackid:n,muted:r[i].muted})}}),n.forEach(function(t){t!==e&&-1===i.indexOf(t)&&a.leave.push({playerid:t})}),i.forEach(function(t){t!==e&&-1===n.indexOf(t)&&a.join.push({playerid:t})}),a}function lt(e){return("0"+e.toString(16)).substr(-2)}function ht(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:5,t=new Uint8Array((e||40)/2);return window.crypto.getRandomValues(t),Array.from(t,lt).join("")}function mt(e){return new Promise(function(t){setTimeout(function(){t()},e)})}var vt={};function gt(e,t){if(!vt[t])return vt[t]=!0,e()}var yt="2.1.0-patch.0",kt="https://rtc.qiniuapi.com";function bt(e,t){return Tt.apply(this,arguments)}function Tt(){return(Tt=c()(o.a.mark(function e(t,r){var n,i,a,s,c;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:n=t.appId,i=t.roomName,a=t.userId,s="".concat(kt,"/v3/apps/").concat(n,"/rooms/").concat(i,"/auth?user=").concat(a,"&token=").concat(r);case 2:return e.prev=3,e.next=6,q(s);case 6:return c=e.sent,e.abrupt("return",c.accessToken);case 10:if(e.prev=10,e.t0=e.catch(3),!1!==e.t0.retry){e.next=14;break}throw j(e.t0.message);case 14:return e.next=16,mt(1e3);case 16:ie.warning("can not get accessToken, retry.",j(e.t0));case 17:e.next=2;break;case 19:case"end":return e.stop()}},e,this,[[3,10]])}))).apply(this,arguments)}var wt,St=function(e,t){return new M(e,"joinRoom error, code: ".concat(e,", ").concat(t))};!function(e){e[e.CONNECTING=0]="CONNECTING",e[e.OPEN=1]="OPEN",e[e.CLOSING=2]="CLOSING",e[e.CLOSED=3]="CLOSED"}(wt||(wt={}));var Ct=function(e){function t(e,r,n,i){var a;return d()(this,t),(a=h()(this,v()(t).call(this))).mergeJobIndex=0,a.mergeJobResIndex=0,a.initWs=function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];return new Promise(function(t,r){a.ws&&a.ws.readyState===WebSocket.OPEN&&(a.ws.close(),a.ws.onclose=null);try{a.ws=new WebSocket(a.url),a._state=wt.CONNECTING}catch(e){throw O("init signaling websocket faild!\nError: ".concat(e))}a.ws.onerror=a.onWsError,a.ws.onclose=a.onWsClose.bind(P()(P()(a)),t,r),a.ws.onopen=function(){a.emit("ws:onopen"),ie.log("signaling: websocket open",a.url),a.ws.onmessage=a.onWsMsg;var n={token:a.accessToken,reconntoken:a.reconnectToken,agent:"".concat(te.name).concat(te.version),sdkversion:yt,capsdp:a.capsdp,msgsn:a.customMsgNumber};a.playerdata&&(n.playerdata=a.playerdata),a.request("auth",n).then(function(n){switch(n.code){case 0:a.ws.onclose=a.onWsClose.bind(P()(P()(a)),null,null),a.reconnectToken=n.reconntoken,ie.log("signaling: websocket authed"),a.emit("@signalingauth",n),a._state=wt.OPEN,t(n);break;case 10001:case 10002:case 10011:case 10022:case 10004:a.emit("@error",n),r(St(n.code,n.error));break;case 10012:return void a.safeEmitAsPromise("@needupdateaccesstoken").then(function(){a.reconnect().then(t).catch(r)}).catch(r);case 10052:if(ie.debug("10052 auth, retry",e),a.reconnectToken=void 0,e){r(St(n.code,n.error));break}return void a.emit("@error",n);case 10054:r(A(n.error));break;default:r(O(n.error))}0!==n.code&&(a.reconnectToken=void 0,a._state=wt.CLOSED,a.release())})}})},a.onWsMsg=function(e){var t=e.data;a.emit("ws:onmessage",t);var r=t.indexOf("=");if(!(r>0))throw O("signaling model can not parse message: ".concat(t));var n=t.substring(0,r),i=JSON.parse(t.substring(r+1));a.receiveWsMsg(n,i)},a.onWsError=function(e){ie.warning("signaling: websocket error",e),a.emit("@ws:error",e)},a.sendWsMsg=function(e,t){var r=JSON.stringify(t);try{a.ws.send("".concat(e,"=").concat(r)),a.emit("send",e,t)}catch(e){throw ie.warning("signaling: websocket send error",e),a.reconnect().catch(function(e){ie.warning("signaling: reconnect error",e)}),z()}},a.handlePing=function(){a.sendWsMsg("pong",{}),a.reconnectTimeoutID&&clearTimeout(a.reconnectTimeoutID),a.reconnectTimeoutID=setTimeout(function(){ie.debug("signaling: websocket heartbeat timeout"),a.reconnect().catch(function(e){ie.debug(e)})},9e3)},a.receiveWsMsg=function(e,t){switch(a.emit("receive",e,t),e){case"ping":a.handlePing();break;case"auth-res":a.emit("@auth-res",t);case"pubpc-res":case"subpc-res":case"pub-tracks":case"webrtc-candidate":case"on-player-in":case"on-player-out":case"disconnect":case"mute-tracks":case"on-add-tracks":case"on-remove-tracks":a.emit(e,t);break;case"create-merge-job-res":a.mergeJobResIndex+=1,a.emit("".concat(e,"-").concat(a.mergeJobResIndex),t);case"webrtc-answer":a.emit(e,t),a.emit("".concat(e,"-streamid-").concat(t.streamid,"-connid-").concat(t.connid),t);case"webrtc-icestate":a.emit(e,t),t.connid?a.emit("".concat(e,"-connid-").concat(t.connid),t):a.emit("".concat(e,"-stream-").concat(t.streamid),t);break;case"sub-res":case"unsub-res":a.emit(e,t),a.emit("".concat(e,"-").concat(t.streamid),t);break;case"control-res":a.emit(e,t),a.emit("".concat(e,"-").concat(t.command,"-").concat(t.playerid),t);break;case"on-pubpc-connected":case"on-pubpc-disconnected":a.emit("on-pubpc-state",{pcid:t.pcid,connected:"on-pubpc-connected"===e}),a.emit("".concat(e,"-").concat(t.pcid),t);break;case"on-subpc-disconnected":case"on-subpc-connected":a.emit("on-subpc-state",{pcid:t.pcid,connected:"on-subpc-connected"===e}),a.emit(e,t);break;case"pub-tracks-res":a.emit(e,t);break;case"on-messages":t.messages=t.messages.sort(function(e,t){return e.msgsn-t.msgsn}),a.customMsgNumber=t.messages[t.messages.length-1].msgsn,a.emit(e,t);break;case"unpub-tracks-res":case"sub-tracks-res":case"unsub-tracks-res":case"on-pubpc-restart-notify":case"on-subpc-restart-notify":case"pubpc-restart-res":case"subpc-restart-res":a.emit(e,t)}},a.url=e,a.accessToken=r,a.capsdp=n,a.playerdata=i,a}return y()(t,e),f()(t,[{key:"onWsClose",value:function(e,t,r){this._state=wt.CLOSED,ie.warning("signaling: websocket onclose",r);var n=this.reconnectPromise;switch(r.code){case 1e3:this.emit("@closed");break;case 1001:case 1005:case 1006:n=this.reconnect();break;case 1007:case 1008:case 1009:case 1010:break;case 1011:n=this.reconnect();break;case 1012:n=this.reconnect(5e3);break;case 1013:n=this.reconnect();break;case 1014:n=this.reconnect(5e3)}e&&t&&(n?e(n):t(r))}},{key:"sendDisconnect",value:function(){if(this.state===wt.OPEN)try{this.sendWsMsg("disconnect",{})}catch(e){}}},{key:"reconnect",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:1e3;return this.reconnectTimeoutID&&clearTimeout(this.reconnectTimeoutID),this.reconnectPromise&&this._state===wt.CONNECTING?this.reconnectPromise:(this._state=wt.CONNECTING,ie.debug("signaling: websocket reconnecting"),this.reconnectPromise=mt(t).then(function(){return e.initWs()}).then(function(t){return e.reconnectPromise=void 0,t}).catch(function(t){return e._state=wt.CLOSED,e.emit("error",t),Promise.reject(t)}),this.reconnectPromise)}},{key:"request",value:function(e,t){var r=this,n=ht(8);return t.rpcid=n,ie.log("ws request",n,e,t),this.sendWsMsg(e,t),new Promise(function(t){r.on("".concat(e,"-res"),function i(a){a.rpcid===n&&(ie.log("ws response",n,e,a),r.off("".concat(e,"-res"),i),t(a))})})}},{key:"release",value:function(){this.reconnectTimeoutID&&clearTimeout(this.reconnectTimeoutID),this.removeEvent(),this.ws.onclose=null,this.ws.onerror=null,this.ws.close()}},{key:"_state",set:function(e){this.emit("@ws-state-change",this.__state,e),this.__state=e}},{key:"state",get:function(){return this.__state}}]),t}(Me),_t=function(){function e(t,r,n,i){var a=this;d()(this,e),this.videoTrackInfo=[],this.audioTrackInfo=[],this.layoutLevel=0,this.width=t,this.height=r,this.jobId=i,this.controller=n,this.controller.getCurrentTracks().forEach(function(e){"audio"===e.kind?a.audioTrackInfo.push(e):a.videoTrackInfo.push(e)}),this.controller.addMergeTrack(this.audioTrackInfo.map(function(e){return{trackId:e.trackId}}),this.jobId),this.initLayout(),this.controller.onAddTracks=function(e){var t=e.filter(function(e){return"audio"===e.kind}),r=e.filter(function(e){return"video"===e.kind});a.controller.addMergeTrack(t.map(function(e){return{trackId:e.trackId}}),a.jobId),r.forEach(a.handleAddVideoTrack.bind(a))},this.controller.onRemoveTracks=function(e){e.filter(function(e){return"video"===e.kind}).forEach(a.handleRemoveVideoTrack.bind(a))},ie.log("init default merger, init layout: ",this.layout)}return f()(e,[{key:"initLayout",value:function(){var e=this.videoTrackInfo.length;this.layoutLevel=0,this.layout={"level-0":{items:{"item-0":{x:0,y:0,isExpand:!1,isExpanded:!1,index:0}},itemWidth:this.width,itemHeight:this.height,maxItems:1,currentItems:0,splitWidthFlag:this.width<this.height}};var t=this.width>=this.height;if(0!==e){for(;Math.pow(2,this.layoutLevel)<e;)this.updateLayoutLevel(t),t=!t;this.setLevelLayoutStream()}}},{key:"updateLayoutLevel",value:function(e){var t=this,r=this.layout["level-".concat(this.layoutLevel)],n=r.itemWidth,i=r.itemHeight;this.layoutLevel+=1;var a=Math.pow(2,this.layoutLevel),o=e?n/2:n,s=e?i:i/2;if(1===this.layoutLevel)this.layout["level-".concat(this.layoutLevel)]={items:{"item-0":{x:0,y:0,isExpand:!1,isExpanded:!1,index:0},"item-1":{x:this.width>=this.height?o:0,y:this.width<this.height?s:0,isExpand:!1,isExpanded:!1,index:1}},maxItems:a,currentItems:0,itemWidth:o,itemHeight:s,splitWidthFlag:e};else{this.layout["level-".concat(this.layoutLevel)]={items:{},maxItems:a,currentItems:0,itemWidth:o,itemHeight:s,splitWidthFlag:e};var c=this.layout["level-".concat(this.layoutLevel)].items;Object.keys(this.layout["level-".concat(this.layoutLevel-1)].items).forEach(function(r){var n=t.layout["level-".concat(t.layoutLevel-1)].items[r],i=2*n.index;c["item-".concat(i)]={x:n.x,y:n.y,isExpand:!1,isExpanded:!1,index:i},c["item-".concat(i+1)]=e?{x:n.x+o,y:n.y,isExpand:!1,isExpanded:!1,index:i+1}:{x:n.x,y:n.y+s,isExpand:!1,isExpanded:!1,index:i+1}})}ie.log("merger: increase layout level, current level: ".concat(this.layoutLevel),this.layout)}},{key:"setLevelLayoutStream",value:function(){for(var e=this.videoTrackInfo.length,t=this.layout["level-".concat(this.layoutLevel)],r=t.maxItems-e,n=0,i=0;i<t.maxItems;i+=1)r>0?i%2==0?(t.items["item-".concat(i)].isExpand=!0,t.items["item-".concat(i)].trackId=this.videoTrackInfo[n].trackId,this.sendMergeOpt(this.layoutLevel,i),n+=1):(t.items["item-".concat(i)].isExpanded=!0,r-=1):(t.items["item-".concat(i)].trackId=this.videoTrackInfo[n].trackId,this.sendMergeOpt(this.layoutLevel,i),n+=1);t.currentItems=e}},{key:"sendMergeOpt",value:function(e,t){var r=this.layout["level-".concat(e)],n=r.items["item-".concat(t)];if(n.trackId&&!n.isExpanded){var i=r.itemWidth,a=r.itemHeight;n.isExpand&&(r.splitWidthFlag?i*=2:a*=2);var o={x:n.x,y:n.y,w:i,h:a,z:0,trackId:n.trackId};this.controller.addMergeTrack([o],this.jobId)}}},{key:"handleRemoveVideoTrack",value:function(e){x()(this.videoTrackInfo,function(t){return t.trackId===e.trackId});var t=this.layout["level-".concat(this.layoutLevel)];if(this.layoutLevel>0&&this.videoTrackInfo.length<=this.layout["level-".concat(this.layoutLevel-1)].maxItems)this.layoutLevel-=1,ie.log("merger: reduce layout level, current level: ".concat(this.layoutLevel),this.layout),this.setLevelLayoutStream();else for(var r in t.items){var n=t.items[r];if(n.trackId===e.trackId){n.index%2==0?(t.items["item-".concat(n.index+1)]?(n.isExpand=!0,n.trackId=t.items["item-".concat(n.index+1)].trackId,t.items["item-".concat(n.index+1)].isExpanded=!0,t.items["item-".concat(n.index+1)].trackId=void 0):n.trackId=void 0,this.sendMergeOpt(this.layoutLevel,n.index)):(n.isExpanded=!0,n.trackId=void 0,t.items["item-".concat(n.index-1)].isExpand=!0,this.sendMergeOpt(this.layoutLevel,n.index-1));break}}}},{key:"handleAddVideoTrack",value:function(e){var t=this.videoTrackInfo.length;if(this.videoTrackInfo.push(e),this.videoTrackInfo=C()(this.videoTrackInfo,"trackId"),this.videoTrackInfo.length!==t){var r=this.layout["level-".concat(this.layoutLevel)];if(this.videoTrackInfo.length<=r.maxItems){for(var n in r.items){var i=r.items[n];if(!i.trackId){i.trackId=e.trackId,i.isExpanded&&(i.isExpanded=!1,r.items["item-".concat(i.index-1)].isExpand=!1,this.sendMergeOpt(this.layoutLevel,i.index-1)),this.sendMergeOpt(this.layoutLevel,i.index);break}}r.currentItems=this.videoTrackInfo.length}else this.updateLayoutLevel(!r.splitWidthFlag),this.setLevelLayoutStream()}else ie.log("handle add video track ignore",e)}},{key:"release",value:function(){this.controller.release()}}]),e}(),xt=function(){function e(t,r,n,i){d()(this,e),this._connectStatus=he.Idle,this.track=n,this.trackId=i,this.transport=t,this.direction=r}return f()(e,[{key:"startConnect",value:function(){var e=this;return this.connectStatus=he.Connecting,new Promise(function(t,r){e.onConnectStatusChange=function(e,n){n===he.Connect&&t(),n===he.Idle&&r()}})}},{key:"appendConsumner",value:function(e,t){this.consumer=new function e(t,r,n){d()(this,e),this.id=t,this.kind=r,this.rtpParameters=n,this.track=null}(this.trackId,t,e),this.transport.appendConsumer(this.consumer)}},{key:"setMute",value:function(e){this.track&&this.track.setMute(e)}},{key:"addTrackId",value:function(e){this.track&&(this.trackId=e,this.track.setInfo({trackId:e}))}},{key:"release",value:function(){this.consumer&&this.transport?(this.transport.recvHandler.isPcReady&&this.transport.removeConsumers([this.consumer]),this.track&&this.track.release()):this.track&&this.track.reset()}},{key:"connectStatus",get:function(){return this._connectStatus},set:function(e){var t=this;if(e!==this._connectStatus){var r=this._connectStatus;this._connectStatus=e,dt(function(){t.onConnectStatusChange&&t.onConnectStatusChange(r,t._connectStatus)})}}}]),e}(),Rt=function(e){function t(e,r,n){var i;return d()(this,t),(i=h()(this,v()(t).call(this)))._isRestartingICE=!1,i.isPcReady=!1,i._direction=e,i._pc=ce(),i._extendedRtpCapabilities=r,i._remoteSdp=new rt(e,r),i._pc.addEventListener("iceconnectionstatechange",function(){switch(i._pc.iceConnectionState){case"checking":i.emit("@connectionstatechange","connecting");break;case"connected":case"completed":i.emit("@connectionstatechange","connected");break;case"failed":i.emit("@connectionstatechange","failed");break;case"disconnected":i.emit("@connectionstatechange","disconnected");break;case"closed":i.emit("@connectionstatechange","closed")}}),i}return y()(t,e),f()(t,[{key:"getStats",value:function(){var e=c()(o.a.mark(function e(t,r){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,pe(this._pc,t,this._direction,r);case 2:return e.abrupt("return",e.sent);case 3:case"end":return e.stop()}},e,this)}));return function(t,r){return e.apply(this,arguments)}}()},{key:"getCurrentIceConnectionState",value:function(){return this._pc.iceConnectionState}},{key:"close",value:function(){ie.log("handle",this._direction,"close"),this.removeEvent(),this._pc.close(),this.isPcReady=!1}}]),t}(Me),Pt=function(e){function t(e,r,n){var i;return d()(this,t),i=h()(this,v()(t).call(this,"send",e,n)),ie.log("init send handler"),i._transportReady=!1,i._stream=new MediaStream,i._signaling=r,r.on("on-pubpc-state",function(e){i._remoteSdp.transportRemoteParameters&&e.pcid===i._remoteSdp.transportRemoteParameters.pcid&&(e.connected||i.emit("@connectionstatechange","remote-disconnected"))}),i}return y()(t,e),f()(t,[{key:"getReady",value:function(e){var t=this;return new Promise(function(r,n){t._signaling.on("on-pubpc-state",function n(i){if(i.pcid===e.pcid){if(t._signaling.off("on-pubpc-state",n),!i.connected)return;t.isPcReady=!0,r()}})})}},{key:"addProducerTracks",value:function(e){var t=this;ie.debug("add producer",e);var r,n=e.map(function(e){return e.mediaTrack}).filter(function(e){return!t._stream.getTrackById(e.id)});if(0===n.length)return Promise.reject(new Error("track already added"));var i,a=[],s=!0;return Promise.resolve().then(c()(o.a.mark(function e(){var i,s,c,u,d,p,f;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(n.forEach(t._stream.addTrack,t._stream),!ne.unifiedPlan){e.next=33;break}i=!0,s=!1,c=void 0,e.prev=5,u=n[Symbol.iterator]();case 7:if(i=(d=u.next()).done){e.next=17;break}return p=d.value,e.next=11,ue(p,t._pc);case 11:f=e.sent,ie.debug("add transceiver",f,f.mid),a.push(f);case 14:i=!0,e.next=7;break;case 17:e.next=23;break;case 19:e.prev=19,e.t0=e.catch(5),s=!0,c=e.t0;case 23:e.prev=23,e.prev=24,i||null==u.return||u.return();case 26:if(e.prev=26,!s){e.next=29;break}throw c;case 29:return e.finish(26);case 30:return e.finish(23);case 31:e.next=34;break;case 33:r=n.map(function(e){return t._pc.addTrack(e,t._stream)});case 34:return e.abrupt("return",t._pc.createOffer());case 35:case"end":return e.stop()}},e,this,[[5,19,23,31],[24,,26,30]])}))).then(function(e){var r;return r=ne.unifiedPlan?{type:"offer",sdp:function(e,t,r){for(var n=et.a.parse(e),i=function(e){var i=t[e],a=r[e],o=n.media.find(function(e){return e.mid.toString()===a});if(!o)return"continue";var s=(o.ssrcGroups||[]).find(function(e){return"FID"===e.semantics}),c=o.msid?o.msid.split(" ")[0]:void 0,u=(o.ssrcs||[]).find(function(e){return"msid"===e.attribute}),d=(o.ssrcs||[]).find(function(e){return"cname"===e.attribute}),p=(o.ssrcs||[]).find(function(e){return"label"===e.attribute});if(o.ssrcs=[],o.ssrcGroups=[],c&&(o.msid="".concat(c," ").concat(i.id)),u){var f=u.id,l=u.value.split(" ")[0];o.ssrcs.push({id:f,attribute:"msid",value:"".concat(l," ").concat(i.id)})}if(d&&o.ssrcs.push({id:d.id,attribute:"cname",value:d.value}),p&&o.ssrcs.push({id:p.id,attribute:"label",value:i.id}),s){var h=s.ssrcs.split(/\s+/)[1],m=s.ssrcs.split(/\s+/)[0];if(o.ssrcGroups.push({semantics:"FID",ssrcs:"".concat(m," ").concat(h)}),d&&o.ssrcs.push({id:h,attribute:"cname",value:d.value}),u){var v=u.value.split(" ")[0];o.ssrcs.push({id:h,attribute:"msid",value:"".concat(v," ").concat(i.id)})}o.ssrcs.push({id:h,attribute:"label",value:i.id})}},a=0;a<t.length;a+=1)i(a);return et.a.write(n)}(e.sdp,n,a.map(function(e){return e.mid}))}:e,i=r.sdp,ie.log("publish: set local offer",r),t._pc.setLocalDescription(r)}).then(function(){if(!t._transportReady)return s=!1,t._setupTransport(e)}).then(function(){return t._remoteSdp.createRemoteAnswer(i)}).then(function(e){var r={type:"answer",sdp:e};return ie.debug("addProducer answer",r),t._pc.setRemoteDescription(r)}).then(function(){return t._pcReady}).then(function(){return s?t.safeEmitAsPromise("@needpubtracks",e,i):Promise.resolve(t._remoteSdp.transportRemoteParameters)}).catch(function(e){ie.log("add producer error",e);try{var i=!0,o=!1,s=void 0;try{for(var c,u=r[Symbol.iterator]();!(i=(c=u.next()).done);i=!0){var d=c.value;t._pc.removeTrack(d)}}catch(e){o=!0,s=e}finally{try{i||null==u.return||u.return()}finally{if(o)throw s}}for(var p=0;p<a.length;p++){a[p].direction="inactive"}}catch(e){}var f=!0,l=!1,h=void 0;try{for(var m,v=n[Symbol.iterator]();!(f=(m=v.next()).done);f=!0){var g=m.value;t._stream.removeTrack(g)}}catch(e){l=!0,h=e}finally{try{f||null==v.return||v.return()}finally{if(l)throw h}}throw e instanceof M?e:O(e)})}},{key:"removeProducerTracks",value:function(e){var t=this;ie.debug("removeProducerTracks",e);var r,n=e.filter(function(e){return!!e.track}).map(function(e){return e.track.mediaTrack}).filter(function(e){return t._stream.getTrackById(e.id)});return Promise.resolve().then(function(){var e=t._pc.getSenders().filter(function(e){return e.track&&n.includes(e.track)});if(0===e.length)return ie.warning("removeProducerTracks [nothing to remove]"),Promise.reject("removeProducerTracks: nothing to remote");var r=!0,i=!1,a=void 0;try{for(var o,s=e[Symbol.iterator]();!(r=(o=s.next()).done);r=!0){var c=o.value;t._pc.removeTrack(c)}}catch(e){i=!0,a=e}finally{try{r||null==s.return||s.return()}finally{if(i)throw a}}var u=!0,d=!1,p=void 0;try{for(var f,l=n[Symbol.iterator]();!(u=(f=l.next()).done);u=!0){var h=f.value;t._stream.removeTrack(h)}}catch(e){d=!0,p=e}finally{try{u||null==l.return||l.return()}finally{if(d)throw p}}return t._pc.createOffer()}).then(function(e){var n=new RTCSessionDescription(e);return r=n.sdp,ie.log("unpublish: set local offer",n),t._pc.setLocalDescription(n)}).then(function(){var e={type:"answer",sdp:t._remoteSdp.createRemoteAnswer(r)};return ie.log("unpublish: set remote answer",e),t._pc.setRemoteDescription(e)}).catch(function(e){if(0!==t._stream.getTracks().length)throw e instanceof M?e:O(e);ie.debug("removeProducer() | ignoring expected error due no sending tracks: %s",e.toString())}).then(function(){return t.safeEmitAsPromise("@needunpubtracks",e)})}},{key:"restartICE",value:function(e,t){var r=this;return ie.log("restart send ice"),this._remoteSdp.updateICE(e,t),this._isRestartingICE=!0,Promise.resolve().then(function(){return r._pc.createOffer({iceRestart:!0})}).then(function(e){return r._pc.setLocalDescription(e)}).then(function(){var e={type:"answer",sdp:r._remoteSdp.createRemoteAnswer(r._pc.localDescription.sdp)};return r._pc.setRemoteDescription(e)})}},{key:"_setupTransport",value:function(e){var t=this;return Promise.resolve().then(function(){return t._pc.localDescription?t._pc.localDescription:t._pc.createOffer()}).then(function(r){return t.safeEmitAsPromise("@needpubpc",r.sdp,e)}).then(function(e){t._remoteSdp.transportRemoteParameters=e,t.pcid=e.pcid,t._transportReady=!0,t._pcReady=t.getReady(e)})}}]),t}(Rt),Et=function(e){function t(e,r,n){var i;return d()(this,t),(i=h()(this,v()(t).call(this,"recv",e,n)))._transportCreated=!1,i._consumerInfos=new Map,i._signaling=r,r.on("on-subpc-state",function(e){i._remoteSdp.transportRemoteParameters&&e.pcid===i._remoteSdp.transportRemoteParameters.pcid&&(e.connected||i.emit("@connectionstatechange","remote-disconnected"))}),ie.log("init recvhandler",P()(P()(i))),i}return y()(t,e),f()(t,[{key:"getReady",value:function(e){var t=this;return new Promise(function(r,n){t._signaling.on("on-subpc-state",function n(i){if(i.pcid===e.pcid){if(t._signaling.off("on-subpc-state",n),!i.connected)return;t.isPcReady=!0,r()}})})}},{key:"addConsumerTracks",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a,s,c,u,d,p,f,l,h,m,v,g,y,k=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!ne.unifiedPlan){e.next=31;break}r=[],n=!0,i=!1,a=void 0,e.prev=5,s=t[Symbol.iterator]();case 7:if(n=(c=s.next()).done){e.next=16;break}return u=c.value,e.next=11,this.addConsumerTrack(u);case 11:d=e.sent,r.push(d);case 13:n=!0,e.next=7;break;case 16:e.next=22;break;case 18:e.prev=18,e.t0=e.catch(5),i=!0,a=e.t0;case 22:e.prev=22,e.prev=23,n||null==s.return||s.return();case 25:if(e.prev=25,!i){e.next=28;break}throw a;case 28:return e.finish(25);case 29:return e.finish(22);case 30:return e.abrupt("return",r);case 31:for(ie.log("add consumers",t),p=[],f=Array.from(this._consumerInfos.values()),l=!0,h=!1,m=void 0,e.prev=37,v=function(){var e=y.value,t=f.find(function(t){return t.consumerId===e.id});if(t&&!t.closed)p.push(t);else{var r=k.genNewConsumerInfo(e);if(ne.unifiedPlan){var n=f.length.toString();r.mid=n,k._consumerInfos.set(n,r)}else k._consumerInfos.set(e.id,r);p.push(r)}},g=t[Symbol.iterator]();!(l=(y=g.next()).done);l=!0)v();e.next=46;break;case 42:e.prev=42,e.t1=e.catch(37),h=!0,m=e.t1;case 46:e.prev=46,e.prev=47,l||null==g.return||g.return();case 49:if(e.prev=49,!h){e.next=52;break}throw m;case 52:return e.finish(49);case 53:return e.finish(46);case 54:return e.abrupt("return",Promise.resolve().then(function(){var e={type:"offer",sdp:k._remoteSdp.createRemoteOffer(Array.from(k._consumerInfos.values()))};return ie.debug("subscribe: set remote offer",e),k._pc.setRemoteDescription(e)}).then(function(){return ne.unifiedPlan,k._pc.createAnswer()}).then(function(e){return ie.debug("subscribe, set local answer",e),k._pc.setLocalDescription(e)}).then(function(){return k._pcReady}).then(function(){for(var e=function(e){var r=p[e],n=t[e];if(n.track)return"continue";if(ne.unifiedPlan){var i=k._pc.getTransceivers().find(function(e){return!!e.receiver.track&&(e.receiver.track.id===r.trackId||e.mid===r.mid)});i&&(n.track=i.receiver.track)}else{var a=k._pc.getReceivers().find(function(e){var t=e.track;return!!t&&r.trackId===t.id});a&&(n.track=a.track)}if(!n.track)throw O("remote track not found");ie.log("subscribe: get new track",n.track)},r=0;r<p.length;r+=1)e(r);return t.map(function(e){return e.track})}));case 55:case"end":return e.stop()}},e,this,[[5,18,22,30],[23,,25,29],[37,42,46,54],[47,,49,53]])}));return function(t){return e.apply(this,arguments)}}()},{key:"genNewConsumerInfo",value:function(e){var t=Array.from(this._consumerInfos.values()),r=e.rtpParameters.encodings[0],n=e.rtpParameters.rtcp.cname,i=t.length.toString();return{kind:e.kind,streamId:"mid".concat(i,"-stream-").concat(e.id),trackId:"mid".concat(i,"-").concat(e.kind,"-").concat(r.ssrc),ssrc:r.ssrc,rtxSsrc:r.rtx?r.rtx.ssrc:void 0,cname:n,consumerId:e.id,closed:!1}}},{key:"addConsumerTrack",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a,s,c=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return ie.log("add consumer",t),r=null,n=Array.from(this._consumerInfos.values()),(i=n.find(function(e){return e.consumerId===t.id}))&&!i.closed?r=i:(a=this.genNewConsumerInfo(t),ne.unifiedPlan?(s=n.length.toString(),a.mid=s,this._consumerInfos.set(s,a)):this._consumerInfos.set(t.id,a),r=a),e.abrupt("return",Promise.resolve().then(function(){var e={type:"offer",sdp:c._remoteSdp.createRemoteOffer(Array.from(c._consumerInfos.values()))};return ie.debug("subscribe: set remote offer",e),c._pc.setRemoteDescription(e)}).then(function(){return ne.unifiedPlan,c._pc.createAnswer()}).then(function(e){return ie.debug("subscribe, set local answer",e),c._pc.setLocalDescription(e)}).then(function(){return c._pcReady}).then(function(){var e=null;if(ne.unifiedPlan&&t&&r){var n=c._pc.getTransceivers().find(function(e){return!!e.receiver.track&&((e.receiver.track.id===r.trackId||e.mid===r.mid)&&(t.track=e.receiver.track,!0))});n&&(e=n.receiver.track)}else if(t&&r){var i=c._pc.getReceivers().find(function(e){var n=e.track;return!!n&&(r.trackId===n.id&&(t.track=n,!0))});i&&(e=i.track)}if(!e&&t)throw O("remote track not found");return ie.log("subscribe: get new track",e),e}));case 6:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"removeConsumerTracks",value:function(e){var t=this;ie.log("remove consumer",e);var r=!1,n=!0,i=!1,a=void 0;try{for(var o,s=function(){var e=o.value,n=Array.from(t._consumerInfos.values()).find(function(t){return t.consumerId===e.id&&!t.closed});if(!n)return ie.log("can not find unpublish track target, ignore"),"continue";r=!0,ne.unifiedPlan?(e.track=null,n.closed=!0):t._consumerInfos.delete(e.id)},c=e[Symbol.iterator]();!(n=(o=c.next()).done);n=!0)s()}catch(e){i=!0,a=e}finally{try{n||null==c.return||c.return()}finally{if(i)throw a}}return r?Promise.resolve().then(function(){var e={type:"offer",sdp:t._remoteSdp.createRemoteOffer(Array.from(t._consumerInfos.values()))};return ie.log("unsubscribe set remote offer",e),t._pc.setRemoteDescription(e)}).then(function(){return t._pc.createAnswer()}).then(function(e){return ie.log("unsubscribe set local answer",e),t._pc.setLocalDescription(e)}):Promise.resolve()}},{key:"restartICE",value:function(e,t){var r=this;return ie.log("recv restart ice"),this._remoteSdp.updateICE(e,t),this._isRestartingICE=!0,Promise.resolve().then(function(){var e={type:"offer",sdp:r._remoteSdp.createRemoteOffer(Array.from(r._consumerInfos.values()))};return r._pc.setRemoteDescription(e)}).then(function(){return r._pc.createAnswer()}).then(function(e){r._pc.setLocalDescription(e)})}},{key:"setupTransport",value:function(){var e=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!this._transportCreated){e.next=4;break}return e.next=3,this._pcReady;case 3:return e.abrupt("return",e.sent);case 4:return e.next=6,this.safeEmitAsPromise("@needsubpc",t);case 6:return r=e.sent,this._remoteSdp.transportRemoteParameters=r,this.pcid=r.pcid,this._transportCreated=!0,this._pcReady=this.getReady(r),ie.log("init subscribe, get transport remote",r),e.abrupt("return",r);case 13:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()}]),t}(Rt);function It(e,t,r,n){switch(e){case"send":return new Pt(t,r,n);case"recv":return new Et(t,r,n)}}var Mt,Ot=function(e){function t(e){var r;return d()(this,t),(r=h()(this,v()(t).call(this)))._closed=!1,r._busy=!1,r._queue=[],r.name=e||"TaskQueue",r}return y()(t,e),f()(t,[{key:"close",value:function(){this._closed=!0}},{key:"push",value:function(e,t){var r=this;return ie.debug("".concat(this.name," push()"),e,t),new Promise(function(n,i){r._queue.push({method:e,data:t,resolve:n,reject:i}),r._handlePendingCommands()})}},{key:"_handlePendingCommands",value:function(){var e=this;if(!this._busy){var t=this._queue,r=t[0];r&&(this._busy=!0,this._handleCommand(r).then(function(){e._busy=!1,t.shift(),e._handlePendingCommands()}))}}},{key:"_handleCommand",value:function(e){var t=this;if(ie.debug("".concat(this.name," _handleCommand() "),e.method,e.data),this._closed)return e.reject(new $("closed")),Promise.resolve();var r={promise:null};return this.emit("exec",e,r),Promise.resolve().then(function(){return r.promise}).then(function(r){ie.debug("".concat(t.name," _handleCommand() | command succeeded"),e.method),t._closed?e.reject(new $("closed")):e.resolve(r)}).catch(function(r){ie.warning("".concat(t.name," _handleCommand() | command failed [method:%s]: %o"),e.method,r),e.reject(r)})}}]),t}(w.a);!function(e){e.SEND_TRACKS="@transport:send-tracks",e.RESTART_SEND_ICE="@transport:send-restart-ice",e.REMOVE_TRACKS="@transport:remove-tracks",e.INIT_RECV="@transport:init-recv",e.RESTART_RECV_ICE="@transport:recv-restart-ice",e.ADD_CONUMERS="@transport:add-consumers",e.REMOVE_CONSUMERS="@transport:remove-consumers"}(Mt||(Mt={}));var jt,Dt=function(e){function t(e,r){var n;return d()(this,t),(n=h()(this,v()(t).call(this))).sendCommandQueue=new Ot("SendQueue"),n.recvCommandQueue=new Ot("RecvQueue"),n.recvInitCommandQueue=new Ot("RecvInitQueue"),n.sendTrackQueue=[],n.consumerQueue=[],n._publishTracks=new Map,n.extendedRtpCapabilities=e,n.signaling=r,n.sendHandler=It("send",e,r,{}),n.recvHandler=It("recv",e,r,{}),n.handleSendHandler(),n.handleRecvHandler(),n.sendCommandQueue.on("exec",n.handleSendCommandTask.bind(P()(P()(n)))),n.recvCommandQueue.on("exec",n.handleRecvCommandTask.bind(P()(P()(n)))),n.recvInitCommandQueue.on("exec",n.handleRecvInitCommandTask.bind(P()(P()(n)))),n.initSubPcPromise=new Promise(function(e){n.initSubPcPromiseResolve=e}),n}return y()(t,e),f()(t,[{key:"resolveInitSubPcPromise",value:function(){this.initSubPcPromiseResolve&&(this.initSubPcPromiseResolve(),this.initSubPcPromiseResolve=void 0)}},{key:"handleSendHandler",value:function(){var e=this;this.sendHandler.on("@needpubpc",function(t,r,n,i){e.safeEmitAsPromise("@needpubpc",t,r).then(n).catch(i)}).on("@connectionstatechange",function(t){switch(ie.log("pubpc connectionstatechange",t),t){case"remote-disconnected":case"closed":case"failed":e.signaling.state===wt.OPEN?e.reconnectProducer():e.sendHandler.close();break;case"disconnected":if(e.sendHandler._isRestartingICE||!e.sendHandler.pcid)return;e.signaling.state===wt.OPEN?e.restartSendICE(e.sendHandler.pcid):e.signaling.once("@signalingauth",function(t){"disconnected"===e.sendHandler.getCurrentIceConnectionState()&&(e.extendedRtpCapabilities=t.rtpcaps,e.restartSendICE(e.sendHandler.pcid))})}}).on("@needpubtracks",function(t,r,n,i){var a=t.map(Je);e.signaling.request("pub-tracks",{tracks:a,sdp:r}).then(function(t){switch(t.code){case 0:break;case 10052:return i(G());case 10061:return e.reconnectProducer(),i(D(10061,t.error));default:return i(D(t.code,t.error))}var r=!0,a=!1,o=void 0;try{for(var s,c=t.tracks[Symbol.iterator]();!(r=(s=c.next()).done);r=!0){if(!s.value.status)return void i(D(t.code,t.error))}}catch(e){a=!0,o=e}finally{try{r||null==c.return||c.return()}finally{if(a)throw o}}n(t)},i)}).on("@needunpubtracks",function(t,r,n){e.signaling.request("unpub-tracks",{tracks:t.map(function(e){return{trackid:e.trackId}})}).then(function(e){r(e)})})}},{key:"sendTracks",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(0!==t.length){e.next=2;break}return e.abrupt("return",Promise.resolve());case 2:return e.abrupt("return",this.sendCommandQueue.push(Mt.SEND_TRACKS,t));case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"removeTracks",value:function(e){return 0===e.length?Promise.resolve():this.sendCommandQueue.push(Mt.REMOVE_TRACKS,e)}},{key:"restartSendICE",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(ne.supportRestartICE){e.next=2;break}return e.abrupt("return",Promise.resolve(this.reconnectProducer()));case 2:return e.abrupt("return",this.sendCommandQueue.push(Mt.RESTART_SEND_ICE,t));case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"handleSendCommandTask",value:function(e,t){switch(e.method){case Mt.SEND_TRACKS:return void(t.promise=this._execAddProducerTracks(e.data));case Mt.REMOVE_TRACKS:return void(t.promise=this._execRemoveTracks(e.data));case Mt.RESTART_SEND_ICE:return void(t.promise=this._execRestartSendICE(e.data))}}},{key:"addTrackToPublishTracks",value:function(e){var t=this,r=e.map(function(e){return new xt(t,"send",e)}),n=!0,i=!1,a=void 0;try{for(var o,s=r[Symbol.iterator]();!(n=(o=s.next()).done);n=!0){var c=o.value;this._publishTracks.set(c.track.mediaTrack.id,c)}}catch(e){i=!0,a=e}finally{try{n||null==s.return||s.return()}finally{if(i)throw a}}return r}},{key:"removeTrackFromPublishTracks",value:function(e){var t=!0,r=!1,n=void 0;try{for(var i,a=e[Symbol.iterator]();!(t=(i=a.next()).done);t=!0){var o=i.value;this._publishTracks.delete(o.mediaTrack.id)}}catch(e){r=!0,n=e}finally{try{t||null==a.return||a.return()}finally{if(r)throw n}}}},{key:"_execAddProducerTracks",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a,s,c,u,d;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this.sendHandler.addProducerTracks(t.map(function(e){return e.track}));case 2:for(r=e.sent,n=!0,i=!1,a=void 0,e.prev=6,s=t[Symbol.iterator]();!(n=(c=s.next()).done);n=!0)u=c.value,(d=st(r.tracks,"localid",u.track.mediaTrack.id))&&(u.addTrackId(d.trackid),u.track.setInfo({versionid:d.versionid}),u.track.resetStats());e.next=14;break;case 10:e.prev=10,e.t0=e.catch(6),i=!0,a=e.t0;case 14:e.prev=14,e.prev=15,n||null==s.return||s.return();case 17:if(e.prev=17,!i){e.next=20;break}throw a;case 20:return e.finish(17);case 21:return e.finish(14);case 22:return t.map(function(e){return e.connectStatus=he.Connect}),e.abrupt("return",r);case 24:case"end":return e.stop()}},e,this,[[6,10,14,22],[15,,17,21]])}));return function(t){return e.apply(this,arguments)}}()},{key:"_execRemoveTracks",value:function(e){return this.removeTrackFromPublishTracks(e.map(function(e){return e.track})),e.map(function(e){return e.release()}),this.sendHandler.removeProducerTracks(e)}},{key:"_execRestartSendICE",value:function(){var e=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return this.sendHandler._isRestartingICE=!0,e.next=3,this.signaling.request("pubpc-restart",{pcid:t});case 3:if(0===(r=e.sent).code){e.next=9;break}return this.sendHandler._isRestartingICE=!1,ie.debug("restart ice faild",r.code,r.error),this.reconnectProducer(),e.abrupt("return");case 9:return e.prev=9,e.next=12,this.sendHandler.restartICE(r.iceParameters,r.iceCandidate);case 12:this.sendHandler._isRestartingICE=!1,e.next=20;break;case 15:e.prev=15,e.t0=e.catch(9),ie.debug("restart ice faild",r.code,r.error),this.sendHandler._isRestartingICE=!1,this.reconnectProducer();case 20:case"end":return e.stop()}},e,this,[[9,15]])}));return function(t){return e.apply(this,arguments)}}()},{key:"reconnectProducer",value:function(){this.resetSendCommandQueue(),this.sendHandler.close();var e=this.publishTracks;this.sendHandler=It("send",this.extendedRtpCapabilities,this.signaling,{}),this.handleSendHandler(),e.forEach(function(e){e.connectStatus=he.Connecting}),this.emit("@needrepub",e)}},{key:"handleRecvHandler",value:function(){var e=this;this.recvHandler.on("@needsubpc",function(t,r,n){e.safeEmitAsPromise("@needsubpc",t).then(r,n)}).on("@connectionstatechange",function(t){switch(ie.log("sub pc connection state change",t),t){case"remote-disconnected":case"closed":case"failed":e.signaling.state===wt.OPEN?e.resetRecvHandler():e.recvHandler.close();break;case"disconnected":if(e.recvHandler._isRestartingICE||!e.recvHandler.pcid)return;e.signaling.state===wt.OPEN?e.restartRecvICE(e.recvHandler.pcid):e.signaling.once("@signalingauth",function(t){"disconnected"===e.recvHandler.getCurrentIceConnectionState()&&(e.extendedRtpCapabilities=t.rtpcaps,e.restartRecvICE(e.recvHandler.pcid))})}})}},{key:"appendConsumer",value:function(e){this.consumerQueue.push(e)}},{key:"addConsumers",value:function(){var e=c()(o.a.mark(function e(){var t;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=this.consumerQueue,this.consumerQueue=[],e.abrupt("return",this.recvCommandQueue.push(Mt.ADD_CONUMERS,t));case 3:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}()},{key:"initRecvHandler",value:function(e){return this.recvInitCommandQueue.push(Mt.INIT_RECV,e)}},{key:"removeConsumers",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this.recvCommandQueue.push(Mt.REMOVE_CONSUMERS,t);case 2:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"restartRecvICE",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(ne.supportRestartICE){e.next=2;break}return e.abrupt("return",this.resetRecvHandler());case 2:return e.abrupt("return",this.recvCommandQueue.push(Mt.RESTART_RECV_ICE,t));case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"_removeConsumers",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this.recvHandler.removeConsumerTracks(t);case 2:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"_initRecvHandler",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.recvHandler.isPcReady){e.next=4;break}return e.next=3,this.recvHandler.setupTransport(t);case 3:return e.abrupt("return",e.sent);case 4:return e.next=6,this.initSubPcPromise;case 6:return e.abrupt("return",null);case 7:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"_addConsumers",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(0!==t.length){e.next=2;break}return e.abrupt("return",Promise.resolve([]));case 2:return e.next=4,this.recvHandler.addConsumerTracks(t);case 4:for(r=e.sent,n=function(e){var n=r[e],i=t[e];n.onended=function(){ie.warning("track end",n,i)}},i=0;i<r.length;i+=1)n(i);return e.abrupt("return",r);case 8:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"_execRestartRecvICE",value:function(){var e=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return this.recvHandler._isRestartingICE=!0,e.next=3,this.signaling.request("subpc-restart",{pcid:t});case 3:if(0===(r=e.sent).code){e.next=9;break}return this.recvHandler._isRestartingICE=!1,ie.debug("restart ice faild",r.code,r.error),this.resetRecvHandler(),e.abrupt("return");case 9:return e.prev=9,e.next=12,this.recvHandler.restartICE(r.iceParameters,r.iceCandidate);case 12:this.recvHandler._isRestartingICE=!1,e.next=20;break;case 15:e.prev=15,e.t0=e.catch(9),this.recvHandler._isRestartingICE=!1,ie.debug("restart ice faild",r.code,r.error),this.resetRecvHandler();case 20:case"end":return e.stop()}},e,this,[[9,15]])}));return function(t){return e.apply(this,arguments)}}()},{key:"handleRecvCommandTask",value:function(e,t){switch(e.method){case Mt.ADD_CONUMERS:return void(t.promise=this._addConsumers(e.data));case Mt.REMOVE_CONSUMERS:return void(t.promise=this._removeConsumers(e.data));case Mt.RESTART_RECV_ICE:return void(t.promise=this._execRestartRecvICE(e.data))}}},{key:"handleRecvInitCommandTask",value:function(e,t){switch(e.method){case Mt.INIT_RECV:return void(t.promise=this._initRecvHandler(e.data))}}},{key:"resetSendCommandQueue",value:function(){ie.log("reset send queue"),this.sendCommandQueue=new Ot("SendQueue"),this.sendCommandQueue.on("exec",this.handleSendCommandTask.bind(this))}},{key:"resetRecvCommandQueue",value:function(){ie.log("reset recv queue"),this.recvCommandQueue=new Ot("RecvQueue"),this.recvInitCommandQueue=new Ot("RecvInitQueue"),this.recvCommandQueue.on("exec",this.handleRecvCommandTask.bind(this)),this.recvInitCommandQueue.on("exec",this.handleRecvInitCommandTask.bind(this))}},{key:"resetRecvHandler",value:function(){var e=this;this.resetRecvCommandQueue(),this.recvHandler.close(),this.recvHandler=It("recv",this.extendedRtpCapabilities,this.signaling,{}),this.initSubPcPromise=new Promise(function(t){e.initSubPcPromiseResolve=t}),this.handleRecvHandler(),this.emit("@needresub")}},{key:"release",value:function(){this.recvHandler.close(),this.sendHandler.close(),this.publishTracks.forEach(function(e){return e.release()})}},{key:"publishTracks",get:function(){return Array.from(this._publishTracks.values())}}]),t}(Me);!function(e){e[e.Idle=0]="Idle",e[e.Connecting=1]="Connecting",e[e.Connected=2]="Connected",e[e.Reconnecting=3]="Reconnecting"}(jt||(jt={}));var Lt=function(e){function t(){var e;return d()(this,t),(e=h()(this,v()(t).call(this)))._trackInfo=[],e.subscribeTracks=[],e._users=new Map,e._roomState=jt.Idle,e.mergeJobMerger={},e.defaultMergeJobTracks=[],e.mergeJobTracks={},e._publish=function(t,r){return new Promise(function(){var n=c()(o.a.mark(function n(i,a){var s,c,u,d,p,f,l;return o.a.wrap(function(n){for(;;)switch(n.prev=n.next){case 0:if(e.roomState===jt.Connected){n.next=3;break}return a(O("not connected to the room, please run joinRoom first")),n.abrupt("return");case 3:if(0===t.length&&i(),t.forEach(function(t){return t.userId=e.userId}),s=e.connectionTransport,c=e.signaling,!r){n.next=12;break}d=t.map(function(e){return e.mediaTrack.id}),u=s.publishTracks.filter(function(e){return-1!==d.indexOf(e.track.mediaTrack.id)}),n.next=18;break;case 12:if(p=s.publishTracks.map(function(e){return e.track.mediaTrack.id}),t.filter(function(e){return-1===p.indexOf(e.mediaTrack.id)}).length===t.length){n.next=17;break}return a(O("there are already published tracks in the provided tracks")),n.abrupt("return");case 17:u=s.addTrackToPublishTracks(t);case 18:return ie.debug("start publish",u,r),r||(f=u.map(function(e){return e.startConnect()}),Promise.all(f).then(function(){return i()}).catch(function(){a(H())})),n.prev=20,n.next=23,s.sendTracks(u);case 23:c.sendWsMsg("mute-tracks",{tracks:u.map(function(e){return{trackid:e.trackId,muted:!!e.track.info.muted}})}),(l=st(e.users,"userId",e.userId))&&(l.addTracks(u.map(function(e){return e.track})),l.addPublishedTrackInfo(u.map(function(t){return{trackId:t.trackId,muted:!!t.track.info.muted,kind:t.track.info.kind,tag:t.track.info.tag,userId:e.userId,versionid:t.track.info.versionid}}))),t.forEach(function(t){t.on("@get-stats",function(r,n,i){if(!e.connectionTransport)return n(ae());e.connectionTransport.sendHandler.getStats(t.mediaTrack,r).then(n,i)})}),e.getAllMerger().forEach(function(e){return e.controller.onAddTracks(t.map(function(e){return e.info}))}),n.next=46;break;case 30:if(n.prev=30,n.t0=n.catch(20),!(n.t0 instanceof M)){n.next=44;break}n.t1=n.t0.code,n.next=10061===n.t1?36:30001===n.t1?36:10052===n.t1?37:40;break;case 36:return n.abrupt("return");case 37:return ie.warning(n.t0,"republish"),setTimeout(function(){return e._publish(t,!0)},1e3),n.abrupt("return");case 40:s.removeTrackFromPublishTracks(t),a(n.t0);case 42:n.next=46;break;case 44:ie.warning(n.t0,"republish"),setTimeout(function(){return e._publish(t,!0)},1e3);case 46:case"end":return n.stop()}},n,this,[[20,30]])}));return function(e,t){return n.apply(this,arguments)}}())},e._subscribe=function(t,r){return new Promise(function(){var n=c()(o.a.mark(function n(i,a){var s,c,u,d,p,f,l,h,m,v,g,y,k,b,T,w,S,C,_,R,P,E,I,j,D,L;return o.a.wrap(function(n){for(;;)switch(n.prev=n.next){case 0:if(e.roomState===jt.Connected){n.next=3;break}return a(O("can not connected to the room, please joinRoom first")),n.abrupt("return");case 3:if(0!==t.length){n.next=6;break}return i([]),n.abrupt("return");case 6:if(ie.debug("subscribe",t,r),(s=e._trackInfo.filter(function(e){return t.includes(e.trackid)})).length===t.length){n.next=11;break}return a(N(10041,"can not find track in room ".concat(t))),n.abrupt("return");case 11:return u=e.connectionTransport,d=e.signaling,r?c=e.subscribeTracks.filter(function(e){return-1!==t.indexOf(e.trackId)}):(p=e.subscribeTracks.map(function(e){return e.trackId}),f=s.filter(function(e){return!p.includes(e.trackid)}),c=f.map(function(e){return new xt(u,"recv",void 0,e.trackid)}),e.subscribeTracks=e.subscribeTracks.concat(c)),ie.log("sub tracks",c),n.prev=15,r||(l=c.map(function(e){return e.startConnect()}),Promise.all(l).then(function(){return i(c.map(function(e){return e.track}))}).catch(function(){a(H())})),n.next=19,u.initRecvHandler(c.map(function(e){return e.trackId}));case 19:if(h=n.sent){n.next=24;break}return n.next=23,d.request("sub-tracks",{tracks:c.map(function(e){return{trackid:e.trackId}})});case 23:h=n.sent;case 24:ie.log("get sub res data",h),n.t0=h.code,n.next=0===n.t0?28:10052===n.t0?29:10062===n.t0?30:32;break;case 28:return n.abrupt("break",33);case 29:throw G();case 30:throw u.resetRecvHandler(),N(10062,h.error);case 32:throw N(h.code,h.error);case 33:m=!0,v=!1,g=void 0,n.prev=36,y=(h.tracks||[])[Symbol.iterator]();case 38:if(m=(k=y.next()).done){n.next=45;break}if(k.value.status){n.next=42;break}throw N(h.code,h.error);case 42:m=!0,n.next=38;break;case 45:n.next=51;break;case 47:n.prev=47,n.t1=n.catch(36),v=!0,g=n.t1;case 51:n.prev=51,n.prev=52,m||null==y.return||y.return();case 54:if(n.prev=54,!v){n.next=57;break}throw g;case 57:return n.finish(54);case 58:return n.finish(51);case 59:b=!0,T=!1,w=void 0,n.prev=62,S=function(){var e=_.value,t=c.find(function(t){return t.trackId===e.trackid}),r=s.find(function(t){return t.trackid===e.trackid});if(!t||!r)return"continue";var n=e.rtpparams;t.appendConsumner(n,r.kind)},C=(h.tracks||[])[Symbol.iterator]();case 65:if(b=(_=C.next()).done){n.next=72;break}if("continue"!==S()){n.next=69;break}return n.abrupt("continue",69);case 69:b=!0,n.next=65;break;case 72:n.next=78;break;case 74:n.prev=74,n.t2=n.catch(62),T=!0,w=n.t2;case 78:n.prev=78,n.prev=79,b||null==C.return||C.return();case 81:if(n.prev=81,!T){n.next=84;break}throw w;case 84:return n.finish(81);case 85:return n.finish(78);case 86:return n.next=88,u.addConsumers();case 88:u.resolveInitSubPcPromise(),R=!0,P=!1,E=void 0,n.prev=92,I=o.a.mark(function t(){var r,n,i,a,c,u;return o.a.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:if(r=D.value,(n=r.consumer)&&n.track){t.next=4;break}return t.abrupt("return","continue");case 4:if(i=n.track,a=r.track,c=s.find(function(e){return e.trackid===n.id})){t.next=9;break}return t.abrupt("return","continue");case 9:if(a){t.next=19;break}if("audio"!==i.kind){t.next=16;break}return a=new Fe(i,c.playerid),t.next=14,a.initAudioManager();case 14:t.next=17;break;case 16:a=new Oe(i,c.playerid);case 17:t.next=20;break;case 19:a.resume(i);case 20:a.setInfo({trackId:c.trackid,userId:c.playerid,tag:c.tag,kind:c.kind,muted:c.muted,versionid:c.versionid}),a.setMaster(c.master),a.on("@get-stats",function(t,r,n){if(!e.connectionTransport)return r(ae());e.connectionTransport.recvHandler.getStats(a.mediaTrack,t).then(r,n)}),r.track=a,(u=e.users.find(function(e){return e.userId===c.playerid}))&&u.addTracks([a]);case 26:case"end":return t.stop()}},t,this)}),j=c[Symbol.iterator]();case 95:if(R=(D=j.next()).done){n.next=103;break}return n.delegateYield(I(),"t3",97);case 97:if("continue"!==n.t3){n.next=100;break}return n.abrupt("continue",100);case 100:R=!0,n.next=95;break;case 103:n.next=109;break;case 105:n.prev=105,n.t4=n.catch(92),P=!0,E=n.t4;case 109:n.prev=109,n.prev=110,R||null==j.return||j.return();case 112:if(n.prev=112,!P){n.next=115;break}throw E;case 115:return n.finish(112);case 116:return n.finish(109);case 117:c.forEach(function(e){return e.connectStatus=he.Connect}),n.next=142;break;case 120:return n.prev=120,n.t5=n.catch(15),ie.log(n.t5),L=[],c.forEach(function(e){e.consumer&&L.push(e.consumer)}),n.next=127,u.removeConsumers(L);case 127:if(!(n.t5 instanceof M)){n.next=139;break}n.t6=n.t5.code,n.next=10062===n.t6?131:30001===n.t6?131:10052===n.t6?132:135;break;case 131:return n.abrupt("return");case 132:return ie.warning(n.t5,"resubscribe"),setTimeout(function(){return e._subscribe(t,!0)},1e3),n.abrupt("return");case 135:x()(e.subscribeTracks,function(e){return-1!==t.indexOf(e.trackId)}),a(n.t5);case 137:n.next=142;break;case 139:return ie.warning(n.t5,"resubscribe"),setTimeout(function(){return e._subscribe(t,!0)},1e3),n.abrupt("return");case 142:i(c.map(function(e){return e.track}));case 143:case"end":return n.stop()}},n,this,[[15,120],[36,47,51,59],[52,,54,58],[62,74,78,86],[79,,81,85],[92,105,109,117],[110,,112,116]])}));return function(e,t){return n.apply(this,arguments)}}())},ie.log("version",yt),ie.log("browser report",ne,te),e}return y()(t,e),f()(t,[{key:"joinRoomWithToken",value:function(){var e=c()(o.a.mark(function e(t,r){var n;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.roomState===jt.Reconnecting){e.next=4;break}if(this.roomState===jt.Idle){e.next=3;break}throw O("roomState is not idle! Do not repeat join room, please run leaveRoom first");case 3:this.roomState=jt.Connecting;case 4:if(e.prev=4,this.roomToken=t,this.userData=r,n=ot(t),this.userId=n.userId,this.roomName=n.roomName,this.appId=n.appId,ie.log("join room, token:",t),ie.debug("join room, roomName: ".concat(this.roomName,", userId: ").concat(this.userId)),this.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)){e.next=16;break}throw this.roomState=jt.Idle,O("invalid roomname. roomname must match /^[a-zA-Z0-9_-]{3,64}$/");case 16:if(this.userId.match(/^[a-zA-Z0-9_-]{3,50}$/)){e.next=19;break}throw this.roomState=jt.Idle,O("invalid userId. userId must match /^[a-zA-Z0-9_-]{3,50}$/");case 19:return e.prev=19,e.next=22,bt(n,t);case 22:this.accessToken=e.sent,e.next=28;break;case 25:throw e.prev=25,e.t0=e.catch(19),e.t0;case 28:return e.next=30,this.joinRoomWithAccess(this.accessToken);case 30:return e.abrupt("return",e.sent);case 33:throw e.prev=33,e.t1=e.catch(4),this.roomState=jt.Idle,e.t1;case 37:case"end":return e.stop()}},e,this,[[4,33],[19,25]])}));return function(t,r){return e.apply(this,arguments)}}()},{key:"joinRoomWithAccess",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a,s,c=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return r=at(t),e.next=3,nt();case 3:if(n=e.sent,i=n.capsdp,this._roomState!==jt.Idle){e.next=7;break}throw O("roomState is idle, maybe because you left the room.");case 7:return(a=new Ct(r.signalingurl2,t,i,this.userData)).on("@error",this.handleDisconnect.bind(this)).on("@ws-state-change",function(e,t){switch(t){case wt.CONNECTING:c.roomState===jt.Connected?c.roomState=jt.Reconnecting:c.roomState!==jt.Reconnecting&&(c.roomState=jt.Connecting)}}).on("@needupdateaccesstoken",function(e,t){c.updateAccessToken().then(e).catch(t)}).on("on-player-in",this.handlePlayerIn.bind(this)).on("on-player-out",this.handlePlayerOut.bind(this)).on("on-add-tracks",function(e){c.filterSignalTracks(e),c.handleAddTracks(e)}).on("on-remove-tracks",function(e){c.filterSignalTracks(e),c.handleRemoveTracks(e)}).on("mute-tracks",function(e){c.filterSignalTracks(e),c.handleMute(e)}).on("on-messages",this.handleCustomMessages.bind(this)).on("on-pubpc-restart-notify",function(e){var t=c.connectionTransport;t&&ne.supportRestartICE&&t.restartSendICE(e.pcid).catch(ie.debug)}).on("on-subpc-restart-notify",function(e){var t=c.connectionTransport;t&&ne.supportRestartICE&&t.restartRecvICE(e.pcid).catch(ie.debug)}).on("disconnect",this.handleDisconnect.bind(this)),ie.log("init signaling websocket"),this.signaling=a,e.prev=11,e.next=14,a.initWs(!0);case 14:return s=e.sent,a.on("@signalingauth",this.handleAuth.bind(this)),e.next=18,this.handleAuth(s);case 18:e.next=28;break;case 20:if(e.prev=20,e.t0=e.catch(11),this.signaling&&(this.signaling.release(),this.signaling=void 0),10052!==e.t0.code){e.next=27;break}return e.next=26,mt(1e3);case 26:return e.abrupt("return",this.joinRoomWithToken(this.roomToken,this.userData));case 27:throw e.t0;case 28:return e.abrupt("return",this.users);case 29:case"end":return e.stop()}},e,this,[[11,20]])}));return function(t){return e.apply(this,arguments)}}()},{key:"_unpublish",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.roomState===jt.Connected){e.next=2;break}throw O("not connected to the room");case 2:if(0!==t.length){e.next=4;break}return e.abrupt("return");case 4:if(ie.debug("unpublish",t),r=this.connectionTransport,(n=r.publishTracks.filter(function(e){return-1!==t.indexOf(e.trackId)})).length===t.length){e.next=9;break}throw O("can not find target trackid to unpublish");case 9:return e.next=11,r.removeTracks(n);case 11:this.getAllMerger().forEach(function(e){return e.controller.onRemoveTracks(n.map(function(e){return e.track.info}))}),(i=st(this.users,"userId",this.userId))&&(i.removeTracksByTrackId(t),i.removePublishedTrackInfo(t)),this.cleanTrackIdsFromMergeJobs(t);case 15:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"createMergeJob",value:function(){var e=c()(o.a.mark(function e(t,r){var n,a;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.roomState===jt.Connected){e.next=2;break}throw O("can not createMergeJob, room state is not connected");case 2:return n=i()({},ye,r,{id:t}),ie.debug("send create merge job",n,t),this.signaling.mergeJobIndex+=1,e.next=7,ct(this.signaling,"create-merge-job",n,"create-merge-job-res-".concat(this.signaling.mergeJobIndex));case 7:if(0===(a=e.sent).code){e.next=10;break}throw L(a.code,a.error);case 10:this.mergeJobTracks[t]?ie.warning("merge job id already exist",t):this.mergeJobTracks[t]=[];case 11:case"end":return e.stop()}},e,this)}));return function(t,r){return e.apply(this,arguments)}}()},{key:"setDefaultMergeStream",value:function(e,t,r){if(r&&!this.mergeJobTracks[r])throw V(r);this.merger&&!r&&(this.merger.release(),this.merger=void 0),r&&this.mergeJobMerger[r]&&(this.mergeJobMerger[r].release(),delete this.mergeJobMerger[r]);var n=this.CreateMergerSessionController();r?this.mergeJobMerger[r]=new _t(e,t,n,r):this.merger=new _t(e,t,n,r)}},{key:"_stopMerge",value:function(e){if(this.roomState!==jt.Connected)throw O("can not addMergeTracks, room state is not connected");if(e&&!this.mergeJobTracks[e])throw V(e);this.signaling.sendWsMsg("stop-merge",{id:e}),e?(delete this.mergeJobTracks[e],this.mergeJobMerger[e]&&(this.mergeJobMerger[e].release(),delete this.mergeJobMerger[e])):(this.defaultMergeJobTracks=[],this.merger&&(this.merger.release(),this.merger=void 0))}},{key:"_addMergeTracks",value:function(e,t){if(this.roomState!==jt.Connected)throw O("can not addMergeTracks, room state is not connected");if(t&&!this.mergeJobTracks[t])throw V(t);var r={id:t,add:e.map(function(e){return{trackid:e.trackId,x:e.x,y:e.y,w:e.w,h:e.h,z:e.z}})};ie.debug("addMergeTracks",r),this.signaling.sendWsMsg("update-merge-tracks",r),t?(this.mergeJobTracks[t]=this.mergeJobTracks[t].concat(e.map(function(e){return e.trackId})),this.mergeJobTracks[t]=C()(this.mergeJobTracks[t],function(e){return e})):(this.defaultMergeJobTracks=this.defaultMergeJobTracks.concat(e.map(function(e){return e.trackId})),this.defaultMergeJobTracks=C()(this.defaultMergeJobTracks,function(e){return e}))}},{key:"_removeMergeTracks",value:function(e,t){if(this.roomState!==jt.Connected)throw O("can not addMergeTracks, room state is not connected");if(t&&!this.mergeJobTracks[t])throw V(t);var r={id:t,remove:e.map(function(e){return{trackid:e}})};ie.debug("removeMergeTracks",r),this.signaling.sendWsMsg("update-merge-tracks",r),t?x()(this.mergeJobTracks[t],function(t){return-1!==e.indexOf(t)}):x()(this.defaultMergeJobTracks,function(t){return-1!==e.indexOf(t)})}},{key:"_unsubscribe",value:function(){var e=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.roomState===jt.Connected){e.next=2;break}throw O("no signaling model, please run joinRoomWithToken first");case 2:if(r=this.subscribeTracks.filter(function(e){return-1!==t.indexOf(e.trackId)}),ie.debug("unsubscribe",r),0!==r.length){e.next=6;break}return e.abrupt("return");case 6:return this.signaling.request("unsub-tracks",{tracks:r.map(function(e){return{trackid:e.trackId}})}),r.forEach(function(e){return e.release()}),x()(this.subscribeTracks,function(e){return-1!==t.indexOf(e.trackId)}),e.next=11,this.connectionTransport.removeConsumers(r.map(function(e){return e.consumer}));case 11:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"_muteTracks",value:function(e){if(this.roomState!==jt.Connected)throw O("no signaling model, please run joinRoomWithToken first");var t=this.connectionTransport,r={};e.forEach(function(e){r[e.trackId]=e.muted}),t.publishTracks.filter(function(e){return void 0!==r[e.trackId]}).forEach(function(e){e.setMute(r[e.trackId])}),this.signaling.sendWsMsg("mute-tracks",{tracks:e.map(function(e){return{trackid:e.trackId,muted:e.muted}})})}},{key:"kickoutUser",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return ie.log("kickoutUser",t),e.next=3,this.control("kickplayer",t);case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"sendCustomMessage",value:function(e,t){if(this.roomState!==jt.Connected)throw O("room state is not connected, can not send message");this.signaling.sendWsMsg("send-message",{msgid:ht(8),target:t&&0!==t.length?t:void 0,type:"normal",text:e}),ie.debug("send custom message",e,t)}},{key:"leaveRoom",value:function(){ie.log("leave room"),this.signaling&&this.signaling.sendDisconnect(),this.releaseRoom()}},{key:"_releasePublishTracks",value:function(){}},{key:"control",value:function(){var e=c()(o.a.mark(function e(t,r){var n;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.roomState===jt.Connected){e.next=2;break}throw O("can not connected to the room, please run joinRoom first");case 2:return e.next=4,this.signaling.request("control",{command:t,playerid:r});case 4:if(!(n=e.sent).error){e.next=7;break}throw F(n.code,n.error);case 7:case"end":return e.stop()}},e,this)}));return function(t,r){return e.apply(this,arguments)}}()},{key:"handlePlayerOut",value:function(e){var t=this,r=this._users.get(e.playerid);r&&(this._users.delete(e.playerid),x()(this._trackInfo,function(t){return t.playerid===e.playerid}),x()(this.subscribeTracks,function(e){return e.track.userId===r.userId}).forEach(function(e){return e.release()}),dt(function(){ie.debug("user-leave",r),t.emit("user-leave",r)}))}},{key:"handlePlayerIn",value:function(e){var t=this,r=He(e);this._users.set(r.userId,r),dt(function(){ie.debug("user-join",r),t.emit("user-join",r)})}},{key:"handleAddTracks",value:function(e){var t=this,r=e.tracks;ie.log("receive track-add",r,i()({},this._trackInfo));var n=new Set,a=!0,o=!1,s=void 0;try{for(var c,u=r[Symbol.iterator]();!(a=(c=u.next()).done);a=!0){var d=c.value,p=st(this.users,"userId",d.playerid);if(p)if(p.published&&!n.has(p.userId)&&"stream"===this.sessionMode){var f=p.publishedTrackInfo.map(function(e){return Ve(e,!0)});this.handleRemoveTracks({tracks:f}),f.push(d),this.handleAddTracks({tracks:f})}else this._trackInfo.push(d),p.addPublishedTrackInfo([We(d)]),n.add(p.userId)}}catch(e){o=!0,s=e}finally{try{a||null==u.return||u.return()}finally{if(o)throw s}}if("stream"===this.sessionMode)for(var l=Array.from(n),h=function(){var e=l[m];dt(function(){ie.debug("user-publish",t._users.get(e)),t.emit("user-publish",t._users.get(e))})},m=0;m<l.length;m++)h();dt(function(){ie.debug("track-add",r.map(We)),t.emit("track-add",r.map(We))})}},{key:"handleRemoveTracks",value:function(e){var t=this,r=e.tracks;ie.log("receive track-remove",r,i()({},this._trackInfo));var n=x()(this._trackInfo,function(e){return r.map(function(e){return e.trackid}).includes(e.trackid)}),a=new Set,o=!0,s=!1,c=void 0;try{for(var u,d=function(){var e=u.value,r=t._users.get(e.playerid);if(!r)return"continue";r.removePublishedTrackInfo([e.trackid]),r.removeTracksByTrackId([e.trackid]),a.add(r.userId);var n=x()(t.subscribeTracks,function(t){return t.trackId===e.trackid})[0];n&&n.release()},p=n[Symbol.iterator]();!(o=(u=p.next()).done);o=!0)d()}catch(e){s=!0,c=e}finally{try{o||null==p.return||p.return()}finally{if(s)throw c}}if(this.cleanTrackIdsFromMergeJobs(r.map(function(e){return e.trackid})),"stream"===this.sessionMode)for(var f=Array.from(a),l=function(){var e=f[h],r=t._users.get(e);if(r.published){var n=r.publishedTrackInfo.map(function(e){return Ve(e,!0)});t.handleRemoveTracks({tracks:n}),t.handleAddTracks({tracks:n})}else dt(function(){ie.debug("user-unpublish",r),t.emit("user-unpublish",r)})},h=0;h<f.length;h++)l();dt(function(){ie.debug("track-remove",n.map(We)),t.emit("track-remove",n.map(We))})}},{key:"handleMute",value:function(e){var t=this,r=e.tracks,n=!0,i=!1,a=void 0;try{for(var o,s=function(){var e=o.value,r=e.trackid,n=e.muted,i=st(t._trackInfo,"trackid",r);if(!i)return{v:void 0};var a=t._users.get(i.playerid);if(!a)return{v:void 0};var s=a.publishedTrackInfo.find(function(e){return e.trackId===r});s&&(s.muted=n);var c=a.tracks.find(function(e){return e.info.trackId===r});c&&(c.info.muted=n,c.setMute(n)),i.muted=n;var u=t.subscribeTracks.filter(function(e){return e.trackId===r})[0];u&&u.setMute(n);for(var d=void 0,p=0;p<t._trackInfo.length;p+=1)t._trackInfo[p].playerid===i.playerid&&t._trackInfo[p].kind!==i.kind&&(d=t._trackInfo[p]);var f={userId:i.playerid,muteAudio:!1,muteVideo:!1};"audio"===i.kind?(f.muteAudio=n,f.muteVideo=!!d&&d.muted):(f.muteVideo=n,f.muteAudio=!!d&&d.muted),"stream"===t.sessionMode&&dt(function(){ie.log("user-mute",f),t.emit("user-mute",f)})},c=r[Symbol.iterator]();!(n=(o=c.next()).done);n=!0){var u=s();if("object"===b()(u))return u.v}}catch(e){i=!0,a=e}finally{try{n||null==c.return||c.return()}finally{if(i)throw a}}dt(function(){ie.log("mute-tracks",r.map(function(e){return{trackId:e.trackid,muted:e.muted}})),t.emit("mute-tracks",r.map(function(e){return{trackId:e.trackid,muted:e.muted}}))})}},{key:"handleCustomMessages",value:function(e){var t=e.messages;ie.debug("messages-received",t.map(Be)),this.emit("messages-received",t.map(Be))}},{key:"handleDisconnect",value:function(e){var t=this;if(ie.log("handle disconnect",e),10052===e.code&&this.roomToken)return this.roomState=jt.Reconnecting,void setTimeout(function(){return t.signaling.initWs()},1e3);switch(this.releaseRoom(),e.code){case 10006:this.emit("disconnect",{code:e.code,data:{userId:e.kickedid}});break;default:this.emit("disconnect",{code:e.code})}}},{key:"updateAccessToken",value:function(){var e=c()(o.a.mark(function e(){var t;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return t=ot(this.roomToken),e.next=3,bt(t,this.roomToken);case 3:if(this.accessToken=e.sent,!this.signaling){e.next=8;break}this.signaling.accessToken=this.accessToken,e.next=9;break;case 8:throw O("room state is idle");case 9:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}()},{key:"handleAuth",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a,s,c,u,d,p,f,l,h,m=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.filterSignalTracks(t),ie.debug("handleAuth",t),!t.error){e.next=6;break}return e.next=5,this.joinRoomWithToken(this.roomToken,this.userData);case 5:return e.abrupt("return");case 6:if(t.tracks=t.tracks||[],t.tracks=t.tracks.filter(function(e){return e.playerid!==m.userId}),t.players=t.players||[],r=this.roomState===jt.Reconnecting,n={join:[],leave:[],add:[],remove:[],mute:[]},i=Array.from(this._users.keys()),a=t.players.map(function(e){return e.playerid}),n=ft(this.userId,this._trackInfo,t.tracks,i,a),this.roomState=jt.Connected,r){e.next=40;break}for(this._trackInfo=t.tracks,this._users.clear(),s=!0,c=!1,u=void 0,e.prev=21,d=function(){var e=He(f.value),t=m._trackInfo.filter(function(t){return t.playerid===e.userId});e.addPublishedTrackInfo(t.map(We)),m._users.set(e.userId,e)},p=(t.players||[])[Symbol.iterator]();!(s=(f=p.next()).done);s=!0)d();e.next=30;break;case 26:e.prev=26,e.t0=e.catch(21),c=!0,u=e.t0;case 30:e.prev=30,e.prev=31,s||null==p.return||p.return();case 33:if(e.prev=33,!c){e.next=36;break}throw u;case 36:return e.finish(33);case 37:return e.finish(30);case 38:e.next=46;break;case 40:ie.debug("get missing events",n),n.remove.length>0&&this.handleRemoveTracks({tracks:n.remove}),n.leave.length>0&&n.leave.forEach(this.handlePlayerOut.bind(this)),n.join.length>0&&n.join.forEach(this.handlePlayerIn.bind(this)),n.add.length>0&&this.handleAddTracks({tracks:n.add}),n.mute.length>0&&this.handleMute({tracks:n.mute});case 46:this.connectionTransport?(this.connectionTransport.extendedRtpCapabilities=t.rtpcaps,!this.connectionTransport.sendHandler.isPcReady||this.connectionTransport.sendHandler._isRestartingICE?this.connectionTransport.reconnectProducer():0!==(l=this.connectionTransport.publishTracks.filter(function(e){return e.connectStatus===he.Connecting}).map(function(e){return e.track})).length&&this._publish(l,!0),!this.connectionTransport.recvHandler.isPcReady||this.connectionTransport.recvHandler._isRestartingICE?this.connectionTransport.resetRecvHandler():0!==(h=this.subscribeTracks.filter(function(e){return e.connectStatus===he.Connecting}).map(function(e){return e.trackId})).length&&this._subscribe(h,!0)):this.connectionTransport=this.createConnectionTransport(t.rtpcaps);case 47:case"end":return e.stop()}},e,this,[[21,26,30,38],[31,,33,37]])}));return function(t){return e.apply(this,arguments)}}()},{key:"createConnectionTransport",value:function(e){var t=this,r=this.signaling,n=new Dt(e,r);return n.on("@needpubpc",function(e,t,n,i){r.request("pubpc",{sdp:e,tracks:t.map(Je)}).then(function(e){switch(e.code){case 0:return void n(e);case 10052:throw G();default:throw function(e){return new M(11006,"publish faild, can not create p2p connection, ".concat(e))}(e.error)}}).catch(i)}),n.on("@needsubpc",function(e,t,n){r.request("subpc",{tracks:e.map(function(e){return{trackid:e}})}).then(function(e){switch(e.code){case 0:return void t(e);case 10052:throw G();default:throw function(e){return new M(11005,"subscribe faild, can not create p2p connection, ".concat(e))}(e.error)}}).catch(n)}).on("@needresub",function(){var e=t.subscribeTracks.map(function(e){return e.trackId});t.subscribeTracks.forEach(function(e){return e.connectStatus=he.Connecting}),t._subscribe(e,!0)}).on("@needrepub",function(e){t._publish(e.map(function(e){return e.track}),!0)}),n}},{key:"cleanTrackIdsFromMergeJobs",value:function(e){for(var t in x()(this.defaultMergeJobTracks,function(t){return-1!==e.indexOf(t)}),this.mergeJobTracks)x()(t,function(t){return-1!==e.indexOf(t)})}},{key:"CreateMergerSessionController",value:function(){var e=this,t=new function e(){d()(this,e)},r=function(e){t.onAddTracks(e)},n=function(e){t.onRemoveTracks(e)};return this.on("track-add",r),this.on("track-remove",n),t.getCurrentTracks=function(){if(!e.connectionTransport)return[];var t=e._trackInfo.map(We),r=e.connectionTransport.publishTracks.map(function(e){return e.track.info});return t.concat(r)},t.addMergeTrack=function(t,r){e._addMergeTracks(t,r)},t.release=function(){e.off("track-add",r),e.off("track-remove",n)},t}},{key:"getAllMerger",value:function(){var e=[];for(var t in this.merger&&e.push(this.merger),this.mergeJobMerger)e.push(this.mergeJobMerger[t]);return e}},{key:"releaseRoom",value:function(){this.releaseSession(),this.signaling&&(this.signaling.release(),this.signaling=void 0),this.connectionTransport&&(this.connectionTransport.release(),this.connectionTransport=void 0),this.getAllMerger().map(function(e){e.release()}),this.defaultMergeJobTracks=[],this.mergeJobTracks={},this.merger=void 0,this.mergeJobMerger={},this.roomState=jt.Idle,this._trackInfo=[],this._users.clear(),this.userId=void 0,this.subscribeTracks.forEach(function(e){e.release()}),this.subscribeTracks=[]}},{key:"users",get:function(){return Array.from(this._users.values())}},{key:"trackInfoList",get:function(){return this._trackInfo.map(We)}},{key:"roomState",get:function(){return this._roomState},set:function(e){this._roomState!==e&&(this._roomState=e,ie.debug("roomState change",this._roomState),this.emit("room-state-change",this._roomState))}}]),t}(w.a),At=function(e){function t(){var e;return d()(this,t),(e=h()(this,v()(t).call(this))).subscribedUsers={},e.sessionMode="stream",e}return y()(t,e),f()(t,[{key:"publish",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!this.stream){e.next=3;break}return ie.warning("repeat publish, please unpublish first!"),e.abrupt("return");case 3:return t.userId=this.userId,this.stream=t,e.next=7,this._publish(t.trackList);case 7:return e.abrupt("return",e.sent);case 8:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"unpublish",value:function(){var e=c()(o.a.mark(function e(){var t;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.connectionTransport){e.next=2;break}return e.abrupt("return");case 2:return t=this.connectionTransport.publishTracks.map(function(e){return e.trackId}),e.next=5,this._unpublish(t);case 5:this.stream=void 0;case 6:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}()},{key:"setMergeStreamLayout",value:function(e,t){if(!(t.id?this.mergeJobTracks[t.id]:this.defaultMergeJobTracks))throw V(t.id);var r=st(this.users,"userId",e);if(r&&r.published){var n=t;!1===t.visible&&(n.hidden=!0);var a=n.id,o=!!n.hidden,s=!!n.muted;delete n.id,delete n.hidden,delete n.muted;var c=[],u=[],d=!0,p=!1,f=void 0;try{for(var l,h=r.publishedTrackInfo[Symbol.iterator]();!(d=(l=h.next()).done);d=!0){var m=l.value;"audio"===m.kind&&s?u.push(m.trackId):"audio"===m.kind&&c.push({trackId:m.trackId}),"video"===m.kind&&o?u.push(m.trackId):"video"===m.kind&&c.push(i()({},n,{trackId:m.trackId}))}}catch(e){p=!0,f=e}finally{try{d||null==h.return||h.return()}finally{if(p)throw f}}this._addMergeTracks(c,a),this._removeMergeTracks(u,a)}else ie.warning("can not setMergeOption, user ".concat(e," is published ?"))}},{key:"stopMergeStream",value:function(e){this._stopMerge(e)}},{key:"subscribe",value:function(){var e=c()(o.a.mark(function e(t){var r,n,i,a=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(t!==this.userId){e.next=2;break}throw N(10044,"can not subscribe yourself");case 2:if(0!==(r=this._trackInfo.filter(function(e){return e.playerid===t&&e.master})).length){e.next=5;break}throw N(10041,"subscribe user ".concat(t," is not published"));case 5:return n=r.map(function(e){return e.trackid}),e.next=8,this._subscribe(n);case 8:return i=e.sent,this.subscribedUsers[t]=new je(i,"recv",t),this.subscribedUsers[t].once("release",function(){delete a.subscribedUsers[t]}),e.abrupt("return",this.subscribedUsers[t]);case 12:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"unsubscribe",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(this.subscribedUsers[t]){e.next=3;break}return ie.warning("user",t,"is not in subscribedUsers"),e.abrupt("return");case 3:return e.next=5,this._unsubscribe(this.subscribedUsers[t].trackList.map(function(e){return e.info.trackId}));case 5:delete this.subscribedUsers[t];case 6:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"mute",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(this.stream){var r=[];this.stream._audioTrack&&this.stream._audioTrack.info.muted!==e&&r.push({trackId:this.stream._audioTrack.info.trackId,muted:e}),this.stream._videoTrack&&this.stream._videoTrack.info.muted!==t&&r.push({trackId:this.stream._videoTrack.info.trackId,muted:t}),this._muteTracks(r)}else ie.warning("can not mute, please run publish first")}},{key:"filterSignalTracks",value:function(e){var t=this;e.tracks&&(e.tracks=e.tracks.filter(function(e){if(void 0!==e.master&&null!==e.master)return e.master;var r=t._trackInfo.find(function(t){return t.trackid===e.trackid});return!!r&&r.master}))}},{key:"releaseSession",value:function(){for(var e in this.stream&&(this.stream.release(),this.stream=void 0),this.subscribedUsers)this.subscribedUsers[e].release();this.subscribedUsers={}}}]),t}(Lt),Nt=function(e){function t(){var e;return d()(this,t),(e=h()(this,v()(t).call(this))).sessionMode="track",e}return y()(t,e),f()(t,[{key:"publishedTracks",get:function(){return this.connectionTransport?this.connectionTransport.publishTracks.filter(function(e){return e.connectStatus===he.Connect}).map(function(e){return e.track}):[]}},{key:"subscribedTracks",get:function(){return this.subscribeTracks.filter(function(e){return e.connectStatus===he.Connect}).map(function(e){return e.track})}},{key:"mergeStreamTracks",get:function(){return this.defaultMergeJobTracks}},{key:"mergeStreamJobTracks",get:function(){return this.mergeJobTracks}}]),f()(t,[{key:"publish",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._publish(t);case 2:return e.abrupt("return",e.sent);case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"unpublish",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._unpublish(t);case 2:return e.abrupt("return",e.sent);case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"subscribe",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._subscribe(t);case 2:return e.abrupt("return",e.sent);case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"unsubscribe",value:function(){var e=c()(o.a.mark(function e(t){return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._unsubscribe(t);case 2:return e.abrupt("return",e.sent);case 3:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"muteTracks",value:function(e){this._muteTracks(e)}},{key:"addMergeStreamTracks",value:function(e,t){this._addMergeTracks(e,t)}},{key:"removeMergeStreamTracks",value:function(e,t){this._removeMergeTracks(e,t)}},{key:"stopMergeStream",value:function(e){this._stopMerge(e)}},{key:"filterSignalTracks",value:function(){}},{key:"releaseSession",value:function(){}}]),t}(Lt),Ft={audio:{enabled:!0},video:{enabled:!0,bitrate:600}},Ut=function(e){function t(){var e;return d()(this,t),(e=h()(this,v()(t).call(this))).deviceMap={},ne.support?(e.updateDeivceInfo(),ne.ondevicechange||window.setInterval(e.updateDeivceInfo.bind(P()(P()(e))),1e3),ne.ondevicechange&&(navigator.mediaDevices.ondevicechange=e.updateDeivceInfo.bind(P()(P()(e)))),e):h()(e)}return y()(t,e),f()(t,[{key:"getLocalTracks",value:function(){var e=c()(o.a.mark(function e(){var t,r,n,i,a,s,c,u,d,p,f,l,h,m,v,g,y,k,b,T,w=arguments;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(t=w.length>0&&void 0!==w[0]?w[0]:Ft,ie.debug("get local tracks",t),!ge(t)||!ve(t)){e.next=9;break}return r={screen:t.screen},n={video:t.video,audio:t.audio},e.next=7,Promise.all([this.getLocalTracks(r),this.getLocalTracks(n)]);case 7:return i=e.sent,e.abrupt("return",i[0].concat(i[1]));case 9:return e.next=11,qe(t);case 11:return a=e.sent,e.prev=12,e.next=15,this.getUserMedia(t,a,!0);case 15:s=e.sent,e.next=25;break;case 18:if(e.prev=18,e.t0=e.catch(12),"NotAllowedError"!==e.t0.name){e.next=24;break}throw W("");case 24:throw e.t0;case 25:c=void 0,u=void 0,d=void 0,p=void 0,me(t)&&(u=t.audio.bitrate,p=t.audio.tag),ge(t)&&(c=t.screen.bitrate,d=t.screen.tag),ve(t)&&(c=t.video.bitrate,d=t.video.tag),f=s?s.getTracks():[],l=[],h=!0,m=!1,v=void 0,e.prev=37,g=f[Symbol.iterator]();case 39:if(h=(y=g.next()).done){e.next=55;break}if(k=y.value,b=void 0,"audio"!==k.kind){e.next=48;break}return e.next=45,ze(k,p,u);case 45:b=e.sent,e.next=51;break;case 48:return e.next=50,ze(k,d,c);case 50:b=e.sent;case 51:l.push(b);case 52:h=!0,e.next=39;break;case 55:e.next=61;break;case 57:e.prev=57,e.t1=e.catch(37),m=!0,v=e.t1;case 61:e.prev=61,e.prev=62,h||null==g.return||g.return();case 64:if(e.prev=64,!m){e.next=67;break}throw v;case 67:return e.finish(64);case 68:return e.finish(61);case 69:if(!t.audio||!t.audio.buffer){e.next=76;break}return e.next=72,Ue();case 72:T=e.sent,u&&T.setKbps(u),T.setInfo({tag:t.audio.tag}),l.push(T);case 76:return e.abrupt("return",l);case 77:case"end":return e.stop()}},e,this,[[12,18],[37,57,61,69],[62,,64,68]])}));return function(){return e.apply(this,arguments)}}()},{key:"getLocalStream",value:function(){var e=c()(o.a.mark(function e(t){var r;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!(t&&ge(t)&&ve(t))){e.next=2;break}throw O("can not get local stream with video and screen");case 2:return e.next=4,this.getLocalTracks(t);case 4:return r=e.sent,e.abrupt("return",new je(r,"send"));case 6:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"getUserMedia",value:function(){var e=c()(o.a.mark(function e(t,r,n){var i;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(ie.debug("request to get user media",r),r.audio||r.video){e.next=3;break}return e.abrupt("return",null);case 3:if(!(Y&&ge(t)&&me(t))){e.next=9;break}return e.next=6,this.mergeChromeScreenAudioStream(r);case 6:i=e.sent,e.next=12;break;case 9:return e.next=11,navigator.mediaDevices.getUserMedia(r);case 11:i=e.sent;case 12:return e.abrupt("return",i);case 13:case"end":return e.stop()}},e,this)}));return function(t,r,n){return e.apply(this,arguments)}}()},{key:"mergeChromeScreenAudioStream",value:function(){var e=c()(o.a.mark(function e(t){var r,n;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(t.audio&&t.video&&!(!t.video).mandatory){e.next=4;break}return e.next=3,navigator.mediaDevices.getUserMedia(t);case 3:return e.abrupt("return",e.sent);case 4:return e.next=6,navigator.mediaDevices.getUserMedia({audio:t.audio});case 6:return r=e.sent,e.next=9,navigator.mediaDevices.getUserMedia({video:t.video});case 9:return(n=e.sent).addTrack(r.getAudioTracks()[0]),e.abrupt("return",n);case 12:case"end":return e.stop()}},e,this)}));return function(t){return e.apply(this,arguments)}}()},{key:"updateDeivceInfo",value:function(){var e=c()(o.a.mark(function e(){var t,r,n,i=this;return o.a.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,navigator.mediaDevices.enumerateDevices();case 2:this.deviceInfo=e.sent,t=this.deviceInfo.map(function(e){return e.deviceId}),r=Object.keys(this.deviceMap),n=!1,r.forEach(function(e){-1===t.indexOf(e)&&"@default"!==e?(i.emit("device-remove",i.deviceMap[e].device),delete i.deviceMap[e],n=!0):i.deviceMap[e].tick+=1}),t.forEach(function(e,t){-1===r.indexOf(e)&&"@default"!==e&&(i.deviceMap[e]={device:i.deviceInfo[t],tick:0},i.emit("device-add",i.deviceMap[e].device),n=!0)}),n&&this.emit("device-update",this.deviceInfo);case 9:case"end":return e.stop()}},e,this)}));return function(){return e.apply(this,arguments)}}()}]),t}(w.a),Gt=new Ut;r.d(t,"StreamModeSession",function(){return At}),r.d(t,"TrackModeSession",function(){return Nt}),r.d(t,"version",function(){return yt}),r.d(t,"REC_AUDIO_ENABLE",function(){return me}),r.d(t,"REC_VIDEO_ENABLE",function(){return ve}),r.d(t,"REC_SCREEN_ENABLE",function(){return ge}),r.d(t,"TrackConnectStatus",function(){return he}),r.d(t,"defaultMergeJob",function(){return ye}),r.d(t,"DeviceManager",function(){return Ut}),r.d(t,"deviceManager",function(){return Gt}),r.d(t,"createAudioTrackWithAudioBuffer",function(){return Ue}),r.d(t,"RoomState",function(){return jt}),r.d(t,"log",function(){return ie}),r.d(t,"User",function(){return Pe}),r.d(t,"Stream",function(){return je}),r.d(t,"Track",function(){return Oe}),r.d(t,"AudioTrack",function(){return Fe}),r.d(t,"browserReport",function(){return ne}),r.d(t,"decodeAudioData",function(){return Le}),r.d(t,"isChromeExtensionAvailable",function(){return we}),r.d(t,"createCustomTrack",function(){return ze})}])});
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.QNRTC = {}));
+}(this, function (exports) { 'use strict';
+
+  function detect() {
+    if (typeof navigator !== 'undefined') {
+      return parseUserAgent(navigator.userAgent);
+    }
+
+    return getNodeVersion();
+  }
+
+  function detectOS(userAgentString) {
+    var rules = getOperatingSystemRules();
+    var detected = rules.filter(function (os) {
+      return os.rule && os.rule.test(userAgentString);
+    })[0];
+    return detected ? detected.name : null;
+  }
+
+  function getNodeVersion() {
+    var isNode = typeof process !== 'undefined' && process.version;
+    return isNode && {
+      name: 'node',
+      version: process.version.slice(1),
+      os: process.platform
+    };
+  }
+
+  function parseUserAgent(userAgentString) {
+    var browsers = getBrowserRules();
+
+    if (!userAgentString) {
+      return null;
+    }
+
+    var detected = browsers.map(function (browser) {
+      var match = browser.rule.exec(userAgentString);
+      var version = match && match[1].split(/[._]/).slice(0, 3);
+
+      if (version && version.length < 3) {
+        version = version.concat(version.length == 1 ? [0, 0] : [0]);
+      }
+
+      return match && {
+        name: browser.name,
+        version: version.join('.')
+      };
+    }).filter(Boolean)[0] || null;
+
+    if (detected) {
+      detected.os = detectOS(userAgentString);
+    }
+
+    if (/alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/i.test(userAgentString)) {
+      detected = detected || {};
+      detected.bot = true;
+    }
+
+    return detected;
+  }
+
+  function getBrowserRules() {
+    return buildRules([['aol', /AOLShield\/([0-9\._]+)/], ['edge', /Edge\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['samsung', /SamsungBrowser\/([0-9\.]+)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)$/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/], ['facebook', /FBAV\/([0-9\.]+)/], ['instagram', /Instagram\s([0-9\.]+)/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/]]);
+  }
+
+  function getOperatingSystemRules() {
+    return buildRules([['iOS', /iP(hone|od|ad)/], ['Android OS', /Android/], ['BlackBerry OS', /BlackBerry|BB10/], ['Windows Mobile', /IEMobile/], ['Amazon OS', /Kindle/], ['Windows 3.11', /Win16/], ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/], ['Windows 98', /(Windows 98)|(Win98)/], ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/], ['Windows XP', /(Windows NT 5.1)|(Windows XP)/], ['Windows Server 2003', /(Windows NT 5.2)/], ['Windows Vista', /(Windows NT 6.0)/], ['Windows 7', /(Windows NT 6.1)/], ['Windows 8', /(Windows NT 6.2)/], ['Windows 8.1', /(Windows NT 6.3)/], ['Windows 10', /(Windows NT 10.0)/], ['Windows ME', /Windows ME/], ['Open BSD', /OpenBSD/], ['Sun OS', /SunOS/], ['Linux', /(Linux)|(X11)/], ['Mac OS', /(Mac_PowerPC)|(Macintosh)/], ['QNX', /QNX/], ['BeOS', /BeOS/], ['OS/2', /OS\/2/], ['Search Bot', /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/]]);
+  }
+
+  function buildRules(ruleTuples) {
+    return ruleTuples.map(function (tuple) {
+      return {
+        name: tuple[0],
+        rule: tuple[1]
+      };
+    });
+  }
+
+  var detectBrowser = {
+    detect: detect,
+    detectOS: detectOS,
+    getNodeVersion: getNodeVersion,
+    parseUserAgent: parseUserAgent
+  };
+  var detectBrowser_1 = detectBrowser.detect;
+
+  var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+  function commonjsRequire () {
+  	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
+  }
+
+  function unwrapExports (x) {
+  	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+  }
+
+  function createCommonjsModule(fn, module) {
+  	return module = { exports: {} }, fn(module, module.exports), module.exports;
+  }
+
+  var semver = createCommonjsModule(function (module, exports) {
+    exports = module.exports = SemVer; // The debug function is excluded entirely from the minified version.
+
+    /* nomin */
+
+    var debug;
+    /* nomin */
+
+    if (typeof process === 'object' &&
+    /* nomin */
+    process.env &&
+    /* nomin */
+    process.env.NODE_DEBUG &&
+    /* nomin */
+    /\bsemver\b/i.test(process.env.NODE_DEBUG))
+      /* nomin */
+      debug = function () {
+        /* nomin */
+        var args = Array.prototype.slice.call(arguments, 0);
+        /* nomin */
+
+        args.unshift('SEMVER');
+        /* nomin */
+
+        console.log.apply(console, args);
+        /* nomin */
+      };
+      /* nomin */
+    else
+      /* nomin */
+      debug = function () {}; // Note: this is the semver.org version of the spec that it implements
+    // Not necessarily the package version of this code.
+
+    exports.SEMVER_SPEC_VERSION = '2.0.0';
+    var MAX_LENGTH = 256;
+    var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER || 9007199254740991; // Max safe segment length for coercion.
+
+    var MAX_SAFE_COMPONENT_LENGTH = 16; // The actual regexps go on exports.re
+
+    var re = exports.re = [];
+    var src = exports.src = [];
+    var R = 0; // The following Regular Expressions can be used for tokenizing,
+    // validating, and parsing SemVer version strings.
+    // ## Numeric Identifier
+    // A single `0`, or a non-zero digit followed by zero or more digits.
+
+    var NUMERICIDENTIFIER = R++;
+    src[NUMERICIDENTIFIER] = '0|[1-9]\\d*';
+    var NUMERICIDENTIFIERLOOSE = R++;
+    src[NUMERICIDENTIFIERLOOSE] = '[0-9]+'; // ## Non-numeric Identifier
+    // Zero or more digits, followed by a letter or hyphen, and then zero or
+    // more letters, digits, or hyphens.
+
+    var NONNUMERICIDENTIFIER = R++;
+    src[NONNUMERICIDENTIFIER] = '\\d*[a-zA-Z-][a-zA-Z0-9-]*'; // ## Main Version
+    // Three dot-separated numeric identifiers.
+
+    var MAINVERSION = R++;
+    src[MAINVERSION] = '(' + src[NUMERICIDENTIFIER] + ')\\.' + '(' + src[NUMERICIDENTIFIER] + ')\\.' + '(' + src[NUMERICIDENTIFIER] + ')';
+    var MAINVERSIONLOOSE = R++;
+    src[MAINVERSIONLOOSE] = '(' + src[NUMERICIDENTIFIERLOOSE] + ')\\.' + '(' + src[NUMERICIDENTIFIERLOOSE] + ')\\.' + '(' + src[NUMERICIDENTIFIERLOOSE] + ')'; // ## Pre-release Version Identifier
+    // A numeric identifier, or a non-numeric identifier.
+
+    var PRERELEASEIDENTIFIER = R++;
+    src[PRERELEASEIDENTIFIER] = '(?:' + src[NUMERICIDENTIFIER] + '|' + src[NONNUMERICIDENTIFIER] + ')';
+    var PRERELEASEIDENTIFIERLOOSE = R++;
+    src[PRERELEASEIDENTIFIERLOOSE] = '(?:' + src[NUMERICIDENTIFIERLOOSE] + '|' + src[NONNUMERICIDENTIFIER] + ')'; // ## Pre-release Version
+    // Hyphen, followed by one or more dot-separated pre-release version
+    // identifiers.
+
+    var PRERELEASE = R++;
+    src[PRERELEASE] = '(?:-(' + src[PRERELEASEIDENTIFIER] + '(?:\\.' + src[PRERELEASEIDENTIFIER] + ')*))';
+    var PRERELEASELOOSE = R++;
+    src[PRERELEASELOOSE] = '(?:-?(' + src[PRERELEASEIDENTIFIERLOOSE] + '(?:\\.' + src[PRERELEASEIDENTIFIERLOOSE] + ')*))'; // ## Build Metadata Identifier
+    // Any combination of digits, letters, or hyphens.
+
+    var BUILDIDENTIFIER = R++;
+    src[BUILDIDENTIFIER] = '[0-9A-Za-z-]+'; // ## Build Metadata
+    // Plus sign, followed by one or more period-separated build metadata
+    // identifiers.
+
+    var BUILD = R++;
+    src[BUILD] = '(?:\\+(' + src[BUILDIDENTIFIER] + '(?:\\.' + src[BUILDIDENTIFIER] + ')*))'; // ## Full Version String
+    // A main version, followed optionally by a pre-release version and
+    // build metadata.
+    // Note that the only major, minor, patch, and pre-release sections of
+    // the version string are capturing groups.  The build metadata is not a
+    // capturing group, because it should not ever be used in version
+    // comparison.
+
+    var FULL = R++;
+    var FULLPLAIN = 'v?' + src[MAINVERSION] + src[PRERELEASE] + '?' + src[BUILD] + '?';
+    src[FULL] = '^' + FULLPLAIN + '$'; // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
+    // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
+    // common in the npm registry.
+
+    var LOOSEPLAIN = '[v=\\s]*' + src[MAINVERSIONLOOSE] + src[PRERELEASELOOSE] + '?' + src[BUILD] + '?';
+    var LOOSE = R++;
+    src[LOOSE] = '^' + LOOSEPLAIN + '$';
+    var GTLT = R++;
+    src[GTLT] = '((?:<|>)?=?)'; // Something like "2.*" or "1.2.x".
+    // Note that "x.x" is a valid xRange identifer, meaning "any version"
+    // Only the first item is strictly required.
+
+    var XRANGEIDENTIFIERLOOSE = R++;
+    src[XRANGEIDENTIFIERLOOSE] = src[NUMERICIDENTIFIERLOOSE] + '|x|X|\\*';
+    var XRANGEIDENTIFIER = R++;
+    src[XRANGEIDENTIFIER] = src[NUMERICIDENTIFIER] + '|x|X|\\*';
+    var XRANGEPLAIN = R++;
+    src[XRANGEPLAIN] = '[v=\\s]*(' + src[XRANGEIDENTIFIER] + ')' + '(?:\\.(' + src[XRANGEIDENTIFIER] + ')' + '(?:\\.(' + src[XRANGEIDENTIFIER] + ')' + '(?:' + src[PRERELEASE] + ')?' + src[BUILD] + '?' + ')?)?';
+    var XRANGEPLAINLOOSE = R++;
+    src[XRANGEPLAINLOOSE] = '[v=\\s]*(' + src[XRANGEIDENTIFIERLOOSE] + ')' + '(?:\\.(' + src[XRANGEIDENTIFIERLOOSE] + ')' + '(?:\\.(' + src[XRANGEIDENTIFIERLOOSE] + ')' + '(?:' + src[PRERELEASELOOSE] + ')?' + src[BUILD] + '?' + ')?)?';
+    var XRANGE = R++;
+    src[XRANGE] = '^' + src[GTLT] + '\\s*' + src[XRANGEPLAIN] + '$';
+    var XRANGELOOSE = R++;
+    src[XRANGELOOSE] = '^' + src[GTLT] + '\\s*' + src[XRANGEPLAINLOOSE] + '$'; // Coercion.
+    // Extract anything that could conceivably be a part of a valid semver
+
+    var COERCE = R++;
+    src[COERCE] = '(?:^|[^\\d])' + '(\\d{1,' + MAX_SAFE_COMPONENT_LENGTH + '})' + '(?:\\.(\\d{1,' + MAX_SAFE_COMPONENT_LENGTH + '}))?' + '(?:\\.(\\d{1,' + MAX_SAFE_COMPONENT_LENGTH + '}))?' + '(?:$|[^\\d])'; // Tilde ranges.
+    // Meaning is "reasonably at or greater than"
+
+    var LONETILDE = R++;
+    src[LONETILDE] = '(?:~>?)';
+    var TILDETRIM = R++;
+    src[TILDETRIM] = '(\\s*)' + src[LONETILDE] + '\\s+';
+    re[TILDETRIM] = new RegExp(src[TILDETRIM], 'g');
+    var tildeTrimReplace = '$1~';
+    var TILDE = R++;
+    src[TILDE] = '^' + src[LONETILDE] + src[XRANGEPLAIN] + '$';
+    var TILDELOOSE = R++;
+    src[TILDELOOSE] = '^' + src[LONETILDE] + src[XRANGEPLAINLOOSE] + '$'; // Caret ranges.
+    // Meaning is "at least and backwards compatible with"
+
+    var LONECARET = R++;
+    src[LONECARET] = '(?:\\^)';
+    var CARETTRIM = R++;
+    src[CARETTRIM] = '(\\s*)' + src[LONECARET] + '\\s+';
+    re[CARETTRIM] = new RegExp(src[CARETTRIM], 'g');
+    var caretTrimReplace = '$1^';
+    var CARET = R++;
+    src[CARET] = '^' + src[LONECARET] + src[XRANGEPLAIN] + '$';
+    var CARETLOOSE = R++;
+    src[CARETLOOSE] = '^' + src[LONECARET] + src[XRANGEPLAINLOOSE] + '$'; // A simple gt/lt/eq thing, or just "" to indicate "any version"
+
+    var COMPARATORLOOSE = R++;
+    src[COMPARATORLOOSE] = '^' + src[GTLT] + '\\s*(' + LOOSEPLAIN + ')$|^$';
+    var COMPARATOR = R++;
+    src[COMPARATOR] = '^' + src[GTLT] + '\\s*(' + FULLPLAIN + ')$|^$'; // An expression to strip any whitespace between the gtlt and the thing
+    // it modifies, so that `> 1.2.3` ==> `>1.2.3`
+
+    var COMPARATORTRIM = R++;
+    src[COMPARATORTRIM] = '(\\s*)' + src[GTLT] + '\\s*(' + LOOSEPLAIN + '|' + src[XRANGEPLAIN] + ')'; // this one has to use the /g flag
+
+    re[COMPARATORTRIM] = new RegExp(src[COMPARATORTRIM], 'g');
+    var comparatorTrimReplace = '$1$2$3'; // Something like `1.2.3 - 1.2.4`
+    // Note that these all use the loose form, because they'll be
+    // checked against either the strict or loose comparator form
+    // later.
+
+    var HYPHENRANGE = R++;
+    src[HYPHENRANGE] = '^\\s*(' + src[XRANGEPLAIN] + ')' + '\\s+-\\s+' + '(' + src[XRANGEPLAIN] + ')' + '\\s*$';
+    var HYPHENRANGELOOSE = R++;
+    src[HYPHENRANGELOOSE] = '^\\s*(' + src[XRANGEPLAINLOOSE] + ')' + '\\s+-\\s+' + '(' + src[XRANGEPLAINLOOSE] + ')' + '\\s*$'; // Star ranges basically just allow anything at all.
+
+    var STAR = R++;
+    src[STAR] = '(<|>)?=?\\s*\\*'; // Compile to actual regexp objects.
+    // All are flag-free, unless they were created above with a flag.
+
+    for (var i = 0; i < R; i++) {
+      debug(i, src[i]);
+      if (!re[i]) re[i] = new RegExp(src[i]);
+    }
+
+    exports.parse = parse;
+
+    function parse(version, options) {
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+      if (version instanceof SemVer) return version;
+      if (typeof version !== 'string') return null;
+      if (version.length > MAX_LENGTH) return null;
+      var r = options.loose ? re[LOOSE] : re[FULL];
+      if (!r.test(version)) return null;
+
+      try {
+        return new SemVer(version, options);
+      } catch (er) {
+        return null;
+      }
+    }
+
+    exports.valid = valid;
+
+    function valid(version, options) {
+      var v = parse(version, options);
+      return v ? v.version : null;
+    }
+
+    exports.clean = clean;
+
+    function clean(version, options) {
+      var s = parse(version.trim().replace(/^[=v]+/, ''), options);
+      return s ? s.version : null;
+    }
+
+    exports.SemVer = SemVer;
+
+    function SemVer(version, options) {
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+
+      if (version instanceof SemVer) {
+        if (version.loose === options.loose) return version;else version = version.version;
+      } else if (typeof version !== 'string') {
+        throw new TypeError('Invalid Version: ' + version);
+      }
+
+      if (version.length > MAX_LENGTH) throw new TypeError('version is longer than ' + MAX_LENGTH + ' characters');
+      if (!(this instanceof SemVer)) return new SemVer(version, options);
+      debug('SemVer', version, options);
+      this.options = options;
+      this.loose = !!options.loose;
+      var m = version.trim().match(options.loose ? re[LOOSE] : re[FULL]);
+      if (!m) throw new TypeError('Invalid Version: ' + version);
+      this.raw = version; // these are actually numbers
+
+      this.major = +m[1];
+      this.minor = +m[2];
+      this.patch = +m[3];
+      if (this.major > MAX_SAFE_INTEGER || this.major < 0) throw new TypeError('Invalid major version');
+      if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) throw new TypeError('Invalid minor version');
+      if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) throw new TypeError('Invalid patch version'); // numberify any prerelease numeric ids
+
+      if (!m[4]) this.prerelease = [];else this.prerelease = m[4].split('.').map(function (id) {
+        if (/^[0-9]+$/.test(id)) {
+          var num = +id;
+          if (num >= 0 && num < MAX_SAFE_INTEGER) return num;
+        }
+
+        return id;
+      });
+      this.build = m[5] ? m[5].split('.') : [];
+      this.format();
+    }
+
+    SemVer.prototype.format = function () {
+      this.version = this.major + '.' + this.minor + '.' + this.patch;
+      if (this.prerelease.length) this.version += '-' + this.prerelease.join('.');
+      return this.version;
+    };
+
+    SemVer.prototype.toString = function () {
+      return this.version;
+    };
+
+    SemVer.prototype.compare = function (other) {
+      debug('SemVer.compare', this.version, this.options, other);
+      if (!(other instanceof SemVer)) other = new SemVer(other, this.options);
+      return this.compareMain(other) || this.comparePre(other);
+    };
+
+    SemVer.prototype.compareMain = function (other) {
+      if (!(other instanceof SemVer)) other = new SemVer(other, this.options);
+      return compareIdentifiers(this.major, other.major) || compareIdentifiers(this.minor, other.minor) || compareIdentifiers(this.patch, other.patch);
+    };
+
+    SemVer.prototype.comparePre = function (other) {
+      if (!(other instanceof SemVer)) other = new SemVer(other, this.options); // NOT having a prerelease is > having one
+
+      if (this.prerelease.length && !other.prerelease.length) return -1;else if (!this.prerelease.length && other.prerelease.length) return 1;else if (!this.prerelease.length && !other.prerelease.length) return 0;
+      var i = 0;
+
+      do {
+        var a = this.prerelease[i];
+        var b = other.prerelease[i];
+        debug('prerelease compare', i, a, b);
+        if (a === undefined && b === undefined) return 0;else if (b === undefined) return 1;else if (a === undefined) return -1;else if (a === b) continue;else return compareIdentifiers(a, b);
+      } while (++i);
+    }; // preminor will bump the version up to the next minor release, and immediately
+    // down to pre-release. premajor and prepatch work the same way.
+
+
+    SemVer.prototype.inc = function (release, identifier) {
+      switch (release) {
+        case 'premajor':
+          this.prerelease.length = 0;
+          this.patch = 0;
+          this.minor = 0;
+          this.major++;
+          this.inc('pre', identifier);
+          break;
+
+        case 'preminor':
+          this.prerelease.length = 0;
+          this.patch = 0;
+          this.minor++;
+          this.inc('pre', identifier);
+          break;
+
+        case 'prepatch':
+          // If this is already a prerelease, it will bump to the next version
+          // drop any prereleases that might already exist, since they are not
+          // relevant at this point.
+          this.prerelease.length = 0;
+          this.inc('patch', identifier);
+          this.inc('pre', identifier);
+          break;
+        // If the input is a non-prerelease version, this acts the same as
+        // prepatch.
+
+        case 'prerelease':
+          if (this.prerelease.length === 0) this.inc('patch', identifier);
+          this.inc('pre', identifier);
+          break;
+
+        case 'major':
+          // If this is a pre-major version, bump up to the same major version.
+          // Otherwise increment major.
+          // 1.0.0-5 bumps to 1.0.0
+          // 1.1.0 bumps to 2.0.0
+          if (this.minor !== 0 || this.patch !== 0 || this.prerelease.length === 0) this.major++;
+          this.minor = 0;
+          this.patch = 0;
+          this.prerelease = [];
+          break;
+
+        case 'minor':
+          // If this is a pre-minor version, bump up to the same minor version.
+          // Otherwise increment minor.
+          // 1.2.0-5 bumps to 1.2.0
+          // 1.2.1 bumps to 1.3.0
+          if (this.patch !== 0 || this.prerelease.length === 0) this.minor++;
+          this.patch = 0;
+          this.prerelease = [];
+          break;
+
+        case 'patch':
+          // If this is not a pre-release version, it will increment the patch.
+          // If it is a pre-release it will bump up to the same patch version.
+          // 1.2.0-5 patches to 1.2.0
+          // 1.2.0 patches to 1.2.1
+          if (this.prerelease.length === 0) this.patch++;
+          this.prerelease = [];
+          break;
+        // This probably shouldn't be used publicly.
+        // 1.0.0 "pre" would become 1.0.0-0 which is the wrong direction.
+
+        case 'pre':
+          if (this.prerelease.length === 0) this.prerelease = [0];else {
+            var i = this.prerelease.length;
+
+            while (--i >= 0) {
+              if (typeof this.prerelease[i] === 'number') {
+                this.prerelease[i]++;
+                i = -2;
+              }
+            }
+
+            if (i === -1) // didn't increment anything
+              this.prerelease.push(0);
+          }
+
+          if (identifier) {
+            // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
+            // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
+            if (this.prerelease[0] === identifier) {
+              if (isNaN(this.prerelease[1])) this.prerelease = [identifier, 0];
+            } else this.prerelease = [identifier, 0];
+          }
+
+          break;
+
+        default:
+          throw new Error('invalid increment argument: ' + release);
+      }
+
+      this.format();
+      this.raw = this.version;
+      return this;
+    };
+
+    exports.inc = inc;
+
+    function inc(version, release, loose, identifier) {
+      if (typeof loose === 'string') {
+        identifier = loose;
+        loose = undefined;
+      }
+
+      try {
+        return new SemVer(version, loose).inc(release, identifier).version;
+      } catch (er) {
+        return null;
+      }
+    }
+
+    exports.diff = diff;
+
+    function diff(version1, version2) {
+      if (eq(version1, version2)) {
+        return null;
+      } else {
+        var v1 = parse(version1);
+        var v2 = parse(version2);
+
+        if (v1.prerelease.length || v2.prerelease.length) {
+          for (var key in v1) {
+            if (key === 'major' || key === 'minor' || key === 'patch') {
+              if (v1[key] !== v2[key]) {
+                return 'pre' + key;
+              }
+            }
+          }
+
+          return 'prerelease';
+        }
+
+        for (var key in v1) {
+          if (key === 'major' || key === 'minor' || key === 'patch') {
+            if (v1[key] !== v2[key]) {
+              return key;
+            }
+          }
+        }
+      }
+    }
+
+    exports.compareIdentifiers = compareIdentifiers;
+    var numeric = /^[0-9]+$/;
+
+    function compareIdentifiers(a, b) {
+      var anum = numeric.test(a);
+      var bnum = numeric.test(b);
+
+      if (anum && bnum) {
+        a = +a;
+        b = +b;
+      }
+
+      return anum && !bnum ? -1 : bnum && !anum ? 1 : a < b ? -1 : a > b ? 1 : 0;
+    }
+
+    exports.rcompareIdentifiers = rcompareIdentifiers;
+
+    function rcompareIdentifiers(a, b) {
+      return compareIdentifiers(b, a);
+    }
+
+    exports.major = major;
+
+    function major(a, loose) {
+      return new SemVer(a, loose).major;
+    }
+
+    exports.minor = minor;
+
+    function minor(a, loose) {
+      return new SemVer(a, loose).minor;
+    }
+
+    exports.patch = patch;
+
+    function patch(a, loose) {
+      return new SemVer(a, loose).patch;
+    }
+
+    exports.compare = compare;
+
+    function compare(a, b, loose) {
+      return new SemVer(a, loose).compare(new SemVer(b, loose));
+    }
+
+    exports.compareLoose = compareLoose;
+
+    function compareLoose(a, b) {
+      return compare(a, b, true);
+    }
+
+    exports.rcompare = rcompare;
+
+    function rcompare(a, b, loose) {
+      return compare(b, a, loose);
+    }
+
+    exports.sort = sort;
+
+    function sort(list, loose) {
+      return list.sort(function (a, b) {
+        return exports.compare(a, b, loose);
+      });
+    }
+
+    exports.rsort = rsort;
+
+    function rsort(list, loose) {
+      return list.sort(function (a, b) {
+        return exports.rcompare(a, b, loose);
+      });
+    }
+
+    exports.gt = gt;
+
+    function gt(a, b, loose) {
+      return compare(a, b, loose) > 0;
+    }
+
+    exports.lt = lt;
+
+    function lt(a, b, loose) {
+      return compare(a, b, loose) < 0;
+    }
+
+    exports.eq = eq;
+
+    function eq(a, b, loose) {
+      return compare(a, b, loose) === 0;
+    }
+
+    exports.neq = neq;
+
+    function neq(a, b, loose) {
+      return compare(a, b, loose) !== 0;
+    }
+
+    exports.gte = gte;
+
+    function gte(a, b, loose) {
+      return compare(a, b, loose) >= 0;
+    }
+
+    exports.lte = lte;
+
+    function lte(a, b, loose) {
+      return compare(a, b, loose) <= 0;
+    }
+
+    exports.cmp = cmp;
+
+    function cmp(a, op, b, loose) {
+      var ret;
+
+      switch (op) {
+        case '===':
+          if (typeof a === 'object') a = a.version;
+          if (typeof b === 'object') b = b.version;
+          ret = a === b;
+          break;
+
+        case '!==':
+          if (typeof a === 'object') a = a.version;
+          if (typeof b === 'object') b = b.version;
+          ret = a !== b;
+          break;
+
+        case '':
+        case '=':
+        case '==':
+          ret = eq(a, b, loose);
+          break;
+
+        case '!=':
+          ret = neq(a, b, loose);
+          break;
+
+        case '>':
+          ret = gt(a, b, loose);
+          break;
+
+        case '>=':
+          ret = gte(a, b, loose);
+          break;
+
+        case '<':
+          ret = lt(a, b, loose);
+          break;
+
+        case '<=':
+          ret = lte(a, b, loose);
+          break;
+
+        default:
+          throw new TypeError('Invalid operator: ' + op);
+      }
+
+      return ret;
+    }
+
+    exports.Comparator = Comparator;
+
+    function Comparator(comp, options) {
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+
+      if (comp instanceof Comparator) {
+        if (comp.loose === !!options.loose) return comp;else comp = comp.value;
+      }
+
+      if (!(this instanceof Comparator)) return new Comparator(comp, options);
+      debug('comparator', comp, options);
+      this.options = options;
+      this.loose = !!options.loose;
+      this.parse(comp);
+      if (this.semver === ANY) this.value = '';else this.value = this.operator + this.semver.version;
+      debug('comp', this);
+    }
+
+    var ANY = {};
+
+    Comparator.prototype.parse = function (comp) {
+      var r = this.options.loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
+      var m = comp.match(r);
+      if (!m) throw new TypeError('Invalid comparator: ' + comp);
+      this.operator = m[1];
+      if (this.operator === '=') this.operator = ''; // if it literally is just '>' or '' then allow anything.
+
+      if (!m[2]) this.semver = ANY;else this.semver = new SemVer(m[2], this.options.loose);
+    };
+
+    Comparator.prototype.toString = function () {
+      return this.value;
+    };
+
+    Comparator.prototype.test = function (version) {
+      debug('Comparator.test', version, this.options.loose);
+      if (this.semver === ANY) return true;
+      if (typeof version === 'string') version = new SemVer(version, this.options);
+      return cmp(version, this.operator, this.semver, this.options);
+    };
+
+    Comparator.prototype.intersects = function (comp, options) {
+      if (!(comp instanceof Comparator)) {
+        throw new TypeError('a Comparator is required');
+      }
+
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+      var rangeTmp;
+
+      if (this.operator === '') {
+        rangeTmp = new Range(comp.value, options);
+        return satisfies(this.value, rangeTmp, options);
+      } else if (comp.operator === '') {
+        rangeTmp = new Range(this.value, options);
+        return satisfies(comp.semver, rangeTmp, options);
+      }
+
+      var sameDirectionIncreasing = (this.operator === '>=' || this.operator === '>') && (comp.operator === '>=' || comp.operator === '>');
+      var sameDirectionDecreasing = (this.operator === '<=' || this.operator === '<') && (comp.operator === '<=' || comp.operator === '<');
+      var sameSemVer = this.semver.version === comp.semver.version;
+      var differentDirectionsInclusive = (this.operator === '>=' || this.operator === '<=') && (comp.operator === '>=' || comp.operator === '<=');
+      var oppositeDirectionsLessThan = cmp(this.semver, '<', comp.semver, options) && (this.operator === '>=' || this.operator === '>') && (comp.operator === '<=' || comp.operator === '<');
+      var oppositeDirectionsGreaterThan = cmp(this.semver, '>', comp.semver, options) && (this.operator === '<=' || this.operator === '<') && (comp.operator === '>=' || comp.operator === '>');
+      return sameDirectionIncreasing || sameDirectionDecreasing || sameSemVer && differentDirectionsInclusive || oppositeDirectionsLessThan || oppositeDirectionsGreaterThan;
+    };
+
+    exports.Range = Range;
+
+    function Range(range, options) {
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+
+      if (range instanceof Range) {
+        if (range.loose === !!options.loose && range.includePrerelease === !!options.includePrerelease) {
+          return range;
+        } else {
+          return new Range(range.raw, options);
+        }
+      }
+
+      if (range instanceof Comparator) {
+        return new Range(range.value, options);
+      }
+
+      if (!(this instanceof Range)) return new Range(range, options);
+      this.options = options;
+      this.loose = !!options.loose;
+      this.includePrerelease = !!options.includePrerelease; // First, split based on boolean or ||
+
+      this.raw = range;
+      this.set = range.split(/\s*\|\|\s*/).map(function (range) {
+        return this.parseRange(range.trim());
+      }, this).filter(function (c) {
+        // throw out any that are not relevant for whatever reason
+        return c.length;
+      });
+
+      if (!this.set.length) {
+        throw new TypeError('Invalid SemVer Range: ' + range);
+      }
+
+      this.format();
+    }
+
+    Range.prototype.format = function () {
+      this.range = this.set.map(function (comps) {
+        return comps.join(' ').trim();
+      }).join('||').trim();
+      return this.range;
+    };
+
+    Range.prototype.toString = function () {
+      return this.range;
+    };
+
+    Range.prototype.parseRange = function (range) {
+      var loose = this.options.loose;
+      range = range.trim(); // `1.2.3 - 1.2.4` => `>=1.2.3 <=1.2.4`
+
+      var hr = loose ? re[HYPHENRANGELOOSE] : re[HYPHENRANGE];
+      range = range.replace(hr, hyphenReplace);
+      debug('hyphen replace', range); // `> 1.2.3 < 1.2.5` => `>1.2.3 <1.2.5`
+
+      range = range.replace(re[COMPARATORTRIM], comparatorTrimReplace);
+      debug('comparator trim', range, re[COMPARATORTRIM]); // `~ 1.2.3` => `~1.2.3`
+
+      range = range.replace(re[TILDETRIM], tildeTrimReplace); // `^ 1.2.3` => `^1.2.3`
+
+      range = range.replace(re[CARETTRIM], caretTrimReplace); // normalize spaces
+
+      range = range.split(/\s+/).join(' '); // At this point, the range is completely trimmed and
+      // ready to be split into comparators.
+
+      var compRe = loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
+      var set = range.split(' ').map(function (comp) {
+        return parseComparator(comp, this.options);
+      }, this).join(' ').split(/\s+/);
+
+      if (this.options.loose) {
+        // in loose mode, throw out any that are not valid comparators
+        set = set.filter(function (comp) {
+          return !!comp.match(compRe);
+        });
+      }
+
+      set = set.map(function (comp) {
+        return new Comparator(comp, this.options);
+      }, this);
+      return set;
+    };
+
+    Range.prototype.intersects = function (range, options) {
+      if (!(range instanceof Range)) {
+        throw new TypeError('a Range is required');
+      }
+
+      return this.set.some(function (thisComparators) {
+        return thisComparators.every(function (thisComparator) {
+          return range.set.some(function (rangeComparators) {
+            return rangeComparators.every(function (rangeComparator) {
+              return thisComparator.intersects(rangeComparator, options);
+            });
+          });
+        });
+      });
+    }; // Mostly just for testing and legacy API reasons
+
+
+    exports.toComparators = toComparators;
+
+    function toComparators(range, options) {
+      return new Range(range, options).set.map(function (comp) {
+        return comp.map(function (c) {
+          return c.value;
+        }).join(' ').trim().split(' ');
+      });
+    } // comprised of xranges, tildes, stars, and gtlt's at this point.
+    // already replaced the hyphen ranges
+    // turn into a set of JUST comparators.
+
+
+    function parseComparator(comp, options) {
+      debug('comp', comp, options);
+      comp = replaceCarets(comp, options);
+      debug('caret', comp);
+      comp = replaceTildes(comp, options);
+      debug('tildes', comp);
+      comp = replaceXRanges(comp, options);
+      debug('xrange', comp);
+      comp = replaceStars(comp, options);
+      debug('stars', comp);
+      return comp;
+    }
+
+    function isX(id) {
+      return !id || id.toLowerCase() === 'x' || id === '*';
+    } // ~, ~> --> * (any, kinda silly)
+    // ~2, ~2.x, ~2.x.x, ~>2, ~>2.x ~>2.x.x --> >=2.0.0 <3.0.0
+    // ~2.0, ~2.0.x, ~>2.0, ~>2.0.x --> >=2.0.0 <2.1.0
+    // ~1.2, ~1.2.x, ~>1.2, ~>1.2.x --> >=1.2.0 <1.3.0
+    // ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0
+    // ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0
+
+
+    function replaceTildes(comp, options) {
+      return comp.trim().split(/\s+/).map(function (comp) {
+        return replaceTilde(comp, options);
+      }).join(' ');
+    }
+
+    function replaceTilde(comp, options) {
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+      var r = options.loose ? re[TILDELOOSE] : re[TILDE];
+      return comp.replace(r, function (_, M, m, p, pr) {
+        debug('tilde', comp, _, M, m, p, pr);
+        var ret;
+        if (isX(M)) ret = '';else if (isX(m)) ret = '>=' + M + '.0.0 <' + (+M + 1) + '.0.0';else if (isX(p)) // ~1.2 == >=1.2.0 <1.3.0
+          ret = '>=' + M + '.' + m + '.0 <' + M + '.' + (+m + 1) + '.0';else if (pr) {
+          debug('replaceTilde pr', pr);
+          if (pr.charAt(0) !== '-') pr = '-' + pr;
+          ret = '>=' + M + '.' + m + '.' + p + pr + ' <' + M + '.' + (+m + 1) + '.0';
+        } else // ~1.2.3 == >=1.2.3 <1.3.0
+          ret = '>=' + M + '.' + m + '.' + p + ' <' + M + '.' + (+m + 1) + '.0';
+        debug('tilde return', ret);
+        return ret;
+      });
+    } // ^ --> * (any, kinda silly)
+    // ^2, ^2.x, ^2.x.x --> >=2.0.0 <3.0.0
+    // ^2.0, ^2.0.x --> >=2.0.0 <3.0.0
+    // ^1.2, ^1.2.x --> >=1.2.0 <2.0.0
+    // ^1.2.3 --> >=1.2.3 <2.0.0
+    // ^1.2.0 --> >=1.2.0 <2.0.0
+
+
+    function replaceCarets(comp, options) {
+      return comp.trim().split(/\s+/).map(function (comp) {
+        return replaceCaret(comp, options);
+      }).join(' ');
+    }
+
+    function replaceCaret(comp, options) {
+      debug('caret', comp, options);
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+      var r = options.loose ? re[CARETLOOSE] : re[CARET];
+      return comp.replace(r, function (_, M, m, p, pr) {
+        debug('caret', comp, _, M, m, p, pr);
+        var ret;
+        if (isX(M)) ret = '';else if (isX(m)) ret = '>=' + M + '.0.0 <' + (+M + 1) + '.0.0';else if (isX(p)) {
+          if (M === '0') ret = '>=' + M + '.' + m + '.0 <' + M + '.' + (+m + 1) + '.0';else ret = '>=' + M + '.' + m + '.0 <' + (+M + 1) + '.0.0';
+        } else if (pr) {
+          debug('replaceCaret pr', pr);
+          if (pr.charAt(0) !== '-') pr = '-' + pr;
+
+          if (M === '0') {
+            if (m === '0') ret = '>=' + M + '.' + m + '.' + p + pr + ' <' + M + '.' + m + '.' + (+p + 1);else ret = '>=' + M + '.' + m + '.' + p + pr + ' <' + M + '.' + (+m + 1) + '.0';
+          } else ret = '>=' + M + '.' + m + '.' + p + pr + ' <' + (+M + 1) + '.0.0';
+        } else {
+          debug('no pr');
+
+          if (M === '0') {
+            if (m === '0') ret = '>=' + M + '.' + m + '.' + p + ' <' + M + '.' + m + '.' + (+p + 1);else ret = '>=' + M + '.' + m + '.' + p + ' <' + M + '.' + (+m + 1) + '.0';
+          } else ret = '>=' + M + '.' + m + '.' + p + ' <' + (+M + 1) + '.0.0';
+        }
+        debug('caret return', ret);
+        return ret;
+      });
+    }
+
+    function replaceXRanges(comp, options) {
+      debug('replaceXRanges', comp, options);
+      return comp.split(/\s+/).map(function (comp) {
+        return replaceXRange(comp, options);
+      }).join(' ');
+    }
+
+    function replaceXRange(comp, options) {
+      comp = comp.trim();
+      if (!options || typeof options !== 'object') options = {
+        loose: !!options,
+        includePrerelease: false
+      };
+      var r = options.loose ? re[XRANGELOOSE] : re[XRANGE];
+      return comp.replace(r, function (ret, gtlt, M, m, p, pr) {
+        debug('xRange', comp, ret, gtlt, M, m, p, pr);
+        var xM = isX(M);
+        var xm = xM || isX(m);
+        var xp = xm || isX(p);
+        var anyX = xp;
+        if (gtlt === '=' && anyX) gtlt = '';
+
+        if (xM) {
+          if (gtlt === '>' || gtlt === '<') {
+            // nothing is allowed
+            ret = '<0.0.0';
+          } else {
+            // nothing is forbidden
+            ret = '*';
+          }
+        } else if (gtlt && anyX) {
+          // replace X with 0
+          if (xm) m = 0;
+          if (xp) p = 0;
+
+          if (gtlt === '>') {
+            // >1 => >=2.0.0
+            // >1.2 => >=1.3.0
+            // >1.2.3 => >= 1.2.4
+            gtlt = '>=';
+
+            if (xm) {
+              M = +M + 1;
+              m = 0;
+              p = 0;
+            } else if (xp) {
+              m = +m + 1;
+              p = 0;
+            }
+          } else if (gtlt === '<=') {
+            // <=0.7.x is actually <0.8.0, since any 0.7.x should
+            // pass.  Similarly, <=7.x is actually <8.0.0, etc.
+            gtlt = '<';
+            if (xm) M = +M + 1;else m = +m + 1;
+          }
+
+          ret = gtlt + M + '.' + m + '.' + p;
+        } else if (xm) {
+          ret = '>=' + M + '.0.0 <' + (+M + 1) + '.0.0';
+        } else if (xp) {
+          ret = '>=' + M + '.' + m + '.0 <' + M + '.' + (+m + 1) + '.0';
+        }
+
+        debug('xRange return', ret);
+        return ret;
+      });
+    } // Because * is AND-ed with everything else in the comparator,
+    // and '' means "any version", just remove the *s entirely.
+
+
+    function replaceStars(comp, options) {
+      debug('replaceStars', comp, options); // Looseness is ignored here.  star is always as loose as it gets!
+
+      return comp.trim().replace(re[STAR], '');
+    } // This function is passed to string.replace(re[HYPHENRANGE])
+    // M, m, patch, prerelease, build
+    // 1.2 - 3.4.5 => >=1.2.0 <=3.4.5
+    // 1.2.3 - 3.4 => >=1.2.0 <3.5.0 Any 3.4.x will do
+    // 1.2 - 3.4 => >=1.2.0 <3.5.0
+
+
+    function hyphenReplace($0, from, fM, fm, fp, fpr, fb, to, tM, tm, tp, tpr, tb) {
+      if (isX(fM)) from = '';else if (isX(fm)) from = '>=' + fM + '.0.0';else if (isX(fp)) from = '>=' + fM + '.' + fm + '.0';else from = '>=' + from;
+      if (isX(tM)) to = '';else if (isX(tm)) to = '<' + (+tM + 1) + '.0.0';else if (isX(tp)) to = '<' + tM + '.' + (+tm + 1) + '.0';else if (tpr) to = '<=' + tM + '.' + tm + '.' + tp + '-' + tpr;else to = '<=' + to;
+      return (from + ' ' + to).trim();
+    } // if ANY of the sets match ALL of its comparators, then pass
+
+
+    Range.prototype.test = function (version) {
+      if (!version) return false;
+      if (typeof version === 'string') version = new SemVer(version, this.options);
+
+      for (var i = 0; i < this.set.length; i++) {
+        if (testSet(this.set[i], version, this.options)) return true;
+      }
+
+      return false;
+    };
+
+    function testSet(set, version, options) {
+      for (var i = 0; i < set.length; i++) {
+        if (!set[i].test(version)) return false;
+      }
+
+      if (!options) options = {};
+
+      if (version.prerelease.length && !options.includePrerelease) {
+        // Find the set of versions that are allowed to have prereleases
+        // For example, ^1.2.3-pr.1 desugars to >=1.2.3-pr.1 <2.0.0
+        // That should allow `1.2.3-pr.2` to pass.
+        // However, `1.2.4-alpha.notready` should NOT be allowed,
+        // even though it's within the range set by the comparators.
+        for (var i = 0; i < set.length; i++) {
+          debug(set[i].semver);
+          if (set[i].semver === ANY) continue;
+
+          if (set[i].semver.prerelease.length > 0) {
+            var allowed = set[i].semver;
+            if (allowed.major === version.major && allowed.minor === version.minor && allowed.patch === version.patch) return true;
+          }
+        } // Version has a -pre, but it's not one of the ones we like.
+
+
+        return false;
+      }
+
+      return true;
+    }
+
+    exports.satisfies = satisfies;
+
+    function satisfies(version, range, options) {
+      try {
+        range = new Range(range, options);
+      } catch (er) {
+        return false;
+      }
+
+      return range.test(version);
+    }
+
+    exports.maxSatisfying = maxSatisfying;
+
+    function maxSatisfying(versions, range, options) {
+      var max = null;
+      var maxSV = null;
+
+      try {
+        var rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+
+      versions.forEach(function (v) {
+        if (rangeObj.test(v)) {
+          // satisfies(v, range, options)
+          if (!max || maxSV.compare(v) === -1) {
+            // compare(max, v, true)
+            max = v;
+            maxSV = new SemVer(max, options);
+          }
+        }
+      });
+      return max;
+    }
+
+    exports.minSatisfying = minSatisfying;
+
+    function minSatisfying(versions, range, options) {
+      var min = null;
+      var minSV = null;
+
+      try {
+        var rangeObj = new Range(range, options);
+      } catch (er) {
+        return null;
+      }
+
+      versions.forEach(function (v) {
+        if (rangeObj.test(v)) {
+          // satisfies(v, range, options)
+          if (!min || minSV.compare(v) === 1) {
+            // compare(min, v, true)
+            min = v;
+            minSV = new SemVer(min, options);
+          }
+        }
+      });
+      return min;
+    }
+
+    exports.validRange = validRange;
+
+    function validRange(range, options) {
+      try {
+        // Return '*' instead of '' so that truthiness works.
+        // This will throw if it's invalid anyway
+        return new Range(range, options).range || '*';
+      } catch (er) {
+        return null;
+      }
+    } // Determine if version is less than all the versions possible in the range
+
+
+    exports.ltr = ltr;
+
+    function ltr(version, range, options) {
+      return outside(version, range, '<', options);
+    } // Determine if version is greater than all the versions possible in the range.
+
+
+    exports.gtr = gtr;
+
+    function gtr(version, range, options) {
+      return outside(version, range, '>', options);
+    }
+
+    exports.outside = outside;
+
+    function outside(version, range, hilo, options) {
+      version = new SemVer(version, options);
+      range = new Range(range, options);
+      var gtfn, ltefn, ltfn, comp, ecomp;
+
+      switch (hilo) {
+        case '>':
+          gtfn = gt;
+          ltefn = lte;
+          ltfn = lt;
+          comp = '>';
+          ecomp = '>=';
+          break;
+
+        case '<':
+          gtfn = lt;
+          ltefn = gte;
+          ltfn = gt;
+          comp = '<';
+          ecomp = '<=';
+          break;
+
+        default:
+          throw new TypeError('Must provide a hilo val of "<" or ">"');
+      } // If it satisifes the range it is not outside
+
+
+      if (satisfies(version, range, options)) {
+        return false;
+      } // From now on, variable terms are as if we're in "gtr" mode.
+      // but note that everything is flipped for the "ltr" function.
+
+
+      for (var i = 0; i < range.set.length; ++i) {
+        var comparators = range.set[i];
+        var high = null;
+        var low = null;
+        comparators.forEach(function (comparator) {
+          if (comparator.semver === ANY) {
+            comparator = new Comparator('>=0.0.0');
+          }
+
+          high = high || comparator;
+          low = low || comparator;
+
+          if (gtfn(comparator.semver, high.semver, options)) {
+            high = comparator;
+          } else if (ltfn(comparator.semver, low.semver, options)) {
+            low = comparator;
+          }
+        }); // If the edge version comparator has a operator then our version
+        // isn't outside it
+
+        if (high.operator === comp || high.operator === ecomp) {
+          return false;
+        } // If the lowest version comparator has an operator and our version
+        // is less than it then it isn't higher than the range
+
+
+        if ((!low.operator || low.operator === comp) && ltefn(version, low.semver)) {
+          return false;
+        } else if (low.operator === ecomp && ltfn(version, low.semver)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    exports.prerelease = prerelease;
+
+    function prerelease(version, options) {
+      var parsed = parse(version, options);
+      return parsed && parsed.prerelease.length ? parsed.prerelease : null;
+    }
+
+    exports.intersects = intersects;
+
+    function intersects(r1, r2, options) {
+      r1 = new Range(r1, options);
+      r2 = new Range(r2, options);
+      return r1.intersects(r2);
+    }
+
+    exports.coerce = coerce;
+
+    function coerce(version) {
+      if (version instanceof SemVer) return version;
+      if (typeof version !== 'string') return null;
+      var match = version.match(re[COERCE]);
+      if (match == null) return null;
+      return parse((match[1] || '0') + '.' + (match[2] || '0') + '.' + (match[3] || '0'));
+    }
+  });
+  var semver_1 = semver.SEMVER_SPEC_VERSION;
+  var semver_2 = semver.re;
+  var semver_3 = semver.src;
+  var semver_4 = semver.parse;
+  var semver_5 = semver.valid;
+  var semver_6 = semver.clean;
+  var semver_7 = semver.SemVer;
+  var semver_8 = semver.inc;
+  var semver_9 = semver.diff;
+  var semver_10 = semver.compareIdentifiers;
+  var semver_11 = semver.rcompareIdentifiers;
+  var semver_12 = semver.major;
+  var semver_13 = semver.minor;
+  var semver_14 = semver.patch;
+  var semver_15 = semver.compare;
+  var semver_16 = semver.compareLoose;
+  var semver_17 = semver.rcompare;
+  var semver_18 = semver.sort;
+  var semver_19 = semver.rsort;
+  var semver_20 = semver.gt;
+  var semver_21 = semver.lt;
+  var semver_22 = semver.eq;
+  var semver_23 = semver.neq;
+  var semver_24 = semver.gte;
+  var semver_25 = semver.lte;
+  var semver_26 = semver.cmp;
+  var semver_27 = semver.Comparator;
+  var semver_28 = semver.Range;
+  var semver_29 = semver.toComparators;
+  var semver_30 = semver.satisfies;
+  var semver_31 = semver.maxSatisfying;
+  var semver_32 = semver.minSatisfying;
+  var semver_33 = semver.validRange;
+  var semver_34 = semver.ltr;
+  var semver_35 = semver.gtr;
+  var semver_36 = semver.outside;
+  var semver_37 = semver.prerelease;
+  var semver_38 = semver.intersects;
+  var semver_39 = semver.coerce;
+
+  /*
+   * browserCheck.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+  const isChrome = !!window.chrome;
+  const isIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i);
+  const browser = detectBrowser_1() || {};
+  function baseSupportCheck() {
+      try {
+          if (!RTCPeerConnection) {
+              return false;
+          }
+          if (!WebSocket) {
+              return false;
+          }
+          if (!navigator.mediaDevices.getUserMedia) {
+              return false;
+          }
+          return true;
+      }
+      catch (e) {
+          return false;
+      }
+  }
+  function supportGetDisplayMedia() {
+      const hasGetDisplayMediaAPI = navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+      const supportDisplaysurface = navigator && navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().displaySurface;
+      // 在 Firefox 支持标准的选择采集源之前，继续使用老的 API，因为反正都不需要插件
+      if (isFirefox) {
+          return !!hasGetDisplayMediaAPI && !!supportDisplaysurface;
+      }
+      return !!hasGetDisplayMediaAPI;
+  }
+  function browserCheck() {
+      if (!browser) {
+          return {
+              support: baseSupportCheck(),
+              supportRestartICE: true,
+              getDisplayMedia: supportGetDisplayMedia(),
+              disconnectAudioNode: true,
+          };
+      }
+      switch (browser.name) {
+          case "chrome":
+              return {
+                  support: semver_24(browser.version, "52.0.0"),
+                  mediaStreamDest: semver_24(browser.version, "55.0.0"),
+                  replaceTrack: semver_24(browser.version, "65.0.0"),
+                  screenSharing: semver_24(browser.version, "55.0.0"),
+                  connectionState: false,
+                  stats: semver_24(browser.version, "67.0.0"),
+                  ondevicechange: semver_24(browser.version, "57.0.0"),
+                  minMaxWithIdeal: semver_24(browser.version, "56.0.0"),
+                  unifiedPlan: false,
+                  // semver.gte(browser.version, "71.0.0"),
+                  supportTransceivers: false,
+                  supportRestartICE: true,
+                  getReceivers: semver_24(browser.version, "55.0.0"),
+                  needH264FmtpLine: semver_25(browser.version, "51.0.0"),
+                  audioContextOptions: true,
+                  getDisplayMedia: supportGetDisplayMedia(),
+                  disconnectAudioNode: true,
+              };
+          case "safari":
+              return {
+                  support: semver_24(browser.version, "11.0.0"),
+                  replaceTrack: semver_24(browser.version, "11.0.0"),
+                  stats: false,
+                  ondevicechange: false,
+                  connectionState: true,
+                  mediaStreamDest: semver_24(browser.version, "12.0.0"),
+                  screenSharing: false,
+                  minMaxWithIdeal: false,
+                  supportRestartICE: true,
+                  getReceivers: true,
+                  audioContextOptions: true,
+                  getDisplayMedia: supportGetDisplayMedia(),
+                  disconnectAudioNode: false,
+              };
+          case "firefox":
+              return {
+                  support: baseSupportCheck() && semver_24(browser.version, "52.0.0"),
+                  replaceTrack: true,
+                  stats: true,
+                  ondevicechange: semver_24(browser.version, "52.0.0"),
+                  connectionState: true,
+                  mediaStreamDest: true,
+                  screenSharing: true,
+                  minMaxWithIdeal: true,
+                  unifiedPlan: true,
+                  // https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/59
+                  supportTransceivers: semver_24(browser.version, "59.0.0"),
+                  supportRestartICE: false,
+                  getReceivers: true,
+                  // Firefox 55 以后不会抛出 audioContext 构造函数错误，但是依旧还是 ignore
+                  audioContextOptions: semver_24(browser.version, "55.0.0"),
+                  getDisplayMedia: supportGetDisplayMedia(),
+                  disconnectAudioNode: true,
+              };
+          default:
+              return {
+                  support: baseSupportCheck(),
+                  supportRestartICE: true,
+                  getDisplayMedia: supportGetDisplayMedia(),
+                  disconnectAudioNode: true,
+              };
+      }
+  }
+  const browserReport = browserCheck();
+
+  // adapter.js ea47dd2632e15fa77395d1d7d514802d5f0ac71b
+  function mediaDevicesShim() {
+      const constraintsToChrome_ = function (c) {
+          if (typeof c !== "object" || c.mandatory || c.optional) {
+              return c;
+          }
+          const cc = {};
+          Object.keys(c).forEach(key => {
+              if (key === "require" || key === "advanced" || key === "mediaSource") {
+                  return;
+              }
+              const r = (typeof c[key] === "object") ? c[key] : { ideal: c[key] };
+              if (r.exact !== undefined && typeof r.exact === "number") {
+                  r.min = r.max = r.exact;
+              }
+              const oldname_ = function (prefix, name) {
+                  if (prefix) {
+                      return prefix + name.charAt(0).toUpperCase() + name.slice(1);
+                  }
+                  return (name === "deviceId") ? "sourceId" : name;
+              };
+              if (r.ideal !== undefined) {
+                  cc.optional = cc.optional || [];
+                  let oc = {};
+                  if (typeof r.ideal === "number") {
+                      oc[oldname_("min", key)] = r.ideal;
+                      cc.optional.push(oc);
+                      oc = {};
+                      oc[oldname_("max", key)] = r.ideal;
+                      cc.optional.push(oc);
+                  }
+                  else {
+                      oc[oldname_("", key)] = r.ideal;
+                      cc.optional.push(oc);
+                  }
+              }
+              if (r.exact !== undefined && typeof r.exact !== "number") {
+                  cc.mandatory = cc.mandatory || {};
+                  cc.mandatory[oldname_("", key)] = r.exact;
+              }
+              else {
+                  ["min", "max"].forEach(mix => {
+                      if (r[mix] !== undefined) {
+                          cc.mandatory = cc.mandatory || {};
+                          cc.mandatory[oldname_(mix, key)] = r[mix];
+                      }
+                  });
+              }
+          });
+          if (c.advanced) {
+              cc.optional = (cc.optional || []).concat(c.advanced);
+          }
+          return cc;
+      };
+      const shimConstraints_ = function (constraints, func) {
+          if (semver_20(browser.version, "61.0.0")) {
+              return func(constraints);
+          }
+          constraints = JSON.parse(JSON.stringify(constraints));
+          if (constraints && typeof constraints.audio === "object") {
+              const remap = function (obj, a, b) {
+                  if (a in obj && !(b in obj)) {
+                      obj[b] = obj[a];
+                      delete obj[a];
+                  }
+              };
+              constraints = JSON.parse(JSON.stringify(constraints));
+              remap(constraints.audio, "autoGainControl", "googAutoGainControl");
+              remap(constraints.audio, "noiseSuppression", "googNoiseSuppression");
+              constraints.audio = constraintsToChrome_(constraints.audio);
+          }
+          if (constraints && typeof constraints.video === "object") {
+              // Shim facingMode for mobile & surface pro.
+              let face = constraints.video.facingMode;
+              face = face && ((typeof face === "object") ? face : { ideal: face });
+              const getSupportedFacingModeLies = semver_21(browser.version, "66.0.0");
+              if ((face && (face.exact === "user" || face.exact === "environment" ||
+                  face.ideal === "user" || face.ideal === "environment")) &&
+                  !(navigator.mediaDevices.getSupportedConstraints &&
+                      navigator.mediaDevices.getSupportedConstraints().facingMode &&
+                      !getSupportedFacingModeLies)) {
+                  delete constraints.video.facingMode;
+                  let matches = undefined;
+                  if (face.exact === "environment" || face.ideal === "environment") {
+                      matches = ["back", "rear"];
+                  }
+                  else if (face.exact === "user" || face.ideal === "user") {
+                      matches = ["front"];
+                  }
+                  if (matches) {
+                      // Look for matches in label, or use last cam for back (typical).
+                      return navigator.mediaDevices.enumerateDevices()
+                          .then(devices => {
+                          devices = devices.filter(d => d.kind === "videoinput");
+                          let dev = devices.find(d => matches.some(match => d.label.toLowerCase().includes(match)));
+                          if (!dev && devices.length && matches.includes("back")) {
+                              dev = devices[devices.length - 1]; // more likely the back cam
+                          }
+                          if (dev) {
+                              constraints.video.deviceId = face.exact ? { exact: dev.deviceId } :
+                                  { ideal: dev.deviceId };
+                          }
+                          constraints.video = constraintsToChrome_(constraints.video);
+                          return func(constraints);
+                      });
+                  }
+              }
+              constraints.video = constraintsToChrome_(constraints.video);
+          }
+          return func(constraints);
+      };
+      const getUserMedia_ = function (constraints, onSuccess, onError) {
+          shimConstraints_(constraints, (c) => {
+              navigator.webkitGetUserMedia(c, onSuccess, (e) => {
+                  if (onError) {
+                      onError(e);
+                  }
+              });
+          });
+      };
+      navigator.getUserMedia = getUserMedia_;
+      // Returns the result of getUserMedia as a Promise.
+      const getUserMediaPromise_ = function (constraints) {
+          return new Promise((resolve, reject) => {
+              navigator.getUserMedia(constraints, resolve, reject);
+          });
+      };
+      if (!navigator.mediaDevices) {
+          navigator.mediaDevices = {
+              getUserMedia: getUserMediaPromise_,
+              enumerateDevices() {
+                  return new Promise(resolve => {
+                      const kinds = { audio: "audioinput", video: "videoinput" };
+                      return window.MediaStreamTrack.getSources((devices) => {
+                          resolve(devices.map((device) => ({
+                              label: device.label,
+                              kind: kinds[device.kind],
+                              deviceId: device.id,
+                              groupId: "",
+                          })));
+                      });
+                  });
+              },
+          };
+      }
+      if (!navigator.mediaDevices.getSupportedConstraints) {
+          navigator.mediaDevices.getSupportedConstraints = () => {
+              return {
+                  deviceId: true, echoCancellation: true, facingMode: true,
+                  frameRate: true, height: true, width: true,
+              };
+          };
+      }
+      // A shim for getUserMedia method on the mediaDevices object.
+      // TODO(KaptenJansson) remove once implemented in Chrome stable.
+      if (!navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia = function (constraints) {
+              return getUserMediaPromise_(constraints);
+          };
+      }
+      else {
+          // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
+          // function which returns a Promise, it does not accept spec-style
+          // constraints.
+          const origGetUserMedia = navigator.mediaDevices.getUserMedia.
+              bind(navigator.mediaDevices);
+          navigator.mediaDevices.getUserMedia = function (cs) {
+              return shimConstraints_(cs, (c) => origGetUserMedia(c).then(stream => {
+                  if (c.audio && !stream.getAudioTracks().length ||
+                      c.video && !stream.getVideoTracks().length) {
+                      stream.getTracks().forEach(track => {
+                          track.stop();
+                      });
+                      throw new DOMException("", "NotFoundError");
+                  }
+                  return stream;
+              }, e => Promise.reject(e)));
+          };
+      }
+  }
+
+  // adapter.js 8eca2831b0d11cc14ffb6193d0d49044c6dd9252
+  function mediaDevicesShim$1() {
+      const getUserMedia_ = function (constraints, onSuccess, onError) {
+          constraints = JSON.parse(JSON.stringify(constraints));
+          return navigator.mozGetUserMedia(constraints, onSuccess, (e) => {
+              onError(e);
+          });
+      };
+      // Returns the result of getUserMedia as a Promise.
+      const getUserMediaPromise_ = function (constraints) {
+          return new Promise((resolve, reject) => {
+              getUserMedia_(constraints, resolve, reject);
+          });
+      };
+      if (!navigator.mediaDevices) {
+          navigator.mediaDevices = { getUserMedia: getUserMediaPromise_,
+              addEventListener() { },
+              removeEventListener() { },
+          };
+      }
+      navigator.mediaDevices.enumerateDevices =
+          navigator.mediaDevices.enumerateDevices || function () {
+              return new Promise(resolve => {
+                  const infos = [
+                      { kind: "audioinput", deviceId: "default", label: "", groupId: "" },
+                      { kind: "videoinput", deviceId: "default", label: "", groupId: "" },
+                  ];
+                  resolve(infos);
+              });
+          };
+  }
+
+  if (browser.name === "chrome") {
+      mediaDevicesShim();
+  }
+  if (browser.name === "firefox") {
+      mediaDevicesShim$1();
+  }
+
+  var adapter_no_edge_no_global = createCommonjsModule(function (module) {
+    (function () {
+      function r(e, n, t) {
+        function o(i, f) {
+          if (!n[i]) {
+            if (!e[i]) {
+              var c = "function" == typeof commonjsRequire && commonjsRequire;
+              if (!f && c) return c(i, !0);
+              if (u) return u(i, !0);
+              var a = new Error("Cannot find module '" + i + "'");
+              throw a.code = "MODULE_NOT_FOUND", a;
+            }
+
+            var p = n[i] = {
+              exports: {}
+            };
+            e[i][0].call(p.exports, function (r) {
+              var n = e[i][1][r];
+              return o(n || r);
+            }, p, p.exports, r, e, n, t);
+          }
+
+          return n[i].exports;
+        }
+
+        for (var u = "function" == typeof commonjsRequire && commonjsRequire, i = 0; i < t.length; i++) o(t[i]);
+
+        return o;
+      }
+
+      return r;
+    })()({
+      1: [function (require, module, exports) {
+
+        var _adapter_factory = require('./adapter_factory.js');
+
+        var adapter = (0, _adapter_factory.adapterFactory)({
+          window: window
+        });
+        module.exports = adapter; // this is the difference from adapter_core.
+      }, {
+        "./adapter_factory.js": 2
+      }],
+      2: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+        exports.adapterFactory = adapterFactory;
+
+        var _utils = require('./utils');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        var _chrome_shim = require('./chrome/chrome_shim');
+
+        var chromeShim = _interopRequireWildcard(_chrome_shim);
+
+        var _edge_shim = require('./edge/edge_shim');
+
+        var edgeShim = _interopRequireWildcard(_edge_shim);
+
+        var _firefox_shim = require('./firefox/firefox_shim');
+
+        var firefoxShim = _interopRequireWildcard(_firefox_shim);
+
+        var _safari_shim = require('./safari/safari_shim');
+
+        var safariShim = _interopRequireWildcard(_safari_shim);
+
+        var _common_shim = require('./common_shim');
+
+        var commonShim = _interopRequireWildcard(_common_shim);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        } // Shimming starts here.
+
+        /*
+         *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
+         *
+         *  Use of this source code is governed by a BSD-style license
+         *  that can be found in the LICENSE file in the root of the source
+         *  tree.
+         */
+
+
+        function adapterFactory() {
+          var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+              window = _ref.window;
+
+          var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+            shimChrome: true,
+            shimFirefox: true,
+            shimEdge: true,
+            shimSafari: true
+          }; // Utils.
+
+          var logging = utils.log;
+          var browserDetails = utils.detectBrowser(window);
+          var adapter = {
+            browserDetails: browserDetails,
+            commonShim: commonShim,
+            extractVersion: utils.extractVersion,
+            disableLog: utils.disableLog,
+            disableWarnings: utils.disableWarnings
+          }; // Shim browser if found.
+
+          switch (browserDetails.browser) {
+            case 'chrome':
+              if (!chromeShim || !chromeShim.shimPeerConnection || !options.shimChrome) {
+                logging('Chrome shim is not included in this adapter release.');
+                return adapter;
+              }
+
+              logging('adapter.js shimming chrome.'); // Export to the adapter global object visible in the browser.
+
+              adapter.browserShim = chromeShim;
+              chromeShim.shimGetUserMedia(window);
+              chromeShim.shimMediaStream(window);
+              chromeShim.shimPeerConnection(window);
+              chromeShim.shimOnTrack(window);
+              chromeShim.shimAddTrackRemoveTrack(window);
+              chromeShim.shimGetSendersWithDtmf(window);
+              chromeShim.shimSenderReceiverGetStats(window);
+              chromeShim.fixNegotiationNeeded(window);
+              commonShim.shimRTCIceCandidate(window);
+              commonShim.shimConnectionState(window);
+              commonShim.shimMaxMessageSize(window);
+              commonShim.shimSendThrowTypeError(window);
+              commonShim.removeAllowExtmapMixed(window);
+              break;
+
+            case 'firefox':
+              if (!firefoxShim || !firefoxShim.shimPeerConnection || !options.shimFirefox) {
+                logging('Firefox shim is not included in this adapter release.');
+                return adapter;
+              }
+
+              logging('adapter.js shimming firefox.'); // Export to the adapter global object visible in the browser.
+
+              adapter.browserShim = firefoxShim;
+              firefoxShim.shimGetUserMedia(window);
+              firefoxShim.shimPeerConnection(window);
+              firefoxShim.shimOnTrack(window);
+              firefoxShim.shimRemoveStream(window);
+              firefoxShim.shimSenderGetStats(window);
+              firefoxShim.shimReceiverGetStats(window);
+              firefoxShim.shimRTCDataChannel(window);
+              commonShim.shimRTCIceCandidate(window);
+              commonShim.shimConnectionState(window);
+              commonShim.shimMaxMessageSize(window);
+              commonShim.shimSendThrowTypeError(window);
+              break;
+
+            case 'edge':
+              if (!edgeShim || !edgeShim.shimPeerConnection || !options.shimEdge) {
+                logging('MS edge shim is not included in this adapter release.');
+                return adapter;
+              }
+
+              logging('adapter.js shimming edge.'); // Export to the adapter global object visible in the browser.
+
+              adapter.browserShim = edgeShim;
+              edgeShim.shimGetUserMedia(window);
+              edgeShim.shimGetDisplayMedia(window);
+              edgeShim.shimPeerConnection(window);
+              edgeShim.shimReplaceTrack(window); // the edge shim implements the full RTCIceCandidate object.
+
+              commonShim.shimMaxMessageSize(window);
+              commonShim.shimSendThrowTypeError(window);
+              break;
+
+            case 'safari':
+              if (!safariShim || !options.shimSafari) {
+                logging('Safari shim is not included in this adapter release.');
+                return adapter;
+              }
+
+              logging('adapter.js shimming safari.'); // Export to the adapter global object visible in the browser.
+
+              adapter.browserShim = safariShim;
+              safariShim.shimRTCIceServerUrls(window);
+              safariShim.shimCreateOfferLegacy(window);
+              safariShim.shimCallbacksAPI(window);
+              safariShim.shimLocalStreamsAPI(window);
+              safariShim.shimRemoteStreamsAPI(window);
+              safariShim.shimTrackEventTransceiver(window);
+              safariShim.shimGetUserMedia(window);
+              commonShim.shimRTCIceCandidate(window);
+              commonShim.shimMaxMessageSize(window);
+              commonShim.shimSendThrowTypeError(window);
+              commonShim.removeAllowExtmapMixed(window);
+              break;
+
+            default:
+              logging('Unsupported browser!');
+              break;
+          }
+
+          return adapter;
+        } // Browser shims.
+
+      }, {
+        "./chrome/chrome_shim": 3,
+        "./common_shim": 6,
+        "./edge/edge_shim": 12,
+        "./firefox/firefox_shim": 7,
+        "./safari/safari_shim": 10,
+        "./utils": 11
+      }],
+      3: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+        exports.shimGetDisplayMedia = exports.shimGetUserMedia = undefined;
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        var _getusermedia = require('./getusermedia');
+
+        Object.defineProperty(exports, 'shimGetUserMedia', {
+          enumerable: true,
+          get: function get() {
+            return _getusermedia.shimGetUserMedia;
+          }
+        });
+
+        var _getdisplaymedia = require('./getdisplaymedia');
+
+        Object.defineProperty(exports, 'shimGetDisplayMedia', {
+          enumerable: true,
+          get: function get() {
+            return _getdisplaymedia.shimGetDisplayMedia;
+          }
+        });
+        exports.shimMediaStream = shimMediaStream;
+        exports.shimOnTrack = shimOnTrack;
+        exports.shimGetSendersWithDtmf = shimGetSendersWithDtmf;
+        exports.shimSenderReceiverGetStats = shimSenderReceiverGetStats;
+        exports.shimAddTrackRemoveTrackWithNative = shimAddTrackRemoveTrackWithNative;
+        exports.shimAddTrackRemoveTrack = shimAddTrackRemoveTrack;
+        exports.shimPeerConnection = shimPeerConnection;
+        exports.fixNegotiationNeeded = fixNegotiationNeeded;
+
+        var _utils = require('../utils.js');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+        /* iterates the stats graph recursively. */
+
+
+        function walkStats(stats, base, resultSet) {
+          if (!base || resultSet.has(base.id)) {
+            return;
+          }
+
+          resultSet.set(base.id, base);
+          Object.keys(base).forEach(function (name) {
+            if (name.endsWith('Id')) {
+              walkStats(stats, stats.get(base[name]), resultSet);
+            } else if (name.endsWith('Ids')) {
+              base[name].forEach(function (id) {
+                walkStats(stats, stats.get(id), resultSet);
+              });
+            }
+          });
+        }
+        /* filter getStats for a sender/receiver track. */
+
+
+        function filterStats(result, track, outbound) {
+          var streamStatsType = outbound ? 'outbound-rtp' : 'inbound-rtp';
+          var filteredResult = new Map();
+
+          if (track === null) {
+            return filteredResult;
+          }
+
+          var trackStats = [];
+          result.forEach(function (value) {
+            if (value.type === 'track' && value.trackIdentifier === track.id) {
+              trackStats.push(value);
+            }
+          });
+          trackStats.forEach(function (trackStat) {
+            result.forEach(function (stats) {
+              if (stats.type === streamStatsType && stats.trackId === trackStat.id) {
+                walkStats(result, stats, filteredResult);
+              }
+            });
+          });
+          return filteredResult;
+        }
+
+        function shimMediaStream(window) {
+          window.MediaStream = window.MediaStream || window.webkitMediaStream;
+        }
+
+        function shimOnTrack(window) {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && !('ontrack' in window.RTCPeerConnection.prototype)) {
+            Object.defineProperty(window.RTCPeerConnection.prototype, 'ontrack', {
+              get: function get() {
+                return this._ontrack;
+              },
+              set: function set(f) {
+                if (this._ontrack) {
+                  this.removeEventListener('track', this._ontrack);
+                }
+
+                this.addEventListener('track', this._ontrack = f);
+              },
+              enumerable: true,
+              configurable: true
+            });
+            var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+
+            window.RTCPeerConnection.prototype.setRemoteDescription = function () {
+              var _this = this;
+
+              if (!this._ontrackpoly) {
+                this._ontrackpoly = function (e) {
+                  // onaddstream does not fire when a track is added to an existing
+                  // stream. But stream.onaddtrack is implemented so we use that.
+                  e.stream.addEventListener('addtrack', function (te) {
+                    var receiver = void 0;
+
+                    if (window.RTCPeerConnection.prototype.getReceivers) {
+                      receiver = _this.getReceivers().find(function (r) {
+                        return r.track && r.track.id === te.track.id;
+                      });
+                    } else {
+                      receiver = {
+                        track: te.track
+                      };
+                    }
+
+                    var event = new Event('track');
+                    event.track = te.track;
+                    event.receiver = receiver;
+                    event.transceiver = {
+                      receiver: receiver
+                    };
+                    event.streams = [e.stream];
+
+                    _this.dispatchEvent(event);
+                  });
+                  e.stream.getTracks().forEach(function (track) {
+                    var receiver = void 0;
+
+                    if (window.RTCPeerConnection.prototype.getReceivers) {
+                      receiver = _this.getReceivers().find(function (r) {
+                        return r.track && r.track.id === track.id;
+                      });
+                    } else {
+                      receiver = {
+                        track: track
+                      };
+                    }
+
+                    var event = new Event('track');
+                    event.track = track;
+                    event.receiver = receiver;
+                    event.transceiver = {
+                      receiver: receiver
+                    };
+                    event.streams = [e.stream];
+
+                    _this.dispatchEvent(event);
+                  });
+                };
+
+                this.addEventListener('addstream', this._ontrackpoly);
+              }
+
+              return origSetRemoteDescription.apply(this, arguments);
+            };
+          } else {
+            // even if RTCRtpTransceiver is in window, it is only used and
+            // emitted in unified-plan. Unfortunately this means we need
+            // to unconditionally wrap the event.
+            utils.wrapPeerConnectionEvent(window, 'track', function (e) {
+              if (!e.transceiver) {
+                Object.defineProperty(e, 'transceiver', {
+                  value: {
+                    receiver: e.receiver
+                  }
+                });
+              }
+
+              return e;
+            });
+          }
+        }
+
+        function shimGetSendersWithDtmf(window) {
+          // Overrides addTrack/removeTrack, depends on shimAddTrackRemoveTrack.
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && !('getSenders' in window.RTCPeerConnection.prototype) && 'createDTMFSender' in window.RTCPeerConnection.prototype) {
+            var shimSenderWithDtmf = function shimSenderWithDtmf(pc, track) {
+              return {
+                track: track,
+
+                get dtmf() {
+                  if (this._dtmf === undefined) {
+                    if (track.kind === 'audio') {
+                      this._dtmf = pc.createDTMFSender(track);
+                    } else {
+                      this._dtmf = null;
+                    }
+                  }
+
+                  return this._dtmf;
+                },
+
+                _pc: pc
+              };
+            }; // augment addTrack when getSenders is not available.
+
+
+            if (!window.RTCPeerConnection.prototype.getSenders) {
+              window.RTCPeerConnection.prototype.getSenders = function () {
+                this._senders = this._senders || [];
+                return this._senders.slice(); // return a copy of the internal state.
+              };
+
+              var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+
+              window.RTCPeerConnection.prototype.addTrack = function (track, stream) {
+                var sender = origAddTrack.apply(this, arguments);
+
+                if (!sender) {
+                  sender = shimSenderWithDtmf(this, track);
+
+                  this._senders.push(sender);
+                }
+
+                return sender;
+              };
+
+              var origRemoveTrack = window.RTCPeerConnection.prototype.removeTrack;
+
+              window.RTCPeerConnection.prototype.removeTrack = function (sender) {
+                origRemoveTrack.apply(this, arguments);
+
+                var idx = this._senders.indexOf(sender);
+
+                if (idx !== -1) {
+                  this._senders.splice(idx, 1);
+                }
+              };
+            }
+
+            var origAddStream = window.RTCPeerConnection.prototype.addStream;
+
+            window.RTCPeerConnection.prototype.addStream = function (stream) {
+              var _this2 = this;
+
+              this._senders = this._senders || [];
+              origAddStream.apply(this, [stream]);
+              stream.getTracks().forEach(function (track) {
+                _this2._senders.push(shimSenderWithDtmf(_this2, track));
+              });
+            };
+
+            var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+
+            window.RTCPeerConnection.prototype.removeStream = function (stream) {
+              var _this3 = this;
+
+              this._senders = this._senders || [];
+              origRemoveStream.apply(this, [stream]);
+              stream.getTracks().forEach(function (track) {
+                var sender = _this3._senders.find(function (s) {
+                  return s.track === track;
+                });
+
+                if (sender) {
+                  // remove sender
+                  _this3._senders.splice(_this3._senders.indexOf(sender), 1);
+                }
+              });
+            };
+          } else if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && 'getSenders' in window.RTCPeerConnection.prototype && 'createDTMFSender' in window.RTCPeerConnection.prototype && window.RTCRtpSender && !('dtmf' in window.RTCRtpSender.prototype)) {
+            var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+
+            window.RTCPeerConnection.prototype.getSenders = function () {
+              var _this4 = this;
+
+              var senders = origGetSenders.apply(this, []);
+              senders.forEach(function (sender) {
+                return sender._pc = _this4;
+              });
+              return senders;
+            };
+
+            Object.defineProperty(window.RTCRtpSender.prototype, 'dtmf', {
+              get: function get() {
+                if (this._dtmf === undefined) {
+                  if (this.track.kind === 'audio') {
+                    this._dtmf = this._pc.createDTMFSender(this.track);
+                  } else {
+                    this._dtmf = null;
+                  }
+                }
+
+                return this._dtmf;
+              }
+            });
+          }
+        }
+
+        function shimSenderReceiverGetStats(window) {
+          if (!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && window.RTCRtpSender && window.RTCRtpReceiver)) {
+            return;
+          } // shim sender stats.
+
+
+          if (!('getStats' in window.RTCRtpSender.prototype)) {
+            var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+
+            if (origGetSenders) {
+              window.RTCPeerConnection.prototype.getSenders = function () {
+                var _this5 = this;
+
+                var senders = origGetSenders.apply(this, []);
+                senders.forEach(function (sender) {
+                  return sender._pc = _this5;
+                });
+                return senders;
+              };
+            }
+
+            var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+
+            if (origAddTrack) {
+              window.RTCPeerConnection.prototype.addTrack = function () {
+                var sender = origAddTrack.apply(this, arguments);
+                sender._pc = this;
+                return sender;
+              };
+            }
+
+            window.RTCRtpSender.prototype.getStats = function () {
+              var sender = this;
+              return this._pc.getStats().then(function (result) {
+                return (
+                  /* Note: this will include stats of all senders that
+                   *   send a track with the same id as sender.track as
+                   *   it is not possible to identify the RTCRtpSender.
+                   */
+                  filterStats(result, sender.track, true)
+                );
+              });
+            };
+          } // shim receiver stats.
+
+
+          if (!('getStats' in window.RTCRtpReceiver.prototype)) {
+            var origGetReceivers = window.RTCPeerConnection.prototype.getReceivers;
+
+            if (origGetReceivers) {
+              window.RTCPeerConnection.prototype.getReceivers = function () {
+                var _this6 = this;
+
+                var receivers = origGetReceivers.apply(this, []);
+                receivers.forEach(function (receiver) {
+                  return receiver._pc = _this6;
+                });
+                return receivers;
+              };
+            }
+
+            utils.wrapPeerConnectionEvent(window, 'track', function (e) {
+              e.receiver._pc = e.srcElement;
+              return e;
+            });
+
+            window.RTCRtpReceiver.prototype.getStats = function () {
+              var receiver = this;
+              return this._pc.getStats().then(function (result) {
+                return filterStats(result, receiver.track, false);
+              });
+            };
+          }
+
+          if (!('getStats' in window.RTCRtpSender.prototype && 'getStats' in window.RTCRtpReceiver.prototype)) {
+            return;
+          } // shim RTCPeerConnection.getStats(track).
+
+
+          var origGetStats = window.RTCPeerConnection.prototype.getStats;
+
+          window.RTCPeerConnection.prototype.getStats = function () {
+            if (arguments.length > 0 && arguments[0] instanceof window.MediaStreamTrack) {
+              var track = arguments[0];
+              var sender = void 0;
+              var receiver = void 0;
+              var err = void 0;
+              this.getSenders().forEach(function (s) {
+                if (s.track === track) {
+                  if (sender) {
+                    err = true;
+                  } else {
+                    sender = s;
+                  }
+                }
+              });
+              this.getReceivers().forEach(function (r) {
+                if (r.track === track) {
+                  if (receiver) {
+                    err = true;
+                  } else {
+                    receiver = r;
+                  }
+                }
+
+                return r.track === track;
+              });
+
+              if (err || sender && receiver) {
+                return Promise.reject(new DOMException('There are more than one sender or receiver for the track.', 'InvalidAccessError'));
+              } else if (sender) {
+                return sender.getStats();
+              } else if (receiver) {
+                return receiver.getStats();
+              }
+
+              return Promise.reject(new DOMException('There is no sender or receiver for the track.', 'InvalidAccessError'));
+            }
+
+            return origGetStats.apply(this, arguments);
+          };
+        }
+
+        function shimAddTrackRemoveTrackWithNative(window) {
+          // shim addTrack/removeTrack with native variants in order to make
+          // the interactions with legacy getLocalStreams behave as in other browsers.
+          // Keeps a mapping stream.id => [stream, rtpsenders...]
+          window.RTCPeerConnection.prototype.getLocalStreams = function () {
+            var _this7 = this;
+
+            this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+            return Object.keys(this._shimmedLocalStreams).map(function (streamId) {
+              return _this7._shimmedLocalStreams[streamId][0];
+            });
+          };
+
+          var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+
+          window.RTCPeerConnection.prototype.addTrack = function (track, stream) {
+            if (!stream) {
+              return origAddTrack.apply(this, arguments);
+            }
+
+            this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+            var sender = origAddTrack.apply(this, arguments);
+
+            if (!this._shimmedLocalStreams[stream.id]) {
+              this._shimmedLocalStreams[stream.id] = [stream, sender];
+            } else if (this._shimmedLocalStreams[stream.id].indexOf(sender) === -1) {
+              this._shimmedLocalStreams[stream.id].push(sender);
+            }
+
+            return sender;
+          };
+
+          var origAddStream = window.RTCPeerConnection.prototype.addStream;
+
+          window.RTCPeerConnection.prototype.addStream = function (stream) {
+            var _this8 = this;
+
+            this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+            stream.getTracks().forEach(function (track) {
+              var alreadyExists = _this8.getSenders().find(function (s) {
+                return s.track === track;
+              });
+
+              if (alreadyExists) {
+                throw new DOMException('Track already exists.', 'InvalidAccessError');
+              }
+            });
+            var existingSenders = this.getSenders();
+            origAddStream.apply(this, arguments);
+            var newSenders = this.getSenders().filter(function (newSender) {
+              return existingSenders.indexOf(newSender) === -1;
+            });
+            this._shimmedLocalStreams[stream.id] = [stream].concat(newSenders);
+          };
+
+          var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+
+          window.RTCPeerConnection.prototype.removeStream = function (stream) {
+            this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+            delete this._shimmedLocalStreams[stream.id];
+            return origRemoveStream.apply(this, arguments);
+          };
+
+          var origRemoveTrack = window.RTCPeerConnection.prototype.removeTrack;
+
+          window.RTCPeerConnection.prototype.removeTrack = function (sender) {
+            var _this9 = this;
+
+            this._shimmedLocalStreams = this._shimmedLocalStreams || {};
+
+            if (sender) {
+              Object.keys(this._shimmedLocalStreams).forEach(function (streamId) {
+                var idx = _this9._shimmedLocalStreams[streamId].indexOf(sender);
+
+                if (idx !== -1) {
+                  _this9._shimmedLocalStreams[streamId].splice(idx, 1);
+                }
+
+                if (_this9._shimmedLocalStreams[streamId].length === 1) {
+                  delete _this9._shimmedLocalStreams[streamId];
+                }
+              });
+            }
+
+            return origRemoveTrack.apply(this, arguments);
+          };
+        }
+
+        function shimAddTrackRemoveTrack(window) {
+          if (!window.RTCPeerConnection) {
+            return;
+          }
+
+          var browserDetails = utils.detectBrowser(window); // shim addTrack and removeTrack.
+
+          if (window.RTCPeerConnection.prototype.addTrack && browserDetails.version >= 65) {
+            return shimAddTrackRemoveTrackWithNative(window);
+          } // also shim pc.getLocalStreams when addTrack is shimmed
+          // to return the original streams.
+
+
+          var origGetLocalStreams = window.RTCPeerConnection.prototype.getLocalStreams;
+
+          window.RTCPeerConnection.prototype.getLocalStreams = function () {
+            var _this10 = this;
+
+            var nativeStreams = origGetLocalStreams.apply(this);
+            this._reverseStreams = this._reverseStreams || {};
+            return nativeStreams.map(function (stream) {
+              return _this10._reverseStreams[stream.id];
+            });
+          };
+
+          var origAddStream = window.RTCPeerConnection.prototype.addStream;
+
+          window.RTCPeerConnection.prototype.addStream = function (stream) {
+            var _this11 = this;
+
+            this._streams = this._streams || {};
+            this._reverseStreams = this._reverseStreams || {};
+            stream.getTracks().forEach(function (track) {
+              var alreadyExists = _this11.getSenders().find(function (s) {
+                return s.track === track;
+              });
+
+              if (alreadyExists) {
+                throw new DOMException('Track already exists.', 'InvalidAccessError');
+              }
+            }); // Add identity mapping for consistency with addTrack.
+            // Unless this is being used with a stream from addTrack.
+
+            if (!this._reverseStreams[stream.id]) {
+              var newStream = new window.MediaStream(stream.getTracks());
+              this._streams[stream.id] = newStream;
+              this._reverseStreams[newStream.id] = stream;
+              stream = newStream;
+            }
+
+            origAddStream.apply(this, [stream]);
+          };
+
+          var origRemoveStream = window.RTCPeerConnection.prototype.removeStream;
+
+          window.RTCPeerConnection.prototype.removeStream = function (stream) {
+            this._streams = this._streams || {};
+            this._reverseStreams = this._reverseStreams || {};
+            origRemoveStream.apply(this, [this._streams[stream.id] || stream]);
+            delete this._reverseStreams[this._streams[stream.id] ? this._streams[stream.id].id : stream.id];
+            delete this._streams[stream.id];
+          };
+
+          window.RTCPeerConnection.prototype.addTrack = function (track, stream) {
+            var _this12 = this;
+
+            if (this.signalingState === 'closed') {
+              throw new DOMException('The RTCPeerConnection\'s signalingState is \'closed\'.', 'InvalidStateError');
+            }
+
+            var streams = [].slice.call(arguments, 1);
+
+            if (streams.length !== 1 || !streams[0].getTracks().find(function (t) {
+              return t === track;
+            })) {
+              // this is not fully correct but all we can manage without
+              // [[associated MediaStreams]] internal slot.
+              throw new DOMException('The adapter.js addTrack polyfill only supports a single ' + ' stream which is associated with the specified track.', 'NotSupportedError');
+            }
+
+            var alreadyExists = this.getSenders().find(function (s) {
+              return s.track === track;
+            });
+
+            if (alreadyExists) {
+              throw new DOMException('Track already exists.', 'InvalidAccessError');
+            }
+
+            this._streams = this._streams || {};
+            this._reverseStreams = this._reverseStreams || {};
+            var oldStream = this._streams[stream.id];
+
+            if (oldStream) {
+              // this is using odd Chrome behaviour, use with caution:
+              // https://bugs.chromium.org/p/webrtc/issues/detail?id=7815
+              // Note: we rely on the high-level addTrack/dtmf shim to
+              // create the sender with a dtmf sender.
+              oldStream.addTrack(track); // Trigger ONN async.
+
+              Promise.resolve().then(function () {
+                _this12.dispatchEvent(new Event('negotiationneeded'));
+              });
+            } else {
+              var newStream = new window.MediaStream([track]);
+              this._streams[stream.id] = newStream;
+              this._reverseStreams[newStream.id] = stream;
+              this.addStream(newStream);
+            }
+
+            return this.getSenders().find(function (s) {
+              return s.track === track;
+            });
+          }; // replace the internal stream id with the external one and
+          // vice versa.
+
+
+          function replaceInternalStreamId(pc, description) {
+            var sdp = description.sdp;
+            Object.keys(pc._reverseStreams || []).forEach(function (internalId) {
+              var externalStream = pc._reverseStreams[internalId];
+              var internalStream = pc._streams[externalStream.id];
+              sdp = sdp.replace(new RegExp(internalStream.id, 'g'), externalStream.id);
+            });
+            return new RTCSessionDescription({
+              type: description.type,
+              sdp: sdp
+            });
+          }
+
+          function replaceExternalStreamId(pc, description) {
+            var sdp = description.sdp;
+            Object.keys(pc._reverseStreams || []).forEach(function (internalId) {
+              var externalStream = pc._reverseStreams[internalId];
+              var internalStream = pc._streams[externalStream.id];
+              sdp = sdp.replace(new RegExp(externalStream.id, 'g'), internalStream.id);
+            });
+            return new RTCSessionDescription({
+              type: description.type,
+              sdp: sdp
+            });
+          }
+
+          ['createOffer', 'createAnswer'].forEach(function (method) {
+            var nativeMethod = window.RTCPeerConnection.prototype[method];
+
+            window.RTCPeerConnection.prototype[method] = function () {
+              var _this13 = this;
+
+              var args = arguments;
+              var isLegacyCall = arguments.length && typeof arguments[0] === 'function';
+
+              if (isLegacyCall) {
+                return nativeMethod.apply(this, [function (description) {
+                  var desc = replaceInternalStreamId(_this13, description);
+                  args[0].apply(null, [desc]);
+                }, function (err) {
+                  if (args[1]) {
+                    args[1].apply(null, err);
+                  }
+                }, arguments[2]]);
+              }
+
+              return nativeMethod.apply(this, arguments).then(function (description) {
+                return replaceInternalStreamId(_this13, description);
+              });
+            };
+          });
+          var origSetLocalDescription = window.RTCPeerConnection.prototype.setLocalDescription;
+
+          window.RTCPeerConnection.prototype.setLocalDescription = function () {
+            if (!arguments.length || !arguments[0].type) {
+              return origSetLocalDescription.apply(this, arguments);
+            }
+
+            arguments[0] = replaceExternalStreamId(this, arguments[0]);
+            return origSetLocalDescription.apply(this, arguments);
+          }; // TODO: mangle getStats: https://w3c.github.io/webrtc-stats/#dom-rtcmediastreamstats-streamidentifier
+
+
+          var origLocalDescription = Object.getOwnPropertyDescriptor(window.RTCPeerConnection.prototype, 'localDescription');
+          Object.defineProperty(window.RTCPeerConnection.prototype, 'localDescription', {
+            get: function get() {
+              var description = origLocalDescription.get.apply(this);
+
+              if (description.type === '') {
+                return description;
+              }
+
+              return replaceInternalStreamId(this, description);
+            }
+          });
+
+          window.RTCPeerConnection.prototype.removeTrack = function (sender) {
+            var _this14 = this;
+
+            if (this.signalingState === 'closed') {
+              throw new DOMException('The RTCPeerConnection\'s signalingState is \'closed\'.', 'InvalidStateError');
+            } // We can not yet check for sender instanceof RTCRtpSender
+            // since we shim RTPSender. So we check if sender._pc is set.
+
+
+            if (!sender._pc) {
+              throw new DOMException('Argument 1 of RTCPeerConnection.removeTrack ' + 'does not implement interface RTCRtpSender.', 'TypeError');
+            }
+
+            var isLocal = sender._pc === this;
+
+            if (!isLocal) {
+              throw new DOMException('Sender was not created by this connection.', 'InvalidAccessError');
+            } // Search for the native stream the senders track belongs to.
+
+
+            this._streams = this._streams || {};
+            var stream = void 0;
+            Object.keys(this._streams).forEach(function (streamid) {
+              var hasTrack = _this14._streams[streamid].getTracks().find(function (track) {
+                return sender.track === track;
+              });
+
+              if (hasTrack) {
+                stream = _this14._streams[streamid];
+              }
+            });
+
+            if (stream) {
+              if (stream.getTracks().length === 1) {
+                // if this is the last track of the stream, remove the stream. This
+                // takes care of any shimmed _senders.
+                this.removeStream(this._reverseStreams[stream.id]);
+              } else {
+                // relying on the same odd chrome behaviour as above.
+                stream.removeTrack(sender.track);
+              }
+
+              this.dispatchEvent(new Event('negotiationneeded'));
+            }
+          };
+        }
+
+        function shimPeerConnection(window) {
+          if (!window.RTCPeerConnection && window.webkitRTCPeerConnection) {
+            // very basic support for old versions.
+            window.RTCPeerConnection = window.webkitRTCPeerConnection;
+          }
+
+          if (!window.RTCPeerConnection) {
+            return;
+          }
+
+          var origGetStats = window.RTCPeerConnection.prototype.getStats;
+
+          window.RTCPeerConnection.prototype.getStats = function (selector, successCallback, errorCallback) {
+            var _this15 = this;
+
+            var args = arguments; // If selector is a function then we are in the old style stats so just
+            // pass back the original getStats format to avoid breaking old users.
+
+            if (arguments.length > 0 && typeof selector === 'function') {
+              return origGetStats.apply(this, arguments);
+            } // When spec-style getStats is supported, return those when called with
+            // either no arguments or the selector argument is null.
+
+
+            if (origGetStats.length === 0 && (arguments.length === 0 || typeof arguments[0] !== 'function')) {
+              return origGetStats.apply(this, []);
+            }
+
+            var fixChromeStats_ = function fixChromeStats_(response) {
+              var standardReport = {};
+              var reports = response.result();
+              reports.forEach(function (report) {
+                var standardStats = {
+                  id: report.id,
+                  timestamp: report.timestamp,
+                  type: {
+                    localcandidate: 'local-candidate',
+                    remotecandidate: 'remote-candidate'
+                  }[report.type] || report.type
+                };
+                report.names().forEach(function (name) {
+                  standardStats[name] = report.stat(name);
+                });
+                standardReport[standardStats.id] = standardStats;
+              });
+              return standardReport;
+            }; // shim getStats with maplike support
+
+
+            var makeMapStats = function makeMapStats(stats) {
+              return new Map(Object.keys(stats).map(function (key) {
+                return [key, stats[key]];
+              }));
+            };
+
+            if (arguments.length >= 2) {
+              var successCallbackWrapper_ = function successCallbackWrapper_(response) {
+                args[1](makeMapStats(fixChromeStats_(response)));
+              };
+
+              return origGetStats.apply(this, [successCallbackWrapper_, arguments[0]]);
+            } // promise-support
+
+
+            return new Promise(function (resolve, reject) {
+              origGetStats.apply(_this15, [function (response) {
+                resolve(makeMapStats(fixChromeStats_(response)));
+              }, reject]);
+            }).then(successCallback, errorCallback);
+          }; // shim implicit creation of RTCSessionDescription/RTCIceCandidate
+
+
+          ['setLocalDescription', 'setRemoteDescription', 'addIceCandidate'].forEach(function (method) {
+            var nativeMethod = window.RTCPeerConnection.prototype[method];
+
+            window.RTCPeerConnection.prototype[method] = function () {
+              arguments[0] = new (method === 'addIceCandidate' ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
+              return nativeMethod.apply(this, arguments);
+            };
+          }); // support for addIceCandidate(null or undefined)
+
+          var nativeAddIceCandidate = window.RTCPeerConnection.prototype.addIceCandidate;
+
+          window.RTCPeerConnection.prototype.addIceCandidate = function () {
+            if (!arguments[0]) {
+              if (arguments[1]) {
+                arguments[1].apply(null);
+              }
+
+              return Promise.resolve();
+            }
+
+            return nativeAddIceCandidate.apply(this, arguments);
+          };
+        }
+
+        function fixNegotiationNeeded(window) {
+          utils.wrapPeerConnectionEvent(window, 'negotiationneeded', function (e) {
+            var pc = e.target;
+
+            if (pc.signalingState !== 'stable') {
+              return;
+            }
+
+            return e;
+          });
+        }
+      }, {
+        "../utils.js": 11,
+        "./getdisplaymedia": 4,
+        "./getusermedia": 5
+      }],
+      4: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+        exports.shimGetDisplayMedia = shimGetDisplayMedia;
+
+        function shimGetDisplayMedia(window, getSourceId) {
+          if (window.navigator.mediaDevices && 'getDisplayMedia' in window.navigator.mediaDevices) {
+            return;
+          }
+
+          if (!window.navigator.mediaDevices) {
+            return;
+          } // getSourceId is a function that returns a promise resolving with
+          // the sourceId of the screen/window/tab to be shared.
+
+
+          if (typeof getSourceId !== 'function') {
+            console.error('shimGetDisplayMedia: getSourceId argument is not ' + 'a function');
+            return;
+          }
+
+          window.navigator.mediaDevices.getDisplayMedia = function (constraints) {
+            return getSourceId(constraints).then(function (sourceId) {
+              var widthSpecified = constraints.video && constraints.video.width;
+              var heightSpecified = constraints.video && constraints.video.height;
+              var frameRateSpecified = constraints.video && constraints.video.frameRate;
+              constraints.video = {
+                mandatory: {
+                  chromeMediaSource: 'desktop',
+                  chromeMediaSourceId: sourceId,
+                  maxFrameRate: frameRateSpecified || 3
+                }
+              };
+
+              if (widthSpecified) {
+                constraints.video.mandatory.maxWidth = widthSpecified;
+              }
+
+              if (heightSpecified) {
+                constraints.video.mandatory.maxHeight = heightSpecified;
+              }
+
+              return window.navigator.mediaDevices.getUserMedia(constraints);
+            });
+          };
+        }
+      }, {}],
+      5: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        exports.shimGetUserMedia = shimGetUserMedia;
+
+        var _utils = require('../utils.js');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+
+        var logging = utils.log;
+
+        function shimGetUserMedia(window) {
+          var navigator = window && window.navigator;
+
+          if (!navigator.mediaDevices) {
+            return;
+          }
+
+          var browserDetails = utils.detectBrowser(window);
+
+          var constraintsToChrome_ = function constraintsToChrome_(c) {
+            if ((typeof c === 'undefined' ? 'undefined' : _typeof(c)) !== 'object' || c.mandatory || c.optional) {
+              return c;
+            }
+
+            var cc = {};
+            Object.keys(c).forEach(function (key) {
+              if (key === 'require' || key === 'advanced' || key === 'mediaSource') {
+                return;
+              }
+
+              var r = _typeof(c[key]) === 'object' ? c[key] : {
+                ideal: c[key]
+              };
+
+              if (r.exact !== undefined && typeof r.exact === 'number') {
+                r.min = r.max = r.exact;
+              }
+
+              var oldname_ = function oldname_(prefix, name) {
+                if (prefix) {
+                  return prefix + name.charAt(0).toUpperCase() + name.slice(1);
+                }
+
+                return name === 'deviceId' ? 'sourceId' : name;
+              };
+
+              if (r.ideal !== undefined) {
+                cc.optional = cc.optional || [];
+                var oc = {};
+
+                if (typeof r.ideal === 'number') {
+                  oc[oldname_('min', key)] = r.ideal;
+                  cc.optional.push(oc);
+                  oc = {};
+                  oc[oldname_('max', key)] = r.ideal;
+                  cc.optional.push(oc);
+                } else {
+                  oc[oldname_('', key)] = r.ideal;
+                  cc.optional.push(oc);
+                }
+              }
+
+              if (r.exact !== undefined && typeof r.exact !== 'number') {
+                cc.mandatory = cc.mandatory || {};
+                cc.mandatory[oldname_('', key)] = r.exact;
+              } else {
+                ['min', 'max'].forEach(function (mix) {
+                  if (r[mix] !== undefined) {
+                    cc.mandatory = cc.mandatory || {};
+                    cc.mandatory[oldname_(mix, key)] = r[mix];
+                  }
+                });
+              }
+            });
+
+            if (c.advanced) {
+              cc.optional = (cc.optional || []).concat(c.advanced);
+            }
+
+            return cc;
+          };
+
+          var shimConstraints_ = function shimConstraints_(constraints, func) {
+            if (browserDetails.version >= 61) {
+              return func(constraints);
+            }
+
+            constraints = JSON.parse(JSON.stringify(constraints));
+
+            if (constraints && _typeof(constraints.audio) === 'object') {
+              var remap = function remap(obj, a, b) {
+                if (a in obj && !(b in obj)) {
+                  obj[b] = obj[a];
+                  delete obj[a];
+                }
+              };
+
+              constraints = JSON.parse(JSON.stringify(constraints));
+              remap(constraints.audio, 'autoGainControl', 'googAutoGainControl');
+              remap(constraints.audio, 'noiseSuppression', 'googNoiseSuppression');
+              constraints.audio = constraintsToChrome_(constraints.audio);
+            }
+
+            if (constraints && _typeof(constraints.video) === 'object') {
+              // Shim facingMode for mobile & surface pro.
+              var face = constraints.video.facingMode;
+              face = face && ((typeof face === 'undefined' ? 'undefined' : _typeof(face)) === 'object' ? face : {
+                ideal: face
+              });
+              var getSupportedFacingModeLies = browserDetails.version < 66;
+
+              if (face && (face.exact === 'user' || face.exact === 'environment' || face.ideal === 'user' || face.ideal === 'environment') && !(navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().facingMode && !getSupportedFacingModeLies)) {
+                delete constraints.video.facingMode;
+                var matches = void 0;
+
+                if (face.exact === 'environment' || face.ideal === 'environment') {
+                  matches = ['back', 'rear'];
+                } else if (face.exact === 'user' || face.ideal === 'user') {
+                  matches = ['front'];
+                }
+
+                if (matches) {
+                  // Look for matches in label, or use last cam for back (typical).
+                  return navigator.mediaDevices.enumerateDevices().then(function (devices) {
+                    devices = devices.filter(function (d) {
+                      return d.kind === 'videoinput';
+                    });
+                    var dev = devices.find(function (d) {
+                      return matches.some(function (match) {
+                        return d.label.toLowerCase().includes(match);
+                      });
+                    });
+
+                    if (!dev && devices.length && matches.includes('back')) {
+                      dev = devices[devices.length - 1]; // more likely the back cam
+                    }
+
+                    if (dev) {
+                      constraints.video.deviceId = face.exact ? {
+                        exact: dev.deviceId
+                      } : {
+                        ideal: dev.deviceId
+                      };
+                    }
+
+                    constraints.video = constraintsToChrome_(constraints.video);
+                    logging('chrome: ' + JSON.stringify(constraints));
+                    return func(constraints);
+                  });
+                }
+              }
+
+              constraints.video = constraintsToChrome_(constraints.video);
+            }
+
+            logging('chrome: ' + JSON.stringify(constraints));
+            return func(constraints);
+          };
+
+          var shimError_ = function shimError_(e) {
+            if (browserDetails.version >= 64) {
+              return e;
+            }
+
+            return {
+              name: {
+                PermissionDeniedError: 'NotAllowedError',
+                PermissionDismissedError: 'NotAllowedError',
+                InvalidStateError: 'NotAllowedError',
+                DevicesNotFoundError: 'NotFoundError',
+                ConstraintNotSatisfiedError: 'OverconstrainedError',
+                TrackStartError: 'NotReadableError',
+                MediaDeviceFailedDueToShutdown: 'NotAllowedError',
+                MediaDeviceKillSwitchOn: 'NotAllowedError',
+                TabCaptureError: 'AbortError',
+                ScreenCaptureError: 'AbortError',
+                DeviceCaptureError: 'AbortError'
+              }[e.name] || e.name,
+              message: e.message,
+              constraint: e.constraint || e.constraintName,
+              toString: function toString() {
+                return this.name + (this.message && ': ') + this.message;
+              }
+            };
+          };
+
+          var getUserMedia_ = function getUserMedia_(constraints, onSuccess, onError) {
+            shimConstraints_(constraints, function (c) {
+              navigator.webkitGetUserMedia(c, onSuccess, function (e) {
+                if (onError) {
+                  onError(shimError_(e));
+                }
+              });
+            });
+          };
+
+          navigator.getUserMedia = getUserMedia_.bind(navigator); // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
+          // function which returns a Promise, it does not accept spec-style
+          // constraints.
+
+          var origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+
+          navigator.mediaDevices.getUserMedia = function (cs) {
+            return shimConstraints_(cs, function (c) {
+              return origGetUserMedia(c).then(function (stream) {
+                if (c.audio && !stream.getAudioTracks().length || c.video && !stream.getVideoTracks().length) {
+                  stream.getTracks().forEach(function (track) {
+                    track.stop();
+                  });
+                  throw new DOMException('', 'NotFoundError');
+                }
+
+                return stream;
+              }, function (e) {
+                return Promise.reject(shimError_(e));
+              });
+            });
+          };
+        }
+      }, {
+        "../utils.js": 11
+      }],
+      6: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        exports.shimRTCIceCandidate = shimRTCIceCandidate;
+        exports.shimMaxMessageSize = shimMaxMessageSize;
+        exports.shimSendThrowTypeError = shimSendThrowTypeError;
+        exports.shimConnectionState = shimConnectionState;
+        exports.removeAllowExtmapMixed = removeAllowExtmapMixed;
+
+        var _sdp = require('sdp');
+
+        var _sdp2 = _interopRequireDefault(_sdp);
+
+        var _utils = require('./utils');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+
+        function _interopRequireDefault(obj) {
+          return obj && obj.__esModule ? obj : {
+            default: obj
+          };
+        }
+
+        function shimRTCIceCandidate(window) {
+          // foundation is arbitrarily chosen as an indicator for full support for
+          // https://w3c.github.io/webrtc-pc/#rtcicecandidate-interface
+          if (!window.RTCIceCandidate || window.RTCIceCandidate && 'foundation' in window.RTCIceCandidate.prototype) {
+            return;
+          }
+
+          var NativeRTCIceCandidate = window.RTCIceCandidate;
+
+          window.RTCIceCandidate = function (args) {
+            // Remove the a= which shouldn't be part of the candidate string.
+            if ((typeof args === 'undefined' ? 'undefined' : _typeof(args)) === 'object' && args.candidate && args.candidate.indexOf('a=') === 0) {
+              args = JSON.parse(JSON.stringify(args));
+              args.candidate = args.candidate.substr(2);
+            }
+
+            if (args.candidate && args.candidate.length) {
+              // Augment the native candidate with the parsed fields.
+              var nativeCandidate = new NativeRTCIceCandidate(args);
+
+              var parsedCandidate = _sdp2.default.parseCandidate(args.candidate);
+
+              var augmentedCandidate = Object.assign(nativeCandidate, parsedCandidate); // Add a serializer that does not serialize the extra attributes.
+
+              augmentedCandidate.toJSON = function () {
+                return {
+                  candidate: augmentedCandidate.candidate,
+                  sdpMid: augmentedCandidate.sdpMid,
+                  sdpMLineIndex: augmentedCandidate.sdpMLineIndex,
+                  usernameFragment: augmentedCandidate.usernameFragment
+                };
+              };
+
+              return augmentedCandidate;
+            }
+
+            return new NativeRTCIceCandidate(args);
+          };
+
+          window.RTCIceCandidate.prototype = NativeRTCIceCandidate.prototype; // Hook up the augmented candidate in onicecandidate and
+          // addEventListener('icecandidate', ...)
+
+          utils.wrapPeerConnectionEvent(window, 'icecandidate', function (e) {
+            if (e.candidate) {
+              Object.defineProperty(e, 'candidate', {
+                value: new window.RTCIceCandidate(e.candidate),
+                writable: 'false'
+              });
+            }
+
+            return e;
+          });
+        }
+
+        function shimMaxMessageSize(window) {
+          if (window.RTCSctpTransport || !window.RTCPeerConnection) {
+            return;
+          }
+
+          var browserDetails = utils.detectBrowser(window);
+
+          if (!('sctp' in window.RTCPeerConnection.prototype)) {
+            Object.defineProperty(window.RTCPeerConnection.prototype, 'sctp', {
+              get: function get() {
+                return typeof this._sctp === 'undefined' ? null : this._sctp;
+              }
+            });
+          }
+
+          var sctpInDescription = function sctpInDescription(description) {
+            var sections = _sdp2.default.splitSections(description.sdp);
+
+            sections.shift();
+            return sections.some(function (mediaSection) {
+              var mLine = _sdp2.default.parseMLine(mediaSection);
+
+              return mLine && mLine.kind === 'application' && mLine.protocol.indexOf('SCTP') !== -1;
+            });
+          };
+
+          var getRemoteFirefoxVersion = function getRemoteFirefoxVersion(description) {
+            // TODO: Is there a better solution for detecting Firefox?
+            var match = description.sdp.match(/mozilla...THIS_IS_SDPARTA-(\d+)/);
+
+            if (match === null || match.length < 2) {
+              return -1;
+            }
+
+            var version = parseInt(match[1], 10); // Test for NaN (yes, this is ugly)
+
+            return version !== version ? -1 : version;
+          };
+
+          var getCanSendMaxMessageSize = function getCanSendMaxMessageSize(remoteIsFirefox) {
+            // Every implementation we know can send at least 64 KiB.
+            // Note: Although Chrome is technically able to send up to 256 KiB, the
+            //       data does not reach the other peer reliably.
+            //       See: https://bugs.chromium.org/p/webrtc/issues/detail?id=8419
+            var canSendMaxMessageSize = 65536;
+
+            if (browserDetails.browser === 'firefox') {
+              if (browserDetails.version < 57) {
+                if (remoteIsFirefox === -1) {
+                  // FF < 57 will send in 16 KiB chunks using the deprecated PPID
+                  // fragmentation.
+                  canSendMaxMessageSize = 16384;
+                } else {
+                  // However, other FF (and RAWRTC) can reassemble PPID-fragmented
+                  // messages. Thus, supporting ~2 GiB when sending.
+                  canSendMaxMessageSize = 2147483637;
+                }
+              } else if (browserDetails.version < 60) {
+                // Currently, all FF >= 57 will reset the remote maximum message size
+                // to the default value when a data channel is created at a later
+                // stage. :(
+                // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1426831
+                canSendMaxMessageSize = browserDetails.version === 57 ? 65535 : 65536;
+              } else {
+                // FF >= 60 supports sending ~2 GiB
+                canSendMaxMessageSize = 2147483637;
+              }
+            }
+
+            return canSendMaxMessageSize;
+          };
+
+          var getMaxMessageSize = function getMaxMessageSize(description, remoteIsFirefox) {
+            // Note: 65536 bytes is the default value from the SDP spec. Also,
+            //       every implementation we know supports receiving 65536 bytes.
+            var maxMessageSize = 65536; // FF 57 has a slightly incorrect default remote max message size, so
+            // we need to adjust it here to avoid a failure when sending.
+            // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1425697
+
+            if (browserDetails.browser === 'firefox' && browserDetails.version === 57) {
+              maxMessageSize = 65535;
+            }
+
+            var match = _sdp2.default.matchPrefix(description.sdp, 'a=max-message-size:');
+
+            if (match.length > 0) {
+              maxMessageSize = parseInt(match[0].substr(19), 10);
+            } else if (browserDetails.browser === 'firefox' && remoteIsFirefox !== -1) {
+              // If the maximum message size is not present in the remote SDP and
+              // both local and remote are Firefox, the remote peer can receive
+              // ~2 GiB.
+              maxMessageSize = 2147483637;
+            }
+
+            return maxMessageSize;
+          };
+
+          var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+
+          window.RTCPeerConnection.prototype.setRemoteDescription = function () {
+            this._sctp = null;
+
+            if (sctpInDescription(arguments[0])) {
+              // Check if the remote is FF.
+              var isFirefox = getRemoteFirefoxVersion(arguments[0]); // Get the maximum message size the local peer is capable of sending
+
+              var canSendMMS = getCanSendMaxMessageSize(isFirefox); // Get the maximum message size of the remote peer.
+
+              var remoteMMS = getMaxMessageSize(arguments[0], isFirefox); // Determine final maximum message size
+
+              var maxMessageSize = void 0;
+
+              if (canSendMMS === 0 && remoteMMS === 0) {
+                maxMessageSize = Number.POSITIVE_INFINITY;
+              } else if (canSendMMS === 0 || remoteMMS === 0) {
+                maxMessageSize = Math.max(canSendMMS, remoteMMS);
+              } else {
+                maxMessageSize = Math.min(canSendMMS, remoteMMS);
+              } // Create a dummy RTCSctpTransport object and the 'maxMessageSize'
+              // attribute.
+
+
+              var sctp = {};
+              Object.defineProperty(sctp, 'maxMessageSize', {
+                get: function get() {
+                  return maxMessageSize;
+                }
+              });
+              this._sctp = sctp;
+            }
+
+            return origSetRemoteDescription.apply(this, arguments);
+          };
+        }
+
+        function shimSendThrowTypeError(window) {
+          if (!(window.RTCPeerConnection && 'createDataChannel' in window.RTCPeerConnection.prototype)) {
+            return;
+          } // Note: Although Firefox >= 57 has a native implementation, the maximum
+          //       message size can be reset for all data channels at a later stage.
+          //       See: https://bugzilla.mozilla.org/show_bug.cgi?id=1426831
+
+
+          function wrapDcSend(dc, pc) {
+            var origDataChannelSend = dc.send;
+
+            dc.send = function () {
+              var data = arguments[0];
+              var length = data.length || data.size || data.byteLength;
+
+              if (dc.readyState === 'open' && pc.sctp && length > pc.sctp.maxMessageSize) {
+                throw new TypeError('Message too large (can send a maximum of ' + pc.sctp.maxMessageSize + ' bytes)');
+              }
+
+              return origDataChannelSend.apply(dc, arguments);
+            };
+          }
+
+          var origCreateDataChannel = window.RTCPeerConnection.prototype.createDataChannel;
+
+          window.RTCPeerConnection.prototype.createDataChannel = function () {
+            var dataChannel = origCreateDataChannel.apply(this, arguments);
+            wrapDcSend(dataChannel, this);
+            return dataChannel;
+          };
+
+          utils.wrapPeerConnectionEvent(window, 'datachannel', function (e) {
+            wrapDcSend(e.channel, e.target);
+            return e;
+          });
+        }
+        /* shims RTCConnectionState by pretending it is the same as iceConnectionState.
+         * See https://bugs.chromium.org/p/webrtc/issues/detail?id=6145#c12
+         * for why this is a valid hack in Chrome. In Firefox it is slightly incorrect
+         * since DTLS failures would be hidden. See
+         * https://bugzilla.mozilla.org/show_bug.cgi?id=1265827
+         * for the Firefox tracking bug.
+         */
+
+
+        function shimConnectionState(window) {
+          if (!window.RTCPeerConnection || 'connectionState' in window.RTCPeerConnection.prototype) {
+            return;
+          }
+
+          var proto = window.RTCPeerConnection.prototype;
+          Object.defineProperty(proto, 'connectionState', {
+            get: function get() {
+              return {
+                completed: 'connected',
+                checking: 'connecting'
+              }[this.iceConnectionState] || this.iceConnectionState;
+            },
+            enumerable: true,
+            configurable: true
+          });
+          Object.defineProperty(proto, 'onconnectionstatechange', {
+            get: function get() {
+              return this._onconnectionstatechange || null;
+            },
+            set: function set(cb) {
+              if (this._onconnectionstatechange) {
+                this.removeEventListener('connectionstatechange', this._onconnectionstatechange);
+                delete this._onconnectionstatechange;
+              }
+
+              if (cb) {
+                this.addEventListener('connectionstatechange', this._onconnectionstatechange = cb);
+              }
+            },
+            enumerable: true,
+            configurable: true
+          });
+          ['setLocalDescription', 'setRemoteDescription'].forEach(function (method) {
+            var origMethod = proto[method];
+
+            proto[method] = function () {
+              if (!this._connectionstatechangepoly) {
+                this._connectionstatechangepoly = function (e) {
+                  var pc = e.target;
+
+                  if (pc._lastConnectionState !== pc.connectionState) {
+                    pc._lastConnectionState = pc.connectionState;
+                    var newEvent = new Event('connectionstatechange', e);
+                    pc.dispatchEvent(newEvent);
+                  }
+
+                  return e;
+                };
+
+                this.addEventListener('iceconnectionstatechange', this._connectionstatechangepoly);
+              }
+
+              return origMethod.apply(this, arguments);
+            };
+          });
+        }
+
+        function removeAllowExtmapMixed(window) {
+          /* remove a=extmap-allow-mixed for Chrome < M71 */
+          if (!window.RTCPeerConnection) {
+            return;
+          }
+
+          var browserDetails = utils.detectBrowser(window);
+
+          if (browserDetails.browser === 'chrome' && browserDetails.version >= 71) {
+            return;
+          }
+
+          var nativeSRD = window.RTCPeerConnection.prototype.setRemoteDescription;
+
+          window.RTCPeerConnection.prototype.setRemoteDescription = function (desc) {
+            if (desc && desc.sdp && desc.sdp.indexOf('\na=extmap-allow-mixed') !== -1) {
+              desc.sdp = desc.sdp.split('\n').filter(function (line) {
+                return line.trim() !== 'a=extmap-allow-mixed';
+              }).join('\n');
+            }
+
+            return nativeSRD.apply(this, arguments);
+          };
+        }
+      }, {
+        "./utils": 11,
+        "sdp": 13
+      }],
+      7: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+        exports.shimGetDisplayMedia = exports.shimGetUserMedia = undefined;
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        var _getusermedia = require('./getusermedia');
+
+        Object.defineProperty(exports, 'shimGetUserMedia', {
+          enumerable: true,
+          get: function get() {
+            return _getusermedia.shimGetUserMedia;
+          }
+        });
+
+        var _getdisplaymedia = require('./getdisplaymedia');
+
+        Object.defineProperty(exports, 'shimGetDisplayMedia', {
+          enumerable: true,
+          get: function get() {
+            return _getdisplaymedia.shimGetDisplayMedia;
+          }
+        });
+        exports.shimOnTrack = shimOnTrack;
+        exports.shimPeerConnection = shimPeerConnection;
+        exports.shimSenderGetStats = shimSenderGetStats;
+        exports.shimReceiverGetStats = shimReceiverGetStats;
+        exports.shimRemoveStream = shimRemoveStream;
+        exports.shimRTCDataChannel = shimRTCDataChannel;
+
+        var _utils = require('../utils');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+
+        function shimOnTrack(window) {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCTrackEvent && 'receiver' in window.RTCTrackEvent.prototype && !('transceiver' in window.RTCTrackEvent.prototype)) {
+            Object.defineProperty(window.RTCTrackEvent.prototype, 'transceiver', {
+              get: function get() {
+                return {
+                  receiver: this.receiver
+                };
+              }
+            });
+          }
+        }
+
+        function shimPeerConnection(window) {
+          var browserDetails = utils.detectBrowser(window);
+
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !(window.RTCPeerConnection || window.mozRTCPeerConnection)) {
+            return; // probably media.peerconnection.enabled=false in about:config
+          }
+
+          if (!window.RTCPeerConnection && window.mozRTCPeerConnection) {
+            // very basic support for old versions.
+            window.RTCPeerConnection = window.mozRTCPeerConnection;
+          } // shim away need for obsolete RTCIceCandidate/RTCSessionDescription.
+
+
+          ['setLocalDescription', 'setRemoteDescription', 'addIceCandidate'].forEach(function (method) {
+            var nativeMethod = window.RTCPeerConnection.prototype[method];
+
+            window.RTCPeerConnection.prototype[method] = function () {
+              arguments[0] = new (method === 'addIceCandidate' ? window.RTCIceCandidate : window.RTCSessionDescription)(arguments[0]);
+              return nativeMethod.apply(this, arguments);
+            };
+          }); // support for addIceCandidate(null or undefined)
+
+          var nativeAddIceCandidate = window.RTCPeerConnection.prototype.addIceCandidate;
+
+          window.RTCPeerConnection.prototype.addIceCandidate = function () {
+            if (!arguments[0]) {
+              if (arguments[1]) {
+                arguments[1].apply(null);
+              }
+
+              return Promise.resolve();
+            }
+
+            return nativeAddIceCandidate.apply(this, arguments);
+          };
+
+          var modernStatsTypes = {
+            inboundrtp: 'inbound-rtp',
+            outboundrtp: 'outbound-rtp',
+            candidatepair: 'candidate-pair',
+            localcandidate: 'local-candidate',
+            remotecandidate: 'remote-candidate'
+          };
+          var nativeGetStats = window.RTCPeerConnection.prototype.getStats;
+
+          window.RTCPeerConnection.prototype.getStats = function (selector, onSucc, onErr) {
+            return nativeGetStats.apply(this, [selector || null]).then(function (stats) {
+              if (browserDetails.version < 53 && !onSucc) {
+                // Shim only promise getStats with spec-hyphens in type names
+                // Leave callback version alone; misc old uses of forEach before Map
+                try {
+                  stats.forEach(function (stat) {
+                    stat.type = modernStatsTypes[stat.type] || stat.type;
+                  });
+                } catch (e) {
+                  if (e.name !== 'TypeError') {
+                    throw e;
+                  } // Avoid TypeError: "type" is read-only, in old versions. 34-43ish
+
+
+                  stats.forEach(function (stat, i) {
+                    stats.set(i, Object.assign({}, stat, {
+                      type: modernStatsTypes[stat.type] || stat.type
+                    }));
+                  });
+                }
+              }
+
+              return stats;
+            }).then(onSucc, onErr);
+          };
+        }
+
+        function shimSenderGetStats(window) {
+          if (!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && window.RTCRtpSender)) {
+            return;
+          }
+
+          if (window.RTCRtpSender && 'getStats' in window.RTCRtpSender.prototype) {
+            return;
+          }
+
+          var origGetSenders = window.RTCPeerConnection.prototype.getSenders;
+
+          if (origGetSenders) {
+            window.RTCPeerConnection.prototype.getSenders = function () {
+              var _this = this;
+
+              var senders = origGetSenders.apply(this, []);
+              senders.forEach(function (sender) {
+                return sender._pc = _this;
+              });
+              return senders;
+            };
+          }
+
+          var origAddTrack = window.RTCPeerConnection.prototype.addTrack;
+
+          if (origAddTrack) {
+            window.RTCPeerConnection.prototype.addTrack = function () {
+              var sender = origAddTrack.apply(this, arguments);
+              sender._pc = this;
+              return sender;
+            };
+          }
+
+          window.RTCRtpSender.prototype.getStats = function () {
+            return this.track ? this._pc.getStats(this.track) : Promise.resolve(new Map());
+          };
+        }
+
+        function shimReceiverGetStats(window) {
+          if (!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && window.RTCRtpSender)) {
+            return;
+          }
+
+          if (window.RTCRtpSender && 'getStats' in window.RTCRtpReceiver.prototype) {
+            return;
+          }
+
+          var origGetReceivers = window.RTCPeerConnection.prototype.getReceivers;
+
+          if (origGetReceivers) {
+            window.RTCPeerConnection.prototype.getReceivers = function () {
+              var _this2 = this;
+
+              var receivers = origGetReceivers.apply(this, []);
+              receivers.forEach(function (receiver) {
+                return receiver._pc = _this2;
+              });
+              return receivers;
+            };
+          }
+
+          utils.wrapPeerConnectionEvent(window, 'track', function (e) {
+            e.receiver._pc = e.srcElement;
+            return e;
+          });
+
+          window.RTCRtpReceiver.prototype.getStats = function () {
+            return this._pc.getStats(this.track);
+          };
+        }
+
+        function shimRemoveStream(window) {
+          if (!window.RTCPeerConnection || 'removeStream' in window.RTCPeerConnection.prototype) {
+            return;
+          }
+
+          window.RTCPeerConnection.prototype.removeStream = function (stream) {
+            var _this3 = this;
+
+            utils.deprecated('removeStream', 'removeTrack');
+            this.getSenders().forEach(function (sender) {
+              if (sender.track && stream.getTracks().includes(sender.track)) {
+                _this3.removeTrack(sender);
+              }
+            });
+          };
+        }
+
+        function shimRTCDataChannel(window) {
+          // rename DataChannel to RTCDataChannel (native fix in FF60):
+          // https://bugzilla.mozilla.org/show_bug.cgi?id=1173851
+          if (window.DataChannel && !window.RTCDataChannel) {
+            window.RTCDataChannel = window.DataChannel;
+          }
+        }
+      }, {
+        "../utils": 11,
+        "./getdisplaymedia": 8,
+        "./getusermedia": 9
+      }],
+      8: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+        exports.shimGetDisplayMedia = shimGetDisplayMedia;
+
+        function shimGetDisplayMedia(window, preferredMediaSource) {
+          if (window.navigator.mediaDevices && 'getDisplayMedia' in window.navigator.mediaDevices) {
+            return;
+          }
+
+          if (!window.navigator.mediaDevices) {
+            return;
+          }
+
+          window.navigator.mediaDevices.getDisplayMedia = function (constraints) {
+            if (!(constraints && constraints.video)) {
+              var err = new DOMException('getDisplayMedia without video ' + 'constraints is undefined');
+              err.name = 'NotFoundError'; // from https://heycam.github.io/webidl/#idl-DOMException-error-names
+
+              err.code = 8;
+              return Promise.reject(err);
+            }
+
+            if (constraints.video === true) {
+              constraints.video = {
+                mediaSource: preferredMediaSource
+              };
+            } else {
+              constraints.video.mediaSource = preferredMediaSource;
+            }
+
+            return window.navigator.mediaDevices.getUserMedia(constraints);
+          };
+        }
+      }, {}],
+      9: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        exports.shimGetUserMedia = shimGetUserMedia;
+
+        var _utils = require('../utils');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+
+        function shimGetUserMedia(window) {
+          var browserDetails = utils.detectBrowser(window);
+          var navigator = window && window.navigator;
+          var MediaStreamTrack = window && window.MediaStreamTrack;
+
+          navigator.getUserMedia = function (constraints, onSuccess, onError) {
+            // Replace Firefox 44+'s deprecation warning with unprefixed version.
+            utils.deprecated('navigator.getUserMedia', 'navigator.mediaDevices.getUserMedia');
+            navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
+          };
+
+          if (!(browserDetails.version > 55 && 'autoGainControl' in navigator.mediaDevices.getSupportedConstraints())) {
+            var remap = function remap(obj, a, b) {
+              if (a in obj && !(b in obj)) {
+                obj[b] = obj[a];
+                delete obj[a];
+              }
+            };
+
+            var nativeGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+
+            navigator.mediaDevices.getUserMedia = function (c) {
+              if ((typeof c === 'undefined' ? 'undefined' : _typeof(c)) === 'object' && _typeof(c.audio) === 'object') {
+                c = JSON.parse(JSON.stringify(c));
+                remap(c.audio, 'autoGainControl', 'mozAutoGainControl');
+                remap(c.audio, 'noiseSuppression', 'mozNoiseSuppression');
+              }
+
+              return nativeGetUserMedia(c);
+            };
+
+            if (MediaStreamTrack && MediaStreamTrack.prototype.getSettings) {
+              var nativeGetSettings = MediaStreamTrack.prototype.getSettings;
+
+              MediaStreamTrack.prototype.getSettings = function () {
+                var obj = nativeGetSettings.apply(this, arguments);
+                remap(obj, 'mozAutoGainControl', 'autoGainControl');
+                remap(obj, 'mozNoiseSuppression', 'noiseSuppression');
+                return obj;
+              };
+            }
+
+            if (MediaStreamTrack && MediaStreamTrack.prototype.applyConstraints) {
+              var nativeApplyConstraints = MediaStreamTrack.prototype.applyConstraints;
+
+              MediaStreamTrack.prototype.applyConstraints = function (c) {
+                if (this.kind === 'audio' && (typeof c === 'undefined' ? 'undefined' : _typeof(c)) === 'object') {
+                  c = JSON.parse(JSON.stringify(c));
+                  remap(c, 'autoGainControl', 'mozAutoGainControl');
+                  remap(c, 'noiseSuppression', 'mozNoiseSuppression');
+                }
+
+                return nativeApplyConstraints.apply(this, [c]);
+              };
+            }
+          }
+        }
+      }, {
+        "../utils": 11
+      }],
+      10: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        exports.shimLocalStreamsAPI = shimLocalStreamsAPI;
+        exports.shimRemoteStreamsAPI = shimRemoteStreamsAPI;
+        exports.shimCallbacksAPI = shimCallbacksAPI;
+        exports.shimGetUserMedia = shimGetUserMedia;
+        exports.shimConstraints = shimConstraints;
+        exports.shimRTCIceServerUrls = shimRTCIceServerUrls;
+        exports.shimTrackEventTransceiver = shimTrackEventTransceiver;
+        exports.shimCreateOfferLegacy = shimCreateOfferLegacy;
+
+        var _utils = require('../utils');
+
+        var utils = _interopRequireWildcard(_utils);
+
+        function _interopRequireWildcard(obj) {
+          if (obj && obj.__esModule) {
+            return obj;
+          } else {
+            var newObj = {};
+
+            if (obj != null) {
+              for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+              }
+            }
+
+            newObj.default = obj;
+            return newObj;
+          }
+        }
+
+        function shimLocalStreamsAPI(window) {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !window.RTCPeerConnection) {
+            return;
+          }
+
+          if (!('getLocalStreams' in window.RTCPeerConnection.prototype)) {
+            window.RTCPeerConnection.prototype.getLocalStreams = function () {
+              if (!this._localStreams) {
+                this._localStreams = [];
+              }
+
+              return this._localStreams;
+            };
+          }
+
+          if (!('addStream' in window.RTCPeerConnection.prototype)) {
+            var _addTrack = window.RTCPeerConnection.prototype.addTrack;
+
+            window.RTCPeerConnection.prototype.addStream = function (stream) {
+              var _this = this;
+
+              if (!this._localStreams) {
+                this._localStreams = [];
+              }
+
+              if (!this._localStreams.includes(stream)) {
+                this._localStreams.push(stream);
+              }
+
+              stream.getTracks().forEach(function (track) {
+                return _addTrack.call(_this, track, stream);
+              });
+            };
+
+            window.RTCPeerConnection.prototype.addTrack = function (track, stream) {
+              if (stream) {
+                if (!this._localStreams) {
+                  this._localStreams = [stream];
+                } else if (!this._localStreams.includes(stream)) {
+                  this._localStreams.push(stream);
+                }
+              }
+
+              return _addTrack.call(this, track, stream);
+            };
+          }
+
+          if (!('removeStream' in window.RTCPeerConnection.prototype)) {
+            window.RTCPeerConnection.prototype.removeStream = function (stream) {
+              var _this2 = this;
+
+              if (!this._localStreams) {
+                this._localStreams = [];
+              }
+
+              var index = this._localStreams.indexOf(stream);
+
+              if (index === -1) {
+                return;
+              }
+
+              this._localStreams.splice(index, 1);
+
+              var tracks = stream.getTracks();
+              this.getSenders().forEach(function (sender) {
+                if (tracks.includes(sender.track)) {
+                  _this2.removeTrack(sender);
+                }
+              });
+            };
+          }
+        }
+
+        function shimRemoteStreamsAPI(window) {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !window.RTCPeerConnection) {
+            return;
+          }
+
+          if (!('getRemoteStreams' in window.RTCPeerConnection.prototype)) {
+            window.RTCPeerConnection.prototype.getRemoteStreams = function () {
+              return this._remoteStreams ? this._remoteStreams : [];
+            };
+          }
+
+          if (!('onaddstream' in window.RTCPeerConnection.prototype)) {
+            Object.defineProperty(window.RTCPeerConnection.prototype, 'onaddstream', {
+              get: function get() {
+                return this._onaddstream;
+              },
+              set: function set(f) {
+                var _this3 = this;
+
+                if (this._onaddstream) {
+                  this.removeEventListener('addstream', this._onaddstream);
+                  this.removeEventListener('track', this._onaddstreampoly);
+                }
+
+                this.addEventListener('addstream', this._onaddstream = f);
+                this.addEventListener('track', this._onaddstreampoly = function (e) {
+                  e.streams.forEach(function (stream) {
+                    if (!_this3._remoteStreams) {
+                      _this3._remoteStreams = [];
+                    }
+
+                    if (_this3._remoteStreams.includes(stream)) {
+                      return;
+                    }
+
+                    _this3._remoteStreams.push(stream);
+
+                    var event = new Event('addstream');
+                    event.stream = stream;
+
+                    _this3.dispatchEvent(event);
+                  });
+                });
+              }
+            });
+            var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
+
+            window.RTCPeerConnection.prototype.setRemoteDescription = function () {
+              var pc = this;
+
+              if (!this._onaddstreampoly) {
+                this.addEventListener('track', this._onaddstreampoly = function (e) {
+                  e.streams.forEach(function (stream) {
+                    if (!pc._remoteStreams) {
+                      pc._remoteStreams = [];
+                    }
+
+                    if (pc._remoteStreams.indexOf(stream) >= 0) {
+                      return;
+                    }
+
+                    pc._remoteStreams.push(stream);
+
+                    var event = new Event('addstream');
+                    event.stream = stream;
+                    pc.dispatchEvent(event);
+                  });
+                });
+              }
+
+              return origSetRemoteDescription.apply(pc, arguments);
+            };
+          }
+        }
+
+        function shimCallbacksAPI(window) {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !window.RTCPeerConnection) {
+            return;
+          }
+
+          var prototype = window.RTCPeerConnection.prototype;
+          var createOffer = prototype.createOffer;
+          var createAnswer = prototype.createAnswer;
+          var setLocalDescription = prototype.setLocalDescription;
+          var setRemoteDescription = prototype.setRemoteDescription;
+          var addIceCandidate = prototype.addIceCandidate;
+
+          prototype.createOffer = function (successCallback, failureCallback) {
+            var options = arguments.length >= 2 ? arguments[2] : arguments[0];
+            var promise = createOffer.apply(this, [options]);
+
+            if (!failureCallback) {
+              return promise;
+            }
+
+            promise.then(successCallback, failureCallback);
+            return Promise.resolve();
+          };
+
+          prototype.createAnswer = function (successCallback, failureCallback) {
+            var options = arguments.length >= 2 ? arguments[2] : arguments[0];
+            var promise = createAnswer.apply(this, [options]);
+
+            if (!failureCallback) {
+              return promise;
+            }
+
+            promise.then(successCallback, failureCallback);
+            return Promise.resolve();
+          };
+
+          var withCallback = function withCallback(description, successCallback, failureCallback) {
+            var promise = setLocalDescription.apply(this, [description]);
+
+            if (!failureCallback) {
+              return promise;
+            }
+
+            promise.then(successCallback, failureCallback);
+            return Promise.resolve();
+          };
+
+          prototype.setLocalDescription = withCallback;
+
+          withCallback = function withCallback(description, successCallback, failureCallback) {
+            var promise = setRemoteDescription.apply(this, [description]);
+
+            if (!failureCallback) {
+              return promise;
+            }
+
+            promise.then(successCallback, failureCallback);
+            return Promise.resolve();
+          };
+
+          prototype.setRemoteDescription = withCallback;
+
+          withCallback = function withCallback(candidate, successCallback, failureCallback) {
+            var promise = addIceCandidate.apply(this, [candidate]);
+
+            if (!failureCallback) {
+              return promise;
+            }
+
+            promise.then(successCallback, failureCallback);
+            return Promise.resolve();
+          };
+
+          prototype.addIceCandidate = withCallback;
+        }
+
+        function shimGetUserMedia(window) {
+          var navigator = window && window.navigator;
+
+          if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // shim not needed in Safari 12.1
+            var mediaDevices = navigator.mediaDevices;
+
+            var _getUserMedia = mediaDevices.getUserMedia.bind(mediaDevices);
+
+            navigator.mediaDevices.getUserMedia = function (constraints) {
+              return _getUserMedia(shimConstraints(constraints));
+            };
+          }
+
+          if (!navigator.getUserMedia && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.getUserMedia = function (constraints, cb, errcb) {
+              navigator.mediaDevices.getUserMedia(constraints).then(cb, errcb);
+            }.bind(navigator);
+          }
+        }
+
+        function shimConstraints(constraints) {
+          if (constraints && constraints.video !== undefined) {
+            return Object.assign({}, constraints, {
+              video: utils.compactObject(constraints.video)
+            });
+          }
+
+          return constraints;
+        }
+
+        function shimRTCIceServerUrls(window) {
+          // migrate from non-spec RTCIceServer.url to RTCIceServer.urls
+          var OrigPeerConnection = window.RTCPeerConnection;
+
+          window.RTCPeerConnection = function (pcConfig, pcConstraints) {
+            if (pcConfig && pcConfig.iceServers) {
+              var newIceServers = [];
+
+              for (var i = 0; i < pcConfig.iceServers.length; i++) {
+                var server = pcConfig.iceServers[i];
+
+                if (!server.hasOwnProperty('urls') && server.hasOwnProperty('url')) {
+                  utils.deprecated('RTCIceServer.url', 'RTCIceServer.urls');
+                  server = JSON.parse(JSON.stringify(server));
+                  server.urls = server.url;
+                  delete server.url;
+                  newIceServers.push(server);
+                } else {
+                  newIceServers.push(pcConfig.iceServers[i]);
+                }
+              }
+
+              pcConfig.iceServers = newIceServers;
+            }
+
+            return new OrigPeerConnection(pcConfig, pcConstraints);
+          };
+
+          window.RTCPeerConnection.prototype = OrigPeerConnection.prototype; // wrap static methods. Currently just generateCertificate.
+
+          if ('generateCertificate' in window.RTCPeerConnection) {
+            Object.defineProperty(window.RTCPeerConnection, 'generateCertificate', {
+              get: function get() {
+                return OrigPeerConnection.generateCertificate;
+              }
+            });
+          }
+        }
+
+        function shimTrackEventTransceiver(window) {
+          // Add event.transceiver member over deprecated event.receiver
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCPeerConnection && 'receiver' in window.RTCTrackEvent.prototype && // can't check 'transceiver' in window.RTCTrackEvent.prototype, as it is
+          // defined for some reason even when window.RTCTransceiver is not.
+          !window.RTCTransceiver) {
+            Object.defineProperty(window.RTCTrackEvent.prototype, 'transceiver', {
+              get: function get() {
+                return {
+                  receiver: this.receiver
+                };
+              }
+            });
+          }
+        }
+
+        function shimCreateOfferLegacy(window) {
+          var origCreateOffer = window.RTCPeerConnection.prototype.createOffer;
+
+          window.RTCPeerConnection.prototype.createOffer = function (offerOptions) {
+            if (offerOptions) {
+              if (typeof offerOptions.offerToReceiveAudio !== 'undefined') {
+                // support bit values
+                offerOptions.offerToReceiveAudio = !!offerOptions.offerToReceiveAudio;
+              }
+
+              var audioTransceiver = this.getTransceivers().find(function (transceiver) {
+                return transceiver.sender.track && transceiver.sender.track.kind === 'audio';
+              });
+
+              if (offerOptions.offerToReceiveAudio === false && audioTransceiver) {
+                if (audioTransceiver.direction === 'sendrecv') {
+                  if (audioTransceiver.setDirection) {
+                    audioTransceiver.setDirection('sendonly');
+                  } else {
+                    audioTransceiver.direction = 'sendonly';
+                  }
+                } else if (audioTransceiver.direction === 'recvonly') {
+                  if (audioTransceiver.setDirection) {
+                    audioTransceiver.setDirection('inactive');
+                  } else {
+                    audioTransceiver.direction = 'inactive';
+                  }
+                }
+              } else if (offerOptions.offerToReceiveAudio === true && !audioTransceiver) {
+                this.addTransceiver('audio');
+              }
+
+              if (typeof offerOptions.offerToReceiveVideo !== 'undefined') {
+                // support bit values
+                offerOptions.offerToReceiveVideo = !!offerOptions.offerToReceiveVideo;
+              }
+
+              var videoTransceiver = this.getTransceivers().find(function (transceiver) {
+                return transceiver.sender.track && transceiver.sender.track.kind === 'video';
+              });
+
+              if (offerOptions.offerToReceiveVideo === false && videoTransceiver) {
+                if (videoTransceiver.direction === 'sendrecv') {
+                  if (videoTransceiver.setDirection) {
+                    videoTransceiver.setDirection('sendonly');
+                  } else {
+                    videoTransceiver.direction = 'sendonly';
+                  }
+                } else if (videoTransceiver.direction === 'recvonly') {
+                  if (videoTransceiver.setDirection) {
+                    videoTransceiver.setDirection('inactive');
+                  } else {
+                    videoTransceiver.direction = 'inactive';
+                  }
+                }
+              } else if (offerOptions.offerToReceiveVideo === true && !videoTransceiver) {
+                this.addTransceiver('video');
+              }
+            }
+
+            return origCreateOffer.apply(this, arguments);
+          };
+        }
+      }, {
+        "../utils": 11
+      }],
+      11: [function (require, module, exports) {
+
+        Object.defineProperty(exports, "__esModule", {
+          value: true
+        });
+
+        var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+          return typeof obj;
+        } : function (obj) {
+          return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+        };
+
+        exports.extractVersion = extractVersion;
+        exports.wrapPeerConnectionEvent = wrapPeerConnectionEvent;
+        exports.disableLog = disableLog;
+        exports.disableWarnings = disableWarnings;
+        exports.log = log;
+        exports.deprecated = deprecated;
+        exports.detectBrowser = detectBrowser;
+        exports.compactObject = compactObject;
+
+        function _defineProperty(obj, key, value) {
+          if (key in obj) {
+            Object.defineProperty(obj, key, {
+              value: value,
+              enumerable: true,
+              configurable: true,
+              writable: true
+            });
+          } else {
+            obj[key] = value;
+          }
+
+          return obj;
+        }
+
+        var logDisabled_ = true;
+        var deprecationWarnings_ = true;
+        /**
+         * Extract browser version out of the provided user agent string.
+         *
+         * @param {!string} uastring userAgent string.
+         * @param {!string} expr Regular expression used as match criteria.
+         * @param {!number} pos position in the version string to be returned.
+         * @return {!number} browser version.
+         */
+
+        function extractVersion(uastring, expr, pos) {
+          var match = uastring.match(expr);
+          return match && match.length >= pos && parseInt(match[pos], 10);
+        } // Wraps the peerconnection event eventNameToWrap in a function
+        // which returns the modified event object (or false to prevent
+        // the event).
+
+
+        function wrapPeerConnectionEvent(window, eventNameToWrap, wrapper) {
+          if (!window.RTCPeerConnection) {
+            return;
+          }
+
+          var proto = window.RTCPeerConnection.prototype;
+          var nativeAddEventListener = proto.addEventListener;
+
+          proto.addEventListener = function (nativeEventName, cb) {
+            if (nativeEventName !== eventNameToWrap) {
+              return nativeAddEventListener.apply(this, arguments);
+            }
+
+            var wrappedCallback = function wrappedCallback(e) {
+              var modifiedEvent = wrapper(e);
+
+              if (modifiedEvent) {
+                cb(modifiedEvent);
+              }
+            };
+
+            this._eventMap = this._eventMap || {};
+            this._eventMap[cb] = wrappedCallback;
+            return nativeAddEventListener.apply(this, [nativeEventName, wrappedCallback]);
+          };
+
+          var nativeRemoveEventListener = proto.removeEventListener;
+
+          proto.removeEventListener = function (nativeEventName, cb) {
+            if (nativeEventName !== eventNameToWrap || !this._eventMap || !this._eventMap[cb]) {
+              return nativeRemoveEventListener.apply(this, arguments);
+            }
+
+            var unwrappedCb = this._eventMap[cb];
+            delete this._eventMap[cb];
+            return nativeRemoveEventListener.apply(this, [nativeEventName, unwrappedCb]);
+          };
+
+          Object.defineProperty(proto, 'on' + eventNameToWrap, {
+            get: function get() {
+              return this['_on' + eventNameToWrap];
+            },
+            set: function set(cb) {
+              if (this['_on' + eventNameToWrap]) {
+                this.removeEventListener(eventNameToWrap, this['_on' + eventNameToWrap]);
+                delete this['_on' + eventNameToWrap];
+              }
+
+              if (cb) {
+                this.addEventListener(eventNameToWrap, this['_on' + eventNameToWrap] = cb);
+              }
+            },
+            enumerable: true,
+            configurable: true
+          });
+        }
+
+        function disableLog(bool) {
+          if (typeof bool !== 'boolean') {
+            return new Error('Argument type: ' + (typeof bool === 'undefined' ? 'undefined' : _typeof(bool)) + '. Please use a boolean.');
+          }
+
+          logDisabled_ = bool;
+          return bool ? 'adapter.js logging disabled' : 'adapter.js logging enabled';
+        }
+        /**
+         * Disable or enable deprecation warnings
+         * @param {!boolean} bool set to true to disable warnings.
+         */
+
+
+        function disableWarnings(bool) {
+          if (typeof bool !== 'boolean') {
+            return new Error('Argument type: ' + (typeof bool === 'undefined' ? 'undefined' : _typeof(bool)) + '. Please use a boolean.');
+          }
+
+          deprecationWarnings_ = !bool;
+          return 'adapter.js deprecation warnings ' + (bool ? 'disabled' : 'enabled');
+        }
+
+        function log() {
+          if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object') {
+            if (logDisabled_) {
+              return;
+            }
+
+            if (typeof console !== 'undefined' && typeof console.log === 'function') {
+              console.log.apply(console, arguments);
+            }
+          }
+        }
+        /**
+         * Shows a deprecation warning suggesting the modern and spec-compatible API.
+         */
+
+
+        function deprecated(oldMethod, newMethod) {
+          if (!deprecationWarnings_) {
+            return;
+          }
+
+          console.warn(oldMethod + ' is deprecated, please use ' + newMethod + ' instead.');
+        }
+        /**
+         * Browser detector.
+         *
+         * @return {object} result containing browser and version
+         *     properties.
+         */
+
+
+        function detectBrowser(window) {
+          var navigator = window.navigator; // Returned result object.
+
+          var result = {
+            browser: null,
+            version: null
+          }; // Fail early if it's not a browser
+
+          if (typeof window === 'undefined' || !window.navigator) {
+            result.browser = 'Not a browser.';
+            return result;
+          }
+
+          if (navigator.mozGetUserMedia) {
+            // Firefox.
+            result.browser = 'firefox';
+            result.version = extractVersion(navigator.userAgent, /Firefox\/(\d+)\./, 1);
+          } else if (navigator.webkitGetUserMedia) {
+            // Chrome, Chromium, Webview, Opera.
+            // Version matches Chrome/WebRTC version.
+            result.browser = 'chrome';
+            result.version = extractVersion(navigator.userAgent, /Chrom(e|ium)\/(\d+)\./, 2);
+          } else if (navigator.mediaDevices && navigator.userAgent.match(/Edge\/(\d+).(\d+)$/)) {
+            // Edge.
+            result.browser = 'edge';
+            result.version = extractVersion(navigator.userAgent, /Edge\/(\d+).(\d+)$/, 2);
+          } else if (window.RTCPeerConnection && navigator.userAgent.match(/AppleWebKit\/(\d+)\./)) {
+            // Safari.
+            result.browser = 'safari';
+            result.version = extractVersion(navigator.userAgent, /AppleWebKit\/(\d+)\./, 1);
+          } else {
+            // Default fallthrough: not supported.
+            result.browser = 'Not a supported browser.';
+            return result;
+          }
+
+          return result;
+        }
+        /**
+         * Remove all empty objects and undefined values
+         * from a nested object -- an enhanced and vanilla version
+         * of Lodash's `compact`.
+         */
+
+
+        function compactObject(data) {
+          if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) !== 'object') {
+            return data;
+          }
+
+          return Object.keys(data).reduce(function (accumulator, key) {
+            var isObject = _typeof(data[key]) === 'object';
+            var value = isObject ? compactObject(data[key]) : data[key];
+            var isEmptyObject = isObject && !Object.keys(value).length;
+
+            if (value === undefined || isEmptyObject) {
+              return accumulator;
+            }
+
+            return Object.assign(accumulator, _defineProperty({}, key, value));
+          }, {});
+        }
+      }, {}],
+      12: [function (require, module, exports) {}, {}],
+      13: [function (require, module, exports) {
+
+        var SDPUtils = {}; // Generate an alphanumeric identifier for cname or mids.
+        // TODO: use UUIDs instead? https://gist.github.com/jed/982883
+
+        SDPUtils.generateIdentifier = function () {
+          return Math.random().toString(36).substr(2, 10);
+        }; // The RTCP CNAME used by all peerconnections from the same JS.
+
+
+        SDPUtils.localCName = SDPUtils.generateIdentifier(); // Splits SDP into lines, dealing with both CRLF and LF.
+
+        SDPUtils.splitLines = function (blob) {
+          return blob.trim().split('\n').map(function (line) {
+            return line.trim();
+          });
+        }; // Splits SDP into sessionpart and mediasections. Ensures CRLF.
+
+
+        SDPUtils.splitSections = function (blob) {
+          var parts = blob.split('\nm=');
+          return parts.map(function (part, index) {
+            return (index > 0 ? 'm=' + part : part).trim() + '\r\n';
+          });
+        }; // returns the session description.
+
+
+        SDPUtils.getDescription = function (blob) {
+          var sections = SDPUtils.splitSections(blob);
+          return sections && sections[0];
+        }; // returns the individual media sections.
+
+
+        SDPUtils.getMediaSections = function (blob) {
+          var sections = SDPUtils.splitSections(blob);
+          sections.shift();
+          return sections;
+        }; // Returns lines that start with a certain prefix.
+
+
+        SDPUtils.matchPrefix = function (blob, prefix) {
+          return SDPUtils.splitLines(blob).filter(function (line) {
+            return line.indexOf(prefix) === 0;
+          });
+        }; // Parses an ICE candidate line. Sample input:
+        // candidate:702786350 2 udp 41819902 8.8.8.8 60769 typ relay raddr 8.8.8.8
+        // rport 55996"
+
+
+        SDPUtils.parseCandidate = function (line) {
+          var parts; // Parse both variants.
+
+          if (line.indexOf('a=candidate:') === 0) {
+            parts = line.substring(12).split(' ');
+          } else {
+            parts = line.substring(10).split(' ');
+          }
+
+          var candidate = {
+            foundation: parts[0],
+            component: parseInt(parts[1], 10),
+            protocol: parts[2].toLowerCase(),
+            priority: parseInt(parts[3], 10),
+            ip: parts[4],
+            address: parts[4],
+            // address is an alias for ip.
+            port: parseInt(parts[5], 10),
+            // skip parts[6] == 'typ'
+            type: parts[7]
+          };
+
+          for (var i = 8; i < parts.length; i += 2) {
+            switch (parts[i]) {
+              case 'raddr':
+                candidate.relatedAddress = parts[i + 1];
+                break;
+
+              case 'rport':
+                candidate.relatedPort = parseInt(parts[i + 1], 10);
+                break;
+
+              case 'tcptype':
+                candidate.tcpType = parts[i + 1];
+                break;
+
+              case 'ufrag':
+                candidate.ufrag = parts[i + 1]; // for backward compability.
+
+                candidate.usernameFragment = parts[i + 1];
+                break;
+
+              default:
+                // extension handling, in particular ufrag
+                candidate[parts[i]] = parts[i + 1];
+                break;
+            }
+          }
+
+          return candidate;
+        }; // Translates a candidate object into SDP candidate attribute.
+
+
+        SDPUtils.writeCandidate = function (candidate) {
+          var sdp = [];
+          sdp.push(candidate.foundation);
+          sdp.push(candidate.component);
+          sdp.push(candidate.protocol.toUpperCase());
+          sdp.push(candidate.priority);
+          sdp.push(candidate.address || candidate.ip);
+          sdp.push(candidate.port);
+          var type = candidate.type;
+          sdp.push('typ');
+          sdp.push(type);
+
+          if (type !== 'host' && candidate.relatedAddress && candidate.relatedPort) {
+            sdp.push('raddr');
+            sdp.push(candidate.relatedAddress);
+            sdp.push('rport');
+            sdp.push(candidate.relatedPort);
+          }
+
+          if (candidate.tcpType && candidate.protocol.toLowerCase() === 'tcp') {
+            sdp.push('tcptype');
+            sdp.push(candidate.tcpType);
+          }
+
+          if (candidate.usernameFragment || candidate.ufrag) {
+            sdp.push('ufrag');
+            sdp.push(candidate.usernameFragment || candidate.ufrag);
+          }
+
+          return 'candidate:' + sdp.join(' ');
+        }; // Parses an ice-options line, returns an array of option tags.
+        // a=ice-options:foo bar
+
+
+        SDPUtils.parseIceOptions = function (line) {
+          return line.substr(14).split(' ');
+        }; // Parses an rtpmap line, returns RTCRtpCoddecParameters. Sample input:
+        // a=rtpmap:111 opus/48000/2
+
+
+        SDPUtils.parseRtpMap = function (line) {
+          var parts = line.substr(9).split(' ');
+          var parsed = {
+            payloadType: parseInt(parts.shift(), 10) // was: id
+
+          };
+          parts = parts[0].split('/');
+          parsed.name = parts[0];
+          parsed.clockRate = parseInt(parts[1], 10); // was: clockrate
+
+          parsed.channels = parts.length === 3 ? parseInt(parts[2], 10) : 1; // legacy alias, got renamed back to channels in ORTC.
+
+          parsed.numChannels = parsed.channels;
+          return parsed;
+        }; // Generate an a=rtpmap line from RTCRtpCodecCapability or
+        // RTCRtpCodecParameters.
+
+
+        SDPUtils.writeRtpMap = function (codec) {
+          var pt = codec.payloadType;
+
+          if (codec.preferredPayloadType !== undefined) {
+            pt = codec.preferredPayloadType;
+          }
+
+          var channels = codec.channels || codec.numChannels || 1;
+          return 'a=rtpmap:' + pt + ' ' + codec.name + '/' + codec.clockRate + (channels !== 1 ? '/' + channels : '') + '\r\n';
+        }; // Parses an a=extmap line (headerextension from RFC 5285). Sample input:
+        // a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+        // a=extmap:2/sendonly urn:ietf:params:rtp-hdrext:toffset
+
+
+        SDPUtils.parseExtmap = function (line) {
+          var parts = line.substr(9).split(' ');
+          return {
+            id: parseInt(parts[0], 10),
+            direction: parts[0].indexOf('/') > 0 ? parts[0].split('/')[1] : 'sendrecv',
+            uri: parts[1]
+          };
+        }; // Generates a=extmap line from RTCRtpHeaderExtensionParameters or
+        // RTCRtpHeaderExtension.
+
+
+        SDPUtils.writeExtmap = function (headerExtension) {
+          return 'a=extmap:' + (headerExtension.id || headerExtension.preferredId) + (headerExtension.direction && headerExtension.direction !== 'sendrecv' ? '/' + headerExtension.direction : '') + ' ' + headerExtension.uri + '\r\n';
+        }; // Parses an ftmp line, returns dictionary. Sample input:
+        // a=fmtp:96 vbr=on;cng=on
+        // Also deals with vbr=on; cng=on
+
+
+        SDPUtils.parseFmtp = function (line) {
+          var parsed = {};
+          var kv;
+          var parts = line.substr(line.indexOf(' ') + 1).split(';');
+
+          for (var j = 0; j < parts.length; j++) {
+            kv = parts[j].trim().split('=');
+            parsed[kv[0].trim()] = kv[1];
+          }
+
+          return parsed;
+        }; // Generates an a=ftmp line from RTCRtpCodecCapability or RTCRtpCodecParameters.
+
+
+        SDPUtils.writeFmtp = function (codec) {
+          var line = '';
+          var pt = codec.payloadType;
+
+          if (codec.preferredPayloadType !== undefined) {
+            pt = codec.preferredPayloadType;
+          }
+
+          if (codec.parameters && Object.keys(codec.parameters).length) {
+            var params = [];
+            Object.keys(codec.parameters).forEach(function (param) {
+              if (codec.parameters[param]) {
+                params.push(param + '=' + codec.parameters[param]);
+              } else {
+                params.push(param);
+              }
+            });
+            line += 'a=fmtp:' + pt + ' ' + params.join(';') + '\r\n';
+          }
+
+          return line;
+        }; // Parses an rtcp-fb line, returns RTCPRtcpFeedback object. Sample input:
+        // a=rtcp-fb:98 nack rpsi
+
+
+        SDPUtils.parseRtcpFb = function (line) {
+          var parts = line.substr(line.indexOf(' ') + 1).split(' ');
+          return {
+            type: parts.shift(),
+            parameter: parts.join(' ')
+          };
+        }; // Generate a=rtcp-fb lines from RTCRtpCodecCapability or RTCRtpCodecParameters.
+
+
+        SDPUtils.writeRtcpFb = function (codec) {
+          var lines = '';
+          var pt = codec.payloadType;
+
+          if (codec.preferredPayloadType !== undefined) {
+            pt = codec.preferredPayloadType;
+          }
+
+          if (codec.rtcpFeedback && codec.rtcpFeedback.length) {
+            // FIXME: special handling for trr-int?
+            codec.rtcpFeedback.forEach(function (fb) {
+              lines += 'a=rtcp-fb:' + pt + ' ' + fb.type + (fb.parameter && fb.parameter.length ? ' ' + fb.parameter : '') + '\r\n';
+            });
+          }
+
+          return lines;
+        }; // Parses an RFC 5576 ssrc media attribute. Sample input:
+        // a=ssrc:3735928559 cname:something
+
+
+        SDPUtils.parseSsrcMedia = function (line) {
+          var sp = line.indexOf(' ');
+          var parts = {
+            ssrc: parseInt(line.substr(7, sp - 7), 10)
+          };
+          var colon = line.indexOf(':', sp);
+
+          if (colon > -1) {
+            parts.attribute = line.substr(sp + 1, colon - sp - 1);
+            parts.value = line.substr(colon + 1);
+          } else {
+            parts.attribute = line.substr(sp + 1);
+          }
+
+          return parts;
+        };
+
+        SDPUtils.parseSsrcGroup = function (line) {
+          var parts = line.substr(13).split(' ');
+          return {
+            semantics: parts.shift(),
+            ssrcs: parts.map(function (ssrc) {
+              return parseInt(ssrc, 10);
+            })
+          };
+        }; // Extracts the MID (RFC 5888) from a media section.
+        // returns the MID or undefined if no mid line was found.
+
+
+        SDPUtils.getMid = function (mediaSection) {
+          var mid = SDPUtils.matchPrefix(mediaSection, 'a=mid:')[0];
+
+          if (mid) {
+            return mid.substr(6);
+          }
+        };
+
+        SDPUtils.parseFingerprint = function (line) {
+          var parts = line.substr(14).split(' ');
+          return {
+            algorithm: parts[0].toLowerCase(),
+            // algorithm is case-sensitive in Edge.
+            value: parts[1]
+          };
+        }; // Extracts DTLS parameters from SDP media section or sessionpart.
+        // FIXME: for consistency with other functions this should only
+        //   get the fingerprint line as input. See also getIceParameters.
+
+
+        SDPUtils.getDtlsParameters = function (mediaSection, sessionpart) {
+          var lines = SDPUtils.matchPrefix(mediaSection + sessionpart, 'a=fingerprint:'); // Note: a=setup line is ignored since we use the 'auto' role.
+          // Note2: 'algorithm' is not case sensitive except in Edge.
+
+          return {
+            role: 'auto',
+            fingerprints: lines.map(SDPUtils.parseFingerprint)
+          };
+        }; // Serializes DTLS parameters to SDP.
+
+
+        SDPUtils.writeDtlsParameters = function (params, setupType) {
+          var sdp = 'a=setup:' + setupType + '\r\n';
+          params.fingerprints.forEach(function (fp) {
+            sdp += 'a=fingerprint:' + fp.algorithm + ' ' + fp.value + '\r\n';
+          });
+          return sdp;
+        }; // Parses ICE information from SDP media section or sessionpart.
+        // FIXME: for consistency with other functions this should only
+        //   get the ice-ufrag and ice-pwd lines as input.
+
+
+        SDPUtils.getIceParameters = function (mediaSection, sessionpart) {
+          var lines = SDPUtils.splitLines(mediaSection); // Search in session part, too.
+
+          lines = lines.concat(SDPUtils.splitLines(sessionpart));
+          var iceParameters = {
+            usernameFragment: lines.filter(function (line) {
+              return line.indexOf('a=ice-ufrag:') === 0;
+            })[0].substr(12),
+            password: lines.filter(function (line) {
+              return line.indexOf('a=ice-pwd:') === 0;
+            })[0].substr(10)
+          };
+          return iceParameters;
+        }; // Serializes ICE parameters to SDP.
+
+
+        SDPUtils.writeIceParameters = function (params) {
+          return 'a=ice-ufrag:' + params.usernameFragment + '\r\n' + 'a=ice-pwd:' + params.password + '\r\n';
+        }; // Parses the SDP media section and returns RTCRtpParameters.
+
+
+        SDPUtils.parseRtpParameters = function (mediaSection) {
+          var description = {
+            codecs: [],
+            headerExtensions: [],
+            fecMechanisms: [],
+            rtcp: []
+          };
+          var lines = SDPUtils.splitLines(mediaSection);
+          var mline = lines[0].split(' ');
+
+          for (var i = 3; i < mline.length; i++) {
+            // find all codecs from mline[3..]
+            var pt = mline[i];
+            var rtpmapline = SDPUtils.matchPrefix(mediaSection, 'a=rtpmap:' + pt + ' ')[0];
+
+            if (rtpmapline) {
+              var codec = SDPUtils.parseRtpMap(rtpmapline);
+              var fmtps = SDPUtils.matchPrefix(mediaSection, 'a=fmtp:' + pt + ' '); // Only the first a=fmtp:<pt> is considered.
+
+              codec.parameters = fmtps.length ? SDPUtils.parseFmtp(fmtps[0]) : {};
+              codec.rtcpFeedback = SDPUtils.matchPrefix(mediaSection, 'a=rtcp-fb:' + pt + ' ').map(SDPUtils.parseRtcpFb);
+              description.codecs.push(codec); // parse FEC mechanisms from rtpmap lines.
+
+              switch (codec.name.toUpperCase()) {
+                case 'RED':
+                case 'ULPFEC':
+                  description.fecMechanisms.push(codec.name.toUpperCase());
+                  break;
+
+                default:
+                  // only RED and ULPFEC are recognized as FEC mechanisms.
+                  break;
+              }
+            }
+          }
+
+          SDPUtils.matchPrefix(mediaSection, 'a=extmap:').forEach(function (line) {
+            description.headerExtensions.push(SDPUtils.parseExtmap(line));
+          }); // FIXME: parse rtcp.
+
+          return description;
+        }; // Generates parts of the SDP media section describing the capabilities /
+        // parameters.
+
+
+        SDPUtils.writeRtpDescription = function (kind, caps) {
+          var sdp = ''; // Build the mline.
+
+          sdp += 'm=' + kind + ' ';
+          sdp += caps.codecs.length > 0 ? '9' : '0'; // reject if no codecs.
+
+          sdp += ' UDP/TLS/RTP/SAVPF ';
+          sdp += caps.codecs.map(function (codec) {
+            if (codec.preferredPayloadType !== undefined) {
+              return codec.preferredPayloadType;
+            }
+
+            return codec.payloadType;
+          }).join(' ') + '\r\n';
+          sdp += 'c=IN IP4 0.0.0.0\r\n';
+          sdp += 'a=rtcp:9 IN IP4 0.0.0.0\r\n'; // Add a=rtpmap lines for each codec. Also fmtp and rtcp-fb.
+
+          caps.codecs.forEach(function (codec) {
+            sdp += SDPUtils.writeRtpMap(codec);
+            sdp += SDPUtils.writeFmtp(codec);
+            sdp += SDPUtils.writeRtcpFb(codec);
+          });
+          var maxptime = 0;
+          caps.codecs.forEach(function (codec) {
+            if (codec.maxptime > maxptime) {
+              maxptime = codec.maxptime;
+            }
+          });
+
+          if (maxptime > 0) {
+            sdp += 'a=maxptime:' + maxptime + '\r\n';
+          }
+
+          sdp += 'a=rtcp-mux\r\n';
+
+          if (caps.headerExtensions) {
+            caps.headerExtensions.forEach(function (extension) {
+              sdp += SDPUtils.writeExtmap(extension);
+            });
+          } // FIXME: write fecMechanisms.
+
+
+          return sdp;
+        }; // Parses the SDP media section and returns an array of
+        // RTCRtpEncodingParameters.
+
+
+        SDPUtils.parseRtpEncodingParameters = function (mediaSection) {
+          var encodingParameters = [];
+          var description = SDPUtils.parseRtpParameters(mediaSection);
+          var hasRed = description.fecMechanisms.indexOf('RED') !== -1;
+          var hasUlpfec = description.fecMechanisms.indexOf('ULPFEC') !== -1; // filter a=ssrc:... cname:, ignore PlanB-msid
+
+          var ssrcs = SDPUtils.matchPrefix(mediaSection, 'a=ssrc:').map(function (line) {
+            return SDPUtils.parseSsrcMedia(line);
+          }).filter(function (parts) {
+            return parts.attribute === 'cname';
+          });
+          var primarySsrc = ssrcs.length > 0 && ssrcs[0].ssrc;
+          var secondarySsrc;
+          var flows = SDPUtils.matchPrefix(mediaSection, 'a=ssrc-group:FID').map(function (line) {
+            var parts = line.substr(17).split(' ');
+            return parts.map(function (part) {
+              return parseInt(part, 10);
+            });
+          });
+
+          if (flows.length > 0 && flows[0].length > 1 && flows[0][0] === primarySsrc) {
+            secondarySsrc = flows[0][1];
+          }
+
+          description.codecs.forEach(function (codec) {
+            if (codec.name.toUpperCase() === 'RTX' && codec.parameters.apt) {
+              var encParam = {
+                ssrc: primarySsrc,
+                codecPayloadType: parseInt(codec.parameters.apt, 10)
+              };
+
+              if (primarySsrc && secondarySsrc) {
+                encParam.rtx = {
+                  ssrc: secondarySsrc
+                };
+              }
+
+              encodingParameters.push(encParam);
+
+              if (hasRed) {
+                encParam = JSON.parse(JSON.stringify(encParam));
+                encParam.fec = {
+                  ssrc: primarySsrc,
+                  mechanism: hasUlpfec ? 'red+ulpfec' : 'red'
+                };
+                encodingParameters.push(encParam);
+              }
+            }
+          });
+
+          if (encodingParameters.length === 0 && primarySsrc) {
+            encodingParameters.push({
+              ssrc: primarySsrc
+            });
+          } // we support both b=AS and b=TIAS but interpret AS as TIAS.
+
+
+          var bandwidth = SDPUtils.matchPrefix(mediaSection, 'b=');
+
+          if (bandwidth.length) {
+            if (bandwidth[0].indexOf('b=TIAS:') === 0) {
+              bandwidth = parseInt(bandwidth[0].substr(7), 10);
+            } else if (bandwidth[0].indexOf('b=AS:') === 0) {
+              // use formula from JSEP to convert b=AS to TIAS value.
+              bandwidth = parseInt(bandwidth[0].substr(5), 10) * 1000 * 0.95 - 50 * 40 * 8;
+            } else {
+              bandwidth = undefined;
+            }
+
+            encodingParameters.forEach(function (params) {
+              params.maxBitrate = bandwidth;
+            });
+          }
+
+          return encodingParameters;
+        }; // parses http://draft.ortc.org/#rtcrtcpparameters*
+
+
+        SDPUtils.parseRtcpParameters = function (mediaSection) {
+          var rtcpParameters = {}; // Gets the first SSRC. Note tha with RTX there might be multiple
+          // SSRCs.
+
+          var remoteSsrc = SDPUtils.matchPrefix(mediaSection, 'a=ssrc:').map(function (line) {
+            return SDPUtils.parseSsrcMedia(line);
+          }).filter(function (obj) {
+            return obj.attribute === 'cname';
+          })[0];
+
+          if (remoteSsrc) {
+            rtcpParameters.cname = remoteSsrc.value;
+            rtcpParameters.ssrc = remoteSsrc.ssrc;
+          } // Edge uses the compound attribute instead of reducedSize
+          // compound is !reducedSize
+
+
+          var rsize = SDPUtils.matchPrefix(mediaSection, 'a=rtcp-rsize');
+          rtcpParameters.reducedSize = rsize.length > 0;
+          rtcpParameters.compound = rsize.length === 0; // parses the rtcp-mux attrіbute.
+          // Note that Edge does not support unmuxed RTCP.
+
+          var mux = SDPUtils.matchPrefix(mediaSection, 'a=rtcp-mux');
+          rtcpParameters.mux = mux.length > 0;
+          return rtcpParameters;
+        }; // parses either a=msid: or a=ssrc:... msid lines and returns
+        // the id of the MediaStream and MediaStreamTrack.
+
+
+        SDPUtils.parseMsid = function (mediaSection) {
+          var parts;
+          var spec = SDPUtils.matchPrefix(mediaSection, 'a=msid:');
+
+          if (spec.length === 1) {
+            parts = spec[0].substr(7).split(' ');
+            return {
+              stream: parts[0],
+              track: parts[1]
+            };
+          }
+
+          var planB = SDPUtils.matchPrefix(mediaSection, 'a=ssrc:').map(function (line) {
+            return SDPUtils.parseSsrcMedia(line);
+          }).filter(function (msidParts) {
+            return msidParts.attribute === 'msid';
+          });
+
+          if (planB.length > 0) {
+            parts = planB[0].value.split(' ');
+            return {
+              stream: parts[0],
+              track: parts[1]
+            };
+          }
+        }; // Generate a session ID for SDP.
+        // https://tools.ietf.org/html/draft-ietf-rtcweb-jsep-20#section-5.2.1
+        // recommends using a cryptographically random +ve 64-bit value
+        // but right now this should be acceptable and within the right range
+
+
+        SDPUtils.generateSessionId = function () {
+          return Math.random().toString().substr(2, 21);
+        }; // Write boilder plate for start of SDP
+        // sessId argument is optional - if not supplied it will
+        // be generated randomly
+        // sessVersion is optional and defaults to 2
+        // sessUser is optional and defaults to 'thisisadapterortc'
+
+
+        SDPUtils.writeSessionBoilerplate = function (sessId, sessVer, sessUser) {
+          var sessionId;
+          var version = sessVer !== undefined ? sessVer : 2;
+
+          if (sessId) {
+            sessionId = sessId;
+          } else {
+            sessionId = SDPUtils.generateSessionId();
+          }
+
+          var user = sessUser || 'thisisadapterortc'; // FIXME: sess-id should be an NTP timestamp.
+
+          return 'v=0\r\n' + 'o=' + user + ' ' + sessionId + ' ' + version + ' IN IP4 127.0.0.1\r\n' + 's=-\r\n' + 't=0 0\r\n';
+        };
+
+        SDPUtils.writeMediaSection = function (transceiver, caps, type, stream) {
+          var sdp = SDPUtils.writeRtpDescription(transceiver.kind, caps); // Map ICE parameters (ufrag, pwd) to SDP.
+
+          sdp += SDPUtils.writeIceParameters(transceiver.iceGatherer.getLocalParameters()); // Map DTLS parameters to SDP.
+
+          sdp += SDPUtils.writeDtlsParameters(transceiver.dtlsTransport.getLocalParameters(), type === 'offer' ? 'actpass' : 'active');
+          sdp += 'a=mid:' + transceiver.mid + '\r\n';
+
+          if (transceiver.direction) {
+            sdp += 'a=' + transceiver.direction + '\r\n';
+          } else if (transceiver.rtpSender && transceiver.rtpReceiver) {
+            sdp += 'a=sendrecv\r\n';
+          } else if (transceiver.rtpSender) {
+            sdp += 'a=sendonly\r\n';
+          } else if (transceiver.rtpReceiver) {
+            sdp += 'a=recvonly\r\n';
+          } else {
+            sdp += 'a=inactive\r\n';
+          }
+
+          if (transceiver.rtpSender) {
+            // spec.
+            var msid = 'msid:' + stream.id + ' ' + transceiver.rtpSender.track.id + '\r\n';
+            sdp += 'a=' + msid; // for Chrome.
+
+            sdp += 'a=ssrc:' + transceiver.sendEncodingParameters[0].ssrc + ' ' + msid;
+
+            if (transceiver.sendEncodingParameters[0].rtx) {
+              sdp += 'a=ssrc:' + transceiver.sendEncodingParameters[0].rtx.ssrc + ' ' + msid;
+              sdp += 'a=ssrc-group:FID ' + transceiver.sendEncodingParameters[0].ssrc + ' ' + transceiver.sendEncodingParameters[0].rtx.ssrc + '\r\n';
+            }
+          } // FIXME: this should be written by writeRtpDescription.
+
+
+          sdp += 'a=ssrc:' + transceiver.sendEncodingParameters[0].ssrc + ' cname:' + SDPUtils.localCName + '\r\n';
+
+          if (transceiver.rtpSender && transceiver.sendEncodingParameters[0].rtx) {
+            sdp += 'a=ssrc:' + transceiver.sendEncodingParameters[0].rtx.ssrc + ' cname:' + SDPUtils.localCName + '\r\n';
+          }
+
+          return sdp;
+        }; // Gets the direction from the mediaSection or the sessionpart.
+
+
+        SDPUtils.getDirection = function (mediaSection, sessionpart) {
+          // Look for sendrecv, sendonly, recvonly, inactive, default to sendrecv.
+          var lines = SDPUtils.splitLines(mediaSection);
+
+          for (var i = 0; i < lines.length; i++) {
+            switch (lines[i]) {
+              case 'a=sendrecv':
+              case 'a=sendonly':
+              case 'a=recvonly':
+              case 'a=inactive':
+                return lines[i].substr(2);
+
+              default: // FIXME: What should happen here?
+
+            }
+          }
+
+          if (sessionpart) {
+            return SDPUtils.getDirection(sessionpart);
+          }
+
+          return 'sendrecv';
+        };
+
+        SDPUtils.getKind = function (mediaSection) {
+          var lines = SDPUtils.splitLines(mediaSection);
+          var mline = lines[0].split(' ');
+          return mline[0].substr(2);
+        };
+
+        SDPUtils.isRejected = function (mediaSection) {
+          return mediaSection.split(' ', 2)[1] === '0';
+        };
+
+        SDPUtils.parseMLine = function (mediaSection) {
+          var lines = SDPUtils.splitLines(mediaSection);
+          var parts = lines[0].substr(2).split(' ');
+          return {
+            kind: parts[0],
+            port: parseInt(parts[1], 10),
+            protocol: parts[2],
+            fmt: parts.slice(3).join(' ')
+          };
+        };
+
+        SDPUtils.parseOLine = function (mediaSection) {
+          var line = SDPUtils.matchPrefix(mediaSection, 'o=')[0];
+          var parts = line.substr(2).split(' ');
+          return {
+            username: parts[0],
+            sessionId: parts[1],
+            sessionVersion: parseInt(parts[2], 10),
+            netType: parts[3],
+            addressType: parts[4],
+            address: parts[5]
+          };
+        }; // a very naive interpretation of a valid SDP.
+
+
+        SDPUtils.isValidSDP = function (blob) {
+          if (typeof blob !== 'string' || blob.length === 0) {
+            return false;
+          }
+
+          var lines = SDPUtils.splitLines(blob);
+
+          for (var i = 0; i < lines.length; i++) {
+            if (lines[i].length < 2 || lines[i].charAt(1) !== '=') {
+              return false;
+            } // TODO: check the modifier a bit more.
+
+          }
+
+          return true;
+        }; // Expose public methods.
+
+
+        if (typeof module === 'object') {
+          module.exports = SDPUtils;
+        }
+      }, {}]
+    }, {}, [1]);
+  });
+  unwrapExports(adapter_no_edge_no_global);
+
+  var EventEmitter = createCommonjsModule(function (module) {
+
+    (function (exports) {
+      /**
+       * Class for managing events.
+       * Can be extended to provide event functionality in other classes.
+       *
+       * @class EventEmitter Manages event registering and emitting.
+       */
+
+      function EventEmitter() {} // Shortcuts to improve speed and size
+
+
+      var proto = EventEmitter.prototype;
+      var originalGlobalValue = exports.EventEmitter;
+      /**
+       * Finds the index of the listener for the event in its storage array.
+       *
+       * @param {Function[]} listeners Array of listeners to search through.
+       * @param {Function} listener Method to look for.
+       * @return {Number} Index of the specified listener, -1 if not found
+       * @api private
+       */
+
+      function indexOfListener(listeners, listener) {
+        var i = listeners.length;
+
+        while (i--) {
+          if (listeners[i].listener === listener) {
+            return i;
+          }
+        }
+
+        return -1;
+      }
+      /**
+       * Alias a method while keeping the context correct, to allow for overwriting of target method.
+       *
+       * @param {String} name The name of the target method.
+       * @return {Function} The aliased method
+       * @api private
+       */
+
+
+      function alias(name) {
+        return function aliasClosure() {
+          return this[name].apply(this, arguments);
+        };
+      }
+      /**
+       * Returns the listener array for the specified event.
+       * Will initialise the event object and listener arrays if required.
+       * Will return an object if you use a regex search. The object contains keys for each matched event. So /ba[rz]/ might return an object containing bar and baz. But only if you have either defined them with defineEvent or added some listeners to them.
+       * Each property in the object response is an array of listener functions.
+       *
+       * @param {String|RegExp} evt Name of the event to return the listeners from.
+       * @return {Function[]|Object} All listener functions for the event.
+       */
+
+
+      proto.getListeners = function getListeners(evt) {
+        var events = this._getEvents();
+
+        var response;
+        var key; // Return a concatenated array of all matching events if
+        // the selector is a regular expression.
+
+        if (evt instanceof RegExp) {
+          response = {};
+
+          for (key in events) {
+            if (events.hasOwnProperty(key) && evt.test(key)) {
+              response[key] = events[key];
+            }
+          }
+        } else {
+          response = events[evt] || (events[evt] = []);
+        }
+
+        return response;
+      };
+      /**
+       * Takes a list of listener objects and flattens it into a list of listener functions.
+       *
+       * @param {Object[]} listeners Raw listener objects.
+       * @return {Function[]} Just the listener functions.
+       */
+
+
+      proto.flattenListeners = function flattenListeners(listeners) {
+        var flatListeners = [];
+        var i;
+
+        for (i = 0; i < listeners.length; i += 1) {
+          flatListeners.push(listeners[i].listener);
+        }
+
+        return flatListeners;
+      };
+      /**
+       * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
+       *
+       * @param {String|RegExp} evt Name of the event to return the listeners from.
+       * @return {Object} All listener functions for an event in an object.
+       */
+
+
+      proto.getListenersAsObject = function getListenersAsObject(evt) {
+        var listeners = this.getListeners(evt);
+        var response;
+
+        if (listeners instanceof Array) {
+          response = {};
+          response[evt] = listeners;
+        }
+
+        return response || listeners;
+      };
+
+      function isValidListener(listener) {
+        if (typeof listener === 'function' || listener instanceof RegExp) {
+          return true;
+        } else if (listener && typeof listener === 'object') {
+          return isValidListener(listener.listener);
+        } else {
+          return false;
+        }
+      }
+      /**
+       * Adds a listener function to the specified event.
+       * The listener will not be added if it is a duplicate.
+       * If the listener returns true then it will be removed after it is called.
+       * If you pass a regular expression as the event name then the listener will be added to all events that match it.
+       *
+       * @param {String|RegExp} evt Name of the event to attach the listener to.
+       * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.addListener = function addListener(evt, listener) {
+        if (!isValidListener(listener)) {
+          throw new TypeError('listener must be a function');
+        }
+
+        var listeners = this.getListenersAsObject(evt);
+        var listenerIsWrapped = typeof listener === 'object';
+        var key;
+
+        for (key in listeners) {
+          if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
+            listeners[key].push(listenerIsWrapped ? listener : {
+              listener: listener,
+              once: false
+            });
+          }
+        }
+
+        return this;
+      };
+      /**
+       * Alias of addListener
+       */
+
+
+      proto.on = alias('addListener');
+      /**
+       * Semi-alias of addListener. It will add a listener that will be
+       * automatically removed after its first execution.
+       *
+       * @param {String|RegExp} evt Name of the event to attach the listener to.
+       * @param {Function} listener Method to be called when the event is emitted. If the function returns true then it will be removed after calling.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+      proto.addOnceListener = function addOnceListener(evt, listener) {
+        return this.addListener(evt, {
+          listener: listener,
+          once: true
+        });
+      };
+      /**
+       * Alias of addOnceListener.
+       */
+
+
+      proto.once = alias('addOnceListener');
+      /**
+       * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
+       * You need to tell it what event names should be matched by a regex.
+       *
+       * @param {String} evt Name of the event to create.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+      proto.defineEvent = function defineEvent(evt) {
+        this.getListeners(evt);
+        return this;
+      };
+      /**
+       * Uses defineEvent to define multiple events.
+       *
+       * @param {String[]} evts An array of event names to define.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.defineEvents = function defineEvents(evts) {
+        for (var i = 0; i < evts.length; i += 1) {
+          this.defineEvent(evts[i]);
+        }
+
+        return this;
+      };
+      /**
+       * Removes a listener function from the specified event.
+       * When passed a regular expression as the event name, it will remove the listener from all events that match it.
+       *
+       * @param {String|RegExp} evt Name of the event to remove the listener from.
+       * @param {Function} listener Method to remove from the event.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.removeListener = function removeListener(evt, listener) {
+        var listeners = this.getListenersAsObject(evt);
+        var index;
+        var key;
+
+        for (key in listeners) {
+          if (listeners.hasOwnProperty(key)) {
+            index = indexOfListener(listeners[key], listener);
+
+            if (index !== -1) {
+              listeners[key].splice(index, 1);
+            }
+          }
+        }
+
+        return this;
+      };
+      /**
+       * Alias of removeListener
+       */
+
+
+      proto.off = alias('removeListener');
+      /**
+       * Adds listeners in bulk using the manipulateListeners method.
+       * If you pass an object as the first argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
+       * You can also pass it a regular expression to add the array of listeners to all events that match it.
+       * Yeah, this function does quite a bit. That's probably a bad thing.
+       *
+       * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add to multiple events at once.
+       * @param {Function[]} [listeners] An optional array of listener functions to add.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+      proto.addListeners = function addListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(false, evt, listeners);
+      };
+      /**
+       * Removes listeners in bulk using the manipulateListeners method.
+       * If you pass an object as the first argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+       * You can also pass it an event name and an array of listeners to be removed.
+       * You can also pass it a regular expression to remove the listeners from all events that match it.
+       *
+       * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to remove from multiple events at once.
+       * @param {Function[]} [listeners] An optional array of listener functions to remove.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.removeListeners = function removeListeners(evt, listeners) {
+        // Pass through to manipulateListeners
+        return this.manipulateListeners(true, evt, listeners);
+      };
+      /**
+       * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
+       * The first argument will determine if the listeners are removed (true) or added (false).
+       * If you pass an object as the second argument you can add/remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
+       * You can also pass it an event name and an array of listeners to be added/removed.
+       * You can also pass it a regular expression to manipulate the listeners of all events that match it.
+       *
+       * @param {Boolean} remove True if you want to remove listeners, false if you want to add.
+       * @param {String|Object|RegExp} evt An event name if you will pass an array of listeners next. An object if you wish to add/remove from multiple events at once.
+       * @param {Function[]} [listeners] An optional array of listener functions to add/remove.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.manipulateListeners = function manipulateListeners(remove, evt, listeners) {
+        var i;
+        var value;
+        var single = remove ? this.removeListener : this.addListener;
+        var multiple = remove ? this.removeListeners : this.addListeners; // If evt is an object then pass each of its properties to this method
+
+        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
+          for (i in evt) {
+            if (evt.hasOwnProperty(i) && (value = evt[i])) {
+              // Pass the single listener straight through to the singular method
+              if (typeof value === 'function') {
+                single.call(this, i, value);
+              } else {
+                // Otherwise pass back to the multiple function
+                multiple.call(this, i, value);
+              }
+            }
+          }
+        } else {
+          // So evt must be a string
+          // And listeners must be an array of listeners
+          // Loop over it and pass each one to the multiple method
+          i = listeners.length;
+
+          while (i--) {
+            single.call(this, evt, listeners[i]);
+          }
+        }
+
+        return this;
+      };
+      /**
+       * Removes all listeners from a specified event.
+       * If you do not specify an event then all listeners will be removed.
+       * That means every event will be emptied.
+       * You can also pass a regex to remove all events that match it.
+       *
+       * @param {String|RegExp} [evt] Optional name of the event to remove all listeners for. Will remove from every event if not passed.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.removeEvent = function removeEvent(evt) {
+        var type = typeof evt;
+
+        var events = this._getEvents();
+
+        var key; // Remove different things depending on the state of evt
+
+        if (type === 'string') {
+          // Remove all listeners for the specified event
+          delete events[evt];
+        } else if (evt instanceof RegExp) {
+          // Remove all events matching the regex.
+          for (key in events) {
+            if (events.hasOwnProperty(key) && evt.test(key)) {
+              delete events[key];
+            }
+          }
+        } else {
+          // Remove all listeners in all events
+          delete this._events;
+        }
+
+        return this;
+      };
+      /**
+       * Alias of removeEvent.
+       *
+       * Added to mirror the node API.
+       */
+
+
+      proto.removeAllListeners = alias('removeEvent');
+      /**
+       * Emits an event of your choice.
+       * When emitted, every listener attached to that event will be executed.
+       * If you pass the optional argument array then those arguments will be passed to every listener upon execution.
+       * Because it uses `apply`, your array of arguments will be passed as if you wrote them out separately.
+       * So they will not arrive within the array on the other side, they will be separate.
+       * You can also pass a regular expression to emit to all events that match it.
+       *
+       * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+       * @param {Array} [args] Optional array of arguments to be passed to each listener.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+      proto.emitEvent = function emitEvent(evt, args) {
+        var listenersMap = this.getListenersAsObject(evt);
+        var listeners;
+        var listener;
+        var i;
+        var key;
+        var response;
+
+        for (key in listenersMap) {
+          if (listenersMap.hasOwnProperty(key)) {
+            listeners = listenersMap[key].slice(0);
+
+            for (i = 0; i < listeners.length; i++) {
+              // If the listener returns true then it shall be removed from the event
+              // The function is executed either with a basic call or an apply if there is an args array
+              listener = listeners[i];
+
+              if (listener.once === true) {
+                this.removeListener(evt, listener.listener);
+              }
+
+              response = listener.listener.apply(this, args || []);
+
+              if (response === this._getOnceReturnValue()) {
+                this.removeListener(evt, listener.listener);
+              }
+            }
+          }
+        }
+
+        return this;
+      };
+      /**
+       * Alias of emitEvent
+       */
+
+
+      proto.trigger = alias('emitEvent');
+      /**
+       * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
+       * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
+       *
+       * @param {String|RegExp} evt Name of the event to emit and execute listeners for.
+       * @param {...*} Optional additional arguments to be passed to each listener.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+      proto.emit = function emit(evt) {
+        var args = Array.prototype.slice.call(arguments, 1);
+        return this.emitEvent(evt, args);
+      };
+      /**
+       * Sets the current value to check against when executing listeners. If a
+       * listeners return value matches the one set here then it will be removed
+       * after execution. This value defaults to true.
+       *
+       * @param {*} value The new value to check for when executing listeners.
+       * @return {Object} Current instance of EventEmitter for chaining.
+       */
+
+
+      proto.setOnceReturnValue = function setOnceReturnValue(value) {
+        this._onceReturnValue = value;
+        return this;
+      };
+      /**
+       * Fetches the current value to check against when executing listeners. If
+       * the listeners return value matches this one then it should be removed
+       * automatically. It will return true by default.
+       *
+       * @return {*|Boolean} The current value to check for or the default, true.
+       * @api private
+       */
+
+
+      proto._getOnceReturnValue = function _getOnceReturnValue() {
+        if (this.hasOwnProperty('_onceReturnValue')) {
+          return this._onceReturnValue;
+        } else {
+          return true;
+        }
+      };
+      /**
+       * Fetches the events object and creates one if required.
+       *
+       * @return {Object} The events storage object.
+       * @api private
+       */
+
+
+      proto._getEvents = function _getEvents() {
+        return this._events || (this._events = {});
+      };
+      /**
+       * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
+       *
+       * @return {Function} Non conflicting EventEmitter class.
+       */
+
+
+      EventEmitter.noConflict = function noConflict() {
+        exports.EventEmitter = originalGlobalValue;
+        return EventEmitter;
+      }; // Expose the class either via AMD, CommonJS or the global object
+
+
+      if (module.exports) {
+        module.exports = EventEmitter;
+      } else {
+        exports.EventEmitter = EventEmitter;
+      }
+    })(typeof window !== 'undefined' ? window : commonjsGlobal || {});
+  });
+
+  var lodash_uniqby = createCommonjsModule(function (module, exports) {
+    /**
+     * lodash (Custom Build) <https://lodash.com/>
+     * Build: `lodash modularize exports="npm" -o ./`
+     * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+     * Released under MIT license <https://lodash.com/license>
+     * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+     * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+     */
+
+    /** Used as the size to enable large array optimizations. */
+    var LARGE_ARRAY_SIZE = 200;
+    /** Used as the `TypeError` message for "Functions" methods. */
+
+    var FUNC_ERROR_TEXT = 'Expected a function';
+    /** Used to stand-in for `undefined` hash values. */
+
+    var HASH_UNDEFINED = '__lodash_hash_undefined__';
+    /** Used to compose bitmasks for comparison styles. */
+
+    var UNORDERED_COMPARE_FLAG = 1,
+        PARTIAL_COMPARE_FLAG = 2;
+    /** Used as references for various `Number` constants. */
+
+    var INFINITY = 1 / 0,
+        MAX_SAFE_INTEGER = 9007199254740991;
+    /** `Object#toString` result references. */
+
+    var argsTag = '[object Arguments]',
+        arrayTag = '[object Array]',
+        boolTag = '[object Boolean]',
+        dateTag = '[object Date]',
+        errorTag = '[object Error]',
+        funcTag = '[object Function]',
+        genTag = '[object GeneratorFunction]',
+        mapTag = '[object Map]',
+        numberTag = '[object Number]',
+        objectTag = '[object Object]',
+        promiseTag = '[object Promise]',
+        regexpTag = '[object RegExp]',
+        setTag = '[object Set]',
+        stringTag = '[object String]',
+        symbolTag = '[object Symbol]',
+        weakMapTag = '[object WeakMap]';
+    var arrayBufferTag = '[object ArrayBuffer]',
+        dataViewTag = '[object DataView]',
+        float32Tag = '[object Float32Array]',
+        float64Tag = '[object Float64Array]',
+        int8Tag = '[object Int8Array]',
+        int16Tag = '[object Int16Array]',
+        int32Tag = '[object Int32Array]',
+        uint8Tag = '[object Uint8Array]',
+        uint8ClampedTag = '[object Uint8ClampedArray]',
+        uint16Tag = '[object Uint16Array]',
+        uint32Tag = '[object Uint32Array]';
+    /** Used to match property names within property paths. */
+
+    var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+        reIsPlainProp = /^\w*$/,
+        reLeadingDot = /^\./,
+        rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+    /**
+     * Used to match `RegExp`
+     * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+     */
+
+    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+    /** Used to match backslashes in property paths. */
+
+    var reEscapeChar = /\\(\\)?/g;
+    /** Used to detect host constructors (Safari). */
+
+    var reIsHostCtor = /^\[object .+?Constructor\]$/;
+    /** Used to detect unsigned integer values. */
+
+    var reIsUint = /^(?:0|[1-9]\d*)$/;
+    /** Used to identify `toStringTag` values of typed arrays. */
+
+    var typedArrayTags = {};
+    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+    /** Detect free variable `global` from Node.js. */
+
+    var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+    /** Detect free variable `self`. */
+
+    var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+    /** Used as a reference to the global object. */
+
+    var root = freeGlobal || freeSelf || Function('return this')();
+    /** Detect free variable `exports`. */
+
+    var freeExports = exports && !exports.nodeType && exports;
+    /** Detect free variable `module`. */
+
+    var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+    /** Detect the popular CommonJS extension `module.exports`. */
+
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    /** Detect free variable `process` from Node.js. */
+
+    var freeProcess = moduleExports && freeGlobal.process;
+    /** Used to access faster Node.js helpers. */
+
+    var nodeUtil = function () {
+      try {
+        return freeProcess && freeProcess.binding('util');
+      } catch (e) {}
+    }();
+    /* Node.js helper references. */
+
+
+    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+    /**
+     * A specialized version of `_.includes` for arrays without support for
+     * specifying an index to search from.
+     *
+     * @private
+     * @param {Array} [array] The array to inspect.
+     * @param {*} target The value to search for.
+     * @returns {boolean} Returns `true` if `target` is found, else `false`.
+     */
+
+    function arrayIncludes(array, value) {
+      var length = array ? array.length : 0;
+      return !!length && baseIndexOf(array, value, 0) > -1;
+    }
+    /**
+     * This function is like `arrayIncludes` except that it accepts a comparator.
+     *
+     * @private
+     * @param {Array} [array] The array to inspect.
+     * @param {*} target The value to search for.
+     * @param {Function} comparator The comparator invoked per element.
+     * @returns {boolean} Returns `true` if `target` is found, else `false`.
+     */
+
+
+    function arrayIncludesWith(array, value, comparator) {
+      var index = -1,
+          length = array ? array.length : 0;
+
+      while (++index < length) {
+        if (comparator(value, array[index])) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+    /**
+     * A specialized version of `_.some` for arrays without support for iteratee
+     * shorthands.
+     *
+     * @private
+     * @param {Array} [array] The array to iterate over.
+     * @param {Function} predicate The function invoked per iteration.
+     * @returns {boolean} Returns `true` if any element passes the predicate check,
+     *  else `false`.
+     */
+
+
+    function arraySome(array, predicate) {
+      var index = -1,
+          length = array ? array.length : 0;
+
+      while (++index < length) {
+        if (predicate(array[index], index, array)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+    /**
+     * The base implementation of `_.findIndex` and `_.findLastIndex` without
+     * support for iteratee shorthands.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {Function} predicate The function invoked per iteration.
+     * @param {number} fromIndex The index to search from.
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {number} Returns the index of the matched value, else `-1`.
+     */
+
+
+    function baseFindIndex(array, predicate, fromIndex, fromRight) {
+      var length = array.length,
+          index = fromIndex + (fromRight ? 1 : -1);
+
+      while (fromRight ? index-- : ++index < length) {
+        if (predicate(array[index], index, array)) {
+          return index;
+        }
+      }
+
+      return -1;
+    }
+    /**
+     * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {*} value The value to search for.
+     * @param {number} fromIndex The index to search from.
+     * @returns {number} Returns the index of the matched value, else `-1`.
+     */
+
+
+    function baseIndexOf(array, value, fromIndex) {
+      if (value !== value) {
+        return baseFindIndex(array, baseIsNaN, fromIndex);
+      }
+
+      var index = fromIndex - 1,
+          length = array.length;
+
+      while (++index < length) {
+        if (array[index] === value) {
+          return index;
+        }
+      }
+
+      return -1;
+    }
+    /**
+     * The base implementation of `_.isNaN` without support for number objects.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+     */
+
+
+    function baseIsNaN(value) {
+      return value !== value;
+    }
+    /**
+     * The base implementation of `_.property` without support for deep paths.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function baseProperty(key) {
+      return function (object) {
+        return object == null ? undefined : object[key];
+      };
+    }
+    /**
+     * The base implementation of `_.times` without support for iteratee shorthands
+     * or max array length checks.
+     *
+     * @private
+     * @param {number} n The number of times to invoke `iteratee`.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Array} Returns the array of results.
+     */
+
+
+    function baseTimes(n, iteratee) {
+      var index = -1,
+          result = Array(n);
+
+      while (++index < n) {
+        result[index] = iteratee(index);
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.unary` without support for storing metadata.
+     *
+     * @private
+     * @param {Function} func The function to cap arguments for.
+     * @returns {Function} Returns the new capped function.
+     */
+
+
+    function baseUnary(func) {
+      return function (value) {
+        return func(value);
+      };
+    }
+    /**
+     * Checks if a cache value for `key` exists.
+     *
+     * @private
+     * @param {Object} cache The cache to query.
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function cacheHas(cache, key) {
+      return cache.has(key);
+    }
+    /**
+     * Gets the value at `key` of `object`.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {string} key The key of the property to get.
+     * @returns {*} Returns the property value.
+     */
+
+
+    function getValue(object, key) {
+      return object == null ? undefined : object[key];
+    }
+    /**
+     * Checks if `value` is a host object in IE < 9.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+     */
+
+
+    function isHostObject(value) {
+      // Many host objects are `Object` objects that can coerce to strings
+      // despite having improperly defined `toString` methods.
+      var result = false;
+
+      if (value != null && typeof value.toString != 'function') {
+        try {
+          result = !!(value + '');
+        } catch (e) {}
+      }
+
+      return result;
+    }
+    /**
+     * Converts `map` to its key-value pairs.
+     *
+     * @private
+     * @param {Object} map The map to convert.
+     * @returns {Array} Returns the key-value pairs.
+     */
+
+
+    function mapToArray(map) {
+      var index = -1,
+          result = Array(map.size);
+      map.forEach(function (value, key) {
+        result[++index] = [key, value];
+      });
+      return result;
+    }
+    /**
+     * Creates a unary function that invokes `func` with its argument transformed.
+     *
+     * @private
+     * @param {Function} func The function to wrap.
+     * @param {Function} transform The argument transform.
+     * @returns {Function} Returns the new function.
+     */
+
+
+    function overArg(func, transform) {
+      return function (arg) {
+        return func(transform(arg));
+      };
+    }
+    /**
+     * Converts `set` to an array of its values.
+     *
+     * @private
+     * @param {Object} set The set to convert.
+     * @returns {Array} Returns the values.
+     */
+
+
+    function setToArray(set) {
+      var index = -1,
+          result = Array(set.size);
+      set.forEach(function (value) {
+        result[++index] = value;
+      });
+      return result;
+    }
+    /** Used for built-in method references. */
+
+
+    var arrayProto = Array.prototype,
+        funcProto = Function.prototype,
+        objectProto = Object.prototype;
+    /** Used to detect overreaching core-js shims. */
+
+    var coreJsData = root['__core-js_shared__'];
+    /** Used to detect methods masquerading as native. */
+
+    var maskSrcKey = function () {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+      return uid ? 'Symbol(src)_1.' + uid : '';
+    }();
+    /** Used to resolve the decompiled source of functions. */
+
+
+    var funcToString = funcProto.toString;
+    /** Used to check objects for own properties. */
+
+    var hasOwnProperty = objectProto.hasOwnProperty;
+    /**
+     * Used to resolve the
+     * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+     * of values.
+     */
+
+    var objectToString = objectProto.toString;
+    /** Used to detect if a method is native. */
+
+    var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+    /** Built-in value references. */
+
+    var Symbol = root.Symbol,
+        Uint8Array = root.Uint8Array,
+        propertyIsEnumerable = objectProto.propertyIsEnumerable,
+        splice = arrayProto.splice;
+    /* Built-in method references for those with the same name as other `lodash` methods. */
+
+    var nativeKeys = overArg(Object.keys, Object);
+    /* Built-in method references that are verified to be native. */
+
+    var DataView = getNative(root, 'DataView'),
+        Map = getNative(root, 'Map'),
+        Promise = getNative(root, 'Promise'),
+        Set = getNative(root, 'Set'),
+        WeakMap = getNative(root, 'WeakMap'),
+        nativeCreate = getNative(Object, 'create');
+    /** Used to detect maps, sets, and weakmaps. */
+
+    var dataViewCtorString = toSource(DataView),
+        mapCtorString = toSource(Map),
+        promiseCtorString = toSource(Promise),
+        setCtorString = toSource(Set),
+        weakMapCtorString = toSource(WeakMap);
+    /** Used to convert symbols to primitives and strings. */
+
+    var symbolProto = Symbol ? Symbol.prototype : undefined,
+        symbolValueOf = symbolProto ? symbolProto.valueOf : undefined,
+        symbolToString = symbolProto ? symbolProto.toString : undefined;
+    /**
+     * Creates a hash object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Hash(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the hash.
+     *
+     * @private
+     * @name clear
+     * @memberOf Hash
+     */
+
+
+    function hashClear() {
+      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+    }
+    /**
+     * Removes `key` and its value from the hash.
+     *
+     * @private
+     * @name delete
+     * @memberOf Hash
+     * @param {Object} hash The hash to modify.
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function hashDelete(key) {
+      return this.has(key) && delete this.__data__[key];
+    }
+    /**
+     * Gets the hash value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Hash
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function hashGet(key) {
+      var data = this.__data__;
+
+      if (nativeCreate) {
+        var result = data[key];
+        return result === HASH_UNDEFINED ? undefined : result;
+      }
+
+      return hasOwnProperty.call(data, key) ? data[key] : undefined;
+    }
+    /**
+     * Checks if a hash value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Hash
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function hashHas(key) {
+      var data = this.__data__;
+      return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+    }
+    /**
+     * Sets the hash `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Hash
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the hash instance.
+     */
+
+
+    function hashSet(key, value) {
+      var data = this.__data__;
+      data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED : value;
+      return this;
+    } // Add methods to `Hash`.
+
+
+    Hash.prototype.clear = hashClear;
+    Hash.prototype['delete'] = hashDelete;
+    Hash.prototype.get = hashGet;
+    Hash.prototype.has = hashHas;
+    Hash.prototype.set = hashSet;
+    /**
+     * Creates an list cache object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function ListCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the list cache.
+     *
+     * @private
+     * @name clear
+     * @memberOf ListCache
+     */
+
+
+    function listCacheClear() {
+      this.__data__ = [];
+    }
+    /**
+     * Removes `key` and its value from the list cache.
+     *
+     * @private
+     * @name delete
+     * @memberOf ListCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function listCacheDelete(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        return false;
+      }
+
+      var lastIndex = data.length - 1;
+
+      if (index == lastIndex) {
+        data.pop();
+      } else {
+        splice.call(data, index, 1);
+      }
+
+      return true;
+    }
+    /**
+     * Gets the list cache value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf ListCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function listCacheGet(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+      return index < 0 ? undefined : data[index][1];
+    }
+    /**
+     * Checks if a list cache value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf ListCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function listCacheHas(key) {
+      return assocIndexOf(this.__data__, key) > -1;
+    }
+    /**
+     * Sets the list cache `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf ListCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the list cache instance.
+     */
+
+
+    function listCacheSet(key, value) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        data.push([key, value]);
+      } else {
+        data[index][1] = value;
+      }
+
+      return this;
+    } // Add methods to `ListCache`.
+
+
+    ListCache.prototype.clear = listCacheClear;
+    ListCache.prototype['delete'] = listCacheDelete;
+    ListCache.prototype.get = listCacheGet;
+    ListCache.prototype.has = listCacheHas;
+    ListCache.prototype.set = listCacheSet;
+    /**
+     * Creates a map cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function MapCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the map.
+     *
+     * @private
+     * @name clear
+     * @memberOf MapCache
+     */
+
+
+    function mapCacheClear() {
+      this.__data__ = {
+        'hash': new Hash(),
+        'map': new (Map || ListCache)(),
+        'string': new Hash()
+      };
+    }
+    /**
+     * Removes `key` and its value from the map.
+     *
+     * @private
+     * @name delete
+     * @memberOf MapCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function mapCacheDelete(key) {
+      return getMapData(this, key)['delete'](key);
+    }
+    /**
+     * Gets the map value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf MapCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function mapCacheGet(key) {
+      return getMapData(this, key).get(key);
+    }
+    /**
+     * Checks if a map value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf MapCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function mapCacheHas(key) {
+      return getMapData(this, key).has(key);
+    }
+    /**
+     * Sets the map `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf MapCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the map cache instance.
+     */
+
+
+    function mapCacheSet(key, value) {
+      getMapData(this, key).set(key, value);
+      return this;
+    } // Add methods to `MapCache`.
+
+
+    MapCache.prototype.clear = mapCacheClear;
+    MapCache.prototype['delete'] = mapCacheDelete;
+    MapCache.prototype.get = mapCacheGet;
+    MapCache.prototype.has = mapCacheHas;
+    MapCache.prototype.set = mapCacheSet;
+    /**
+     *
+     * Creates an array cache object to store unique values.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [values] The values to cache.
+     */
+
+    function SetCache(values) {
+      var index = -1,
+          length = values ? values.length : 0;
+      this.__data__ = new MapCache();
+
+      while (++index < length) {
+        this.add(values[index]);
+      }
+    }
+    /**
+     * Adds `value` to the array cache.
+     *
+     * @private
+     * @name add
+     * @memberOf SetCache
+     * @alias push
+     * @param {*} value The value to cache.
+     * @returns {Object} Returns the cache instance.
+     */
+
+
+    function setCacheAdd(value) {
+      this.__data__.set(value, HASH_UNDEFINED);
+
+      return this;
+    }
+    /**
+     * Checks if `value` is in the array cache.
+     *
+     * @private
+     * @name has
+     * @memberOf SetCache
+     * @param {*} value The value to search for.
+     * @returns {number} Returns `true` if `value` is found, else `false`.
+     */
+
+
+    function setCacheHas(value) {
+      return this.__data__.has(value);
+    } // Add methods to `SetCache`.
+
+
+    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+    SetCache.prototype.has = setCacheHas;
+    /**
+     * Creates a stack cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Stack(entries) {
+      this.__data__ = new ListCache(entries);
+    }
+    /**
+     * Removes all key-value entries from the stack.
+     *
+     * @private
+     * @name clear
+     * @memberOf Stack
+     */
+
+
+    function stackClear() {
+      this.__data__ = new ListCache();
+    }
+    /**
+     * Removes `key` and its value from the stack.
+     *
+     * @private
+     * @name delete
+     * @memberOf Stack
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function stackDelete(key) {
+      return this.__data__['delete'](key);
+    }
+    /**
+     * Gets the stack value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Stack
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function stackGet(key) {
+      return this.__data__.get(key);
+    }
+    /**
+     * Checks if a stack value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Stack
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function stackHas(key) {
+      return this.__data__.has(key);
+    }
+    /**
+     * Sets the stack `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Stack
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the stack cache instance.
+     */
+
+
+    function stackSet(key, value) {
+      var cache = this.__data__;
+
+      if (cache instanceof ListCache) {
+        var pairs = cache.__data__;
+
+        if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
+          pairs.push([key, value]);
+          return this;
+        }
+
+        cache = this.__data__ = new MapCache(pairs);
+      }
+
+      cache.set(key, value);
+      return this;
+    } // Add methods to `Stack`.
+
+
+    Stack.prototype.clear = stackClear;
+    Stack.prototype['delete'] = stackDelete;
+    Stack.prototype.get = stackGet;
+    Stack.prototype.has = stackHas;
+    Stack.prototype.set = stackSet;
+    /**
+     * Creates an array of the enumerable property names of the array-like `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @param {boolean} inherited Specify returning inherited property names.
+     * @returns {Array} Returns the array of property names.
+     */
+
+    function arrayLikeKeys(value, inherited) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      // Safari 9 makes `arguments.length` enumerable in strict mode.
+      var result = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
+      var length = result.length,
+          skipIndexes = !!length;
+
+      for (var key in value) {
+        if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * Gets the index at which the `key` is found in `array` of key-value pairs.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {*} key The key to search for.
+     * @returns {number} Returns the index of the matched value, else `-1`.
+     */
+
+
+    function assocIndexOf(array, key) {
+      var length = array.length;
+
+      while (length--) {
+        if (eq(array[length][0], key)) {
+          return length;
+        }
+      }
+
+      return -1;
+    }
+    /**
+     * The base implementation of `_.get` without support for default values.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @returns {*} Returns the resolved value.
+     */
+
+
+    function baseGet(object, path) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var index = 0,
+          length = path.length;
+
+      while (object != null && index < length) {
+        object = object[toKey(path[index++])];
+      }
+
+      return index && index == length ? object : undefined;
+    }
+    /**
+     * The base implementation of `getTag`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    function baseGetTag(value) {
+      return objectToString.call(value);
+    }
+    /**
+     * The base implementation of `_.hasIn` without support for deep paths.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {Array|string} key The key to check.
+     * @returns {boolean} Returns `true` if `key` exists, else `false`.
+     */
+
+
+    function baseHasIn(object, key) {
+      return object != null && key in Object(object);
+    }
+    /**
+     * The base implementation of `_.isEqual` which supports partial comparisons
+     * and tracks traversed objects.
+     *
+     * @private
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {boolean} [bitmask] The bitmask of comparison flags.
+     *  The bitmask may be composed of the following flags:
+     *     1 - Unordered comparison
+     *     2 - Partial comparison
+     * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     */
+
+
+    function baseIsEqual(value, other, customizer, bitmask, stack) {
+      if (value === other) {
+        return true;
+      }
+
+      if (value == null || other == null || !isObject(value) && !isObjectLike(other)) {
+        return value !== value && other !== other;
+      }
+
+      return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
+    }
+    /**
+     * A specialized version of `baseIsEqual` for arrays and objects which performs
+     * deep comparisons and tracks traversed objects enabling objects with circular
+     * references to be compared.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
+      var objIsArr = isArray(object),
+          othIsArr = isArray(other),
+          objTag = arrayTag,
+          othTag = arrayTag;
+
+      if (!objIsArr) {
+        objTag = getTag(object);
+        objTag = objTag == argsTag ? objectTag : objTag;
+      }
+
+      if (!othIsArr) {
+        othTag = getTag(other);
+        othTag = othTag == argsTag ? objectTag : othTag;
+      }
+
+      var objIsObj = objTag == objectTag && !isHostObject(object),
+          othIsObj = othTag == objectTag && !isHostObject(other),
+          isSameTag = objTag == othTag;
+
+      if (isSameTag && !objIsObj) {
+        stack || (stack = new Stack());
+        return objIsArr || isTypedArray(object) ? equalArrays(object, other, equalFunc, customizer, bitmask, stack) : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
+      }
+
+      if (!(bitmask & PARTIAL_COMPARE_FLAG)) {
+        var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+            othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+        if (objIsWrapped || othIsWrapped) {
+          var objUnwrapped = objIsWrapped ? object.value() : object,
+              othUnwrapped = othIsWrapped ? other.value() : other;
+          stack || (stack = new Stack());
+          return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
+        }
+      }
+
+      if (!isSameTag) {
+        return false;
+      }
+
+      stack || (stack = new Stack());
+      return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
+    }
+    /**
+     * The base implementation of `_.isMatch` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Object} object The object to inspect.
+     * @param {Object} source The object of property values to match.
+     * @param {Array} matchData The property names, values, and compare flags to match.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+     */
+
+
+    function baseIsMatch(object, source, matchData, customizer) {
+      var index = matchData.length,
+          length = index,
+          noCustomizer = !customizer;
+
+      if (object == null) {
+        return !length;
+      }
+
+      object = Object(object);
+
+      while (index--) {
+        var data = matchData[index];
+
+        if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+          return false;
+        }
+      }
+
+      while (++index < length) {
+        data = matchData[index];
+        var key = data[0],
+            objValue = object[key],
+            srcValue = data[1];
+
+        if (noCustomizer && data[2]) {
+          if (objValue === undefined && !(key in object)) {
+            return false;
+          }
+        } else {
+          var stack = new Stack();
+
+          if (customizer) {
+            var result = customizer(objValue, srcValue, key, object, source, stack);
+          }
+
+          if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack) : result)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+    /**
+     * The base implementation of `_.isNative` without bad shim checks.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a native function,
+     *  else `false`.
+     */
+
+
+    function baseIsNative(value) {
+      if (!isObject(value) || isMasked(value)) {
+        return false;
+      }
+
+      var pattern = isFunction(value) || isHostObject(value) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
+    }
+    /**
+     * The base implementation of `_.isTypedArray` without Node.js optimizations.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     */
+
+
+    function baseIsTypedArray(value) {
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+    }
+    /**
+     * The base implementation of `_.iteratee`.
+     *
+     * @private
+     * @param {*} [value=_.identity] The value to convert to an iteratee.
+     * @returns {Function} Returns the iteratee.
+     */
+
+
+    function baseIteratee(value) {
+      // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+      // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+      if (typeof value == 'function') {
+        return value;
+      }
+
+      if (value == null) {
+        return identity;
+      }
+
+      if (typeof value == 'object') {
+        return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+      }
+
+      return property(value);
+    }
+    /**
+     * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     */
+
+
+    function baseKeys(object) {
+      if (!isPrototype(object)) {
+        return nativeKeys(object);
+      }
+
+      var result = [];
+
+      for (var key in Object(object)) {
+        if (hasOwnProperty.call(object, key) && key != 'constructor') {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.matches` which doesn't clone `source`.
+     *
+     * @private
+     * @param {Object} source The object of property values to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatches(source) {
+      var matchData = getMatchData(source);
+
+      if (matchData.length == 1 && matchData[0][2]) {
+        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+      }
+
+      return function (object) {
+        return object === source || baseIsMatch(object, source, matchData);
+      };
+    }
+    /**
+     * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
+     *
+     * @private
+     * @param {string} path The path of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatchesProperty(path, srcValue) {
+      if (isKey(path) && isStrictComparable(srcValue)) {
+        return matchesStrictComparable(toKey(path), srcValue);
+      }
+
+      return function (object) {
+        var objValue = get(object, path);
+        return objValue === undefined && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, undefined, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG);
+      };
+    }
+    /**
+     * A specialized version of `baseProperty` which supports deep paths.
+     *
+     * @private
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function basePropertyDeep(path) {
+      return function (object) {
+        return baseGet(object, path);
+      };
+    }
+    /**
+     * The base implementation of `_.toString` which doesn't convert nullish
+     * values to empty strings.
+     *
+     * @private
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     */
+
+
+    function baseToString(value) {
+      // Exit early for strings to avoid a performance hit in some environments.
+      if (typeof value == 'string') {
+        return value;
+      }
+
+      if (isSymbol(value)) {
+        return symbolToString ? symbolToString.call(value) : '';
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * The base implementation of `_.uniqBy` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {Function} [iteratee] The iteratee invoked per element.
+     * @param {Function} [comparator] The comparator invoked per element.
+     * @returns {Array} Returns the new duplicate free array.
+     */
+
+
+    function baseUniq(array, iteratee, comparator) {
+      var index = -1,
+          includes = arrayIncludes,
+          length = array.length,
+          isCommon = true,
+          result = [],
+          seen = result;
+
+      if (comparator) {
+        isCommon = false;
+        includes = arrayIncludesWith;
+      } else if (length >= LARGE_ARRAY_SIZE) {
+        var set = iteratee ? null : createSet(array);
+
+        if (set) {
+          return setToArray(set);
+        }
+
+        isCommon = false;
+        includes = cacheHas;
+        seen = new SetCache();
+      } else {
+        seen = iteratee ? [] : result;
+      }
+
+      outer: while (++index < length) {
+        var value = array[index],
+            computed = iteratee ? iteratee(value) : value;
+        value = comparator || value !== 0 ? value : 0;
+
+        if (isCommon && computed === computed) {
+          var seenIndex = seen.length;
+
+          while (seenIndex--) {
+            if (seen[seenIndex] === computed) {
+              continue outer;
+            }
+          }
+
+          if (iteratee) {
+            seen.push(computed);
+          }
+
+          result.push(value);
+        } else if (!includes(seen, computed, comparator)) {
+          if (seen !== result) {
+            seen.push(computed);
+          }
+
+          result.push(value);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * Casts `value` to a path array if it's not one.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Array} Returns the cast property path array.
+     */
+
+
+    function castPath(value) {
+      return isArray(value) ? value : stringToPath(value);
+    }
+    /**
+     * Creates a set object of `values`.
+     *
+     * @private
+     * @param {Array} values The values to add to the set.
+     * @returns {Object} Returns the new set.
+     */
+
+
+    var createSet = !(Set && 1 / setToArray(new Set([, -0]))[1] == INFINITY) ? noop : function (values) {
+      return new Set(values);
+    };
+    /**
+     * A specialized version of `baseIsEqualDeep` for arrays with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Array} array The array to compare.
+     * @param {Array} other The other array to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `array` and `other` objects.
+     * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+     */
+
+    function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          arrLength = array.length,
+          othLength = other.length;
+
+      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+        return false;
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(array);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var index = -1,
+          result = true,
+          seen = bitmask & UNORDERED_COMPARE_FLAG ? new SetCache() : undefined;
+      stack.set(array, other);
+      stack.set(other, array); // Ignore non-index properties.
+
+      while (++index < arrLength) {
+        var arrValue = array[index],
+            othValue = other[index];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
+        }
+
+        if (compared !== undefined) {
+          if (compared) {
+            continue;
+          }
+
+          result = false;
+          break;
+        } // Recursively compare arrays (susceptible to call stack limits).
+
+
+        if (seen) {
+          if (!arraySome(other, function (othValue, othIndex) {
+            if (!seen.has(othIndex) && (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+              return seen.add(othIndex);
+            }
+          })) {
+            result = false;
+            break;
+          }
+        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+          result = false;
+          break;
+        }
+      }
+
+      stack['delete'](array);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for comparing objects of
+     * the same `toStringTag`.
+     *
+     * **Note:** This function only supports comparing values with tags of
+     * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {string} tag The `toStringTag` of the objects to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
+      switch (tag) {
+        case dataViewTag:
+          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+            return false;
+          }
+
+          object = object.buffer;
+          other = other.buffer;
+
+        case arrayBufferTag:
+          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+            return false;
+          }
+
+          return true;
+
+        case boolTag:
+        case dateTag:
+        case numberTag:
+          // Coerce booleans to `1` or `0` and dates to milliseconds.
+          // Invalid dates are coerced to `NaN`.
+          return eq(+object, +other);
+
+        case errorTag:
+          return object.name == other.name && object.message == other.message;
+
+        case regexpTag:
+        case stringTag:
+          // Coerce regexes to strings and treat strings, primitives and objects,
+          // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+          // for more details.
+          return object == other + '';
+
+        case mapTag:
+          var convert = mapToArray;
+
+        case setTag:
+          var isPartial = bitmask & PARTIAL_COMPARE_FLAG;
+          convert || (convert = setToArray);
+
+          if (object.size != other.size && !isPartial) {
+            return false;
+          } // Assume cyclic values are equal.
+
+
+          var stacked = stack.get(object);
+
+          if (stacked) {
+            return stacked == other;
+          }
+
+          bitmask |= UNORDERED_COMPARE_FLAG; // Recursively compare objects (susceptible to call stack limits).
+
+          stack.set(object, other);
+          var result = equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
+          stack['delete'](object);
+          return result;
+
+        case symbolTag:
+          if (symbolValueOf) {
+            return symbolValueOf.call(object) == symbolValueOf.call(other);
+          }
+
+      }
+
+      return false;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for objects with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          objProps = keys(object),
+          objLength = objProps.length,
+          othProps = keys(other),
+          othLength = othProps.length;
+
+      if (objLength != othLength && !isPartial) {
+        return false;
+      }
+
+      var index = objLength;
+
+      while (index--) {
+        var key = objProps[index];
+
+        if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
+          return false;
+        }
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(object);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var result = true;
+      stack.set(object, other);
+      stack.set(other, object);
+      var skipCtor = isPartial;
+
+      while (++index < objLength) {
+        key = objProps[index];
+        var objValue = object[key],
+            othValue = other[key];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+        } // Recursively compare objects (susceptible to call stack limits).
+
+
+        if (!(compared === undefined ? objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack) : compared)) {
+          result = false;
+          break;
+        }
+
+        skipCtor || (skipCtor = key == 'constructor');
+      }
+
+      if (result && !skipCtor) {
+        var objCtor = object.constructor,
+            othCtor = other.constructor; // Non `Object` object instances with different constructors are not equal.
+
+        if (objCtor != othCtor && 'constructor' in object && 'constructor' in other && !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+          result = false;
+        }
+      }
+
+      stack['delete'](object);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * Gets the data for `map`.
+     *
+     * @private
+     * @param {Object} map The map to query.
+     * @param {string} key The reference key.
+     * @returns {*} Returns the map data.
+     */
+
+
+    function getMapData(map, key) {
+      var data = map.__data__;
+      return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+    }
+    /**
+     * Gets the property names, values, and compare flags of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the match data of `object`.
+     */
+
+
+    function getMatchData(object) {
+      var result = keys(object),
+          length = result.length;
+
+      while (length--) {
+        var key = result[length],
+            value = object[key];
+        result[length] = [key, value, isStrictComparable(value)];
+      }
+
+      return result;
+    }
+    /**
+     * Gets the native function at `key` of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {string} key The key of the method to get.
+     * @returns {*} Returns the function if it's native, else `undefined`.
+     */
+
+
+    function getNative(object, key) {
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : undefined;
+    }
+    /**
+     * Gets the `toStringTag` of `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    var getTag = baseGetTag; // Fallback for data views, maps, sets, and weak maps in IE 11,
+    // for data views in Edge < 14, and promises in Node.js.
+
+    if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise && getTag(Promise.resolve()) != promiseTag || Set && getTag(new Set()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
+      getTag = function (value) {
+        var result = objectToString.call(value),
+            Ctor = result == objectTag ? value.constructor : undefined,
+            ctorString = Ctor ? toSource(Ctor) : undefined;
+
+        if (ctorString) {
+          switch (ctorString) {
+            case dataViewCtorString:
+              return dataViewTag;
+
+            case mapCtorString:
+              return mapTag;
+
+            case promiseCtorString:
+              return promiseTag;
+
+            case setCtorString:
+              return setTag;
+
+            case weakMapCtorString:
+              return weakMapTag;
+          }
+        }
+
+        return result;
+      };
+    }
+    /**
+     * Checks if `path` exists on `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @param {Function} hasFunc The function to check properties.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     */
+
+
+    function hasPath(object, path, hasFunc) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var result,
+          index = -1,
+          length = path.length;
+
+      while (++index < length) {
+        var key = toKey(path[index]);
+
+        if (!(result = object != null && hasFunc(object, key))) {
+          break;
+        }
+
+        object = object[key];
+      }
+
+      if (result) {
+        return result;
+      }
+
+      var length = object ? object.length : 0;
+      return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
+    }
+    /**
+     * Checks if `value` is a valid array-like index.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+     * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+     */
+
+
+    function isIndex(value, length) {
+      length = length == null ? MAX_SAFE_INTEGER : length;
+      return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+    }
+    /**
+     * Checks if `value` is a property name and not a property path.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {Object} [object] The object to query keys on.
+     * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+     */
+
+
+    function isKey(value, object) {
+      if (isArray(value)) {
+        return false;
+      }
+
+      var type = typeof value;
+
+      if (type == 'number' || type == 'symbol' || type == 'boolean' || value == null || isSymbol(value)) {
+        return true;
+      }
+
+      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+    }
+    /**
+     * Checks if `value` is suitable for use as unique object key.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+     */
+
+
+    function isKeyable(value) {
+      var type = typeof value;
+      return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+    }
+    /**
+     * Checks if `func` has its source masked.
+     *
+     * @private
+     * @param {Function} func The function to check.
+     * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+     */
+
+
+    function isMasked(func) {
+      return !!maskSrcKey && maskSrcKey in func;
+    }
+    /**
+     * Checks if `value` is likely a prototype object.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+     */
+
+
+    function isPrototype(value) {
+      var Ctor = value && value.constructor,
+          proto = typeof Ctor == 'function' && Ctor.prototype || objectProto;
+      return value === proto;
+    }
+    /**
+     * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` if suitable for strict
+     *  equality comparisons, else `false`.
+     */
+
+
+    function isStrictComparable(value) {
+      return value === value && !isObject(value);
+    }
+    /**
+     * A specialized version of `matchesProperty` for source values suitable
+     * for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function matchesStrictComparable(key, srcValue) {
+      return function (object) {
+        if (object == null) {
+          return false;
+        }
+
+        return object[key] === srcValue && (srcValue !== undefined || key in Object(object));
+      };
+    }
+    /**
+     * Converts `string` to a property path array.
+     *
+     * @private
+     * @param {string} string The string to convert.
+     * @returns {Array} Returns the property path array.
+     */
+
+
+    var stringToPath = memoize(function (string) {
+      string = toString(string);
+      var result = [];
+
+      if (reLeadingDot.test(string)) {
+        result.push('');
+      }
+
+      string.replace(rePropName, function (match, number, quote, string) {
+        result.push(quote ? string.replace(reEscapeChar, '$1') : number || match);
+      });
+      return result;
+    });
+    /**
+     * Converts `value` to a string key if it's not a string or symbol.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {string|symbol} Returns the key.
+     */
+
+    function toKey(value) {
+      if (typeof value == 'string' || isSymbol(value)) {
+        return value;
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * Converts `func` to its source code.
+     *
+     * @private
+     * @param {Function} func The function to process.
+     * @returns {string} Returns the source code.
+     */
+
+
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e) {}
+
+        try {
+          return func + '';
+        } catch (e) {}
+      }
+
+      return '';
+    }
+    /**
+     * This method is like `_.uniq` except that it accepts `iteratee` which is
+     * invoked for each element in `array` to generate the criterion by which
+     * uniqueness is computed. The iteratee is invoked with one argument: (value).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Array
+     * @param {Array} array The array to inspect.
+     * @param {Function} [iteratee=_.identity]
+     *  The iteratee invoked per element.
+     * @returns {Array} Returns the new duplicate free array.
+     * @example
+     *
+     * _.uniqBy([2.1, 1.2, 2.3], Math.floor);
+     * // => [2.1, 1.2]
+     *
+     * // The `_.property` iteratee shorthand.
+     * _.uniqBy([{ 'x': 1 }, { 'x': 2 }, { 'x': 1 }], 'x');
+     * // => [{ 'x': 1 }, { 'x': 2 }]
+     */
+
+
+    function uniqBy(array, iteratee) {
+      return array && array.length ? baseUniq(array, baseIteratee(iteratee, 2)) : [];
+    }
+    /**
+     * Creates a function that memoizes the result of `func`. If `resolver` is
+     * provided, it determines the cache key for storing the result based on the
+     * arguments provided to the memoized function. By default, the first argument
+     * provided to the memoized function is used as the map cache key. The `func`
+     * is invoked with the `this` binding of the memoized function.
+     *
+     * **Note:** The cache is exposed as the `cache` property on the memoized
+     * function. Its creation may be customized by replacing the `_.memoize.Cache`
+     * constructor with one whose instances implement the
+     * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
+     * method interface of `delete`, `get`, `has`, and `set`.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Function
+     * @param {Function} func The function to have its output memoized.
+     * @param {Function} [resolver] The function to resolve the cache key.
+     * @returns {Function} Returns the new memoized function.
+     * @example
+     *
+     * var object = { 'a': 1, 'b': 2 };
+     * var other = { 'c': 3, 'd': 4 };
+     *
+     * var values = _.memoize(_.values);
+     * values(object);
+     * // => [1, 2]
+     *
+     * values(other);
+     * // => [3, 4]
+     *
+     * object.a = 2;
+     * values(object);
+     * // => [1, 2]
+     *
+     * // Modify the result cache.
+     * values.cache.set(object, ['a', 'b']);
+     * values(object);
+     * // => ['a', 'b']
+     *
+     * // Replace `_.memoize.Cache`.
+     * _.memoize.Cache = WeakMap;
+     */
+
+
+    function memoize(func, resolver) {
+      if (typeof func != 'function' || resolver && typeof resolver != 'function') {
+        throw new TypeError(FUNC_ERROR_TEXT);
+      }
+
+      var memoized = function () {
+        var args = arguments,
+            key = resolver ? resolver.apply(this, args) : args[0],
+            cache = memoized.cache;
+
+        if (cache.has(key)) {
+          return cache.get(key);
+        }
+
+        var result = func.apply(this, args);
+        memoized.cache = cache.set(key, result);
+        return result;
+      };
+
+      memoized.cache = new (memoize.Cache || MapCache)();
+      return memoized;
+    } // Assign cache to `_.memoize`.
+
+
+    memoize.Cache = MapCache;
+    /**
+     * Performs a
+     * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+     * comparison between two values to determine if they are equivalent.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     * var other = { 'a': 1 };
+     *
+     * _.eq(object, object);
+     * // => true
+     *
+     * _.eq(object, other);
+     * // => false
+     *
+     * _.eq('a', 'a');
+     * // => true
+     *
+     * _.eq('a', Object('a'));
+     * // => false
+     *
+     * _.eq(NaN, NaN);
+     * // => true
+     */
+
+    function eq(value, other) {
+      return value === other || value !== value && other !== other;
+    }
+    /**
+     * Checks if `value` is likely an `arguments` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArguments(function() { return arguments; }());
+     * // => true
+     *
+     * _.isArguments([1, 2, 3]);
+     * // => false
+     */
+
+
+    function isArguments(value) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+    }
+    /**
+     * Checks if `value` is classified as an `Array` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+     * @example
+     *
+     * _.isArray([1, 2, 3]);
+     * // => true
+     *
+     * _.isArray(document.body.children);
+     * // => false
+     *
+     * _.isArray('abc');
+     * // => false
+     *
+     * _.isArray(_.noop);
+     * // => false
+     */
+
+
+    var isArray = Array.isArray;
+    /**
+     * Checks if `value` is array-like. A value is considered array-like if it's
+     * not a function and has a `value.length` that's an integer greater than or
+     * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+     * @example
+     *
+     * _.isArrayLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLike(document.body.children);
+     * // => true
+     *
+     * _.isArrayLike('abc');
+     * // => true
+     *
+     * _.isArrayLike(_.noop);
+     * // => false
+     */
+
+    function isArrayLike(value) {
+      return value != null && isLength(value.length) && !isFunction(value);
+    }
+    /**
+     * This method is like `_.isArrayLike` except that it also checks if `value`
+     * is an object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array-like object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArrayLikeObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLikeObject(document.body.children);
+     * // => true
+     *
+     * _.isArrayLikeObject('abc');
+     * // => false
+     *
+     * _.isArrayLikeObject(_.noop);
+     * // => false
+     */
+
+
+    function isArrayLikeObject(value) {
+      return isObjectLike(value) && isArrayLike(value);
+    }
+    /**
+     * Checks if `value` is classified as a `Function` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+     * @example
+     *
+     * _.isFunction(_);
+     * // => true
+     *
+     * _.isFunction(/abc/);
+     * // => false
+     */
+
+
+    function isFunction(value) {
+      // The use of `Object#toString` avoids issues with the `typeof` operator
+      // in Safari 8-9 which returns 'object' for typed array and other constructors.
+      var tag = isObject(value) ? objectToString.call(value) : '';
+      return tag == funcTag || tag == genTag;
+    }
+    /**
+     * Checks if `value` is a valid array-like length.
+     *
+     * **Note:** This method is loosely based on
+     * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+     * @example
+     *
+     * _.isLength(3);
+     * // => true
+     *
+     * _.isLength(Number.MIN_VALUE);
+     * // => false
+     *
+     * _.isLength(Infinity);
+     * // => false
+     *
+     * _.isLength('3');
+     * // => false
+     */
+
+
+    function isLength(value) {
+      return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+    }
+    /**
+     * Checks if `value` is the
+     * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+     * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+     * @example
+     *
+     * _.isObject({});
+     * // => true
+     *
+     * _.isObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isObject(_.noop);
+     * // => true
+     *
+     * _.isObject(null);
+     * // => false
+     */
+
+
+    function isObject(value) {
+      var type = typeof value;
+      return !!value && (type == 'object' || type == 'function');
+    }
+    /**
+     * Checks if `value` is object-like. A value is object-like if it's not `null`
+     * and has a `typeof` result of "object".
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+     * @example
+     *
+     * _.isObjectLike({});
+     * // => true
+     *
+     * _.isObjectLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isObjectLike(_.noop);
+     * // => false
+     *
+     * _.isObjectLike(null);
+     * // => false
+     */
+
+
+    function isObjectLike(value) {
+      return !!value && typeof value == 'object';
+    }
+    /**
+     * Checks if `value` is classified as a `Symbol` primitive or object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+     * @example
+     *
+     * _.isSymbol(Symbol.iterator);
+     * // => true
+     *
+     * _.isSymbol('abc');
+     * // => false
+     */
+
+
+    function isSymbol(value) {
+      return typeof value == 'symbol' || isObjectLike(value) && objectToString.call(value) == symbolTag;
+    }
+    /**
+     * Checks if `value` is classified as a typed array.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     * @example
+     *
+     * _.isTypedArray(new Uint8Array);
+     * // => true
+     *
+     * _.isTypedArray([]);
+     * // => false
+     */
+
+
+    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+    /**
+     * Converts `value` to a string. An empty string is returned for `null`
+     * and `undefined` values. The sign of `-0` is preserved.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     * @example
+     *
+     * _.toString(null);
+     * // => ''
+     *
+     * _.toString(-0);
+     * // => '-0'
+     *
+     * _.toString([1, 2, 3]);
+     * // => '1,2,3'
+     */
+
+    function toString(value) {
+      return value == null ? '' : baseToString(value);
+    }
+    /**
+     * Gets the value at `path` of `object`. If the resolved value is
+     * `undefined`, the `defaultValue` is returned in its place.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.7.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+     * @returns {*} Returns the resolved value.
+     * @example
+     *
+     * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+     *
+     * _.get(object, 'a[0].b.c');
+     * // => 3
+     *
+     * _.get(object, ['a', '0', 'b', 'c']);
+     * // => 3
+     *
+     * _.get(object, 'a.b.c', 'default');
+     * // => 'default'
+     */
+
+
+    function get(object, path, defaultValue) {
+      var result = object == null ? undefined : baseGet(object, path);
+      return result === undefined ? defaultValue : result;
+    }
+    /**
+     * Checks if `path` is a direct or inherited property of `object`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     * @example
+     *
+     * var object = _.create({ 'a': _.create({ 'b': 2 }) });
+     *
+     * _.hasIn(object, 'a');
+     * // => true
+     *
+     * _.hasIn(object, 'a.b');
+     * // => true
+     *
+     * _.hasIn(object, ['a', 'b']);
+     * // => true
+     *
+     * _.hasIn(object, 'b');
+     * // => false
+     */
+
+
+    function hasIn(object, path) {
+      return object != null && hasPath(object, path, baseHasIn);
+    }
+    /**
+     * Creates an array of the own enumerable property names of `object`.
+     *
+     * **Note:** Non-object values are coerced to objects. See the
+     * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+     * for more details.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Object
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     * @example
+     *
+     * function Foo() {
+     *   this.a = 1;
+     *   this.b = 2;
+     * }
+     *
+     * Foo.prototype.c = 3;
+     *
+     * _.keys(new Foo);
+     * // => ['a', 'b'] (iteration order is not guaranteed)
+     *
+     * _.keys('hi');
+     * // => ['0', '1']
+     */
+
+
+    function keys(object) {
+      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+    }
+    /**
+     * This method returns the first argument it receives.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Util
+     * @param {*} value Any value.
+     * @returns {*} Returns `value`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     *
+     * console.log(_.identity(object) === object);
+     * // => true
+     */
+
+
+    function identity(value) {
+      return value;
+    }
+    /**
+     * This method returns `undefined`.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.3.0
+     * @category Util
+     * @example
+     *
+     * _.times(2, _.noop);
+     * // => [undefined, undefined]
+     */
+
+
+    function noop() {} // No operation performed.
+
+    /**
+     * Creates a function that returns the value at `path` of a given object.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.4.0
+     * @category Util
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     * @example
+     *
+     * var objects = [
+     *   { 'a': { 'b': 2 } },
+     *   { 'a': { 'b': 1 } }
+     * ];
+     *
+     * _.map(objects, _.property('a.b'));
+     * // => [2, 1]
+     *
+     * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
+     * // => [1, 2]
+     */
+
+
+    function property(path) {
+      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+    }
+
+    module.exports = uniqBy;
+  });
+
+  var lodash_remove = createCommonjsModule(function (module, exports) {
+    /**
+     * lodash (Custom Build) <https://lodash.com/>
+     * Build: `lodash modularize exports="npm" -o ./`
+     * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+     * Released under MIT license <https://lodash.com/license>
+     * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+     * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+     */
+
+    /** Used as the size to enable large array optimizations. */
+    var LARGE_ARRAY_SIZE = 200;
+    /** Used as the `TypeError` message for "Functions" methods. */
+
+    var FUNC_ERROR_TEXT = 'Expected a function';
+    /** Used to stand-in for `undefined` hash values. */
+
+    var HASH_UNDEFINED = '__lodash_hash_undefined__';
+    /** Used to compose bitmasks for comparison styles. */
+
+    var UNORDERED_COMPARE_FLAG = 1,
+        PARTIAL_COMPARE_FLAG = 2;
+    /** Used as references for various `Number` constants. */
+
+    var INFINITY = 1 / 0,
+        MAX_SAFE_INTEGER = 9007199254740991;
+    /** `Object#toString` result references. */
+
+    var argsTag = '[object Arguments]',
+        arrayTag = '[object Array]',
+        boolTag = '[object Boolean]',
+        dateTag = '[object Date]',
+        errorTag = '[object Error]',
+        funcTag = '[object Function]',
+        genTag = '[object GeneratorFunction]',
+        mapTag = '[object Map]',
+        numberTag = '[object Number]',
+        objectTag = '[object Object]',
+        promiseTag = '[object Promise]',
+        regexpTag = '[object RegExp]',
+        setTag = '[object Set]',
+        stringTag = '[object String]',
+        symbolTag = '[object Symbol]',
+        weakMapTag = '[object WeakMap]';
+    var arrayBufferTag = '[object ArrayBuffer]',
+        dataViewTag = '[object DataView]',
+        float32Tag = '[object Float32Array]',
+        float64Tag = '[object Float64Array]',
+        int8Tag = '[object Int8Array]',
+        int16Tag = '[object Int16Array]',
+        int32Tag = '[object Int32Array]',
+        uint8Tag = '[object Uint8Array]',
+        uint8ClampedTag = '[object Uint8ClampedArray]',
+        uint16Tag = '[object Uint16Array]',
+        uint32Tag = '[object Uint32Array]';
+    /** Used to match property names within property paths. */
+
+    var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+        reIsPlainProp = /^\w*$/,
+        reLeadingDot = /^\./,
+        rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+    /**
+     * Used to match `RegExp`
+     * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+     */
+
+    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+    /** Used to match backslashes in property paths. */
+
+    var reEscapeChar = /\\(\\)?/g;
+    /** Used to detect host constructors (Safari). */
+
+    var reIsHostCtor = /^\[object .+?Constructor\]$/;
+    /** Used to detect unsigned integer values. */
+
+    var reIsUint = /^(?:0|[1-9]\d*)$/;
+    /** Used to identify `toStringTag` values of typed arrays. */
+
+    var typedArrayTags = {};
+    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+    /** Detect free variable `global` from Node.js. */
+
+    var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+    /** Detect free variable `self`. */
+
+    var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+    /** Used as a reference to the global object. */
+
+    var root = freeGlobal || freeSelf || Function('return this')();
+    /** Detect free variable `exports`. */
+
+    var freeExports = exports && !exports.nodeType && exports;
+    /** Detect free variable `module`. */
+
+    var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+    /** Detect the popular CommonJS extension `module.exports`. */
+
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    /** Detect free variable `process` from Node.js. */
+
+    var freeProcess = moduleExports && freeGlobal.process;
+    /** Used to access faster Node.js helpers. */
+
+    var nodeUtil = function () {
+      try {
+        return freeProcess && freeProcess.binding('util');
+      } catch (e) {}
+    }();
+    /* Node.js helper references. */
+
+
+    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+    /**
+     * A specialized version of `_.some` for arrays without support for iteratee
+     * shorthands.
+     *
+     * @private
+     * @param {Array} [array] The array to iterate over.
+     * @param {Function} predicate The function invoked per iteration.
+     * @returns {boolean} Returns `true` if any element passes the predicate check,
+     *  else `false`.
+     */
+
+    function arraySome(array, predicate) {
+      var index = -1,
+          length = array ? array.length : 0;
+
+      while (++index < length) {
+        if (predicate(array[index], index, array)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+    /**
+     * The base implementation of `_.property` without support for deep paths.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function baseProperty(key) {
+      return function (object) {
+        return object == null ? undefined : object[key];
+      };
+    }
+    /**
+     * The base implementation of `_.times` without support for iteratee shorthands
+     * or max array length checks.
+     *
+     * @private
+     * @param {number} n The number of times to invoke `iteratee`.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Array} Returns the array of results.
+     */
+
+
+    function baseTimes(n, iteratee) {
+      var index = -1,
+          result = Array(n);
+
+      while (++index < n) {
+        result[index] = iteratee(index);
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.unary` without support for storing metadata.
+     *
+     * @private
+     * @param {Function} func The function to cap arguments for.
+     * @returns {Function} Returns the new capped function.
+     */
+
+
+    function baseUnary(func) {
+      return function (value) {
+        return func(value);
+      };
+    }
+    /**
+     * Gets the value at `key` of `object`.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {string} key The key of the property to get.
+     * @returns {*} Returns the property value.
+     */
+
+
+    function getValue(object, key) {
+      return object == null ? undefined : object[key];
+    }
+    /**
+     * Checks if `value` is a host object in IE < 9.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+     */
+
+
+    function isHostObject(value) {
+      // Many host objects are `Object` objects that can coerce to strings
+      // despite having improperly defined `toString` methods.
+      var result = false;
+
+      if (value != null && typeof value.toString != 'function') {
+        try {
+          result = !!(value + '');
+        } catch (e) {}
+      }
+
+      return result;
+    }
+    /**
+     * Converts `map` to its key-value pairs.
+     *
+     * @private
+     * @param {Object} map The map to convert.
+     * @returns {Array} Returns the key-value pairs.
+     */
+
+
+    function mapToArray(map) {
+      var index = -1,
+          result = Array(map.size);
+      map.forEach(function (value, key) {
+        result[++index] = [key, value];
+      });
+      return result;
+    }
+    /**
+     * Creates a unary function that invokes `func` with its argument transformed.
+     *
+     * @private
+     * @param {Function} func The function to wrap.
+     * @param {Function} transform The argument transform.
+     * @returns {Function} Returns the new function.
+     */
+
+
+    function overArg(func, transform) {
+      return function (arg) {
+        return func(transform(arg));
+      };
+    }
+    /**
+     * Converts `set` to an array of its values.
+     *
+     * @private
+     * @param {Object} set The set to convert.
+     * @returns {Array} Returns the values.
+     */
+
+
+    function setToArray(set) {
+      var index = -1,
+          result = Array(set.size);
+      set.forEach(function (value) {
+        result[++index] = value;
+      });
+      return result;
+    }
+    /** Used for built-in method references. */
+
+
+    var arrayProto = Array.prototype,
+        funcProto = Function.prototype,
+        objectProto = Object.prototype;
+    /** Used to detect overreaching core-js shims. */
+
+    var coreJsData = root['__core-js_shared__'];
+    /** Used to detect methods masquerading as native. */
+
+    var maskSrcKey = function () {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+      return uid ? 'Symbol(src)_1.' + uid : '';
+    }();
+    /** Used to resolve the decompiled source of functions. */
+
+
+    var funcToString = funcProto.toString;
+    /** Used to check objects for own properties. */
+
+    var hasOwnProperty = objectProto.hasOwnProperty;
+    /**
+     * Used to resolve the
+     * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+     * of values.
+     */
+
+    var objectToString = objectProto.toString;
+    /** Used to detect if a method is native. */
+
+    var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+    /** Built-in value references. */
+
+    var Symbol = root.Symbol,
+        Uint8Array = root.Uint8Array,
+        propertyIsEnumerable = objectProto.propertyIsEnumerable,
+        splice = arrayProto.splice;
+    /* Built-in method references for those with the same name as other `lodash` methods. */
+
+    var nativeKeys = overArg(Object.keys, Object);
+    /* Built-in method references that are verified to be native. */
+
+    var DataView = getNative(root, 'DataView'),
+        Map = getNative(root, 'Map'),
+        Promise = getNative(root, 'Promise'),
+        Set = getNative(root, 'Set'),
+        WeakMap = getNative(root, 'WeakMap'),
+        nativeCreate = getNative(Object, 'create');
+    /** Used to detect maps, sets, and weakmaps. */
+
+    var dataViewCtorString = toSource(DataView),
+        mapCtorString = toSource(Map),
+        promiseCtorString = toSource(Promise),
+        setCtorString = toSource(Set),
+        weakMapCtorString = toSource(WeakMap);
+    /** Used to convert symbols to primitives and strings. */
+
+    var symbolProto = Symbol ? Symbol.prototype : undefined,
+        symbolValueOf = symbolProto ? symbolProto.valueOf : undefined,
+        symbolToString = symbolProto ? symbolProto.toString : undefined;
+    /**
+     * Creates a hash object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Hash(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the hash.
+     *
+     * @private
+     * @name clear
+     * @memberOf Hash
+     */
+
+
+    function hashClear() {
+      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+    }
+    /**
+     * Removes `key` and its value from the hash.
+     *
+     * @private
+     * @name delete
+     * @memberOf Hash
+     * @param {Object} hash The hash to modify.
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function hashDelete(key) {
+      return this.has(key) && delete this.__data__[key];
+    }
+    /**
+     * Gets the hash value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Hash
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function hashGet(key) {
+      var data = this.__data__;
+
+      if (nativeCreate) {
+        var result = data[key];
+        return result === HASH_UNDEFINED ? undefined : result;
+      }
+
+      return hasOwnProperty.call(data, key) ? data[key] : undefined;
+    }
+    /**
+     * Checks if a hash value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Hash
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function hashHas(key) {
+      var data = this.__data__;
+      return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+    }
+    /**
+     * Sets the hash `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Hash
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the hash instance.
+     */
+
+
+    function hashSet(key, value) {
+      var data = this.__data__;
+      data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED : value;
+      return this;
+    } // Add methods to `Hash`.
+
+
+    Hash.prototype.clear = hashClear;
+    Hash.prototype['delete'] = hashDelete;
+    Hash.prototype.get = hashGet;
+    Hash.prototype.has = hashHas;
+    Hash.prototype.set = hashSet;
+    /**
+     * Creates an list cache object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function ListCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the list cache.
+     *
+     * @private
+     * @name clear
+     * @memberOf ListCache
+     */
+
+
+    function listCacheClear() {
+      this.__data__ = [];
+    }
+    /**
+     * Removes `key` and its value from the list cache.
+     *
+     * @private
+     * @name delete
+     * @memberOf ListCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function listCacheDelete(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        return false;
+      }
+
+      var lastIndex = data.length - 1;
+
+      if (index == lastIndex) {
+        data.pop();
+      } else {
+        splice.call(data, index, 1);
+      }
+
+      return true;
+    }
+    /**
+     * Gets the list cache value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf ListCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function listCacheGet(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+      return index < 0 ? undefined : data[index][1];
+    }
+    /**
+     * Checks if a list cache value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf ListCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function listCacheHas(key) {
+      return assocIndexOf(this.__data__, key) > -1;
+    }
+    /**
+     * Sets the list cache `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf ListCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the list cache instance.
+     */
+
+
+    function listCacheSet(key, value) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        data.push([key, value]);
+      } else {
+        data[index][1] = value;
+      }
+
+      return this;
+    } // Add methods to `ListCache`.
+
+
+    ListCache.prototype.clear = listCacheClear;
+    ListCache.prototype['delete'] = listCacheDelete;
+    ListCache.prototype.get = listCacheGet;
+    ListCache.prototype.has = listCacheHas;
+    ListCache.prototype.set = listCacheSet;
+    /**
+     * Creates a map cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function MapCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the map.
+     *
+     * @private
+     * @name clear
+     * @memberOf MapCache
+     */
+
+
+    function mapCacheClear() {
+      this.__data__ = {
+        'hash': new Hash(),
+        'map': new (Map || ListCache)(),
+        'string': new Hash()
+      };
+    }
+    /**
+     * Removes `key` and its value from the map.
+     *
+     * @private
+     * @name delete
+     * @memberOf MapCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function mapCacheDelete(key) {
+      return getMapData(this, key)['delete'](key);
+    }
+    /**
+     * Gets the map value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf MapCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function mapCacheGet(key) {
+      return getMapData(this, key).get(key);
+    }
+    /**
+     * Checks if a map value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf MapCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function mapCacheHas(key) {
+      return getMapData(this, key).has(key);
+    }
+    /**
+     * Sets the map `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf MapCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the map cache instance.
+     */
+
+
+    function mapCacheSet(key, value) {
+      getMapData(this, key).set(key, value);
+      return this;
+    } // Add methods to `MapCache`.
+
+
+    MapCache.prototype.clear = mapCacheClear;
+    MapCache.prototype['delete'] = mapCacheDelete;
+    MapCache.prototype.get = mapCacheGet;
+    MapCache.prototype.has = mapCacheHas;
+    MapCache.prototype.set = mapCacheSet;
+    /**
+     *
+     * Creates an array cache object to store unique values.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [values] The values to cache.
+     */
+
+    function SetCache(values) {
+      var index = -1,
+          length = values ? values.length : 0;
+      this.__data__ = new MapCache();
+
+      while (++index < length) {
+        this.add(values[index]);
+      }
+    }
+    /**
+     * Adds `value` to the array cache.
+     *
+     * @private
+     * @name add
+     * @memberOf SetCache
+     * @alias push
+     * @param {*} value The value to cache.
+     * @returns {Object} Returns the cache instance.
+     */
+
+
+    function setCacheAdd(value) {
+      this.__data__.set(value, HASH_UNDEFINED);
+
+      return this;
+    }
+    /**
+     * Checks if `value` is in the array cache.
+     *
+     * @private
+     * @name has
+     * @memberOf SetCache
+     * @param {*} value The value to search for.
+     * @returns {number} Returns `true` if `value` is found, else `false`.
+     */
+
+
+    function setCacheHas(value) {
+      return this.__data__.has(value);
+    } // Add methods to `SetCache`.
+
+
+    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+    SetCache.prototype.has = setCacheHas;
+    /**
+     * Creates a stack cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Stack(entries) {
+      this.__data__ = new ListCache(entries);
+    }
+    /**
+     * Removes all key-value entries from the stack.
+     *
+     * @private
+     * @name clear
+     * @memberOf Stack
+     */
+
+
+    function stackClear() {
+      this.__data__ = new ListCache();
+    }
+    /**
+     * Removes `key` and its value from the stack.
+     *
+     * @private
+     * @name delete
+     * @memberOf Stack
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function stackDelete(key) {
+      return this.__data__['delete'](key);
+    }
+    /**
+     * Gets the stack value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Stack
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function stackGet(key) {
+      return this.__data__.get(key);
+    }
+    /**
+     * Checks if a stack value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Stack
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function stackHas(key) {
+      return this.__data__.has(key);
+    }
+    /**
+     * Sets the stack `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Stack
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the stack cache instance.
+     */
+
+
+    function stackSet(key, value) {
+      var cache = this.__data__;
+
+      if (cache instanceof ListCache) {
+        var pairs = cache.__data__;
+
+        if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
+          pairs.push([key, value]);
+          return this;
+        }
+
+        cache = this.__data__ = new MapCache(pairs);
+      }
+
+      cache.set(key, value);
+      return this;
+    } // Add methods to `Stack`.
+
+
+    Stack.prototype.clear = stackClear;
+    Stack.prototype['delete'] = stackDelete;
+    Stack.prototype.get = stackGet;
+    Stack.prototype.has = stackHas;
+    Stack.prototype.set = stackSet;
+    /**
+     * Creates an array of the enumerable property names of the array-like `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @param {boolean} inherited Specify returning inherited property names.
+     * @returns {Array} Returns the array of property names.
+     */
+
+    function arrayLikeKeys(value, inherited) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      // Safari 9 makes `arguments.length` enumerable in strict mode.
+      var result = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
+      var length = result.length,
+          skipIndexes = !!length;
+
+      for (var key in value) {
+        if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * Gets the index at which the `key` is found in `array` of key-value pairs.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {*} key The key to search for.
+     * @returns {number} Returns the index of the matched value, else `-1`.
+     */
+
+
+    function assocIndexOf(array, key) {
+      var length = array.length;
+
+      while (length--) {
+        if (eq(array[length][0], key)) {
+          return length;
+        }
+      }
+
+      return -1;
+    }
+    /**
+     * The base implementation of `_.get` without support for default values.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @returns {*} Returns the resolved value.
+     */
+
+
+    function baseGet(object, path) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var index = 0,
+          length = path.length;
+
+      while (object != null && index < length) {
+        object = object[toKey(path[index++])];
+      }
+
+      return index && index == length ? object : undefined;
+    }
+    /**
+     * The base implementation of `getTag`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    function baseGetTag(value) {
+      return objectToString.call(value);
+    }
+    /**
+     * The base implementation of `_.hasIn` without support for deep paths.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {Array|string} key The key to check.
+     * @returns {boolean} Returns `true` if `key` exists, else `false`.
+     */
+
+
+    function baseHasIn(object, key) {
+      return object != null && key in Object(object);
+    }
+    /**
+     * The base implementation of `_.isEqual` which supports partial comparisons
+     * and tracks traversed objects.
+     *
+     * @private
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {boolean} [bitmask] The bitmask of comparison flags.
+     *  The bitmask may be composed of the following flags:
+     *     1 - Unordered comparison
+     *     2 - Partial comparison
+     * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     */
+
+
+    function baseIsEqual(value, other, customizer, bitmask, stack) {
+      if (value === other) {
+        return true;
+      }
+
+      if (value == null || other == null || !isObject(value) && !isObjectLike(other)) {
+        return value !== value && other !== other;
+      }
+
+      return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
+    }
+    /**
+     * A specialized version of `baseIsEqual` for arrays and objects which performs
+     * deep comparisons and tracks traversed objects enabling objects with circular
+     * references to be compared.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
+      var objIsArr = isArray(object),
+          othIsArr = isArray(other),
+          objTag = arrayTag,
+          othTag = arrayTag;
+
+      if (!objIsArr) {
+        objTag = getTag(object);
+        objTag = objTag == argsTag ? objectTag : objTag;
+      }
+
+      if (!othIsArr) {
+        othTag = getTag(other);
+        othTag = othTag == argsTag ? objectTag : othTag;
+      }
+
+      var objIsObj = objTag == objectTag && !isHostObject(object),
+          othIsObj = othTag == objectTag && !isHostObject(other),
+          isSameTag = objTag == othTag;
+
+      if (isSameTag && !objIsObj) {
+        stack || (stack = new Stack());
+        return objIsArr || isTypedArray(object) ? equalArrays(object, other, equalFunc, customizer, bitmask, stack) : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
+      }
+
+      if (!(bitmask & PARTIAL_COMPARE_FLAG)) {
+        var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+            othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+        if (objIsWrapped || othIsWrapped) {
+          var objUnwrapped = objIsWrapped ? object.value() : object,
+              othUnwrapped = othIsWrapped ? other.value() : other;
+          stack || (stack = new Stack());
+          return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
+        }
+      }
+
+      if (!isSameTag) {
+        return false;
+      }
+
+      stack || (stack = new Stack());
+      return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
+    }
+    /**
+     * The base implementation of `_.isMatch` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Object} object The object to inspect.
+     * @param {Object} source The object of property values to match.
+     * @param {Array} matchData The property names, values, and compare flags to match.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+     */
+
+
+    function baseIsMatch(object, source, matchData, customizer) {
+      var index = matchData.length,
+          length = index,
+          noCustomizer = !customizer;
+
+      if (object == null) {
+        return !length;
+      }
+
+      object = Object(object);
+
+      while (index--) {
+        var data = matchData[index];
+
+        if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+          return false;
+        }
+      }
+
+      while (++index < length) {
+        data = matchData[index];
+        var key = data[0],
+            objValue = object[key],
+            srcValue = data[1];
+
+        if (noCustomizer && data[2]) {
+          if (objValue === undefined && !(key in object)) {
+            return false;
+          }
+        } else {
+          var stack = new Stack();
+
+          if (customizer) {
+            var result = customizer(objValue, srcValue, key, object, source, stack);
+          }
+
+          if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack) : result)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+    /**
+     * The base implementation of `_.isNative` without bad shim checks.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a native function,
+     *  else `false`.
+     */
+
+
+    function baseIsNative(value) {
+      if (!isObject(value) || isMasked(value)) {
+        return false;
+      }
+
+      var pattern = isFunction(value) || isHostObject(value) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
+    }
+    /**
+     * The base implementation of `_.isTypedArray` without Node.js optimizations.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     */
+
+
+    function baseIsTypedArray(value) {
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+    }
+    /**
+     * The base implementation of `_.iteratee`.
+     *
+     * @private
+     * @param {*} [value=_.identity] The value to convert to an iteratee.
+     * @returns {Function} Returns the iteratee.
+     */
+
+
+    function baseIteratee(value) {
+      // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+      // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+      if (typeof value == 'function') {
+        return value;
+      }
+
+      if (value == null) {
+        return identity;
+      }
+
+      if (typeof value == 'object') {
+        return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+      }
+
+      return property(value);
+    }
+    /**
+     * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     */
+
+
+    function baseKeys(object) {
+      if (!isPrototype(object)) {
+        return nativeKeys(object);
+      }
+
+      var result = [];
+
+      for (var key in Object(object)) {
+        if (hasOwnProperty.call(object, key) && key != 'constructor') {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.matches` which doesn't clone `source`.
+     *
+     * @private
+     * @param {Object} source The object of property values to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatches(source) {
+      var matchData = getMatchData(source);
+
+      if (matchData.length == 1 && matchData[0][2]) {
+        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+      }
+
+      return function (object) {
+        return object === source || baseIsMatch(object, source, matchData);
+      };
+    }
+    /**
+     * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
+     *
+     * @private
+     * @param {string} path The path of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatchesProperty(path, srcValue) {
+      if (isKey(path) && isStrictComparable(srcValue)) {
+        return matchesStrictComparable(toKey(path), srcValue);
+      }
+
+      return function (object) {
+        var objValue = get(object, path);
+        return objValue === undefined && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, undefined, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG);
+      };
+    }
+    /**
+     * A specialized version of `baseProperty` which supports deep paths.
+     *
+     * @private
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function basePropertyDeep(path) {
+      return function (object) {
+        return baseGet(object, path);
+      };
+    }
+    /**
+     * The base implementation of `_.pullAt` without support for individual
+     * indexes or capturing the removed elements.
+     *
+     * @private
+     * @param {Array} array The array to modify.
+     * @param {number[]} indexes The indexes of elements to remove.
+     * @returns {Array} Returns `array`.
+     */
+
+
+    function basePullAt(array, indexes) {
+      var length = array ? indexes.length : 0,
+          lastIndex = length - 1;
+
+      while (length--) {
+        var index = indexes[length];
+
+        if (length == lastIndex || index !== previous) {
+          var previous = index;
+
+          if (isIndex(index)) {
+            splice.call(array, index, 1);
+          } else if (!isKey(index, array)) {
+            var path = castPath(index),
+                object = parent(array, path);
+
+            if (object != null) {
+              delete object[toKey(last(path))];
+            }
+          } else {
+            delete array[toKey(index)];
+          }
+        }
+      }
+
+      return array;
+    }
+    /**
+     * The base implementation of `_.slice` without an iteratee call guard.
+     *
+     * @private
+     * @param {Array} array The array to slice.
+     * @param {number} [start=0] The start position.
+     * @param {number} [end=array.length] The end position.
+     * @returns {Array} Returns the slice of `array`.
+     */
+
+
+    function baseSlice(array, start, end) {
+      var index = -1,
+          length = array.length;
+
+      if (start < 0) {
+        start = -start > length ? 0 : length + start;
+      }
+
+      end = end > length ? length : end;
+
+      if (end < 0) {
+        end += length;
+      }
+
+      length = start > end ? 0 : end - start >>> 0;
+      start >>>= 0;
+      var result = Array(length);
+
+      while (++index < length) {
+        result[index] = array[index + start];
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.toString` which doesn't convert nullish
+     * values to empty strings.
+     *
+     * @private
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     */
+
+
+    function baseToString(value) {
+      // Exit early for strings to avoid a performance hit in some environments.
+      if (typeof value == 'string') {
+        return value;
+      }
+
+      if (isSymbol(value)) {
+        return symbolToString ? symbolToString.call(value) : '';
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * Casts `value` to a path array if it's not one.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Array} Returns the cast property path array.
+     */
+
+
+    function castPath(value) {
+      return isArray(value) ? value : stringToPath(value);
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for arrays with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Array} array The array to compare.
+     * @param {Array} other The other array to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `array` and `other` objects.
+     * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+     */
+
+
+    function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          arrLength = array.length,
+          othLength = other.length;
+
+      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+        return false;
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(array);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var index = -1,
+          result = true,
+          seen = bitmask & UNORDERED_COMPARE_FLAG ? new SetCache() : undefined;
+      stack.set(array, other);
+      stack.set(other, array); // Ignore non-index properties.
+
+      while (++index < arrLength) {
+        var arrValue = array[index],
+            othValue = other[index];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
+        }
+
+        if (compared !== undefined) {
+          if (compared) {
+            continue;
+          }
+
+          result = false;
+          break;
+        } // Recursively compare arrays (susceptible to call stack limits).
+
+
+        if (seen) {
+          if (!arraySome(other, function (othValue, othIndex) {
+            if (!seen.has(othIndex) && (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+              return seen.add(othIndex);
+            }
+          })) {
+            result = false;
+            break;
+          }
+        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+          result = false;
+          break;
+        }
+      }
+
+      stack['delete'](array);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for comparing objects of
+     * the same `toStringTag`.
+     *
+     * **Note:** This function only supports comparing values with tags of
+     * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {string} tag The `toStringTag` of the objects to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
+      switch (tag) {
+        case dataViewTag:
+          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+            return false;
+          }
+
+          object = object.buffer;
+          other = other.buffer;
+
+        case arrayBufferTag:
+          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+            return false;
+          }
+
+          return true;
+
+        case boolTag:
+        case dateTag:
+        case numberTag:
+          // Coerce booleans to `1` or `0` and dates to milliseconds.
+          // Invalid dates are coerced to `NaN`.
+          return eq(+object, +other);
+
+        case errorTag:
+          return object.name == other.name && object.message == other.message;
+
+        case regexpTag:
+        case stringTag:
+          // Coerce regexes to strings and treat strings, primitives and objects,
+          // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+          // for more details.
+          return object == other + '';
+
+        case mapTag:
+          var convert = mapToArray;
+
+        case setTag:
+          var isPartial = bitmask & PARTIAL_COMPARE_FLAG;
+          convert || (convert = setToArray);
+
+          if (object.size != other.size && !isPartial) {
+            return false;
+          } // Assume cyclic values are equal.
+
+
+          var stacked = stack.get(object);
+
+          if (stacked) {
+            return stacked == other;
+          }
+
+          bitmask |= UNORDERED_COMPARE_FLAG; // Recursively compare objects (susceptible to call stack limits).
+
+          stack.set(object, other);
+          var result = equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
+          stack['delete'](object);
+          return result;
+
+        case symbolTag:
+          if (symbolValueOf) {
+            return symbolValueOf.call(object) == symbolValueOf.call(other);
+          }
+
+      }
+
+      return false;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for objects with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          objProps = keys(object),
+          objLength = objProps.length,
+          othProps = keys(other),
+          othLength = othProps.length;
+
+      if (objLength != othLength && !isPartial) {
+        return false;
+      }
+
+      var index = objLength;
+
+      while (index--) {
+        var key = objProps[index];
+
+        if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
+          return false;
+        }
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(object);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var result = true;
+      stack.set(object, other);
+      stack.set(other, object);
+      var skipCtor = isPartial;
+
+      while (++index < objLength) {
+        key = objProps[index];
+        var objValue = object[key],
+            othValue = other[key];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+        } // Recursively compare objects (susceptible to call stack limits).
+
+
+        if (!(compared === undefined ? objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack) : compared)) {
+          result = false;
+          break;
+        }
+
+        skipCtor || (skipCtor = key == 'constructor');
+      }
+
+      if (result && !skipCtor) {
+        var objCtor = object.constructor,
+            othCtor = other.constructor; // Non `Object` object instances with different constructors are not equal.
+
+        if (objCtor != othCtor && 'constructor' in object && 'constructor' in other && !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+          result = false;
+        }
+      }
+
+      stack['delete'](object);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * Gets the data for `map`.
+     *
+     * @private
+     * @param {Object} map The map to query.
+     * @param {string} key The reference key.
+     * @returns {*} Returns the map data.
+     */
+
+
+    function getMapData(map, key) {
+      var data = map.__data__;
+      return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+    }
+    /**
+     * Gets the property names, values, and compare flags of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the match data of `object`.
+     */
+
+
+    function getMatchData(object) {
+      var result = keys(object),
+          length = result.length;
+
+      while (length--) {
+        var key = result[length],
+            value = object[key];
+        result[length] = [key, value, isStrictComparable(value)];
+      }
+
+      return result;
+    }
+    /**
+     * Gets the native function at `key` of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {string} key The key of the method to get.
+     * @returns {*} Returns the function if it's native, else `undefined`.
+     */
+
+
+    function getNative(object, key) {
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : undefined;
+    }
+    /**
+     * Gets the `toStringTag` of `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    var getTag = baseGetTag; // Fallback for data views, maps, sets, and weak maps in IE 11,
+    // for data views in Edge < 14, and promises in Node.js.
+
+    if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise && getTag(Promise.resolve()) != promiseTag || Set && getTag(new Set()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
+      getTag = function (value) {
+        var result = objectToString.call(value),
+            Ctor = result == objectTag ? value.constructor : undefined,
+            ctorString = Ctor ? toSource(Ctor) : undefined;
+
+        if (ctorString) {
+          switch (ctorString) {
+            case dataViewCtorString:
+              return dataViewTag;
+
+            case mapCtorString:
+              return mapTag;
+
+            case promiseCtorString:
+              return promiseTag;
+
+            case setCtorString:
+              return setTag;
+
+            case weakMapCtorString:
+              return weakMapTag;
+          }
+        }
+
+        return result;
+      };
+    }
+    /**
+     * Checks if `path` exists on `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @param {Function} hasFunc The function to check properties.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     */
+
+
+    function hasPath(object, path, hasFunc) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var result,
+          index = -1,
+          length = path.length;
+
+      while (++index < length) {
+        var key = toKey(path[index]);
+
+        if (!(result = object != null && hasFunc(object, key))) {
+          break;
+        }
+
+        object = object[key];
+      }
+
+      if (result) {
+        return result;
+      }
+
+      var length = object ? object.length : 0;
+      return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
+    }
+    /**
+     * Checks if `value` is a valid array-like index.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+     * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+     */
+
+
+    function isIndex(value, length) {
+      length = length == null ? MAX_SAFE_INTEGER : length;
+      return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+    }
+    /**
+     * Checks if `value` is a property name and not a property path.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {Object} [object] The object to query keys on.
+     * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+     */
+
+
+    function isKey(value, object) {
+      if (isArray(value)) {
+        return false;
+      }
+
+      var type = typeof value;
+
+      if (type == 'number' || type == 'symbol' || type == 'boolean' || value == null || isSymbol(value)) {
+        return true;
+      }
+
+      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+    }
+    /**
+     * Checks if `value` is suitable for use as unique object key.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+     */
+
+
+    function isKeyable(value) {
+      var type = typeof value;
+      return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+    }
+    /**
+     * Checks if `func` has its source masked.
+     *
+     * @private
+     * @param {Function} func The function to check.
+     * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+     */
+
+
+    function isMasked(func) {
+      return !!maskSrcKey && maskSrcKey in func;
+    }
+    /**
+     * Checks if `value` is likely a prototype object.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+     */
+
+
+    function isPrototype(value) {
+      var Ctor = value && value.constructor,
+          proto = typeof Ctor == 'function' && Ctor.prototype || objectProto;
+      return value === proto;
+    }
+    /**
+     * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` if suitable for strict
+     *  equality comparisons, else `false`.
+     */
+
+
+    function isStrictComparable(value) {
+      return value === value && !isObject(value);
+    }
+    /**
+     * A specialized version of `matchesProperty` for source values suitable
+     * for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function matchesStrictComparable(key, srcValue) {
+      return function (object) {
+        if (object == null) {
+          return false;
+        }
+
+        return object[key] === srcValue && (srcValue !== undefined || key in Object(object));
+      };
+    }
+    /**
+     * Gets the parent value at `path` of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array} path The path to get the parent value of.
+     * @returns {*} Returns the parent value.
+     */
+
+
+    function parent(object, path) {
+      return path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
+    }
+    /**
+     * Converts `string` to a property path array.
+     *
+     * @private
+     * @param {string} string The string to convert.
+     * @returns {Array} Returns the property path array.
+     */
+
+
+    var stringToPath = memoize(function (string) {
+      string = toString(string);
+      var result = [];
+
+      if (reLeadingDot.test(string)) {
+        result.push('');
+      }
+
+      string.replace(rePropName, function (match, number, quote, string) {
+        result.push(quote ? string.replace(reEscapeChar, '$1') : number || match);
+      });
+      return result;
+    });
+    /**
+     * Converts `value` to a string key if it's not a string or symbol.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {string|symbol} Returns the key.
+     */
+
+    function toKey(value) {
+      if (typeof value == 'string' || isSymbol(value)) {
+        return value;
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * Converts `func` to its source code.
+     *
+     * @private
+     * @param {Function} func The function to process.
+     * @returns {string} Returns the source code.
+     */
+
+
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e) {}
+
+        try {
+          return func + '';
+        } catch (e) {}
+      }
+
+      return '';
+    }
+    /**
+     * Gets the last element of `array`.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Array
+     * @param {Array} array The array to query.
+     * @returns {*} Returns the last element of `array`.
+     * @example
+     *
+     * _.last([1, 2, 3]);
+     * // => 3
+     */
+
+
+    function last(array) {
+      var length = array ? array.length : 0;
+      return length ? array[length - 1] : undefined;
+    }
+    /**
+     * Removes all elements from `array` that `predicate` returns truthy for
+     * and returns an array of the removed elements. The predicate is invoked
+     * with three arguments: (value, index, array).
+     *
+     * **Note:** Unlike `_.filter`, this method mutates `array`. Use `_.pull`
+     * to pull elements from an array by value.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.0.0
+     * @category Array
+     * @param {Array} array The array to modify.
+     * @param {Function} [predicate=_.identity]
+     *  The function invoked per iteration.
+     * @returns {Array} Returns the new array of removed elements.
+     * @example
+     *
+     * var array = [1, 2, 3, 4];
+     * var evens = _.remove(array, function(n) {
+     *   return n % 2 == 0;
+     * });
+     *
+     * console.log(array);
+     * // => [1, 3]
+     *
+     * console.log(evens);
+     * // => [2, 4]
+     */
+
+
+    function remove(array, predicate) {
+      var result = [];
+
+      if (!(array && array.length)) {
+        return result;
+      }
+
+      var index = -1,
+          indexes = [],
+          length = array.length;
+      predicate = baseIteratee(predicate, 3);
+
+      while (++index < length) {
+        var value = array[index];
+
+        if (predicate(value, index, array)) {
+          result.push(value);
+          indexes.push(index);
+        }
+      }
+
+      basePullAt(array, indexes);
+      return result;
+    }
+    /**
+     * Creates a function that memoizes the result of `func`. If `resolver` is
+     * provided, it determines the cache key for storing the result based on the
+     * arguments provided to the memoized function. By default, the first argument
+     * provided to the memoized function is used as the map cache key. The `func`
+     * is invoked with the `this` binding of the memoized function.
+     *
+     * **Note:** The cache is exposed as the `cache` property on the memoized
+     * function. Its creation may be customized by replacing the `_.memoize.Cache`
+     * constructor with one whose instances implement the
+     * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
+     * method interface of `delete`, `get`, `has`, and `set`.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Function
+     * @param {Function} func The function to have its output memoized.
+     * @param {Function} [resolver] The function to resolve the cache key.
+     * @returns {Function} Returns the new memoized function.
+     * @example
+     *
+     * var object = { 'a': 1, 'b': 2 };
+     * var other = { 'c': 3, 'd': 4 };
+     *
+     * var values = _.memoize(_.values);
+     * values(object);
+     * // => [1, 2]
+     *
+     * values(other);
+     * // => [3, 4]
+     *
+     * object.a = 2;
+     * values(object);
+     * // => [1, 2]
+     *
+     * // Modify the result cache.
+     * values.cache.set(object, ['a', 'b']);
+     * values(object);
+     * // => ['a', 'b']
+     *
+     * // Replace `_.memoize.Cache`.
+     * _.memoize.Cache = WeakMap;
+     */
+
+
+    function memoize(func, resolver) {
+      if (typeof func != 'function' || resolver && typeof resolver != 'function') {
+        throw new TypeError(FUNC_ERROR_TEXT);
+      }
+
+      var memoized = function () {
+        var args = arguments,
+            key = resolver ? resolver.apply(this, args) : args[0],
+            cache = memoized.cache;
+
+        if (cache.has(key)) {
+          return cache.get(key);
+        }
+
+        var result = func.apply(this, args);
+        memoized.cache = cache.set(key, result);
+        return result;
+      };
+
+      memoized.cache = new (memoize.Cache || MapCache)();
+      return memoized;
+    } // Assign cache to `_.memoize`.
+
+
+    memoize.Cache = MapCache;
+    /**
+     * Performs a
+     * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+     * comparison between two values to determine if they are equivalent.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     * var other = { 'a': 1 };
+     *
+     * _.eq(object, object);
+     * // => true
+     *
+     * _.eq(object, other);
+     * // => false
+     *
+     * _.eq('a', 'a');
+     * // => true
+     *
+     * _.eq('a', Object('a'));
+     * // => false
+     *
+     * _.eq(NaN, NaN);
+     * // => true
+     */
+
+    function eq(value, other) {
+      return value === other || value !== value && other !== other;
+    }
+    /**
+     * Checks if `value` is likely an `arguments` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArguments(function() { return arguments; }());
+     * // => true
+     *
+     * _.isArguments([1, 2, 3]);
+     * // => false
+     */
+
+
+    function isArguments(value) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+    }
+    /**
+     * Checks if `value` is classified as an `Array` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+     * @example
+     *
+     * _.isArray([1, 2, 3]);
+     * // => true
+     *
+     * _.isArray(document.body.children);
+     * // => false
+     *
+     * _.isArray('abc');
+     * // => false
+     *
+     * _.isArray(_.noop);
+     * // => false
+     */
+
+
+    var isArray = Array.isArray;
+    /**
+     * Checks if `value` is array-like. A value is considered array-like if it's
+     * not a function and has a `value.length` that's an integer greater than or
+     * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+     * @example
+     *
+     * _.isArrayLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLike(document.body.children);
+     * // => true
+     *
+     * _.isArrayLike('abc');
+     * // => true
+     *
+     * _.isArrayLike(_.noop);
+     * // => false
+     */
+
+    function isArrayLike(value) {
+      return value != null && isLength(value.length) && !isFunction(value);
+    }
+    /**
+     * This method is like `_.isArrayLike` except that it also checks if `value`
+     * is an object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array-like object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArrayLikeObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLikeObject(document.body.children);
+     * // => true
+     *
+     * _.isArrayLikeObject('abc');
+     * // => false
+     *
+     * _.isArrayLikeObject(_.noop);
+     * // => false
+     */
+
+
+    function isArrayLikeObject(value) {
+      return isObjectLike(value) && isArrayLike(value);
+    }
+    /**
+     * Checks if `value` is classified as a `Function` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+     * @example
+     *
+     * _.isFunction(_);
+     * // => true
+     *
+     * _.isFunction(/abc/);
+     * // => false
+     */
+
+
+    function isFunction(value) {
+      // The use of `Object#toString` avoids issues with the `typeof` operator
+      // in Safari 8-9 which returns 'object' for typed array and other constructors.
+      var tag = isObject(value) ? objectToString.call(value) : '';
+      return tag == funcTag || tag == genTag;
+    }
+    /**
+     * Checks if `value` is a valid array-like length.
+     *
+     * **Note:** This method is loosely based on
+     * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+     * @example
+     *
+     * _.isLength(3);
+     * // => true
+     *
+     * _.isLength(Number.MIN_VALUE);
+     * // => false
+     *
+     * _.isLength(Infinity);
+     * // => false
+     *
+     * _.isLength('3');
+     * // => false
+     */
+
+
+    function isLength(value) {
+      return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+    }
+    /**
+     * Checks if `value` is the
+     * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+     * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+     * @example
+     *
+     * _.isObject({});
+     * // => true
+     *
+     * _.isObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isObject(_.noop);
+     * // => true
+     *
+     * _.isObject(null);
+     * // => false
+     */
+
+
+    function isObject(value) {
+      var type = typeof value;
+      return !!value && (type == 'object' || type == 'function');
+    }
+    /**
+     * Checks if `value` is object-like. A value is object-like if it's not `null`
+     * and has a `typeof` result of "object".
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+     * @example
+     *
+     * _.isObjectLike({});
+     * // => true
+     *
+     * _.isObjectLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isObjectLike(_.noop);
+     * // => false
+     *
+     * _.isObjectLike(null);
+     * // => false
+     */
+
+
+    function isObjectLike(value) {
+      return !!value && typeof value == 'object';
+    }
+    /**
+     * Checks if `value` is classified as a `Symbol` primitive or object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+     * @example
+     *
+     * _.isSymbol(Symbol.iterator);
+     * // => true
+     *
+     * _.isSymbol('abc');
+     * // => false
+     */
+
+
+    function isSymbol(value) {
+      return typeof value == 'symbol' || isObjectLike(value) && objectToString.call(value) == symbolTag;
+    }
+    /**
+     * Checks if `value` is classified as a typed array.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     * @example
+     *
+     * _.isTypedArray(new Uint8Array);
+     * // => true
+     *
+     * _.isTypedArray([]);
+     * // => false
+     */
+
+
+    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+    /**
+     * Converts `value` to a string. An empty string is returned for `null`
+     * and `undefined` values. The sign of `-0` is preserved.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     * @example
+     *
+     * _.toString(null);
+     * // => ''
+     *
+     * _.toString(-0);
+     * // => '-0'
+     *
+     * _.toString([1, 2, 3]);
+     * // => '1,2,3'
+     */
+
+    function toString(value) {
+      return value == null ? '' : baseToString(value);
+    }
+    /**
+     * Gets the value at `path` of `object`. If the resolved value is
+     * `undefined`, the `defaultValue` is returned in its place.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.7.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+     * @returns {*} Returns the resolved value.
+     * @example
+     *
+     * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+     *
+     * _.get(object, 'a[0].b.c');
+     * // => 3
+     *
+     * _.get(object, ['a', '0', 'b', 'c']);
+     * // => 3
+     *
+     * _.get(object, 'a.b.c', 'default');
+     * // => 'default'
+     */
+
+
+    function get(object, path, defaultValue) {
+      var result = object == null ? undefined : baseGet(object, path);
+      return result === undefined ? defaultValue : result;
+    }
+    /**
+     * Checks if `path` is a direct or inherited property of `object`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     * @example
+     *
+     * var object = _.create({ 'a': _.create({ 'b': 2 }) });
+     *
+     * _.hasIn(object, 'a');
+     * // => true
+     *
+     * _.hasIn(object, 'a.b');
+     * // => true
+     *
+     * _.hasIn(object, ['a', 'b']);
+     * // => true
+     *
+     * _.hasIn(object, 'b');
+     * // => false
+     */
+
+
+    function hasIn(object, path) {
+      return object != null && hasPath(object, path, baseHasIn);
+    }
+    /**
+     * Creates an array of the own enumerable property names of `object`.
+     *
+     * **Note:** Non-object values are coerced to objects. See the
+     * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+     * for more details.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Object
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     * @example
+     *
+     * function Foo() {
+     *   this.a = 1;
+     *   this.b = 2;
+     * }
+     *
+     * Foo.prototype.c = 3;
+     *
+     * _.keys(new Foo);
+     * // => ['a', 'b'] (iteration order is not guaranteed)
+     *
+     * _.keys('hi');
+     * // => ['0', '1']
+     */
+
+
+    function keys(object) {
+      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+    }
+    /**
+     * This method returns the first argument it receives.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Util
+     * @param {*} value Any value.
+     * @returns {*} Returns `value`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     *
+     * console.log(_.identity(object) === object);
+     * // => true
+     */
+
+
+    function identity(value) {
+      return value;
+    }
+    /**
+     * Creates a function that returns the value at `path` of a given object.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.4.0
+     * @category Util
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     * @example
+     *
+     * var objects = [
+     *   { 'a': { 'b': 2 } },
+     *   { 'a': { 'b': 1 } }
+     * ];
+     *
+     * _.map(objects, _.property('a.b'));
+     * // => [2, 1]
+     *
+     * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
+     * // => [1, 2]
+     */
+
+
+    function property(path) {
+      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+    }
+
+    module.exports = remove;
+  });
+
+  /*
+   * error.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  class QNRTCError extends Error {
+      constructor(code, message) {
+          super(message);
+          this.code = code;
+          this.error = message;
+      }
+  }
+  const UNEXPECTED_ERROR = (msg) => new QNRTCError(11000, `piliRTC: unexpected error ${msg}`);
+  const AUTH_ENTER_ROOM_ERROR = (msg) => new QNRTCError(11001, `enterRoom error, can not get accessToken. Error: ${msg}\n please check enterRoom arguments`);
+  const PUBLISH_ERROR = (code, msg) => new QNRTCError(code, `publish error, signaling code: ${code}, msg: ${msg}`);
+  const CREATE_MERGE_JOB_ERROR = (code, msg) => new QNRTCError(code, `create merge job error, signaling code: ${code}, msg: ${msg}`);
+  const PUBLISH_ICE_ERROR = () => new QNRTCError(11002, `publish faild, ice not ready`);
+  const SUB_ICE_ERROR = () => new QNRTCError(11003, `subscribe faild, ice not ready`);
+  const SUB_ERROR_NO_STREAM = (userId) => new QNRTCError(11004, `subscribe faild, can not find this player in streams, userId: ${userId}`);
+  const SUB_P2P_ERROR = (msg) => new QNRTCError(11005, `subscribe faild, can not create p2p connection, ${msg}`);
+  const PUB_P2P_ERROR = (msg) => new QNRTCError(11006, `publish faild, can not create p2p connection, ${msg}`);
+  const UNSUPPORT_FMT = (msg) => new QNRTCError(11007, `media format not support, ${msg}`);
+  const JOIN_ROOM_ERROR = (code, msg) => new QNRTCError(code, `joinRoom error, code: ${code}, ${msg}`);
+  const SUB_ERROR = (code, msg) => new QNRTCError(code, `subscribe error, signaling code: ${code}, msg: ${msg}`);
+  const UNPUBLISH_ERROR = (code, msg) => new QNRTCError(code, "unpublish error, code: ${code}, msg: ${msg}");
+  const UNSUB_ERROR = (code, msg) => new QNRTCError(code, "unsubscribe error, code: ${code}, msg: ${msg}");
+  const CONTROL_ERROR = (code, msg) => new QNRTCError(code, `send control error, code: ${code}, msg: ${msg}`);
+  const NOT_SUPPORT_ERROR = (msg) => new QNRTCError(11008, `not support! ${msg}`);
+  const SERVER_UNAVAILABLE = () => new QNRTCError(10052, "server unavailable");
+  const PLUGIN_NOT_AVALIABLE = (msg) => new QNRTCError(11009, `plugin not avaliable! ${msg}`);
+  const DEVICE_NOT_ALLOWED = (msg) => new QNRTCError(11010, `NotAllowedError: no permission to access media device. ${msg}`);
+  const SUB_ERROR_NO_USER = (userId) => new QNRTCError(11011, `subscribe faild, can not find this user in room, userId: ${userId}`);
+  const NO_MERGE_JOB = (id) => new QNRTCError(11012, `can not set merge layout stream, no merge job id ${id}`);
+  const SCREEN_PERMISSION_DENIED = () => new QNRTCError(11013, `can not sharing screen/window on chrome`);
+  const SUB_PUB_ABORT = () => new QNRTCError(11014, `subscribe/publish operation is aborted`);
+  const AUDIO_DECODE_ERROR = (e) => new QNRTCError(11015, `can not decode audio data, ${e.toString()}`);
+  const AUTO_SWITCH_ERROR = (msg) => new QNRTCError(20001, `deviceManager auto switch error. ${msg}`);
+  const WS_ABORT = () => new QNRTCError(30001, `websocket abort`);
+  /**
+   * Error produced when calling a method in an invalid state.
+   */
+  class InvalidStateError extends Error {
+      constructor(message) {
+          super(message);
+          this.name = "InvalidStateError";
+          if (Error.hasOwnProperty("captureStackTrace")) { // Just in V8.
+              Error.captureStackTrace(this, InvalidStateError);
+          }
+          else {
+              this.stack = (new Error(message)).stack;
+          }
+      }
+  }
+
+  var error = /*#__PURE__*/Object.freeze({
+    QNRTCError: QNRTCError,
+    UNEXPECTED_ERROR: UNEXPECTED_ERROR,
+    AUTH_ENTER_ROOM_ERROR: AUTH_ENTER_ROOM_ERROR,
+    PUBLISH_ERROR: PUBLISH_ERROR,
+    CREATE_MERGE_JOB_ERROR: CREATE_MERGE_JOB_ERROR,
+    PUBLISH_ICE_ERROR: PUBLISH_ICE_ERROR,
+    SUB_ICE_ERROR: SUB_ICE_ERROR,
+    SUB_ERROR_NO_STREAM: SUB_ERROR_NO_STREAM,
+    SUB_P2P_ERROR: SUB_P2P_ERROR,
+    PUB_P2P_ERROR: PUB_P2P_ERROR,
+    UNSUPPORT_FMT: UNSUPPORT_FMT,
+    JOIN_ROOM_ERROR: JOIN_ROOM_ERROR,
+    SUB_ERROR: SUB_ERROR,
+    UNPUBLISH_ERROR: UNPUBLISH_ERROR,
+    UNSUB_ERROR: UNSUB_ERROR,
+    CONTROL_ERROR: CONTROL_ERROR,
+    NOT_SUPPORT_ERROR: NOT_SUPPORT_ERROR,
+    SERVER_UNAVAILABLE: SERVER_UNAVAILABLE,
+    PLUGIN_NOT_AVALIABLE: PLUGIN_NOT_AVALIABLE,
+    DEVICE_NOT_ALLOWED: DEVICE_NOT_ALLOWED,
+    SUB_ERROR_NO_USER: SUB_ERROR_NO_USER,
+    NO_MERGE_JOB: NO_MERGE_JOB,
+    SCREEN_PERMISSION_DENIED: SCREEN_PERMISSION_DENIED,
+    SUB_PUB_ABORT: SUB_PUB_ABORT,
+    AUDIO_DECODE_ERROR: AUDIO_DECODE_ERROR,
+    AUTO_SWITCH_ERROR: AUTO_SWITCH_ERROR,
+    WS_ABORT: WS_ABORT,
+    InvalidStateError: InvalidStateError
+  });
+
+  class LogModel {
+      constructor(level) {
+          this.level = level;
+      }
+      setLevel(level) {
+          this.level = level;
+      }
+      log(...args) {
+          if (this.level !== "log") {
+              return;
+          }
+          const pretitle = "%cLOG-QNRTC";
+          const style = "color: #66ccff; font-weight: bold;";
+          console.info(pretitle, style, ...args);
+      }
+      debug(...args) {
+          if (this.level !== "log" && this.level !== "debug") {
+              return;
+          }
+          const pretitle = "%cDEBUG-QNRTC";
+          const style = "color: #A28148; font-weight: bold;";
+          console.info(pretitle, style, ...args);
+      }
+      warning(...args) {
+          if (this.level === "disable") {
+              return;
+          }
+          const pretitle = "%cWARNING-QNRTC";
+          const style = "color: #E44F44; font-weight: bold;";
+          console.warn(pretitle, style, ...args);
+      }
+  }
+  const log = new LogModel("log");
+
+  function getPayloadFromJwt(jwttoken) {
+      const payloadString = jwttoken.split(".")[1];
+      if (!payloadString) {
+          throw new Error("parse jwt error, can not find payload string.");
+      }
+      const decoedString = atob(payloadString);
+      return JSON.parse(decoedString);
+  }
+  function getRoomAccessFromToken(roomToken) {
+      try {
+          const roomAccessString = roomToken.split(":")[2];
+          const decoedString = atob(roomAccessString);
+          return JSON.parse(decoedString);
+      }
+      catch (e) {
+          throw UNEXPECTED_ERROR(`can not parse roomToken, ${e}`);
+      }
+  }
+  function removeElementFromArray(array, key, value) {
+      const newArray = [];
+      let removeElement = null;
+      for (let i = 0; i < array.length; i += 1) {
+          const element = array[i];
+          if (element[key] === value) {
+              removeElement = array[i];
+              continue;
+          }
+          newArray.push(array[i]);
+      }
+      return { removeElement, newArray };
+  }
+  function getElementFromArray(array, key, value) {
+      if (!value) {
+          return null;
+      }
+      for (let i = 0; i < array.length; i += 1) {
+          const item = array[i];
+          if (item[key] === value) {
+              return item;
+          }
+      }
+      return null;
+  }
+  function removeUndefinedKey(obj, depth = 0) {
+      if (depth >= 4) {
+          return obj;
+      }
+      for (const key in obj) {
+          if (obj[key] === undefined) {
+              delete obj[key];
+          }
+          if (typeof obj[key] === "object") {
+              obj[key] = removeUndefinedKey(obj[key], depth + 1);
+          }
+      }
+      return obj;
+  }
+  function nextTick(func) {
+      const p = Promise.resolve();
+      p.then(func);
+  }
+  function getMissingUserEvent(currentUserId, lastTracksInfo, currentTracksInfo, lastUsers, currentUsers) {
+      const missingEvent = {
+          join: [],
+          leave: [],
+          add: [],
+          remove: [],
+          mute: [],
+      };
+      const lastTracksIds = lastTracksInfo.map(info => info.trackid);
+      const currentTracksIds = currentTracksInfo.map(info => info.trackid);
+      lastTracksIds.forEach((trackId, i) => {
+          if (lastTracksInfo[i].playerid === currentUserId) {
+              return;
+          }
+          if (currentTracksIds.indexOf(trackId) === -1) {
+              missingEvent.remove.push(lastTracksInfo[i]);
+          }
+          else {
+              const currentTracksInfoItem = currentTracksInfo.find(t => t.trackid === trackId);
+              const lastTrackInfoItem = lastTracksInfo[i];
+              // 如果重连后 trackid 相同但是 versionid 不同，抛出 track-remove 和 track-add
+              if (currentTracksInfoItem.versionid !== lastTrackInfoItem.versionid) {
+                  missingEvent.remove.push(lastTrackInfoItem);
+                  missingEvent.add.push(currentTracksInfoItem);
+              }
+          }
+      });
+      currentTracksIds.forEach((trackId, i) => {
+          if (currentTracksInfo[i].playerid === currentUserId) {
+              return;
+          }
+          const index = lastTracksIds.indexOf(trackId);
+          if (index === -1) {
+              missingEvent.add.push(currentTracksInfo[i]);
+              missingEvent.mute.push({
+                  trackid: trackId,
+                  muted: currentTracksInfo[i].muted,
+              });
+          }
+          else {
+              if (currentTracksInfo[i].muted !== lastTracksInfo[index].muted) {
+                  missingEvent.mute.push({
+                      trackid: trackId,
+                      muted: currentTracksInfo[i].muted,
+                  });
+              }
+          }
+      });
+      lastUsers.forEach(userId => {
+          if (userId === currentUserId) {
+              return;
+          }
+          if (currentUsers.indexOf(userId) === -1) {
+              missingEvent.leave.push({ playerid: userId });
+          }
+      });
+      currentUsers.forEach(userId => {
+          if (userId === currentUserId) {
+              return;
+          }
+          if (lastUsers.indexOf(userId) === -1) {
+              missingEvent.join.push({ playerid: userId });
+          }
+      });
+      return missingEvent;
+  }
+  function dec2hex(dec) {
+      return ("0" + dec.toString(16)).substr(-2);
+  }
+  function randomStringGen(strLength = 5) {
+      const arr = new Uint8Array((strLength || 40) / 2);
+      window.crypto.getRandomValues(arr);
+      return Array.from(arr, dec2hex).join("");
+  }
+  function timeout(ms) {
+      return new Promise(resolve => {
+          setTimeout(() => {
+              resolve();
+          }, ms);
+      });
+  }
+  const runOnceFlag = {};
+  /**
+   * 对于相同 key 的调用，只会执行一次
+   */
+  function runOnce(func, key) {
+      if (!runOnceFlag[key]) {
+          runOnceFlag[key] = true;
+          return func();
+      }
+  }
+  function showPlayWarn() {
+      log.warning("play failed due to browser security policy, see: http://s.qnsdk.com/s/Txsdz");
+  }
+
+  /*
+   * http.js
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+   */
+  async function request(url) {
+      const res = await fetch(url);
+      if (res.status >= 400 && res.status < 500) {
+          throw { retry: false, message: res.status.toString() };
+      }
+      if (res.status !== 200) {
+          throw { retry: true, message: res.status.toString() };
+      }
+      const data = await res.json();
+      return data;
+  }
+  async function resolveIceHost(host) {
+      const ipv6Match = host.match(/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/);
+      const ipv4Match = host.match(/^([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])$/);
+      if (!!ipv4Match || !!ipv6Match)
+          return host;
+      try {
+          const res = await fetch(`https://${host}/ip`);
+          const data = await res.json();
+          return data.ip;
+      }
+      catch (e) {
+          log.warning("resolve ice failed, retry", e);
+          await timeout(1000);
+          return await resolveIceHost(host);
+      }
+  }
+
+  const defaultTrackStatsReport = () => ({
+      packetLossRate: 0,
+      bitrate: 0,
+      bytes: 0,
+      packets: 0,
+      packetLoss: 0,
+      timestamp: Date.now(),
+  });
+  async function getStats(pc, track, pctype) {
+      const statsReport = defaultTrackStatsReport();
+      let report;
+      try {
+          report = await pc.getStats(track);
+      }
+      catch (e) {
+          log.debug("get stats error, fallback to default", e);
+          return defaultTrackStatsReport();
+      }
+      if (!report) {
+          log.debug("get null stats, fallback to default");
+          return defaultTrackStatsReport();
+      }
+      for (const item of report.values()) {
+          if ((pctype === "send" && item.type === "outbound-rtp" && !item.isRemote) ||
+              (pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote)) {
+              const remoteItem = report.get(item.remoteId);
+              const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
+              const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
+              let packetLoss = 0;
+              if (remoteItem) {
+                  const remotePackets = pctype === "send" ? remoteItem.packetsReceived : remoteItem.packetsSent;
+                  packetLoss = pctype === "send" ? remoteItem.packetsLost : remotePackets - packets;
+              }
+              statsReport.bytes = bytes;
+              statsReport.packets = packets;
+              statsReport.packetLoss = packetLoss;
+          }
+      }
+      return statsReport;
+  }
+
+  function createPC() {
+      const rtcOptions = {
+          bundlePolicy: "max-bundle",
+          rtcpMuxPolicy: "require",
+          iceServers: [],
+      };
+      if (browserReport.unifiedPlan) {
+          rtcOptions.sdpSemantics = "unified-plan";
+      }
+      else {
+          rtcOptions.sdpSemantics = "plan-b";
+      }
+      const pc = new RTCPeerConnection(rtcOptions);
+      return pc;
+  }
+  async function addTransceiver(track, pc) {
+      const transceiver = pc.getTransceivers().find(t => t.direction === "inactive" && t.receiver.track.kind === track.kind);
+      if (transceiver) {
+          transceiver.direction = "sendonly";
+          await transceiver.sender.replaceTrack(track);
+          return transceiver;
+      }
+      else {
+          return await pc.addTransceiver(track, { direction: "sendonly" });
+      }
+  }
+  async function getPCStats(pc, track, pctype, lastReport) {
+      if (browserReport.stats) {
+          const stats = await getStats(pc, track, pctype);
+          return getRateStats(stats, lastReport);
+      }
+      else {
+          runOnce(() => {
+              log.warning("your browser does not support getStats");
+          }, "not-support-stats-warning");
+          return defaultTrackStatsReport();
+      }
+  }
+  function getRateStats(report, lastReport) {
+      if (!lastReport) {
+          return report;
+      }
+      const newReport = { ...report };
+      const packetTrans = report.packets - lastReport.packets;
+      const packetLoss = report.packetLoss - lastReport.packetLoss;
+      if (packetLoss > 0) {
+          newReport.packetLossRate = packetLoss / packetTrans;
+          if (newReport.packetLossRate > 1) {
+              newReport.packetLossRate = 1;
+          }
+      }
+      const time = (report.timestamp - lastReport.timestamp) / 1000;
+      if (time <= 0) {
+          return report;
+      }
+      newReport.bitrate = 8 * (report.bytes - lastReport.bytes) / time;
+      if (newReport.bitrate < 0) {
+          return lastReport;
+      }
+      return newReport;
+  }
+
+  /*
+   * device.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const REC_AUDIO_ENABLE = (config) => {
+      return !!config && !!config.audio && config.audio.enabled;
+  };
+  const REC_VIDEO_ENABLE = (config) => {
+      return !!config && !!config.video && config.video.enabled;
+  };
+  const REC_SCREEN_ENABLE = (config) => {
+      return !!config && !!config.screen && config.screen.enabled;
+  };
+
+  /*
+   * stream.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  (function (TrackConnectStatus) {
+      TrackConnectStatus[TrackConnectStatus["Idle"] = 0] = "Idle";
+      TrackConnectStatus[TrackConnectStatus["Connecting"] = 1] = "Connecting";
+      TrackConnectStatus[TrackConnectStatus["Connect"] = 2] = "Connect";
+  })(exports.TrackConnectStatus || (exports.TrackConnectStatus = {}));
+
+  /*
+   * merger.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const defaultMergeJob = {
+      publishUrl: "",
+      height: 720,
+      width: 1080,
+      fps: 25,
+      kbps: 1000,
+      audioOnly: false,
+      stretchMode: "aspectFill",
+  };
+
+  (function (AudioSourceState) {
+      AudioSourceState["IDLE"] = "idle";
+      AudioSourceState["LOADING"] = "loading";
+      AudioSourceState["PLAY"] = "play";
+      AudioSourceState["PAUSE"] = "pause";
+      AudioSourceState["END"] = "end";
+  })(exports.AudioSourceState || (exports.AudioSourceState = {}));
+
+  /*
+   * screen.ts
+   * 屏幕共享
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMBP.lan>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  window.addEventListener("message", e => {
+      if (e.origin !== window.location.origin) {
+          return;
+      }
+      onMessageCallback(e.data);
+  });
+  // and the function that handles received messages
+  function onMessageCallback(data) {
+      // "cancel" button is clicked
+      if (data === "PermissionDeniedError") {
+          chromeMediaSource = "PermissionDeniedError";
+          if (screenCallback) {
+              return screenCallback("PermissionDeniedError");
+          }
+          else {
+              throw SCREEN_PERMISSION_DENIED();
+          }
+      }
+      // extension notified his presence
+      if (data === "qnrtc:rtcmulticonnection-extension-loaded") {
+          chromeMediaSource = "desktop";
+      }
+      // old plugin version
+      if (data === "rtcmulticonnection-extension-loaded") {
+          log.warning("your chrome screen sharing plugin is not the latest version, or you have other screen sharing plugins.");
+      }
+      // extension shared temp sourceId
+      if (data.sourceId && screenCallback) {
+          screenCallback(sourceId = data.sourceId, data.canRequestAudioTrack === true);
+      }
+  }
+  // global variables
+  let chromeMediaSource = "screen";
+  let sourceId;
+  let screenCallback;
+  async function isChromeExtensionAvailable() {
+      const promise = () => new Promise((resolve, reject) => {
+          if (chromeMediaSource === "desktop") {
+              resolve(true);
+              return;
+          }
+          // ask extension if it is available
+          window.postMessage("qnrtc:are-you-there", "*");
+          setTimeout(() => {
+              if (chromeMediaSource === "screen") {
+                  resolve(false);
+              }
+              else {
+                  resolve(true);
+              }
+          }, 2000);
+      });
+      return await promise();
+  }
+  // this function can be used to get "source-id" from the extension
+  function getSourceId(callback, screenOnly = false, windowOnly = false) {
+      screenCallback = callback;
+      if (screenOnly) {
+          window.postMessage("qnrtc:get-sourceId-screen", "*");
+          return;
+      }
+      if (windowOnly) {
+          window.postMessage("qnrtc:get-sourceId-window", "*");
+          return;
+      }
+      window.postMessage("qnrtc:get-sourceId", "*");
+  }
+  // this function can be used to get "source-id" from the extension
+  function getSourceIdWithAudio(callback) {
+      if (sourceId) {
+          return callback(sourceId);
+      }
+      screenCallback = callback;
+      window.postMessage("qnrtc:audio-plus-tab", "*");
+  }
+  // this function explains how to use above methods/objects
+  async function getScreenConstraints(captureSourceIdWithAudio, screen) {
+      const source = screen.source;
+      const contraintPromise = () => new Promise((resolve, reject) => {
+          const firefoxScreenConstraints = {
+              mozMediaSource: source || "window",
+              mediaSource: source || "window",
+              height: screen.height,
+              width: screen.width,
+          };
+          if (isFirefox) {
+              resolve(firefoxScreenConstraints);
+              return;
+          }
+          // this statement defines getUserMedia constraints
+          // that will be used to capture content of screen
+          const screen_constraints = {
+              mandatory: {
+                  chromeMediaSource: chromeMediaSource,
+                  maxWidth: getNumberRangeMax(screen.width),
+                  maxHeight: getNumberRangeMax(screen.height),
+              },
+              optional: [],
+          };
+          // this statement verifies chrome extension availability
+          // if installed and available then it will invoke extension API
+          // otherwise it will fallback to command-line based screen capturing API
+          if (chromeMediaSource === "desktop") {
+              if (captureSourceIdWithAudio) {
+                  getSourceIdWithAudio(function (sourceId, canRequestAudioTrack) {
+                      screen_constraints.mandatory.chromeMediaSourceId = sourceId;
+                      if (canRequestAudioTrack) {
+                          screen_constraints.canRequestAudioTrack = true;
+                      }
+                      if (sourceId === "PermissionDeniedError") {
+                          reject(SCREEN_PERMISSION_DENIED());
+                          return;
+                      }
+                      resolve(screen_constraints);
+                      return;
+                  });
+              }
+              else {
+                  getSourceId(function (sourceId) {
+                      screen_constraints.mandatory.chromeMediaSourceId = sourceId;
+                      if (sourceId === "PermissionDeniedError") {
+                          reject(SCREEN_PERMISSION_DENIED());
+                          return;
+                      }
+                      resolve(screen_constraints);
+                      return;
+                  }, source === "screen", source === "window");
+              }
+              return;
+          }
+          resolve(screen_constraints);
+      });
+      return await contraintPromise();
+  }
+
+  class User {
+      constructor(userId, userData) {
+          /**
+           * 指这个用户在本地的 Track 对象，一般用来播放
+           */
+          this.tracks = [];
+          /**
+           * 指这个用户在这个房间内已经发布的流信息，一般用来发起订阅
+           */
+          this.publishedTrackInfo = [];
+          this.userId = userId;
+          this.userData = userData;
+      }
+      /**
+       * 只要有 track 就认为其已经发布
+       */
+      get published() {
+          return this.publishedTrackInfo.length > 0;
+      }
+      /* @internal */
+      addTracks(tracks) {
+          this.tracks = this.tracks.concat(tracks);
+          this.tracks = lodash_uniqby(this.tracks, "mediaTrack");
+          for (const track of this.tracks) {
+              track.once("release", () => {
+                  lodash_remove(this.tracks, t => t === track);
+              });
+          }
+      }
+      /* @internal */
+      removeTracksByTrackId(trackIds) {
+          lodash_remove(this.tracks, track => {
+              if (!track.info.trackId)
+                  return false;
+              return trackIds.indexOf(track.info.trackId) !== -1;
+          });
+      }
+      /* @internal */
+      addPublishedTrackInfo(info) {
+          this.publishedTrackInfo = this.publishedTrackInfo.concat(info);
+          this.publishedTrackInfo = lodash_uniqby(this.publishedTrackInfo, "trackId");
+      }
+      /* @internal */
+      removePublishedTrackInfo(trackIds) {
+          lodash_remove(this.publishedTrackInfo, info => trackIds.indexOf(info.trackId) !== -1);
+      }
+  }
+
+  function createAudioElement(track) {
+      const audio = document.createElement("audio");
+      const stream = new MediaStream([track]);
+      audio.style.visibility = "hidden";
+      audio.className = `qnrtc-audio-player qnrtc-stream-player`;
+      audio.dataset.localid = track.id;
+      audio.srcObject = stream;
+      return audio;
+  }
+  function createVideoElement(track) {
+      const video = document.createElement("video");
+      const stream = new MediaStream([track]);
+      video.style.width = "100%";
+      video.style.height = "100%";
+      video.style.objectFit = "contain";
+      video.muted = true;
+      video.className = `qnrtc-video-player qnrtc-stream-player`;
+      video.dataset.localid = track.id;
+      video.setAttribute("playsinline", true);
+      video.autoplay = true;
+      video.srcObject = stream;
+      if (isIOS) {
+          video.setAttribute("controls", true);
+          nextTick(() => {
+              if (video && video.srcObject) {
+                  video.removeAttribute("controls");
+              }
+          });
+      }
+      return video;
+  }
+  function webAudioUnlock(context) {
+      return new Promise((resolve, reject) => {
+          if (context.state === "suspended") {
+              log.log("audio context state is suspended");
+              const unlock = () => {
+                  context.resume().then(() => {
+                      document.body.removeEventListener("touchstart", unlock);
+                      document.body.removeEventListener("touchend", unlock);
+                      document.body.removeEventListener("mousedown", unlock);
+                      document.body.removeEventListener("mouseup", unlock);
+                      resolve(true);
+                  }).catch(reject);
+              };
+              document.body.addEventListener("touchstart", unlock, true);
+              document.body.addEventListener("touchend", unlock, true);
+              document.body.addEventListener("mousedown", unlock, true);
+              document.body.addEventListener("mouseup", unlock, true);
+          }
+          else {
+              resolve(false);
+          }
+      });
+  }
+
+  function getFrameFromVideo(video) {
+      const canvas = document.createElement("canvas");
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+          return "data:,";
+      }
+      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+      return canvas.toDataURL();
+  }
+
+  class EnhancedEventEmitter extends EventEmitter {
+      safeEmit(event, ...args) {
+          try {
+              this.emit(event, ...args);
+          }
+          catch (error) {
+              log.warning("safeEmit() | event listener threw an error [event:%s]:%o", event, error);
+          }
+      }
+      safeEmitAsPromise(event, ...args) {
+          return new Promise((resolve, reject) => {
+              const callback = resolve;
+              const errback = (error) => {
+                  log.warning("safeEmitAsPromise() | errback called [event:%s]:%o", event, error);
+                  reject(error);
+              };
+              this.safeEmit(event, ...args, callback, errback);
+          });
+      }
+  }
+
+  class Track extends EnhancedEventEmitter {
+      constructor(track, userId, direction) {
+          super();
+          this.master = false;
+          this.stats = defaultTrackStatsReport();
+          /**
+           * @internal
+           */
+          this.direction = "local";
+          /* @internal */
+          this.onended = (event) => {
+              log.warning("track ended", this.mediaTrack, this.info.trackId);
+              // 如果是订阅下来的流触发 ended，只触发内部事件
+              if (this.direction === "local") {
+                  this.emit("ended", event);
+              }
+              else {
+                  this.emit("@ended", event);
+              }
+          };
+          this.mediaTrack = track;
+          this.mediaTrack.addEventListener("ended", this.onended);
+          this.userId = userId;
+          if (direction) {
+              this.direction = direction;
+          }
+          this.info = {
+              kind: track.kind,
+              muted: !track.enabled,
+              userId: this.userId,
+              versionid: 0,
+          };
+      }
+      play(container, muted) {
+          this.removeMediaElement();
+          const createEleFunc = this.info.kind === "video" ? createVideoElement : createAudioElement;
+          this.mediaElement = createEleFunc(this.mediaTrack);
+          if (this.info.kind === "audio" && muted) {
+              this.mediaElement.muted = true;
+          }
+          container.appendChild(this.mediaElement);
+          this.mediaElement.play()
+              .catch(showPlayWarn);
+      }
+      /**
+       * @internal
+       */
+      resume(track) {
+          this.mediaTrack.removeEventListener("ended", this.onended);
+          this.mediaTrack.stop();
+          this.mediaTrack = track;
+          this.mediaTrack.addEventListener("ended", this.onended);
+          if (this.mediaElement) {
+              const stream = new MediaStream([track]);
+              this.mediaElement.dataset.localid = track.id;
+              this.mediaElement.srcObject = stream;
+          }
+          this.removeEvent("@get-stats");
+          this.resetStats();
+      }
+      getStats() {
+          if (!this.statsInterval) {
+              this.startGetStatsInterval();
+          }
+          return this.stats;
+      }
+      getCurrentFrameDataURL() {
+          if (!this.mediaElement || !(this.mediaElement instanceof HTMLVideoElement)) {
+              return "data:,";
+          }
+          return getFrameFromVideo(this.mediaElement);
+      }
+      /**
+       * 设置 Track 为 Master SDK只允许发布一路 Audio Track 和一路 Video Track
+       * @param master 是否为master
+       */
+      setMaster(master) {
+          this.master = master;
+      }
+      /**
+       * @internal
+       */
+      setMute(muted) {
+          this.info.muted = muted;
+          this.mediaTrack.enabled = !muted;
+          this.emit("mute", muted);
+      }
+      /**
+       * @internal
+       */
+      setKbps(v) {
+          this.info.kbps = v;
+      }
+      /**
+       * @internal
+       */
+      setInfo(info) {
+          this.info = {
+              ...this.info,
+              ...info,
+          };
+      }
+      /**
+       * @internal
+       */
+      removeMediaElement() {
+          if (this.mediaElement) {
+              this.mediaElement.remove();
+              this.mediaElement = undefined;
+          }
+      }
+      release() {
+          this.emit("release");
+          this.removeEvent();
+          if (this.statsInterval) {
+              window.clearInterval(this.statsInterval);
+          }
+          this.mediaTrack.stop();
+          this.removeMediaElement();
+      }
+      /**
+       * @internal
+       * 重置 trackId 和 userId，在 unpublish 的时候会自动调用
+       */
+      reset() {
+          this.info.trackId = undefined;
+          this.info.userId = undefined;
+          this.info.versionid = 0;
+          this.userId = undefined;
+          this.resetStats();
+      }
+      /**
+       * @internal
+       * 重置 stats，每当 pc 重新构建的时候调用
+       */
+      resetStats() {
+          this.stats = defaultTrackStatsReport();
+          this.lastStats = undefined;
+      }
+      /**
+       * @internal
+       */
+      async startGetStatsInterval() {
+          const getStatsFunc = async () => {
+              const handlers = this.getListeners("@get-stats");
+              if (!handlers || handlers.length === 0)
+                  return defaultTrackStatsReport();
+              this.stats = await this.safeEmitAsPromise("@get-stats", this.lastStats);
+              this.lastStats = { ...this.stats };
+          };
+          this.statsInterval = window.setInterval(getStatsFunc, 1000);
+      }
+      /**
+       * @abstract
+       */
+      onAudioBuffer(cb, bufferSize) {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      setVolume(value) {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      getCurrentTimeDomainData() {
+          log.warning("not implement");
+          return new Uint8Array();
+      }
+      /**
+       * @abstract
+       */
+      getCurrentFrequencyData() {
+          log.warning("not implement");
+          return new Uint8Array();
+      }
+      /**
+       * @abstract
+       */
+      getVolume() {
+          log.warning("not implement");
+          return 0;
+      }
+      /**
+       * @abstract
+       */
+      getCurrentVolumeLevel() {
+          log.warning("not implement");
+          return 0;
+      }
+      /**
+       * @abstract
+       */
+      setLoop(loop) {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      startAudioSource() {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      pauseAudioSource() {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      resumeAudioSource() {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      stopAudioSource() {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      getCurrentTime() {
+          log.warning("not implement");
+          return 0;
+      }
+      /**
+       * @abstract
+       */
+      setCurrentTime(val) {
+          log.warning("not implement");
+      }
+      /**
+       * @abstract
+       */
+      getDuration() {
+          log.warning("not implement");
+          return 0;
+      }
+  }
+
+  /*
+   * audio.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  // unsupport fallback
+  const AudioContext = window.AudioContext || window.webkitAudioContext || window.Object;
+  const audioContext = browserReport.audioContextOptions ? new AudioContext({
+      // 控制音频延迟，默认为 interactive，在 Chrome 下为 0.01s
+      latencyHint: "interactive",
+  }) : new AudioContext();
+  window.audioContext = audioContext;
+  if (window.Promise) {
+      const unlockWebAudio = () => {
+          webAudioUnlock(audioContext).then(unlocked => {
+              log.debug("web audio context unlocked", unlocked);
+          }).catch(e => {
+              log.warning("can not unlock web audio context", e);
+          });
+          window.removeEventListener("load", unlockWebAudio);
+      };
+      if (!document.body) {
+          window.addEventListener("load", unlockWebAudio);
+      }
+      else {
+          unlockWebAudio();
+      }
+  }
+  const FFT_SIZE = 2048;
+  const BUFFER_SIZE = 4096;
+  const MediaElementEventList = ["play", "playing", "pause", "ended", "waiting", "seeking"];
+  class AudioManager extends EnhancedEventEmitter {
+      constructor() {
+          super();
+          // 麦克风音频源 或者 PCM音频源
+          this.audioSource = null;
+          this._audioSourceState = exports.AudioSourceState.IDLE;
+          this.bufferSourceDuration = {
+              startTime: 0,
+              pauseTime: 0,
+              lastPauseTime: 0,
+              offsetTime: 0,
+              stopTime: 0,
+          };
+          this.handleMediaElementEvents = (e) => {
+              switch (e.type) {
+                  case "playing":
+                  case "play": {
+                      this.audioSourceState = exports.AudioSourceState.PLAY;
+                      break;
+                  }
+                  case "pause": {
+                      if (this.audioSourceState === exports.AudioSourceState.END)
+                          break;
+                      this.audioSourceState = exports.AudioSourceState.PAUSE;
+                      break;
+                  }
+                  case "waiting":
+                  case "seeking": {
+                      this.audioSourceState = exports.AudioSourceState.LOADING;
+                      break;
+                  }
+                  case "ended": {
+                      this.audioSourceState = exports.AudioSourceState.END;
+                      break;
+                  }
+              }
+          };
+      }
+      get audioSourceState() {
+          return this._audioSourceState;
+      }
+      set audioSourceState(newState) {
+          if (newState === this._audioSourceState)
+              return;
+          this.emit("@audio-source-state-change", newState, this._audioSourceState);
+          this._audioSourceState = newState;
+      }
+      onAudioBuffer(audioBufferCallback, bufferSize = BUFFER_SIZE) {
+          this.audioBufferCallback = audioBufferCallback;
+          this.audioBufferSize = bufferSize;
+      }
+      initAudioContext() {
+          log.log("init audio context", audioContext.state);
+          // in chrome, audioContext maybe in suspended state after initialization
+          if (audioContext.state === "suspended") {
+              log.log("audio context suspended");
+              audioContext.resume()
+                  .catch((e) => {
+                  log.warning("resume audiocontext failed! see: http://s.qnsdk.com/s/Txsdz", e);
+              });
+          }
+          log.log("init audio finish", audioContext.state);
+          this.analyserNode = audioContext.createAnalyser();
+          this.analyserNode.fftSize = FFT_SIZE;
+          this.gainNode = audioContext.createGain();
+          polyfillAudioNode(this.gainNode);
+          if (browserReport.mediaStreamDest) {
+              this.audioStream = audioContext.createMediaStreamDestination();
+          }
+          this.initScriptNode(BUFFER_SIZE);
+      }
+      setMediaStreamSource(originMediaStream) {
+          this.audioSource = audioContext.createMediaStreamSource(originMediaStream);
+          this.connect();
+      }
+      setAudioBufferSource() {
+          this.audioSource = audioContext.createBufferSource();
+          // 播放结束后清空节点
+          this.audioSource.onended = () => this.stopAudioSource();
+          this.connect();
+      }
+      setMediaElementSource(mediaElement) {
+          this.audioSource = audioContext.createMediaElementSource(mediaElement);
+          this.audioSourceElement = mediaElement;
+          for (const eventItem of MediaElementEventList) {
+              this.audioSourceElement.addEventListener(eventItem, this.handleMediaElementEvents);
+          }
+          this.connect();
+      }
+      setAudioSourceLoop(isLoop) {
+          this.audioSourceLoop = isLoop;
+          if (this.audioSource instanceof AudioBufferSourceNode) {
+              this.audioSource.loop = !!isLoop;
+          }
+          else if (this.audioSourceElement) {
+              this.audioSourceElement.loop = !!isLoop;
+          }
+      }
+      setAudioBuffer(data) {
+          if (!(this.audioSource instanceof AudioBufferSourceNode)) {
+              return;
+          }
+          this.audioSource.buffer = data;
+          this.audioSourceBuffer = data;
+      }
+      playAudioSource(offset = 0) {
+          if (this.audioSource instanceof AudioBufferSourceNode) {
+              this.resetBufferSourceDuration();
+              try {
+                  this.audioSource.start(0, offset);
+                  this.bufferSourceDuration.startTime = audioContext.currentTime;
+                  this.bufferSourceDuration.offsetTime = offset;
+                  this.audioSourceState = exports.AudioSourceState.PLAY;
+              }
+              catch (e) {
+                  // 说明已经 start
+                  this.stopAudioSource();
+                  this.playAudioSource(offset);
+              }
+          }
+          else if (this.audioSourceElement) {
+              this.audioSourceElement.currentTime = 0;
+              this.audioSourceElement.play()
+                  .catch(showPlayWarn);
+          }
+          else if (this.audioSource === null && this.audioSourceBuffer) {
+              this.resetBufferSourceDuration();
+              // 说明原来的 AudioBufferSourceNode 被删掉了，重新创建
+              this.setAudioBufferSource();
+              this.setAudioBuffer(this.audioSourceBuffer);
+              this.setAudioSourceLoop(!!this.audioSourceLoop);
+              // fix ts error
+              this.audioSource.start(0, offset);
+              this.bufferSourceDuration.startTime = audioContext.currentTime;
+              this.bufferSourceDuration.offsetTime = offset;
+              this.audioSourceState = exports.AudioSourceState.PLAY;
+          }
+      }
+      resumeAudioSource() {
+          if (this.audioSource instanceof AudioBufferSourceNode) {
+              if (this.audioSourceState !== exports.AudioSourceState.PAUSE)
+                  return;
+              this.audioSource.playbackRate.value = 1;
+              this.bufferSourceDuration.pauseTime += (audioContext.currentTime - this.bufferSourceDuration.lastPauseTime);
+              this.bufferSourceDuration.lastPauseTime = 0;
+              this.audioSourceState = exports.AudioSourceState.PLAY;
+          }
+          else if (this.audioSourceElement) {
+              this.audioSourceElement.play()
+                  .catch(showPlayWarn);
+          }
+      }
+      pauseAudioSource() {
+          if (this.audioSource instanceof AudioBufferSourceNode) {
+              // hack to pause, but firefox does not support MIN_VALUE
+              if (isFirefox) {
+                  this.audioSource.playbackRate.value = 10e-8;
+              }
+              else {
+                  this.audioSource.playbackRate.value = Number.MIN_VALUE;
+              }
+              if (!this.bufferSourceDuration.lastPauseTime) {
+                  this.bufferSourceDuration.lastPauseTime = audioContext.currentTime;
+              }
+              this.audioSourceState = exports.AudioSourceState.PAUSE;
+          }
+          else if (this.audioSourceElement) {
+              this.audioSourceElement.pause();
+          }
+      }
+      stopAudioSource(useToSeek = false) {
+          if (this.audioSource instanceof AudioBufferSourceNode) {
+              /**
+               * 一个 AudioBufferSourceNode 节点在其生命周期只允许开始一次
+               * 所以这里停止了之后是无法再次开始的
+               * 我们就直接删掉这个 Node，等待下次开始的时候重新创建
+               */
+              this.audioSource.onended = null;
+              this.audioSource.stop();
+              this.audioSource.disconnect();
+              this.audioSource = null;
+              this.bufferSourceDuration.stopTime = audioContext.currentTime;
+              if (!useToSeek) {
+                  this.audioSourceState = exports.AudioSourceState.END;
+              }
+          }
+          else if (this.audioSourceElement) {
+              this.audioSourceState = exports.AudioSourceState.END;
+              this.audioSourceElement.pause();
+              this.audioSourceElement.currentTime = 0;
+          }
+      }
+      getAudioSourceCurrentTime() {
+          if (this.audioSourceElement) {
+              return this.audioSourceElement.currentTime;
+          }
+          else if (this.audioSource instanceof AudioBufferSourceNode) {
+              let baseTime = audioContext.currentTime;
+              const duration = this.getAudioSourceDuration();
+              if (this.bufferSourceDuration.lastPauseTime) {
+                  baseTime = this.bufferSourceDuration.lastPauseTime;
+              }
+              if (this.bufferSourceDuration.stopTime) {
+                  baseTime = this.bufferSourceDuration.stopTime;
+              }
+              const currentTime = this.bufferSourceDuration.offsetTime + baseTime - this.bufferSourceDuration.startTime - this.bufferSourceDuration.pauseTime;
+              return Math.max(0, currentTime % duration);
+          }
+          return 0;
+      }
+      setAudioSourceCurrentTime(val) {
+          if (this.audioSourceElement) {
+              this.audioSourceElement.currentTime = val;
+          }
+          else if (this.audioSource instanceof AudioBufferSourceNode) {
+              /**
+               * audioBufferSource 的 seek 分 2 步
+               * stop audioBuffer
+               * 在指定位置 start
+               */
+              this.stopAudioSource(true);
+              this.playAudioSource(val);
+          }
+      }
+      getAudioSourceDuration() {
+          if (this.audioSourceElement)
+              return this.audioSourceElement.duration;
+          if (this.audioSourceBuffer)
+              return this.audioSourceBuffer.duration;
+          return 0;
+      }
+      release() {
+          if (this.audioSource instanceof MediaStreamAudioSourceNode) {
+              if (this.audioSource.mediaStream)
+                  this.audioSource.mediaStream.getTracks().map(t => t.stop());
+          }
+          if (this.audioSource) {
+              this.audioSource.disconnect();
+          }
+          this.gainNode.disconnect();
+          if (this.audioSourceElement) {
+              for (const eventItem of MediaElementEventList) {
+                  this.audioSourceElement.removeEventListener(eventItem, this.handleMediaElementEvents);
+              }
+              this.audioSourceElement.src = "";
+              this.audioSourceElement.load();
+              this.audioSourceElement.remove();
+              this.audioSourceElement = undefined;
+          }
+          if (this.scriptNode) {
+              this.scriptNode.disconnect();
+          }
+      }
+      connect() {
+          if (!this.audioSource) {
+              log.warning("no audio source, can not connect");
+              return;
+          }
+          this.audioSource.connect(this.analyserNode);
+          this.audioSource.connect(this.scriptNode);
+          this.audioSource.connect(this.gainNode);
+          if (this.audioStream) {
+              this.gainNode.connect(this.audioStream);
+          }
+      }
+      handleAudioBuffer(audioEvent) {
+          const input = audioEvent.inputBuffer;
+          if (this.audioBufferCallback) {
+              this.audioBufferCallback(input);
+          }
+      }
+      initScriptNode(bufferSize) {
+          this.scriptNode = audioContext.createScriptProcessor(bufferSize);
+          this.scriptNode.onaudioprocess = this.handleAudioBuffer.bind(this);
+      }
+      resetBufferSourceDuration() {
+          this.bufferSourceDuration = { offsetTime: 0, startTime: 0, lastPauseTime: 0, pauseTime: 0, stopTime: 0 };
+      }
+  }
+  /**
+   * Safari 的 AudioNode.disconnect 不支持 disconnect 指定节点，只能操作全部节点
+   * 这里的 polyfill 是通过 _inputNodes 保存全部已经 connect 的节点
+   * 然后在 disconnect 后，将那些预期不应该被 disconnect 的节点重新 connect
+   */
+  function polyfillAudioNode(node) {
+      if (browserReport.disconnectAudioNode)
+          return;
+      const nativeConnect = node.connect;
+      const nativeDisconnect = node.disconnect;
+      node.connect = (destination, outputIndex, inputIndex) => {
+          if (!node._inputNodes) {
+              node._inputNodes = [];
+          }
+          if (destination instanceof AudioNode) {
+              node._inputNodes.push(destination);
+              node._inputNodes = lodash_uniqby(node._inputNodes, s => s);
+              nativeConnect.call(node, destination, outputIndex, inputIndex);
+          }
+          else {
+              nativeConnect.call(node, destination, outputIndex);
+          }
+          return node;
+      };
+      node.disconnect = (destination, output, input) => {
+          nativeDisconnect.call(node, destination, output, input);
+          if (!destination) {
+              node._inputNodes = [];
+          }
+          lodash_remove(node._inputNodes, (node) => {
+              return node === destination;
+          });
+          for (const n of node._inputNodes) {
+              node.connect(n);
+          }
+      };
+  }
+
+  function aWeight(f) {
+      const f2 = f * f;
+      return 1.2588966 * 148840000 * f2 * f2 /
+          ((f2 + 424.36) * Math.sqrt((f2 + 11599.29) * (f2 + 544496.41)) * (f2 + 148840000));
+  }
+  const AUDIO_WEIGHT_LIMIT = 0;
+  class AudioTrack extends Track {
+      constructor(track, userId, direction) {
+          if (track.kind !== "audio") {
+              throw new Error("audio track only!");
+          }
+          super(track, userId, direction);
+          this.mediaStream = new MediaStream();
+          this.mediaStream.addTrack(track);
+      }
+      /**
+       * @inernal
+       */
+      resume(track) {
+          this.mediaTrack = track;
+          this.removeEvent("@get-stats");
+          this.resetStats();
+          const stream = new MediaStream([track]);
+          this.mediaStream = stream;
+          if (this.mediaElement) {
+              this.mediaElement.dataset.localid = track.id;
+              this.mediaElement.srcObject = stream;
+          }
+          if (this.audioManager) {
+              this.audioManager.release();
+              this.initAudioManager();
+          }
+      }
+      /**
+       * @internal
+       * @param replaceOriginStream 是否使用 WebAudio 替换原来的输入
+       * safari 不支持 webaudio 替换输入
+       */
+      initAudioManager(replaceOriginStream) {
+          this.audioManager = new AudioManager();
+          this.audioManager.initAudioContext();
+          this.audioManager.setMediaStreamSource(this.mediaStream);
+          if (replaceOriginStream && browserReport.mediaStreamDest) {
+              this.mediaStream = this.audioManager.audioStream.stream;
+              this.mediaTrack = this.mediaStream.getTracks()[0];
+          }
+      }
+      /**
+       * 传入回调函数接受音频的 PCM 数据回调
+       * @param cb 传入的回调函数，拥有一个参数 AudioBuffer 表示回调的音频数据
+       * @param bufferSize 设定一次回调音频 Buffer 的长度，默认为 4096 位。
+       * 注意 bufferSize 必须是 2 的 n 次幂且大于 256 小于 16394
+       */
+      onAudioBuffer(cb, bufferSize = BUFFER_SIZE) {
+          this.audioManager.onAudioBuffer(cb, bufferSize);
+      }
+      /**
+       * 设置音量，目前仅对采集到的 Track 有效（订阅 Track 无效）
+       * @param value 增益值，0 静音，2，当前声音的 2 倍
+       */
+      setVolume(value) {
+          this.audioManager.gainNode.gain.setValueAtTime(value, audioContext.currentTime);
+      }
+      /**
+       * 获取当前 2048 位的时域数据
+       */
+      getCurrentTimeDomainData() {
+          const data = new Uint8Array(FFT_SIZE);
+          this.audioManager.analyserNode.getByteTimeDomainData(data);
+          return data;
+      }
+      /**
+       * 获取当前 2048 位的频域数据
+       */
+      getCurrentFrequencyData() {
+          const data = new Uint8Array(this.audioManager.analyserNode.frequencyBinCount);
+          this.audioManager.analyserNode.getByteFrequencyData(data);
+          return data;
+      }
+      /**
+       * 获取这个 Track 的音量设置，默认为 1，也就是原始音量
+       */
+      getVolume() {
+          return this.audioManager.gainNode.gain.value;
+      }
+      /**
+       * 获取当前实时的音量等级，一般用来展示可视化音量数据
+       */
+      getCurrentVolumeLevel() {
+          const data = this.getCurrentFrequencyData();
+          let sum = 0;
+          let length = data.length;
+          data.forEach((d, i) => {
+              const frequency = i * (audioContext.sampleRate || 44100) / data.length;
+              if (frequency > 22050) {
+                  length -= 1;
+                  return;
+              }
+              const weight = aWeight(frequency) * d / 255.0;
+              if (weight <= AUDIO_WEIGHT_LIMIT) {
+                  length -= 1;
+                  return;
+              }
+              sum += weight * weight;
+          });
+          return Math.sqrt(sum / length);
+      }
+      release() {
+          this.emit("release");
+          this.removeEvent();
+          if (this.statsInterval) {
+              window.clearInterval(this.statsInterval);
+          }
+          this.mediaTrack.stop();
+          this.removeMediaElement();
+          if (this.audioManager) {
+              this.audioManager.release();
+          }
+      }
+  }
+
+  /**
+   * 如果音频来源不是麦克风，而是通过在线音频或者自定义 buffer，将会使用这个类
+   */
+  class AudioSourceTrack extends AudioTrack {
+      constructor(source, userId) {
+          if (!browserReport.mediaStreamDest) {
+              throw NOT_SUPPORT_ERROR("your browser does not support audio buffer input!");
+          }
+          const audioManager = new AudioManager();
+          audioManager.initAudioContext();
+          if (source instanceof AudioBuffer) {
+              audioManager.setAudioBufferSource();
+              audioManager.setAudioBuffer(source);
+          }
+          else if (source instanceof HTMLAudioElement) {
+              audioManager.setMediaElementSource(source);
+          }
+          const mediaStream = audioManager.audioStream.stream;
+          const audioMediaTrack = mediaStream.getTracks()[0];
+          super(audioMediaTrack, userId, "local");
+          this.isLoop = false;
+          this.originSource = source;
+          this.audioManager = audioManager;
+          this.handleAudioManagerEvents();
+      }
+      /**
+       * 设置循环播放模式
+       */
+      setLoop(isLoop) {
+          this.isLoop = isLoop;
+          this.audioManager.setAudioSourceLoop(isLoop);
+      }
+      /**
+       * 播放自定义的 Source
+       */
+      startAudioSource() {
+          this.audioManager.playAudioSource();
+      }
+      /**
+       * 暂停播放自定义的 Source
+       */
+      pauseAudioSource() {
+          this.audioManager.pauseAudioSource();
+      }
+      /**
+       * 恢复播放自定义的 Source
+       */
+      resumeAudioSource() {
+          this.audioManager.resumeAudioSource();
+      }
+      /**
+       * 停止播放 AudioBuffer 数据
+       */
+      stopAudioSource() {
+          this.audioManager.stopAudioSource();
+      }
+      /**
+       * 获取当前的播放时间
+       */
+      getCurrentTime() {
+          return this.audioManager.getAudioSourceCurrentTime() || 0;
+      }
+      /**
+       * 设置当前的时间
+       */
+      setCurrentTime(val) {
+          this.audioManager.setAudioSourceCurrentTime(val);
+      }
+      /**
+       * 获取播放总时长，对于在线音乐
+       * 只有当 audio-state-change 第一次触发 PLAY 后才能获取到
+       */
+      getDuration() {
+          return this.audioManager.getAudioSourceDuration() || 0;
+      }
+      handleAudioManagerEvents() {
+          this.audioManager.on("@audio-source-state-change", (newState, lastState) => {
+              this.emit("audio-state-change", newState, lastState);
+          });
+      }
+  }
+
+  /**
+   * v1 版本的 Stream，只会拥有最多一个 videoTrack 以及一个 audioTrack
+   */
+  class Stream extends EventEmitter {
+      constructor(tracks, direction = "send", userId) {
+          super();
+          /**
+           * 表示这个流下所包含的所有 Track 的信息，用于精细控制每个 Track 的行为
+           * 详细结构可以查阅 TrackInfo
+           */
+          this.trackList = [];
+          /**
+           * 用于标记这个流是否调用了 release 方法，即表示这个流已经被释放
+           */
+          this.isDestroyed = false;
+          this.enableAudio = true;
+          this.enableVideo = true;
+          this.muteAudio = false;
+          this.muteVideo = false;
+          this.onAudioEnded = (event) => {
+              this.emit("audio-ended", event);
+          };
+          this.onVideoEnded = (event) => {
+              this.emit("video-ended", event);
+          };
+          this.onAudioSourceStateChange = (curr, last) => {
+              this.emit("audio-source-state-change", curr, last);
+          };
+          this.direction = direction;
+          this.userId = userId;
+          tracks.forEach(track => {
+              track.setMaster(true);
+              track.on("mute", () => {
+                  this.updateTrackState();
+              });
+              // 监听 track 的 release 事件，更新自己的状态
+              track.on("release", () => {
+                  lodash_remove(this.trackList, t => t === track);
+                  this.updateTrackState();
+                  // 如果自己所有的 track 都 release 了，自己也 release
+                  if (this.trackList.length === 0) {
+                      this.release();
+                  }
+              });
+              this.trackList.push(track);
+          });
+          this.updateTrackState();
+      }
+      get audioSourceIsLoop() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return false;
+          }
+          return this._audioTrack.isLoop;
+      }
+      /**
+       * 目前只对采集的流有效
+       */
+      setVolume(v) {
+          if (this._audioTrack) {
+              this._audioTrack.setVolume(v);
+          }
+      }
+      /**
+       * 将一个 Stream 对象置于页面上指定的元素下播放
+       * 会将将所有 track 都置于一个元素下播放
+       *
+       * 如果想单独控制每一个 track 的播放行为
+       * 通过 trackList 获取 Track 对象，调用它的 play 方法
+       * @param container 指定一个 HTML 元素用于放置媒体元素
+       * @param muted 是否使用静音模式，如果为 true 就不会播放音频，仅播放视频，默认为 false。
+       */
+      play(container, muted) {
+          this.trackList.forEach(track => track.play(container, muted));
+          if (this._audioTrack) {
+              this.audio = this._audioTrack.mediaElement;
+          }
+          if (this._videoTrack) {
+              this.video = this._videoTrack.mediaElement;
+          }
+      }
+      onAudioBuffer(cb, bufferSize) {
+          if (this._audioTrack) {
+              this._audioTrack.onAudioBuffer(cb, bufferSize);
+          }
+      }
+      getCurrentTimeDomainData() {
+          if (this._audioTrack) {
+              return this._audioTrack.getCurrentTimeDomainData();
+          }
+          return new Uint8Array(0);
+      }
+      getCurrentFrequencyData() {
+          if (this._audioTrack) {
+              return this._audioTrack.getCurrentFrequencyData();
+          }
+          return new Uint8Array(0);
+      }
+      getCurrentVolumeLevel() {
+          if (this._audioTrack) {
+              return this._audioTrack.getCurrentVolumeLevel();
+          }
+          return 0;
+      }
+      getStats() {
+          const audioReport = this._audioTrack ? this._audioTrack.getStats() : defaultTrackStatsReport();
+          const videoReport = this._videoTrack ? this._videoTrack.getStats() : defaultTrackStatsReport();
+          return {
+              timestamp: Date.now(),
+              videoBitrate: videoReport.bitrate,
+              audioBitrate: audioReport.bitrate,
+              videoPacketLoss: videoReport.packetLoss,
+              audioPacketLoss: audioReport.packetLoss,
+              videoPackets: videoReport.packets,
+              audioPackets: audioReport.packets,
+              videoPacketLossRate: videoReport.packetLossRate,
+              audioPacketLossRate: audioReport.packetLossRate,
+              videoBytes: videoReport.bytes,
+              audioBytes: audioReport.bytes,
+              pctype: this.direction,
+          };
+      }
+      getCurrentFrameDataURL() {
+          if (!this._videoTrack) {
+              return "data:,";
+          }
+          return this._videoTrack.getCurrentFrameDataURL();
+      }
+      setAudioSourceLoop(isLoop) {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          this._audioTrack.setLoop(isLoop);
+      }
+      startAudioSource() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          this._audioTrack.startAudioSource();
+      }
+      pauseAudioSource() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          this._audioTrack.pauseAudioSource();
+      }
+      resumeAudioSource() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          this._audioTrack.resumeAudioSource();
+      }
+      stopAudioSource() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          this._audioTrack.stopAudioSource();
+      }
+      getAudioSourceCurrentTime() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return 0;
+          }
+          return this._audioTrack.getCurrentTime();
+      }
+      getAudioSourceDuration() {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return 0;
+          }
+          return this._audioTrack.getDuration();
+      }
+      setAudioSourceCurrentTime(val) {
+          if (!(this._audioTrack instanceof AudioSourceTrack)) {
+              return;
+          }
+          return this._audioTrack.setCurrentTime(val);
+      }
+      /**
+       * @internal
+       */
+      setKbps(video, audio) {
+          if (video && this._videoTrack) {
+              this._videoTrack.setKbps(video);
+          }
+          if (audio && this._audioTrack) {
+              this._audioTrack.setKbps(audio);
+          }
+      }
+      /* @internal */
+      updateTrackState() {
+          this.trackList.forEach(track => {
+              if (track.info.kind === "audio") {
+                  if (this._audioTrack) {
+                      this._audioTrack.off("ended", this.onAudioEnded);
+                      this._audioTrack.off("audio-state-change", this.onAudioSourceStateChange);
+                  }
+                  this.audioTrack = track.mediaTrack;
+                  this._audioTrack = track;
+                  this._audioTrack.on("ended", this.onAudioEnded);
+                  if (this._audioTrack instanceof AudioSourceTrack) {
+                      this._audioTrack.on("audio-state-change", this.onAudioSourceStateChange);
+                  }
+              }
+              else {
+                  if (this._videoTrack) {
+                      this._videoTrack.off("ended", this.onVideoEnded);
+                  }
+                  this.videoTrack = track.mediaTrack;
+                  this._videoTrack = track;
+                  this._videoTrack.on("ended", this.onVideoEnded);
+              }
+          });
+          if (this.audioTrack) {
+              this.enableAudio = true;
+              this.muteAudio = !this.audioTrack.enabled;
+          }
+          else {
+              this.enableAudio = false;
+          }
+          if (this.videoTrack) {
+              this.enableVideo = true;
+              this.muteVideo = !this.videoTrack.enabled;
+          }
+          else {
+              this.enableVideo = false;
+          }
+      }
+      /**
+       * 释放这个流下的所有资源，包括流和用于播放流的媒体元素
+       */
+      release() {
+          if (this.isDestroyed) {
+              return;
+          }
+          for (let i = 0; i < this.trackList.length; i += 1) {
+              const track = this.trackList[i];
+              track.removeAllListeners("release");
+              track.release();
+          }
+          this.trackList = [];
+          this.isDestroyed = true;
+          this.emit("release");
+          this.removeEvent();
+      }
+      /**
+       * @internal
+       * 释放流下一个 track，包括媒体元素
+       * 如果 Track 被 Stream 包裹，不要直接调用 Track 的 release 方法
+       * @param track 标记要释放的 track
+       */
+      releaseTrack(track) {
+          const { removeElement, newArray } = removeElementFromArray(this.trackList, "mediaTrack", track.mediaTrack);
+          if (!removeElement) {
+              return;
+          }
+          track.release();
+          this.trackList = newArray;
+          if (this.trackList.length === 0) {
+              this.isDestroyed = true;
+          }
+      }
+  }
+
+  /*
+   * transfer.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  function transferSignalingCustomMessageToCustomMessage(msg) {
+      return {
+          timestamp: msg.msgts,
+          data: msg.text,
+          userId: msg.playerid,
+          type: msg.type,
+      };
+  }
+  function transferSignalingTrackToTrackBaseInfo(track) {
+      return {
+          trackId: track.trackid,
+          tag: track.tag,
+          kind: track.kind,
+          userId: track.playerid,
+          muted: track.muted,
+          versionid: track.versionid,
+      };
+  }
+  function transferTrackBaseInfoToSignalingTrack(track, isMaster) {
+      return {
+          trackid: track.trackId,
+          kind: track.kind,
+          master: isMaster,
+          muted: !!track.muted,
+          playerid: track.userId,
+          tag: track.tag || "",
+          versionid: track.versionid,
+      };
+  }
+  function transferTrackToPublishTrack(track) {
+      return {
+          localid: track.mediaTrack.id,
+          master: track.master,
+          kind: track.info.kind,
+          kbps: track.info.kbps,
+          tag: track.info.tag,
+      };
+  }
+  function transferSignalingUserToUser(sigUser) {
+      return new User(sigUser.playerid, sigUser.playerdata);
+  }
+  function createCustomTrack(mediaTrack, tag, kbps) {
+      let track;
+      if (mediaTrack.kind === "audio") {
+          track = new AudioTrack(mediaTrack);
+          track.initAudioManager(true);
+      }
+      else {
+          track = new Track(mediaTrack);
+      }
+      if (kbps) {
+          track.setKbps(kbps);
+      }
+      track.setInfo({ tag });
+      return track;
+  }
+  async function transferRecordOptionToMediaConstraints(options) {
+      if (!options) {
+          return {
+              audio: true,
+              video: true,
+          };
+      }
+      if (REC_SCREEN_ENABLE(options)) {
+          if (REC_VIDEO_ENABLE(options)) {
+              throw UNEXPECTED_ERROR("can not get mediaStream with video and screen are all enabled");
+          }
+          if (!browserReport.screenSharing) {
+              throw NOT_SUPPORT_ERROR("your browser can not share screen");
+          }
+          const screenOptions = options.screen;
+          // 只有在 chrome 下，用户强制指定用插件或者用户不支持 plugin free 采集才会检查插件
+          if (isChrome && (screenOptions.forceChromePlugin || !browserReport.getDisplayMedia)) {
+              const plugin = await isChromeExtensionAvailable();
+              if (!plugin) {
+                  throw PLUGIN_NOT_AVALIABLE("");
+              }
+          }
+      }
+      const audio = !options.audio || !options.audio.enabled || !!options.audio.source ? false : {
+          deviceId: options.audio.deviceId,
+          sampleRate: options.audio.sampleRate,
+          sampleSize: options.audio.sampleSize,
+          channelCount: options.audio.channelCount,
+          autoGainControl: options.audio.autoGainControl,
+          echoCancellation: options.audio.echoCancellation,
+          noiseSuppression: options.audio.noiseSuppression,
+      };
+      const video = !options.video || !options.video.enabled ? false : {
+          frameRate: options.video.frameRate,
+          height: options.video.height,
+          width: options.video.width,
+          deviceId: options.video.deviceId,
+      };
+      if (REC_SCREEN_ENABLE(options) && options.screen) {
+          if (browserReport.getDisplayMedia && !options.screen.forceChromePlugin) {
+              return createConstraints({
+                  audio,
+                  video: {
+                      displaySurface: getDisplaySurfaceFromSourceOption(options.screen.source),
+                      width: options.screen.width,
+                      height: options.screen.height,
+                      frameRate: options.screen.frameRate,
+                  },
+              });
+          }
+          const constraints = await getScreenConstraints(false, options.screen);
+          return createConstraints({
+              audio,
+              video: constraints,
+          });
+      }
+      return createConstraints({
+          audio, video,
+      });
+  }
+  function getDisplaySurfaceFromSourceOption(opt) {
+      switch (opt) {
+          case "window":
+              return "application";
+          case "screen":
+              return ["window", "monitor"];
+          default:
+              return undefined;
+      }
+  }
+  const createConstraints = (constraints) => deleteConstraintsEmptyObject(processConstraints(removeUndefinedKey(constraints)));
+  function processConstraints(constraints) {
+      if (browserReport.minMaxWithIdeal) {
+          return constraints;
+      }
+      const keys = ["video", "screen"];
+      keys.forEach(key => {
+          if (typeof constraints[key] === "object" && typeof constraints[key].width === "object" && constraints[key].width.ideal) {
+              delete constraints[key].width.ideal;
+          }
+          if (typeof constraints[key] === "object" && typeof constraints[key].height === "object" && constraints[key].height.ideal) {
+              delete constraints[key].height.ideal;
+          }
+      });
+      return constraints;
+  }
+  // fix old chrome
+  function deleteConstraintsEmptyObject(constraints) {
+      if (Object.keys(constraints.audio).length === 0 && typeof (constraints.audio) !== "boolean") {
+          constraints.audio = true;
+      }
+      if (Object.keys(constraints.video).length === 0 && typeof (constraints.video) !== "boolean") {
+          constraints.video = true;
+      }
+      return constraints;
+  }
+  function getNumberRangeMax(range) {
+      if (!range) {
+          return undefined;
+      }
+      if (typeof range === "number") {
+          return range;
+      }
+      if (range.exact) {
+          return range.exact;
+      }
+      if (range.max) {
+          return range.max;
+      }
+      if (range.ideal) {
+          return range.ideal;
+      }
+      if (range.min) {
+          return range.min;
+      }
+      return undefined;
+  }
+
+  var grammar_1 = createCommonjsModule(function (module) {
+    var grammar = module.exports = {
+      v: [{
+        name: 'version',
+        reg: /^(\d*)$/
+      }],
+      o: [{
+        //o=- 20518 0 IN IP4 203.0.113.1
+        // NB: sessionId will be a String in most cases because it is huge
+        name: 'origin',
+        reg: /^(\S*) (\d*) (\d*) (\S*) IP(\d) (\S*)/,
+        names: ['username', 'sessionId', 'sessionVersion', 'netType', 'ipVer', 'address'],
+        format: '%s %s %d %s IP%d %s'
+      }],
+      // default parsing of these only (though some of these feel outdated)
+      s: [{
+        name: 'name'
+      }],
+      i: [{
+        name: 'description'
+      }],
+      u: [{
+        name: 'uri'
+      }],
+      e: [{
+        name: 'email'
+      }],
+      p: [{
+        name: 'phone'
+      }],
+      z: [{
+        name: 'timezones'
+      }],
+      // TODO: this one can actually be parsed properly..
+      r: [{
+        name: 'repeats'
+      }],
+      // TODO: this one can also be parsed properly
+      //k: [{}], // outdated thing ignored
+      t: [{
+        //t=0 0
+        name: 'timing',
+        reg: /^(\d*) (\d*)/,
+        names: ['start', 'stop'],
+        format: '%d %d'
+      }],
+      c: [{
+        //c=IN IP4 10.47.197.26
+        name: 'connection',
+        reg: /^IN IP(\d) (\S*)/,
+        names: ['version', 'ip'],
+        format: 'IN IP%d %s'
+      }],
+      b: [{
+        //b=AS:4000
+        push: 'bandwidth',
+        reg: /^(TIAS|AS|CT|RR|RS):(\d*)/,
+        names: ['type', 'limit'],
+        format: '%s:%s'
+      }],
+      m: [{
+        //m=video 51744 RTP/AVP 126 97 98 34 31
+        // NB: special - pushes to session
+        // TODO: rtp/fmtp should be filtered by the payloads found here?
+        reg: /^(\w*) (\d*) ([\w\/]*)(?: (.*))?/,
+        names: ['type', 'port', 'protocol', 'payloads'],
+        format: '%s %d %s %s'
+      }],
+      a: [{
+        //a=rtpmap:110 opus/48000/2
+        push: 'rtp',
+        reg: /^rtpmap:(\d*) ([\w\-\.]*)(?:\s*\/(\d*)(?:\s*\/(\S*))?)?/,
+        names: ['payload', 'codec', 'rate', 'encoding'],
+        format: function (o) {
+          return o.encoding ? 'rtpmap:%d %s/%s/%s' : o.rate ? 'rtpmap:%d %s/%s' : 'rtpmap:%d %s';
+        }
+      }, {
+        //a=fmtp:108 profile-level-id=24;object=23;bitrate=64000
+        //a=fmtp:111 minptime=10; useinbandfec=1
+        push: 'fmtp',
+        reg: /^fmtp:(\d*) ([\S| ]*)/,
+        names: ['payload', 'config'],
+        format: 'fmtp:%d %s'
+      }, {
+        //a=control:streamid=0
+        name: 'control',
+        reg: /^control:(.*)/,
+        format: 'control:%s'
+      }, {
+        //a=rtcp:65179 IN IP4 193.84.77.194
+        name: 'rtcp',
+        reg: /^rtcp:(\d*)(?: (\S*) IP(\d) (\S*))?/,
+        names: ['port', 'netType', 'ipVer', 'address'],
+        format: function (o) {
+          return o.address != null ? 'rtcp:%d %s IP%d %s' : 'rtcp:%d';
+        }
+      }, {
+        //a=rtcp-fb:98 trr-int 100
+        push: 'rtcpFbTrrInt',
+        reg: /^rtcp-fb:(\*|\d*) trr-int (\d*)/,
+        names: ['payload', 'value'],
+        format: 'rtcp-fb:%d trr-int %d'
+      }, {
+        //a=rtcp-fb:98 nack rpsi
+        push: 'rtcpFb',
+        reg: /^rtcp-fb:(\*|\d*) ([\w-_]*)(?: ([\w-_]*))?/,
+        names: ['payload', 'type', 'subtype'],
+        format: function (o) {
+          return o.subtype != null ? 'rtcp-fb:%s %s %s' : 'rtcp-fb:%s %s';
+        }
+      }, {
+        //a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+        //a=extmap:1/recvonly URI-gps-string
+        push: 'ext',
+        reg: /^extmap:(\d+)(?:\/(\w+))? (\S*)(?: (\S*))?/,
+        names: ['value', 'direction', 'uri', 'config'],
+        format: function (o) {
+          return 'extmap:%d' + (o.direction ? '/%s' : '%v') + ' %s' + (o.config ? ' %s' : '');
+        }
+      }, {
+        //a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:PS1uQCVeeCFCanVmcjkpPywjNWhcYD0mXXtxaVBR|2^20|1:32
+        push: 'crypto',
+        reg: /^crypto:(\d*) ([\w_]*) (\S*)(?: (\S*))?/,
+        names: ['id', 'suite', 'config', 'sessionConfig'],
+        format: function (o) {
+          return o.sessionConfig != null ? 'crypto:%d %s %s %s' : 'crypto:%d %s %s';
+        }
+      }, {
+        //a=setup:actpass
+        name: 'setup',
+        reg: /^setup:(\w*)/,
+        format: 'setup:%s'
+      }, {
+        //a=mid:1
+        name: 'mid',
+        reg: /^mid:([^\s]*)/,
+        format: 'mid:%s'
+      }, {
+        //a=msid:0c8b064d-d807-43b4-b434-f92a889d8587 98178685-d409-46e0-8e16-7ef0db0db64a
+        name: 'msid',
+        reg: /^msid:(.*)/,
+        format: 'msid:%s'
+      }, {
+        //a=ptime:20
+        name: 'ptime',
+        reg: /^ptime:(\d*)/,
+        format: 'ptime:%d'
+      }, {
+        //a=maxptime:60
+        name: 'maxptime',
+        reg: /^maxptime:(\d*)/,
+        format: 'maxptime:%d'
+      }, {
+        //a=sendrecv
+        name: 'direction',
+        reg: /^(sendrecv|recvonly|sendonly|inactive)/
+      }, {
+        //a=ice-lite
+        name: 'icelite',
+        reg: /^(ice-lite)/
+      }, {
+        //a=ice-ufrag:F7gI
+        name: 'iceUfrag',
+        reg: /^ice-ufrag:(\S*)/,
+        format: 'ice-ufrag:%s'
+      }, {
+        //a=ice-pwd:x9cml/YzichV2+XlhiMu8g
+        name: 'icePwd',
+        reg: /^ice-pwd:(\S*)/,
+        format: 'ice-pwd:%s'
+      }, {
+        //a=fingerprint:SHA-1 00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33
+        name: 'fingerprint',
+        reg: /^fingerprint:(\S*) (\S*)/,
+        names: ['type', 'hash'],
+        format: 'fingerprint:%s %s'
+      }, {
+        //a=candidate:0 1 UDP 2113667327 203.0.113.1 54400 typ host
+        //a=candidate:1162875081 1 udp 2113937151 192.168.34.75 60017 typ host generation 0 network-id 3 network-cost 10
+        //a=candidate:3289912957 2 udp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 generation 0 network-id 3 network-cost 10
+        //a=candidate:229815620 1 tcp 1518280447 192.168.150.19 60017 typ host tcptype active generation 0 network-id 3 network-cost 10
+        //a=candidate:3289912957 2 tcp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 tcptype passive generation 0 network-id 3 network-cost 10
+        push: 'candidates',
+        reg: /^candidate:(\S*) (\d*) (\S*) (\d*) (\S*) (\d*) typ (\S*)(?: raddr (\S*) rport (\d*))?(?: tcptype (\S*))?(?: generation (\d*))?(?: network-id (\d*))?(?: network-cost (\d*))?/,
+        names: ['foundation', 'component', 'transport', 'priority', 'ip', 'port', 'type', 'raddr', 'rport', 'tcptype', 'generation', 'network-id', 'network-cost'],
+        format: function (o) {
+          var str = 'candidate:%s %d %s %d %s %d typ %s';
+          str += o.raddr != null ? ' raddr %s rport %d' : '%v%v'; // NB: candidate has three optional chunks, so %void middles one if it's missing
+
+          str += o.tcptype != null ? ' tcptype %s' : '%v';
+
+          if (o.generation != null) {
+            str += ' generation %d';
+          }
+
+          str += o['network-id'] != null ? ' network-id %d' : '%v';
+          str += o['network-cost'] != null ? ' network-cost %d' : '%v';
+          return str;
+        }
+      }, {
+        //a=end-of-candidates (keep after the candidates line for readability)
+        name: 'endOfCandidates',
+        reg: /^(end-of-candidates)/
+      }, {
+        //a=remote-candidates:1 203.0.113.1 54400 2 203.0.113.1 54401 ...
+        name: 'remoteCandidates',
+        reg: /^remote-candidates:(.*)/,
+        format: 'remote-candidates:%s'
+      }, {
+        //a=ice-options:google-ice
+        name: 'iceOptions',
+        reg: /^ice-options:(\S*)/,
+        format: 'ice-options:%s'
+      }, {
+        //a=ssrc:2566107569 cname:t9YU8M1UxTF8Y1A1
+        push: 'ssrcs',
+        reg: /^ssrc:(\d*) ([\w_-]*)(?::(.*))?/,
+        names: ['id', 'attribute', 'value'],
+        format: function (o) {
+          var str = 'ssrc:%d';
+
+          if (o.attribute != null) {
+            str += ' %s';
+
+            if (o.value != null) {
+              str += ':%s';
+            }
+          }
+
+          return str;
+        }
+      }, {
+        //a=ssrc-group:FEC 1 2
+        //a=ssrc-group:FEC-FR 3004364195 1080772241
+        push: 'ssrcGroups',
+        // token-char = %x21 / %x23-27 / %x2A-2B / %x2D-2E / %x30-39 / %x41-5A / %x5E-7E
+        reg: /^ssrc-group:([\x21\x23\x24\x25\x26\x27\x2A\x2B\x2D\x2E\w]*) (.*)/,
+        names: ['semantics', 'ssrcs'],
+        format: 'ssrc-group:%s %s'
+      }, {
+        //a=msid-semantic: WMS Jvlam5X3SX1OP6pn20zWogvaKJz5Hjf9OnlV
+        name: 'msidSemantic',
+        reg: /^msid-semantic:\s?(\w*) (\S*)/,
+        names: ['semantic', 'token'],
+        format: 'msid-semantic: %s %s' // space after ':' is not accidental
+
+      }, {
+        //a=group:BUNDLE audio video
+        push: 'groups',
+        reg: /^group:(\w*) (.*)/,
+        names: ['type', 'mids'],
+        format: 'group:%s %s'
+      }, {
+        //a=rtcp-mux
+        name: 'rtcpMux',
+        reg: /^(rtcp-mux)/
+      }, {
+        //a=rtcp-rsize
+        name: 'rtcpRsize',
+        reg: /^(rtcp-rsize)/
+      }, {
+        //a=sctpmap:5000 webrtc-datachannel 1024
+        name: 'sctpmap',
+        reg: /^sctpmap:([\w_\/]*) (\S*)(?: (\S*))?/,
+        names: ['sctpmapNumber', 'app', 'maxMessageSize'],
+        format: function (o) {
+          return o.maxMessageSize != null ? 'sctpmap:%s %s %s' : 'sctpmap:%s %s';
+        }
+      }, {
+        //a=x-google-flag:conference
+        name: 'xGoogleFlag',
+        reg: /^x-google-flag:([^\s]*)/,
+        format: 'x-google-flag:%s'
+      }, {
+        //a=rid:1 send max-width=1280;max-height=720;max-fps=30;depend=0
+        push: 'rids',
+        reg: /^rid:([\d\w]+) (\w+)(?: ([\S| ]*))?/,
+        names: ['id', 'direction', 'params'],
+        format: function (o) {
+          return o.params ? 'rid:%s %s %s' : 'rid:%s %s';
+        }
+      }, {
+        //a=imageattr:97 send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320] recv [x=330,y=250]
+        //a=imageattr:* send [x=800,y=640] recv *
+        //a=imageattr:100 recv [x=320,y=240]
+        push: 'imageattrs',
+        reg: new RegExp( //a=imageattr:97
+        '^imageattr:(\\d+|\\*)' + //send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320]
+        '[\\s\\t]+(send|recv)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*)' + //recv [x=330,y=250]
+        '(?:[\\s\\t]+(recv|send)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*))?'),
+        names: ['pt', 'dir1', 'attrs1', 'dir2', 'attrs2'],
+        format: function (o) {
+          return 'imageattr:%s %s %s' + (o.dir2 ? ' %s %s' : '');
+        }
+      }, {
+        //a=simulcast:send 1,2,3;~4,~5 recv 6;~7,~8
+        //a=simulcast:recv 1;4,5 send 6;7
+        name: 'simulcast',
+        reg: new RegExp( //a=simulcast:
+        '^simulcast:' + //send 1,2,3;~4,~5
+        '(send|recv) ([a-zA-Z0-9\\-_~;,]+)' + //space + recv 6;~7,~8
+        '(?:\\s?(send|recv) ([a-zA-Z0-9\\-_~;,]+))?' + //end
+        '$'),
+        names: ['dir1', 'list1', 'dir2', 'list2'],
+        format: function (o) {
+          return 'simulcast:%s %s' + (o.dir2 ? ' %s %s' : '');
+        }
+      }, {
+        //Old simulcast draft 03 (implemented by Firefox)
+        //  https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast-03
+        //a=simulcast: recv pt=97;98 send pt=97
+        //a=simulcast: send rid=5;6;7 paused=6,7
+        name: 'simulcast_03',
+        reg: /^simulcast:[\s\t]+([\S+\s\t]+)$/,
+        names: ['value'],
+        format: 'simulcast: %s'
+      }, {
+        //a=framerate:25
+        //a=framerate:29.97
+        name: 'framerate',
+        reg: /^framerate:(\d+(?:$|\.\d+))/,
+        format: 'framerate:%s'
+      }, {
+        // RFC4570
+        //a=source-filter: incl IN IP4 239.5.2.31 10.1.15.5
+        name: 'sourceFilter',
+        reg: /^source-filter: *(excl|incl) (\S*) (IP4|IP6|\*) (\S*) (.*)/,
+        names: ['filterMode', 'netType', 'addressTypes', 'destAddress', 'srcList'],
+        format: 'source-filter: %s %s %s %s %s'
+      }, {
+        //a=bundle-only
+        name: 'bundleOnly',
+        reg: /^(bundle-only)/
+      }, {
+        //a=label:1
+        name: 'label',
+        reg: /^label:(.+)/,
+        format: 'label:%s'
+      }, {
+        // RFC version 26 for SCTP over DTLS
+        // https://tools.ietf.org/html/draft-ietf-mmusic-sctp-sdp-26#section-5
+        name: 'sctpPort',
+        reg: /^sctp-port:(\d+)$/,
+        format: 'sctp-port:%s'
+      }, {
+        // RFC version 26 for SCTP over DTLS
+        // https://tools.ietf.org/html/draft-ietf-mmusic-sctp-sdp-26#section-6
+        name: 'maxMessageSize',
+        reg: /^max-message-size:(\d+)$/,
+        format: 'max-message-size:%s'
+      }, {
+        // any a= that we don't understand is kepts verbatim on media.invalid
+        push: 'invalid',
+        names: ['value']
+      }]
+    }; // set sensible defaults to avoid polluting the grammar with boring details
+
+    Object.keys(grammar).forEach(function (key) {
+      var objs = grammar[key];
+      objs.forEach(function (obj) {
+        if (!obj.reg) {
+          obj.reg = /(.*)/;
+        }
+
+        if (!obj.format) {
+          obj.format = '%s';
+        }
+      });
+    });
+  });
+  var grammar_2 = grammar_1.v;
+  var grammar_3 = grammar_1.o;
+  var grammar_4 = grammar_1.s;
+  var grammar_5 = grammar_1.i;
+  var grammar_6 = grammar_1.u;
+  var grammar_7 = grammar_1.e;
+  var grammar_8 = grammar_1.p;
+  var grammar_9 = grammar_1.z;
+  var grammar_10 = grammar_1.r;
+  var grammar_11 = grammar_1.t;
+  var grammar_12 = grammar_1.c;
+  var grammar_13 = grammar_1.b;
+  var grammar_14 = grammar_1.m;
+  var grammar_15 = grammar_1.a;
+
+  var parser = createCommonjsModule(function (module, exports) {
+    var toIntIfInt = function (v) {
+      return String(Number(v)) === v ? Number(v) : v;
+    };
+
+    var attachProperties = function (match, location, names, rawName) {
+      if (rawName && !names) {
+        location[rawName] = toIntIfInt(match[1]);
+      } else {
+        for (var i = 0; i < names.length; i += 1) {
+          if (match[i + 1] != null) {
+            location[names[i]] = toIntIfInt(match[i + 1]);
+          }
+        }
+      }
+    };
+
+    var parseReg = function (obj, location, content) {
+      var needsBlank = obj.name && obj.names;
+
+      if (obj.push && !location[obj.push]) {
+        location[obj.push] = [];
+      } else if (needsBlank && !location[obj.name]) {
+        location[obj.name] = {};
+      }
+
+      var keyLocation = obj.push ? {} : // blank object that will be pushed
+      needsBlank ? location[obj.name] : location; // otherwise, named location or root
+
+      attachProperties(content.match(obj.reg), keyLocation, obj.names, obj.name);
+
+      if (obj.push) {
+        location[obj.push].push(keyLocation);
+      }
+    };
+
+    var validLine = RegExp.prototype.test.bind(/^([a-z])=(.*)/);
+
+    exports.parse = function (sdp) {
+      var session = {},
+          media = [],
+          location = session; // points at where properties go under (one of the above)
+      // parse lines we understand
+
+      sdp.split(/(\r\n|\r|\n)/).filter(validLine).forEach(function (l) {
+        var type = l[0];
+        var content = l.slice(2);
+
+        if (type === 'm') {
+          media.push({
+            rtp: [],
+            fmtp: []
+          });
+          location = media[media.length - 1]; // point at latest media line
+        }
+
+        for (var j = 0; j < (grammar_1[type] || []).length; j += 1) {
+          var obj = grammar_1[type][j];
+
+          if (obj.reg.test(content)) {
+            return parseReg(obj, location, content);
+          }
+        }
+      });
+      session.media = media; // link it up
+
+      return session;
+    };
+
+    var paramReducer = function (acc, expr) {
+      var s = expr.split(/=(.+)/, 2);
+
+      if (s.length === 2) {
+        acc[s[0]] = toIntIfInt(s[1]);
+      } else if (s.length === 1 && expr.length > 1) {
+        acc[s[0]] = undefined;
+      }
+
+      return acc;
+    };
+
+    exports.parseParams = function (str) {
+      return str.split(/\;\s?/).reduce(paramReducer, {});
+    }; // For backward compatibility - alias will be removed in 3.0.0
+
+
+    exports.parseFmtpConfig = exports.parseParams;
+
+    exports.parsePayloads = function (str) {
+      return str.split(' ').map(Number);
+    };
+
+    exports.parseRemoteCandidates = function (str) {
+      var candidates = [];
+      var parts = str.split(' ').map(toIntIfInt);
+
+      for (var i = 0; i < parts.length; i += 3) {
+        candidates.push({
+          component: parts[i],
+          ip: parts[i + 1],
+          port: parts[i + 2]
+        });
+      }
+
+      return candidates;
+    };
+
+    exports.parseImageAttributes = function (str) {
+      return str.split(' ').map(function (item) {
+        return item.substring(1, item.length - 1).split(',').reduce(paramReducer, {});
+      });
+    };
+
+    exports.parseSimulcastStreamList = function (str) {
+      return str.split(';').map(function (stream) {
+        return stream.split(',').map(function (format) {
+          var scid,
+              paused = false;
+
+          if (format[0] !== '~') {
+            scid = toIntIfInt(format);
+          } else {
+            scid = toIntIfInt(format.substring(1, format.length));
+            paused = true;
+          }
+
+          return {
+            scid: scid,
+            paused: paused
+          };
+        });
+      });
+    };
+  });
+  var parser_1 = parser.parse;
+  var parser_2 = parser.parseParams;
+  var parser_3 = parser.parseFmtpConfig;
+  var parser_4 = parser.parsePayloads;
+  var parser_5 = parser.parseRemoteCandidates;
+  var parser_6 = parser.parseImageAttributes;
+  var parser_7 = parser.parseSimulcastStreamList;
+
+  var formatRegExp = /%[sdv%]/g;
+
+  var format = function (formatStr) {
+    var i = 1;
+    var args = arguments;
+    var len = args.length;
+    return formatStr.replace(formatRegExp, function (x) {
+      if (i >= len) {
+        return x; // missing argument
+      }
+
+      var arg = args[i];
+      i += 1;
+
+      switch (x) {
+        case '%%':
+          return '%';
+
+        case '%s':
+          return String(arg);
+
+        case '%d':
+          return Number(arg);
+
+        case '%v':
+          return '';
+      }
+    }); // NB: we discard excess arguments - they are typically undefined from makeLine
+  };
+
+  var makeLine = function (type, obj, location) {
+    var str = obj.format instanceof Function ? obj.format(obj.push ? location : location[obj.name]) : obj.format;
+    var args = [type + '=' + str];
+
+    if (obj.names) {
+      for (var i = 0; i < obj.names.length; i += 1) {
+        var n = obj.names[i];
+
+        if (obj.name) {
+          args.push(location[obj.name][n]);
+        } else {
+          // for mLine and push attributes
+          args.push(location[obj.names[i]]);
+        }
+      }
+    } else {
+      args.push(location[obj.name]);
+    }
+
+    return format.apply(null, args);
+  }; // RFC specified order
+  // TODO: extend this with all the rest
+
+
+  var defaultOuterOrder = ['v', 'o', 's', 'i', 'u', 'e', 'p', 'c', 'b', 't', 'r', 'z', 'a'];
+  var defaultInnerOrder = ['i', 'c', 'b', 'a'];
+
+  var writer = function (session, opts) {
+    opts = opts || {}; // ensure certain properties exist
+
+    if (session.version == null) {
+      session.version = 0; // 'v=0' must be there (only defined version atm)
+    }
+
+    if (session.name == null) {
+      session.name = ' '; // 's= ' must be there if no meaningful name set
+    }
+
+    session.media.forEach(function (mLine) {
+      if (mLine.payloads == null) {
+        mLine.payloads = '';
+      }
+    });
+    var outerOrder = opts.outerOrder || defaultOuterOrder;
+    var innerOrder = opts.innerOrder || defaultInnerOrder;
+    var sdp = []; // loop through outerOrder for matching properties on session
+
+    outerOrder.forEach(function (type) {
+      grammar_1[type].forEach(function (obj) {
+        if (obj.name in session && session[obj.name] != null) {
+          sdp.push(makeLine(type, obj, session));
+        } else if (obj.push in session && session[obj.push] != null) {
+          session[obj.push].forEach(function (el) {
+            sdp.push(makeLine(type, obj, el));
+          });
+        }
+      });
+    }); // then for each media line, follow the innerOrder
+
+    session.media.forEach(function (mLine) {
+      sdp.push(makeLine('m', grammar_1.m[0], mLine));
+      innerOrder.forEach(function (type) {
+        grammar_1[type].forEach(function (obj) {
+          if (obj.name in mLine && mLine[obj.name] != null) {
+            sdp.push(makeLine(type, obj, mLine));
+          } else if (obj.push in mLine && mLine[obj.push] != null) {
+            mLine[obj.push].forEach(function (el) {
+              sdp.push(makeLine(type, obj, el));
+            });
+          }
+        });
+      });
+    });
+    return sdp.join('\r\n') + '\r\n';
+  };
+
+  var write = writer;
+  var parse = parser.parse;
+  var parseFmtpConfig = parser.parseFmtpConfig;
+  var parseParams = parser.parseParams;
+  var parsePayloads = parser.parsePayloads;
+  var parseRemoteCandidates = parser.parseRemoteCandidates;
+  var parseImageAttributes = parser.parseImageAttributes;
+  var parseSimulcastStreamList = parser.parseSimulcastStreamList;
+  var lib = {
+    write: write,
+    parse: parse,
+    parseFmtpConfig: parseFmtpConfig,
+    parseParams: parseParams,
+    parsePayloads: parsePayloads,
+    parseRemoteCandidates: parseRemoteCandidates,
+    parseImageAttributes: parseImageAttributes,
+    parseSimulcastStreamList: parseSimulcastStreamList
+  };
+
+  /*
+   * sdp.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const NEW_LINE = `
+`;
+
+  /*
+   * index.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+
+  /*
+   * sdp.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const REMOTE_SERVER_NAME = "qiniu-rtc-client";
+  /**
+   * unified-plan 发布重协商时，chrome 生成的 offer 里 msid 参数没有和实际的 trackId 对应
+   * 这里重新做 msid 的对应
+   */
+  function addPlanBTracksToUnifiedPlan(offer, tracks, mids) {
+      const sdpObj = lib.parse(offer);
+      for (let i = 0; i < tracks.length; i += 1) {
+          const track = tracks[i];
+          const mid = mids[i];
+          const mSection = sdpObj.media.find(m => m.mid.toString() === mid);
+          if (!mSection)
+              continue;
+          const FIDline = (mSection.ssrcGroups || []).find(line => line.semantics === "FID");
+          const _msid = mSection.msid ? mSection.msid.split(" ")[0] : undefined;
+          const ssrcMsidLine = (mSection.ssrcs || []).find(line => line.attribute === "msid");
+          const cname = (mSection.ssrcs || []).find(line => line.attribute === "cname");
+          const ssrcLabelLine = (mSection.ssrcs || []).find(line => line.attribute === "label");
+          mSection.ssrcs = [];
+          mSection.ssrcGroups = [];
+          if (_msid) {
+              mSection.msid = `${_msid} ${track.id}`;
+          }
+          if (ssrcMsidLine) {
+              const ssrc = ssrcMsidLine.id;
+              const msid = ssrcMsidLine.value.split(" ")[0];
+              // 重新绑定 msid
+              mSection.ssrcs.push({ id: ssrc, attribute: "msid", value: `${msid} ${track.id}` });
+          }
+          if (cname) {
+              mSection.ssrcs.push({ id: cname.id, attribute: "cname", value: cname.value });
+          }
+          if (ssrcLabelLine) {
+              // 重新绑定 label
+              mSection.ssrcs.push({ id: ssrcLabelLine.id, attribute: "label", value: track.id });
+          }
+          if (FIDline) {
+              const rtxSSrc = FIDline.ssrcs.split(/\s+/)[1];
+              const ssrc = FIDline.ssrcs.split(/\s+/)[0];
+              mSection.ssrcGroups.push({ semantics: "FID", ssrcs: `${ssrc} ${rtxSSrc}` });
+              if (cname) {
+                  mSection.ssrcs.push({ id: rtxSSrc, attribute: "cname", value: cname.value });
+              }
+              if (ssrcMsidLine) {
+                  const msid = ssrcMsidLine.value.split(" ")[0];
+                  mSection.ssrcs.push({ id: rtxSSrc, attribute: "msid", value: `${msid} ${track.id}` });
+              }
+              mSection.ssrcs.push({ id: rtxSSrc, attribute: "label", value: track.id });
+          }
+      }
+      return lib.write(sdpObj);
+  }
+  class RemoteSdp {
+      constructor(direction, rtpcap) {
+          this.lastSubMids = [];
+          this.sessionVersion = 0;
+          this.direction = direction;
+          this.extendedRtpCapabilities = rtpcap;
+      }
+      get transportRemoteParameters() {
+          return this._transportRemoteParameters;
+      }
+      async setTransportRemoteParameters(remoteParameters) {
+          for (const candidate of remoteParameters.iceCandidates) {
+              candidate.ip = await resolveIceHost(candidate.ip);
+          }
+          this._transportRemoteParameters = remoteParameters;
+      }
+      createRemoteAnswer(offer) {
+          if (!this.transportRemoteParameters)
+              throw UNEXPECTED_ERROR("no transportRemoteParameters!");
+          if (browserReport.unifiedPlan) {
+              return createUnifiedPlanAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
+          }
+          else {
+              return createPlanBAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
+          }
+      }
+      createRemoteOffer(consumerInfos) {
+          if (!this.transportRemoteParameters)
+              throw UNEXPECTED_ERROR("no transportRemoteParameters!");
+          if (browserReport.unifiedPlan) {
+              const sortedConsumerInfos = sortConsumerInfos(consumerInfos, this.lastSubMids);
+              this.lastSubMids = sortedConsumerInfos.map(c => c.mid);
+              this.sessionVersion += 1;
+              return createUnifiedPlanOfferSdp(sortedConsumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters, this.sessionVersion);
+          }
+          else {
+              const kind = new Set();
+              consumerInfos.forEach(c => kind.add(c.kind));
+              //  如果没有传入 consumerInfos 代表是创建 sub pc
+              if (consumerInfos.length === 0) {
+                  kind.add("audio");
+                  kind.add("video");
+              }
+              return createPlanBOfferSdp(Array.from(kind), consumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters);
+          }
+      }
+      async updateICEData(iceParameters, iceCandidates) {
+          if (!this.transportRemoteParameters)
+              return;
+          for (const candidate of iceCandidates) {
+              candidate.ip = await resolveIceHost(candidate.ip);
+          }
+          this.transportRemoteParameters.iceCandidates = iceCandidates;
+          this.transportRemoteParameters.iceParameters = iceParameters;
+      }
+  }
+  async function getClientCapabilitiesSdp() {
+      const pc = createPC();
+      const offerOptions = { offerToReceiveAudio: true, offerToReceiveVideo: true };
+      const offer = await pc.createOffer(offerOptions);
+      if (browserReport.needH264FmtpLine) {
+          offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
+      }
+      const capsdp = {
+          capsdp: offer.sdp,
+          agent: navigator.userAgent,
+      };
+      pc.close();
+      return capsdp;
+  }
+  function createPlanBAnswerSdp(rtpcaps, data, offer) {
+      const sdpObj = lib.parse(offer);
+      sdpObj.version = 0;
+      sdpObj.origin = {
+          address: "0.0.0.0",
+          ipVer: 4,
+          netType: "IN",
+          sessionId: "5975129998295344376",
+          sessionVersion: 2,
+          username: REMOTE_SERVER_NAME,
+      };
+      sdpObj.name = "-";
+      sdpObj.timing = { start: 0, stop: 0 };
+      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
+      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
+      const newMedia = [];
+      for (const _mSection of sdpObj.media) {
+          const kind = _mSection.type;
+          const codec = rtpcaps.codecs.find(c => c.kind === kind);
+          const headerExtensions = (rtpcaps.headerExtensions || []).filter(h => h.kind === kind);
+          if (!codec)
+              throw UNEXPECTED_ERROR("can not find codec" + kind);
+          const mSection = {
+              type: kind,
+              mid: kind,
+              port: 7,
+              protocol: "RTP/SAVPF",
+              connection: { ip: "127.0.0.1", version: 4 },
+              iceUfrag: data.iceParameters.usernameFragment,
+              icePwd: data.iceParameters.password,
+              candidates: data.iceCandidates.map(iceCandidate => ({
+                  component: 1,
+                  foundation: iceCandidate.foundation,
+                  ip: iceCandidate.ip,
+                  port: iceCandidate.port,
+                  priority: iceCandidate.priority,
+                  transport: iceCandidate.protocol,
+                  type: iceCandidate.type,
+              })),
+              endOfCandidates: "end-of-candidates",
+              iceOptions: "renomination",
+              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+              direction: "recvonly",
+              rtp: [{
+                      payload: codec.sendPayloadType,
+                      codec: codec.name,
+                      rate: codec.clockRate,
+                      encoding: codec.channels > 1 ? codec.channels : undefined,
+                  }],
+              rtcpFb: [],
+              fmtp: [{
+                      payload: codec.sendPayloadType,
+                      config: Object.keys(codec.parameters).map(k => `${k}=${codec.parameters[k]};`).join(""),
+                  }],
+              payloads: codec.sendPayloadType,
+              rtcpMux: "rtcp-mux",
+              rtcpRsize: "rtcp-rsize",
+              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.sendId })),
+          };
+          if (codec.rtcpFeedback && codec.rtcpFeedback.length > 0) {
+              codec.rtcpFeedback.forEach(rf => {
+                  mSection.rtcpFb.push({
+                      payload: codec.sendPayloadType,
+                      type: rf.type,
+                      subtype: rf.parameter,
+                  });
+              });
+          }
+          if (codec.sendRtxPayloadType) {
+              mSection.rtp.push({
+                  payload: codec.sendRtxPayloadType,
+                  codec: "rtx",
+                  rate: codec.clockRate,
+                  encoding: codec.channels > 1 ? codec.channels : undefined,
+              });
+              mSection.fmtp.push({
+                  payload: codec.sendRtxPayloadType,
+                  config: `apt=${codec.sendPayloadType};`,
+              });
+              mSection.payloads = `${codec.sendPayloadType} ${codec.sendRtxPayloadType}`;
+          }
+          newMedia.push(mSection);
+      }
+      sdpObj.media = newMedia;
+      return lib.write(sdpObj);
+  }
+  /**
+   * unified-plan 对 mid 顺序敏感，必须保证每次重协商顺序一致
+   */
+  function sortConsumerInfos(infos, lastSubMids) {
+      let newInfos = [];
+      for (const mid of lastSubMids) {
+          const info = lodash_remove(infos, i => i.mid === mid)[0];
+          if (!info)
+              continue;
+          newInfos.push(info);
+      }
+      newInfos = newInfos.concat(infos);
+      lastSubMids = newInfos.map(i => i.mid);
+      return newInfos;
+  }
+  function createUnifiedPlanOfferSdp(consumerInfos, rtpcaps, data, sessionVersion) {
+      log.debug("consumerInfos", consumerInfos);
+      const sdpObj = {};
+      const mids = consumerInfos.map(i => i.mid);
+      sdpObj.version = 0;
+      sdpObj.origin = {
+          address: "0.0.0.0",
+          ipVer: 4,
+          netType: "IN",
+          sessionId: "5975129998295344377",
+          sessionVersion,
+          username: REMOTE_SERVER_NAME,
+      };
+      sdpObj.name = "-";
+      sdpObj.timing = { start: 0, stop: 0 };
+      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
+      if (mids.length > 0) {
+          sdpObj.groups = [{ type: "BUNDLE", mids: mids.join(" ") }];
+      }
+      sdpObj.media = [];
+      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
+      for (const info of consumerInfos) {
+          const codecs = info.kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
+          const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === info.kind);
+          const mediaObj = {
+              type: info.kind,
+              port: 7,
+              protocol: "RTP/SAVPF",
+              connection: { ip: "127.0.0.1", version: 4 },
+              mid: info.mid,
+              msid: `${info.streamId} ${info.trackId}`,
+              iceUfrag: data.iceParameters.usernameFragment,
+              icePwd: data.iceParameters.password,
+              candidates: data.iceCandidates.map(iceCandidate => ({
+                  component: 1,
+                  foundation: iceCandidate.foundation,
+                  ip: iceCandidate.ip,
+                  port: iceCandidate.port,
+                  priority: iceCandidate.priority,
+                  transport: iceCandidate.protocol,
+                  type: iceCandidate.type,
+              })),
+              endOfCandidates: "end-of-candidates",
+              iceOptions: "renomination",
+              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+              direction: info.closed ? "inactive" : "sendonly",
+              rtp: [{
+                      payload: codecs.recvPayloadType,
+                      codec: codecs.name,
+                      rate: codecs.clockRate,
+                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
+                  }],
+              rtcpFb: [],
+              fmtp: [{
+                      payload: codecs.recvPayloadType,
+                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
+                  }],
+              payloads: codecs.recvPayloadType,
+              rtcpMux: "rtcp-mux",
+              rtcpRsize: "rtcp-rsize",
+              ext: !info.closed ? headerExtensions.map(ext => ({ uri: ext.uri, value: ext.recvId })) : [],
+              ssrcs: !info.closed && info.ssrc ? [{
+                      id: info.ssrc,
+                      attribute: "cname",
+                      value: info.cname,
+                  }] : [],
+              ssrcGroups: [],
+          };
+          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+              codecs.rtcpFeedback.forEach(rf => {
+                  mediaObj.rtcpFb.push({
+                      payload: codecs.recvPayloadType,
+                      type: rf.type,
+                      subtype: rf.parameter,
+                  });
+              });
+          }
+          if (codecs.recvRtxPayloadType) {
+              mediaObj.rtp.push({
+                  payload: codecs.recvRtxPayloadType,
+                  codec: "rtx",
+                  rate: codecs.clockRate,
+                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
+              });
+              mediaObj.fmtp.push({
+                  payload: codecs.recvRtxPayloadType,
+                  config: `apt=${codecs.recvPayloadType};`,
+              });
+              mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
+          }
+          if (info.rtxSsrc && !info.closed) {
+              mediaObj.ssrcs.push({
+                  id: info.rtxSsrc,
+                  attribute: "cname",
+                  value: info.cname,
+              });
+              mediaObj.ssrcGroups.push({
+                  semantics: "FID",
+                  ssrcs: `${info.ssrc} ${info.rtxSsrc}`,
+              });
+          }
+          sdpObj.media.push(mediaObj);
+      }
+      return lib.write(sdpObj);
+  }
+  function createUnifiedPlanAnswerSdp(rtpcaps, data, offer) {
+      const localSdpObj = lib.parse(offer);
+      const bundleMids = (localSdpObj.media || [])
+          .filter(m => m.hasOwnProperty("mid"))
+          .map(m => String(m.mid));
+      const sdpObj = {};
+      sdpObj.version = 0;
+      sdpObj.origin = {
+          address: "0.0.0.0",
+          ipVer: 4,
+          netType: "IN",
+          sessionId: "5975129998295344376",
+          sessionVersion: 2,
+          username: REMOTE_SERVER_NAME,
+      };
+      sdpObj.name = "-";
+      sdpObj.timing = { start: 0, stop: 0 };
+      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
+      if (bundleMids.length > 0) {
+          sdpObj.groups = [{ type: "BUNDLE", mids: bundleMids.join(" ") }];
+      }
+      sdpObj.media = [];
+      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
+      for (const localMediaObj of localSdpObj.media) {
+          const closed = localMediaObj.direction === "inactive";
+          const kind = localMediaObj.type;
+          const codecs = kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
+          const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === kind);
+          const remoteMediaObj = {
+              type: localMediaObj.type,
+              port: 7,
+              protocol: "RTP/SAVPF",
+              connection: { ip: "127.0.0.1", version: 4 },
+              mid: localMediaObj.mid,
+              iceUfrag: data.iceParameters.usernameFragment,
+              icePwd: data.iceParameters.password,
+              candidates: data.iceCandidates.map(iceCandidate => ({
+                  component: 1,
+                  foundation: iceCandidate.foundation,
+                  ip: iceCandidate.ip,
+                  port: iceCandidate.port,
+                  priority: iceCandidate.priority,
+                  transport: iceCandidate.protocol,
+                  type: iceCandidate.type,
+              })),
+              endOfCandidates: "end-of-candidates",
+              iceOptions: "renomination",
+              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+              direction: localMediaObj.direction === "sendonly" || localMediaObj.direction === "sendrecv" ? "recvonly" : "inactive",
+              rtp: [{
+                      payload: codecs.sendPayloadType,
+                      codec: codecs.name,
+                      rate: codecs.clockRate,
+                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
+                  }],
+              rtcpFb: [],
+              fmtp: [{
+                      payload: codecs.sendPayloadType,
+                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
+                  }],
+              payloads: codecs.sendPayloadType,
+              rtcpMux: "rtcp-mux",
+              rtcpRsize: "rtcp-rsize",
+              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.sendId })),
+          };
+          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+              codecs.rtcpFeedback.forEach(rf => {
+                  remoteMediaObj.rtcpFb.push({
+                      payload: codecs.sendPayloadType,
+                      type: rf.type,
+                      subtype: rf.parameter,
+                  });
+              });
+          }
+          if (codecs.sendRtxPayloadType) {
+              remoteMediaObj.rtp.push({
+                  payload: codecs.sendRtxPayloadType,
+                  codec: "rtx",
+                  rate: codecs.clockRate,
+                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
+              });
+              remoteMediaObj.fmtp.push({
+                  payload: codecs.sendRtxPayloadType,
+                  config: `apt=${codecs.sendPayloadType};`,
+              });
+              remoteMediaObj.payloads = `${codecs.sendPayloadType} ${codecs.sendRtxPayloadType}`;
+          }
+          sdpObj.media.push(remoteMediaObj);
+      }
+      return lib.write(sdpObj);
+  }
+  function createPlanBOfferSdp(kinds, consumerInfos, rtpcaps, data) {
+      // 保证 audio 在 video 前
+      kinds = ["audio", "video"];
+      const sdpObj = {};
+      sdpObj.version = 0;
+      sdpObj.origin = {
+          address: "0.0.0.0",
+          ipVer: 4,
+          netType: "IN",
+          sessionId: "5975129998295344377",
+          sessionVersion: 2,
+          username: REMOTE_SERVER_NAME,
+      };
+      sdpObj.name = "-";
+      sdpObj.timing = { start: 0, stop: 0 };
+      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
+      sdpObj.groups = [{ type: "BUNDLE", mids: kinds.join(" ") }];
+      sdpObj.media = [];
+      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
+      for (const kind of kinds) {
+          const kindConsumerInfos = consumerInfos.filter(i => i.kind === kind);
+          const codecs = rtpcaps.codecs.find(c => c.kind === kind);
+          const headerExtensions = (rtpcaps.headerExtensions || []).filter(e => e.kind === kind);
+          if (!codecs)
+              throw UNEXPECTED_ERROR("no codec" + kind);
+          const mediaObj = {
+              type: kind,
+              port: 7,
+              protocol: "RTP/SAVPF",
+              connection: { ip: "127.0.0.1", version: 4 },
+              mid: kind,
+              iceUfrag: data.iceParameters.usernameFragment,
+              icePwd: data.iceParameters.password,
+              candidates: data.iceCandidates.map(iceCandidate => ({
+                  component: 1,
+                  foundation: iceCandidate.foundation,
+                  ip: iceCandidate.ip,
+                  port: iceCandidate.port,
+                  priority: iceCandidate.priority,
+                  transport: iceCandidate.protocol,
+                  type: iceCandidate.type,
+              })),
+              endOfCandidates: "end-of-candidates",
+              iceOptions: "renomination",
+              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+              direction: "sendonly",
+              rtp: [{
+                      payload: codecs.recvPayloadType,
+                      codec: codecs.name,
+                      rate: codecs.clockRate,
+                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
+                  }],
+              rtcpFb: [],
+              fmtp: [{
+                      payload: codecs.recvPayloadType,
+                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
+                  }],
+              payloads: codecs.recvPayloadType,
+              rtcpMux: "rtcp-mux",
+              rtcpRsize: "rtcp-rsize",
+              ssrcs: [],
+              ssrcGroups: [],
+              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.recvId })),
+          };
+          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+              codecs.rtcpFeedback.forEach(rf => {
+                  mediaObj.rtcpFb.push({
+                      payload: codecs.recvPayloadType,
+                      type: rf.type,
+                      subtype: rf.parameter,
+                  });
+              });
+          }
+          if (codecs.recvRtxPayloadType) {
+              mediaObj.rtp.push({
+                  payload: codecs.recvRtxPayloadType,
+                  codec: "rtx",
+                  rate: codecs.clockRate,
+                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
+              });
+              mediaObj.fmtp.push({
+                  payload: codecs.recvRtxPayloadType,
+                  config: `apt=${codecs.recvPayloadType};`,
+              });
+              mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
+          }
+          for (const info of kindConsumerInfos) {
+              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "msid", value: `${info.streamId} ${info.trackId}` });
+              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "mslabel", value: `${info.streamId}` });
+              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "label", value: `${info.trackId}` });
+              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "cname", value: `${info.cname}` });
+              if (info.rtxSsrc) {
+                  mediaObj.ssrcGroups.push({ semantics: "FID", ssrcs: `${info.ssrc} ${info.rtxSsrc}` });
+                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "msid", value: `${info.streamId} ${info.trackId}` });
+                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "mslabel", value: `${info.streamId}` });
+                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "label", value: `${info.trackId}` });
+                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "cname", value: `${info.cname}` });
+              }
+          }
+          sdpObj.media.push(mediaObj);
+      }
+      return lib.write(sdpObj);
+  }
+
+  /*
+   * index.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+
+  /**
+   * SDK版本号
+   */
+  const version = "2.2.0";
+
+  /*
+   * auth.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const RTC_HOST = "https://rtc.qiniuapi.com";
+  async function getAccessToken(roomAccess, roomToken) {
+      const { appId, roomName, userId } = roomAccess;
+      const url = `${RTC_HOST}/v3/apps/${appId}/rooms/${roomName}/auth?user=${userId}&token=${roomToken}`;
+      while (true) {
+          try {
+              const res = await request(url);
+              return res.accessToken;
+          }
+          catch (e) {
+              if (e.retry === false) {
+                  throw AUTH_ENTER_ROOM_ERROR(e.message);
+              }
+              await timeout(1000);
+              log.warning("can not get accessToken, retry.", AUTH_ENTER_ROOM_ERROR(e));
+          }
+      }
+  }
+
+  /*
+   * ws.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const { JOIN_ROOM_ERROR: JOIN_ROOM_ERROR$1 } = error;
+  var SignalingState;
+  (function (SignalingState) {
+      SignalingState[SignalingState["CONNECTING"] = 0] = "CONNECTING";
+      SignalingState[SignalingState["OPEN"] = 1] = "OPEN";
+      SignalingState[SignalingState["CLOSING"] = 2] = "CLOSING";
+      SignalingState[SignalingState["CLOSED"] = 3] = "CLOSED";
+  })(SignalingState || (SignalingState = {}));
+  class SignalingWS extends EnhancedEventEmitter {
+      constructor(url, token, capsdp, playerdata) {
+          super();
+          this.initWs = (isUserAction = false) => new Promise((resolve, reject) => {
+              if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                  this.ws.close();
+                  this.ws.onclose = null;
+              }
+              try {
+                  this.ws = new WebSocket(this.url);
+                  this._state = SignalingState.CONNECTING;
+              }
+              catch (e) {
+                  throw UNEXPECTED_ERROR(`init signaling websocket faild!\nError: ${e}`);
+              }
+              this.ws.onerror = this.onWsError;
+              this.ws.onclose = this.onWsClose.bind(this, resolve, reject);
+              this.ws.onopen = () => {
+                  this.emit("ws:onopen");
+                  log.log("signaling: websocket open", this.url);
+                  this.ws.onmessage = this.onWsMsg;
+                  const authData = {
+                      token: this.accessToken,
+                      reconntoken: this.reconnectToken,
+                      agent: `${browser.name}${browser.version}`,
+                      sdkversion: version,
+                      capsdp: this.capsdp,
+                      msgsn: this.customMsgNumber,
+                      supportdomain: true,
+                  };
+                  if (this.playerdata) {
+                      authData.playerdata = this.playerdata;
+                  }
+                  this.request("auth", authData)
+                      .then((msgData) => {
+                      switch (msgData.code) {
+                          case 0: {
+                              this.ws.onclose = this.onWsClose.bind(this, null, null);
+                              this.reconnectToken = msgData.reconntoken;
+                              log.log("signaling: websocket authed");
+                              this.emit("@signalingauth", msgData);
+                              this._state = SignalingState.OPEN;
+                              resolve(msgData);
+                              break;
+                          }
+                          case 10001:
+                          // 用户 token 错误
+                          case 10002:
+                          // 用户 token 过期
+                          case 10011:
+                          // 房间人数已满
+                          case 10022:
+                          // 已经在其他设备登陆
+                          case 10004: {
+                              // reconnect token error (重连超时)
+                              this.emit("@error", msgData);
+                              reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
+                              break;
+                          }
+                          case 10012: {
+                              // room not exist, 需要重新签 accessToken
+                              this.safeEmitAsPromise("@needupdateaccesstoken").then(() => {
+                                  this.reconnect().then(resolve).catch(reject);
+                              }).catch(reject);
+                              return;
+                          }
+                          case 10052: {
+                              log.debug("10052 auth, retry", isUserAction);
+                              // 媒体服务器宕机或者重启
+                              this.reconnectToken = undefined;
+                              if (isUserAction) {
+                                  reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
+                                  break;
+                              }
+                              else {
+                                  this.emit("@error", msgData);
+                                  return;
+                              }
+                          }
+                          case 10054: {
+                              // 客户端与服务端编码能力不匹配
+                              reject(UNSUPPORT_FMT(msgData.error));
+                              break;
+                          }
+                          default:
+                              reject(UNEXPECTED_ERROR(msgData.error));
+                              break;
+                      }
+                      if (msgData.code !== 0) {
+                          this.reconnectToken = undefined;
+                          this._state = SignalingState.CLOSED;
+                          this.release();
+                      }
+                  });
+              };
+          });
+          this.onWsMsg = (e) => {
+              // data 格式为 'xxx={ "a": 1, "b": 2 }'
+              const data = e.data;
+              this.emit("ws:onmessage", data);
+              const index = data.indexOf("=");
+              if (index > 0) {
+                  const msgType = data.substring(0, index);
+                  const payload = JSON.parse(data.substring(index + 1));
+                  this.receiveWsMsg(msgType, payload);
+              }
+              else {
+                  throw UNEXPECTED_ERROR(`signaling model can not parse message: ${data}`);
+              }
+          };
+          this.onWsError = (e) => {
+              log.warning("signaling: websocket error", e);
+              this.emit("@ws:error", e);
+          };
+          this.sendWsMsg = (msgType, msgData) => {
+              if (this.ws.readyState !== WebSocket.OPEN) {
+                  throw WS_ABORT();
+              }
+              const jsonString = JSON.stringify(msgData);
+              try {
+                  this.ws.send(`${msgType}=${jsonString}`);
+                  this.emit("send", msgType, msgData);
+              }
+              catch (e) {
+                  log.warning("signaling: websocket send error", e);
+                  this.reconnect().catch(e => {
+                      log.warning("signaling: reconnect error", e);
+                  });
+                  throw WS_ABORT();
+              }
+          };
+          this.handlePing = () => {
+              this.sendWsMsg("pong", {});
+              if (this.reconnectTimeoutID) {
+                  clearTimeout(this.reconnectTimeoutID);
+              }
+              this.reconnectTimeoutID = setTimeout(() => {
+                  log.debug("signaling: websocket heartbeat timeout");
+                  this.reconnect().catch(e => {
+                      log.debug(e);
+                  });
+              }, 9000);
+          };
+          this.receiveWsMsg = (msgType, msgData) => {
+              this.emit("receive", msgType, msgData);
+              switch (msgType) {
+                  case "ping":
+                      this.handlePing();
+                      break;
+                  case "auth-res":
+                      this.emit("@auth-res", msgData);
+                  case "pubpc-res":
+                  case "subpc-res":
+                  case "pub-tracks":
+                  case "webrtc-candidate":
+                  case "on-player-in":
+                  case "on-player-out":
+                  case "disconnect":
+                  case "mute-tracks":
+                  case "on-add-tracks":
+                  case "on-remove-tracks":
+                      this.emit(msgType, msgData);
+                      break;
+                  case "sub-res":
+                  case "unsub-res":
+                      this.emit(msgType, msgData);
+                      this.emit(`${msgType}-${msgData.streamid}`, msgData);
+                      break;
+                  case "control-res":
+                      this.emit(msgType, msgData);
+                      this.emit(`${msgType}-${msgData.command}-${msgData.playerid}`, msgData);
+                      break;
+                  case "on-pubpc-connected":
+                  case "on-pubpc-disconnected":
+                      this.emit("on-pubpc-state", { pcid: msgData.pcid, connected: msgType === "on-pubpc-connected" });
+                      this.emit(`${msgType}-${msgData.pcid}`, msgData);
+                      break;
+                  case "on-subpc-disconnected":
+                  case "on-subpc-connected":
+                      this.emit("on-subpc-state", { pcid: msgData.pcid, connected: msgType === "on-subpc-connected" });
+                      this.emit(msgType, msgData);
+                      break;
+                  case "pub-tracks-res":
+                      this.emit(msgType, msgData);
+                      break;
+                  case "on-messages":
+                      // 按照 msgsn 从小到大排序
+                      msgData.messages = msgData.messages.sort((a, b) => a.msgsn - b.msgsn);
+                      this.customMsgNumber = msgData.messages[msgData.messages.length - 1].msgsn;
+                      this.emit(msgType, msgData);
+                      break;
+                  case "unpub-tracks-res":
+                  case "sub-tracks-res":
+                  case "unsub-tracks-res":
+                  case "on-pubpc-restart-notify":
+                  case "on-subpc-restart-notify":
+                  case "pubpc-restart-res":
+                  case "subpc-restart-res":
+                      this.emit(msgType, msgData);
+                      break;
+                  default:
+                      break;
+              }
+          };
+          this.url = url;
+          this.accessToken = token;
+          this.capsdp = capsdp;
+          this.playerdata = playerdata;
+      }
+      set _state(state) {
+          this.emit("@ws-state-change", this.__state, state);
+          this.__state = state;
+      }
+      get state() {
+          return this.__state;
+      }
+      onWsClose(resolve, reject, e) {
+          this._state = SignalingState.CLOSED;
+          log.warning("signaling: websocket onclose", e);
+          let reconnectPromise = this.reconnectPromise;
+          // See http://tools.ietf.org/html/rfc6455#section-7.4.1
+          switch (e.code) {
+              case 1000: {
+                  // Normal closure, meaning that the purpose for which the connection was established has been fulfilled.
+                  this.emit("@closed");
+                  break;
+              }
+              case 1001: {
+                  // An endpoint is "going away", such as a server going down or a browser having navigated away from a page.
+                  reconnectPromise = this.reconnect();
+                  break;
+              }
+              case 1005: {
+                  // No status code was actually present.
+                  reconnectPromise = this.reconnect();
+                  break;
+              }
+              case 1006: {
+                  // The connection was closed abnormally, e.g., without sending or receiving a Close control frame
+                  reconnectPromise = this.reconnect();
+                  break;
+              }
+              case 1007: {
+                  // An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).
+                  break;
+              }
+              case 1008: {
+                  // An endpoint is terminating the connection because it has received a message that "violates its policy". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.
+                  break;
+              }
+              case 1009: {
+                  // An endpoint is terminating the connection because it has received a message that is too big for it to process.
+                  break;
+              }
+              case 1010: {
+                  // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
+                  // An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake.
+                  // Specifically, the extensions that are needed are: " + e.reason
+                  break;
+              }
+              case 1011: {
+                  // A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.
+                  reconnectPromise = this.reconnect();
+                  break;
+              }
+              // https://www.ietf.org/mail-archive/web/hybi/current/msg09670.html
+              case 1012: {
+                  // the service is restarted. a client may reconnect,
+                  // and if it choses to do, should reconnect using a randomized delay of 5 - 30s.
+                  reconnectPromise = this.reconnect(5000);
+                  break;
+              }
+              case 1013: {
+                  // The server is terminating the connection due to a temporary condition,
+                  // e.g. it is overloaded and is casting off some of its clients.
+                  reconnectPromise = this.reconnect();
+                  break;
+              }
+              case 1014: {
+                  // The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+                  // This is similar to 502 HTTP Status Code.
+                  reconnectPromise = this.reconnect(5000);
+                  break;
+              }
+              case 1015: {
+                  // The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).
+                  break;
+              }
+              default: {
+                  // Others
+                  break;
+              }
+          }
+          if (resolve && reject) {
+              if (reconnectPromise) {
+                  resolve(reconnectPromise);
+              }
+              else {
+                  reject(e);
+              }
+          }
+      }
+      sendDisconnect() {
+          if (this.state !== SignalingState.OPEN) {
+              return;
+          }
+          try {
+              this.sendWsMsg("disconnect", {});
+          }
+          catch (error) {
+              // abort error
+          }
+      }
+      reconnect(time = 1000) {
+          // 每次连接已经确认断开后，本地 heartbeat 都需要删除
+          if (this.reconnectTimeoutID) {
+              clearTimeout(this.reconnectTimeoutID);
+          }
+          if (this.reconnectPromise && this._state === SignalingState.CONNECTING) {
+              return this.reconnectPromise;
+          }
+          this._state = SignalingState.CONNECTING;
+          log.debug("signaling: websocket reconnecting");
+          this.reconnectPromise = timeout(time)
+              .then(() => {
+              return this.initWs();
+          })
+              .then(res => {
+              this.reconnectPromise = undefined;
+              return res;
+          })
+              .catch(e => {
+              this._state = SignalingState.CLOSED;
+              this.emit("error", e);
+              return Promise.reject(e);
+          });
+          return this.reconnectPromise;
+      }
+      /**
+       * request
+       */
+      request(method, data) {
+          const rpcid = randomStringGen(8);
+          data.rpcid = rpcid;
+          log.log("ws request", rpcid, method, data);
+          this.sendWsMsg(method, data);
+          return new Promise(resolve => {
+              const onres = (data) => {
+                  if (data.rpcid === rpcid) {
+                      log.log("ws response", rpcid, method, data);
+                      this.off(`${method}-res`, onres);
+                      resolve(data);
+                  }
+              };
+              this.on(`${method}-res`, onres);
+          });
+      }
+      release() {
+          if (this.reconnectTimeoutID) {
+              clearTimeout(this.reconnectTimeoutID);
+          }
+          this.removeEvent();
+          this.ws.onclose = null;
+          this.ws.onerror = null;
+          this.ws.close();
+      }
+  }
+
+  /*
+   * merger.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  class MergerSessionController {
+  }
+  class Merger {
+      constructor(width, height, controller, jobId) {
+          this.videoTrackInfo = [];
+          this.audioTrackInfo = [];
+          this.layoutLevel = 0;
+          this.width = width;
+          this.height = height;
+          this.jobId = jobId;
+          this.controller = controller;
+          this.controller.getCurrentTracks().forEach(track => {
+              if (track.kind === "audio") {
+                  this.audioTrackInfo.push(track);
+              }
+              else {
+                  this.videoTrackInfo.push(track);
+              }
+          });
+          this.controller.addMergeTrack(this.audioTrackInfo.map(t => ({ trackId: t.trackId })), this.jobId);
+          this.initLayout();
+          this.controller.onAddTracks = (tracks => {
+              const audioTracks = tracks.filter(t => t.kind === "audio");
+              const videoTracks = tracks.filter(t => t.kind === "video");
+              this.controller.addMergeTrack(audioTracks.map(t => ({ trackId: t.trackId })), this.jobId);
+              videoTracks.forEach(this.handleAddVideoTrack.bind(this));
+          });
+          this.controller.onRemoveTracks = (tracks => {
+              const videoTracks = tracks.filter(t => t.kind === "video");
+              videoTracks.forEach(this.handleRemoveVideoTrack.bind(this));
+          });
+          log.log("init default merger, init layout: ", this.layout);
+      }
+      initLayout() {
+          const streamCount = this.videoTrackInfo.length;
+          this.layoutLevel = 0;
+          this.layout = {
+              "level-0": {
+                  items: { "item-0": { x: 0, y: 0, isExpand: false, isExpanded: false, index: 0 } },
+                  itemWidth: this.width,
+                  itemHeight: this.height,
+                  maxItems: 1, currentItems: 0,
+                  splitWidthFlag: this.width < this.height,
+              },
+          };
+          let splitWidthFlag = this.width >= this.height;
+          if (streamCount === 0) {
+              return;
+          }
+          while (Math.pow(2, this.layoutLevel) < streamCount) {
+              this.updateLayoutLevel(splitWidthFlag);
+              splitWidthFlag = !splitWidthFlag;
+          }
+          this.setLevelLayoutStream();
+      }
+      updateLayoutLevel(splitWidthFlag) {
+          const currentLayout = this.layout[`level-${this.layoutLevel}`];
+          const currentWidth = currentLayout.itemWidth;
+          const currentHeight = currentLayout.itemHeight;
+          this.layoutLevel += 1;
+          const maxItems = Math.pow(2, this.layoutLevel);
+          const itemWidth = splitWidthFlag ? currentWidth / 2.0 : currentWidth;
+          const itemHeight = splitWidthFlag ? currentHeight : currentHeight / 2.0;
+          if (this.layoutLevel === 1) {
+              this.layout[`level-${this.layoutLevel}`] = {
+                  items: {
+                      "item-0": { x: 0, y: 0, isExpand: false, isExpanded: false, index: 0 },
+                      "item-1": {
+                          x: this.width >= this.height ? itemWidth : 0,
+                          y: this.width < this.height ? itemHeight : 0,
+                          isExpand: false, isExpanded: false, index: 1,
+                      },
+                  },
+                  maxItems, currentItems: 0, itemWidth, itemHeight, splitWidthFlag,
+              };
+          }
+          else {
+              this.layout[`level-${this.layoutLevel}`] = {
+                  items: {}, maxItems, currentItems: 0, itemWidth, itemHeight, splitWidthFlag,
+              };
+              const levelItems = this.layout[`level-${this.layoutLevel}`].items;
+              Object.keys(this.layout[`level-${this.layoutLevel - 1}`].items).forEach(itemIndex => {
+                  const item = this.layout[`level-${this.layoutLevel - 1}`].items[itemIndex];
+                  const newIndex = 2 * item.index;
+                  levelItems[`item-${newIndex}`] = {
+                      x: item.x, y: item.y, isExpand: false, isExpanded: false, index: newIndex,
+                  };
+                  if (splitWidthFlag) {
+                      levelItems[`item-${newIndex + 1}`] = {
+                          x: item.x + itemWidth, y: item.y,
+                          isExpand: false, isExpanded: false, index: newIndex + 1,
+                      };
+                  }
+                  else {
+                      levelItems[`item-${newIndex + 1}`] = {
+                          x: item.x, y: item.y + itemHeight,
+                          isExpand: false, isExpanded: false, index: newIndex + 1,
+                      };
+                  }
+              });
+          }
+          log.log(`merger: increase layout level, current level: ${this.layoutLevel}`, this.layout);
+      }
+      setLevelLayoutStream() {
+          const streamCount = this.videoTrackInfo.length;
+          const currentLevelLayout = this.layout[`level-${this.layoutLevel}`];
+          let expandCount = currentLevelLayout.maxItems - streamCount;
+          let streamIndex = 0;
+          for (let i = 0; i < currentLevelLayout.maxItems; i += 1) {
+              if (expandCount > 0) {
+                  if (i % 2 === 0) {
+                      currentLevelLayout.items[`item-${i}`].isExpand = true;
+                      currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
+                      this.sendMergeOpt(this.layoutLevel, i);
+                      streamIndex += 1;
+                  }
+                  else {
+                      currentLevelLayout.items[`item-${i}`].isExpanded = true;
+                      expandCount -= 1;
+                  }
+              }
+              else {
+                  currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
+                  this.sendMergeOpt(this.layoutLevel, i);
+                  streamIndex += 1;
+              }
+          }
+          currentLevelLayout.currentItems = streamCount;
+      }
+      sendMergeOpt(level, index) {
+          const levelLayout = this.layout[`level-${level}`];
+          const item = levelLayout.items[`item-${index}`];
+          if (!item.trackId || item.isExpanded) {
+              return;
+          }
+          let width = levelLayout.itemWidth;
+          let height = levelLayout.itemHeight;
+          if (item.isExpand) {
+              if (levelLayout.splitWidthFlag) {
+                  width = width * 2;
+              }
+              else {
+                  height = height * 2;
+              }
+          }
+          const option = {
+              x: item.x, y: item.y,
+              w: width, h: height, z: 0,
+              trackId: item.trackId,
+          };
+          this.controller.addMergeTrack([option], this.jobId);
+      }
+      handleRemoveVideoTrack(track) {
+          lodash_remove(this.videoTrackInfo, t => t.trackId === track.trackId);
+          const levelLayout = this.layout[`level-${this.layoutLevel}`];
+          if (this.layoutLevel > 0 &&
+              this.videoTrackInfo.length <= this.layout[`level-${this.layoutLevel - 1}`].maxItems) {
+              this.layoutLevel -= 1;
+              log.log(`merger: reduce layout level, current level: ${this.layoutLevel}`, this.layout);
+              this.setLevelLayoutStream();
+          }
+          else {
+              for (const itemKey in levelLayout.items) {
+                  const item = levelLayout.items[itemKey];
+                  if (item.trackId === track.trackId) {
+                      if (item.index % 2 === 0) {
+                          if (levelLayout.items[`item-${item.index + 1}`]) {
+                              item.isExpand = true;
+                              item.trackId = levelLayout.items[`item-${item.index + 1}`].trackId;
+                              levelLayout.items[`item-${item.index + 1}`].isExpanded = true;
+                              levelLayout.items[`item-${item.index + 1}`].trackId = undefined;
+                          }
+                          else {
+                              item.trackId = undefined;
+                          }
+                          this.sendMergeOpt(this.layoutLevel, item.index);
+                      }
+                      else {
+                          item.isExpanded = true;
+                          item.trackId = undefined;
+                          levelLayout.items[`item-${item.index - 1}`].isExpand = true;
+                          this.sendMergeOpt(this.layoutLevel, item.index - 1);
+                      }
+                      break;
+                  }
+              }
+          }
+      }
+      handleAddVideoTrack(track) {
+          const lastLength = this.videoTrackInfo.length;
+          this.videoTrackInfo.push(track);
+          this.videoTrackInfo = lodash_uniqby(this.videoTrackInfo, "trackId");
+          // 如果重复添加了 trackId 就忽略
+          if (this.videoTrackInfo.length === lastLength) {
+              log.log("handle add video track ignore", track);
+              return;
+          }
+          const levelLayout = this.layout[`level-${this.layoutLevel}`];
+          if (this.videoTrackInfo.length <= levelLayout.maxItems) {
+              for (const itemKey in levelLayout.items) {
+                  const item = levelLayout.items[itemKey];
+                  if (!item.trackId) {
+                      item.trackId = track.trackId;
+                      if (item.isExpanded) {
+                          item.isExpanded = false;
+                          levelLayout.items[`item-${item.index - 1}`].isExpand = false;
+                          this.sendMergeOpt(this.layoutLevel, item.index - 1);
+                      }
+                      this.sendMergeOpt(this.layoutLevel, item.index);
+                      break;
+                  }
+              }
+              levelLayout.currentItems = this.videoTrackInfo.length;
+          }
+          else { // 需要提升 level
+              this.updateLayoutLevel(!levelLayout.splitWidthFlag);
+              this.setLevelLayoutStream();
+          }
+      }
+      release() {
+          this.controller.release();
+      }
+  }
+
+  class Consumer {
+      constructor(id, kind, rtpParameters) {
+          this.id = id;
+          // this._closed = false;
+          this.kind = kind;
+          this.rtpParameters = rtpParameters;
+          // this._peer = peer;
+          // this._supported = false;
+          this.track = null;
+      }
+  }
+
+  class PCTrack {
+      constructor(transport, direction, track, trackId) {
+          this._connectStatus = exports.TrackConnectStatus.Idle;
+          this.track = track;
+          this.trackId = trackId;
+          this.transport = transport;
+          this.direction = direction;
+      }
+      get connectStatus() {
+          return this._connectStatus;
+      }
+      set connectStatus(v) {
+          if (v !== this._connectStatus) {
+              const prev = this._connectStatus;
+              this._connectStatus = v;
+              nextTick(() => {
+                  if (this.onConnectStatusChange) {
+                      this.onConnectStatusChange(prev, this._connectStatus);
+                  }
+              });
+          }
+      }
+      startConnect() {
+          this.connectStatus = exports.TrackConnectStatus.Connecting;
+          return new Promise((resolve, reject) => {
+              this.onConnectStatusChange = (_, curr) => {
+                  if (curr === exports.TrackConnectStatus.Connect) {
+                      resolve();
+                  }
+                  if (curr === exports.TrackConnectStatus.Idle) {
+                      reject();
+                  }
+              };
+          });
+      }
+      appendConsumner(rtpparms, kind) {
+          this.consumer = new Consumer(this.trackId, kind, rtpparms);
+          this.transport.appendConsumer(this.consumer);
+      }
+      setMute(muted) {
+          if (!this.track)
+              return;
+          this.track.setMute(muted);
+      }
+      addTrackId(trackid) {
+          if (!this.track)
+              return;
+          this.trackId = trackid;
+          this.track.setInfo({
+              trackId: trackid,
+          });
+      }
+      release() {
+          if (this.consumer && this.transport) {
+              // 如果释放这个 Track 时发现 pc 已经断开，就跳过
+              if (this.transport.recvHandler.isPcReady) {
+                  this.transport.removeConsumers([this.consumer]);
+              }
+              // 只有订阅的 Track 才会自动释放
+              if (this.track) {
+                  this.track.release();
+              }
+          }
+          else {
+              if (this.track) {
+                  this.track.reset();
+              }
+          }
+      }
+  }
+
+  class Handler extends EnhancedEventEmitter {
+      constructor(direction, extendedRtpCapabilities, settings) {
+          super();
+          this._isRestartingICE = false;
+          this.isPcReady = false;
+          this._direction = direction;
+          // RTCPeerConnection instance.
+          this._pc = createPC();
+          // Generic sending RTP parameters for audio and video.
+          this._extendedRtpCapabilities = extendedRtpCapabilities;
+          this._remoteSdp = new RemoteSdp(direction, extendedRtpCapabilities);
+          // Handle RTCPeerConnection connection status.
+          this._pc.addEventListener("iceconnectionstatechange", () => {
+              switch (this._pc.iceConnectionState) {
+                  case "checking":
+                      this.emit("@connectionstatechange", "connecting");
+                      break;
+                  case "connected":
+                  case "completed":
+                      this.emit("@connectionstatechange", "connected");
+                      break;
+                  case "failed":
+                      this.emit("@connectionstatechange", "failed");
+                      break;
+                  case "disconnected":
+                      this.emit("@connectionstatechange", "disconnected");
+                      break;
+                  case "closed":
+                      this.emit("@connectionstatechange", "closed");
+                      break;
+              }
+          });
+      }
+      async getStats(track, lastReport) {
+          return await getPCStats(this._pc, track, this._direction, lastReport);
+      }
+      getCurrentIceConnectionState() {
+          return this._pc.iceConnectionState;
+      }
+      close() {
+          log.log("handle", this._direction, "close");
+          this.removeEvent();
+          this._pc.close();
+          this.isPcReady = false;
+      }
+  }
+  class SendHandler extends Handler {
+      constructor(extendedRtpCapabilities, signaling, settings) {
+          super("send", extendedRtpCapabilities, settings);
+          log.log("init send handler");
+          // Got transport local and remote parameters.
+          this._transportReady = false;
+          // Local stream.
+          this._stream = new MediaStream();
+          this._signaling = signaling;
+          signaling.on("on-pubpc-state", (res) => {
+              if (this._remoteSdp.transportRemoteParameters &&
+                  res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
+                  if (!res.connected) {
+                      this.emit("@connectionstatechange", "remote-disconnected");
+                  }
+              }
+          });
+      }
+      getReady(transportRemoteParameters) {
+          return new Promise((resolve, reject) => {
+              const callback = (res) => {
+                  if (res.pcid === transportRemoteParameters.pcid) {
+                      this._signaling.off("on-pubpc-state", callback);
+                      if (res.connected) {
+                          this.isPcReady = true;
+                          resolve();
+                      }
+                      else {
+                          // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
+                          return;
+                      }
+                  }
+              };
+              this._signaling.on("on-pubpc-state", callback);
+          });
+      }
+      addProducerTracks(producerTracks) {
+          log.debug("add producer", producerTracks);
+          const tracks = producerTracks.map(v => v.mediaTrack)
+              .filter(track => !this._stream.getTrackById(track.id));
+          if (tracks.length === 0) {
+              return Promise.reject(new Error("track already added"));
+          }
+          let rtpSenders;
+          const transceivers = [];
+          let localSdp;
+          let shouldSendPubTracks = true;
+          return Promise.resolve()
+              .then(async () => {
+              tracks.forEach(this._stream.addTrack, this._stream);
+              if (browserReport.unifiedPlan && browserReport.supportTransceivers) {
+                  for (const track of tracks) {
+                      const transceiver = await addTransceiver(track, this._pc);
+                      log.debug("add transceiver", transceiver, transceiver.mid);
+                      transceivers.push(transceiver);
+                  }
+              }
+              else {
+                  rtpSenders = tracks.map((track) => this._pc.addTrack(track, this._stream));
+              }
+              return this._pc.createOffer();
+          })
+              .then((offer) => {
+              let _offer;
+              if (browserReport.unifiedPlan) {
+                  _offer = { type: "offer", sdp: addPlanBTracksToUnifiedPlan(offer.sdp, tracks, transceivers.map(t => t.mid)) };
+              }
+              else {
+                  if (browserReport.needH264FmtpLine) {
+                      offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
+                  }
+                  _offer = offer;
+              }
+              localSdp = _offer.sdp;
+              log.log("publish: set local offer", _offer);
+              return this._pc.setLocalDescription(_offer);
+          })
+              .then(() => {
+              if (!this._transportReady) {
+                  shouldSendPubTracks = false;
+                  return this._setupTransport(producerTracks);
+              }
+          })
+              .then(() => {
+              // localSdpObj = sdpTransform.parse((this._pc.localDescription as RTCSessionDescription).sdp);
+              // genPubAnswer
+              return this._remoteSdp.createRemoteAnswer(localSdp);
+          })
+              .then((remoteSdp) => {
+              const answer = { type: "answer", sdp: remoteSdp };
+              log.debug("addProducer answer", answer);
+              // logger.debug(
+              //   'addProducer() | calling pc.setRemoteDescription() [answer:%o]',
+              //   answer);
+              return this._pc.setRemoteDescription(answer);
+          })
+              .then(() => this._pcReady)
+              .then(() => {
+              if (shouldSendPubTracks) {
+                  return this.safeEmitAsPromise("@needpubtracks", producerTracks, localSdp);
+              }
+              else {
+                  return Promise.resolve(this._remoteSdp.transportRemoteParameters);
+              }
+          })
+              .catch((error) => {
+              // Panic here. Try to undo things.
+              log.log("add producer error", error);
+              try {
+                  for (const rtpSender of rtpSenders) {
+                      this._pc.removeTrack(rtpSender);
+                  }
+                  for (const transceiver of transceivers) {
+                      transceiver.direction = "inactive";
+                  }
+              }
+              catch (error2) { }
+              for (const track of tracks) {
+                  this._stream.removeTrack(track);
+              }
+              if (error instanceof QNRTCError) {
+                  throw error;
+              }
+              else {
+                  throw UNEXPECTED_ERROR(error);
+              }
+          });
+      }
+      removeProducerTracks(producerTracks) {
+          log.debug("removeProducerTracks", producerTracks);
+          const tracks = producerTracks.filter(v => !!v.track)
+              .map(v => v.track.mediaTrack)
+              .filter(track => this._stream.getTrackById(track.id));
+          let localSdp;
+          return Promise.resolve()
+              .then(() => {
+              // Get the associated RTCRtpSender.
+              const rtpSenders = this._pc.getSenders()
+                  .filter(s => s.track && tracks.includes(s.track));
+              if (rtpSenders.length === 0) {
+                  log.warning("removeProducerTracks [nothing to remove]");
+                  return Promise.reject("removeProducerTracks: nothing to remote");
+              }
+              // Remove the associated RtpSender.
+              for (const rtpSender of rtpSenders) {
+                  this._pc.removeTrack(rtpSender);
+              }
+              // Remove the track from the local stream.
+              for (const track of tracks) {
+                  this._stream.removeTrack(track);
+              }
+              return this._pc.createOffer();
+          })
+              .then((offer) => {
+              const description = new RTCSessionDescription(offer);
+              localSdp = description.sdp;
+              log.log("unpublish: set local offer", description);
+              return this._pc.setLocalDescription(description);
+          })
+              .then(() => {
+              const remoteSdp = this._remoteSdp.createRemoteAnswer(localSdp);
+              const answer = { type: "answer", sdp: remoteSdp };
+              log.log("unpublish: set remote answer", answer);
+              return this._pc.setRemoteDescription(answer);
+          })
+              .catch((error) => {
+              // NOTE: If there are no sending tracks, setLocalDescription() will fail with
+              // "Failed to create channels". If so, ignore it.
+              if (this._stream.getTracks().length === 0) {
+                  log.debug("removeProducer() | ignoring expected error due no sending tracks: %s", error.toString());
+                  return;
+              }
+              if (error instanceof QNRTCError) {
+                  throw error;
+              }
+              else {
+                  throw UNEXPECTED_ERROR(error);
+              }
+          })
+              .then(() => {
+              // no need to wait response
+              this.safeEmitAsPromise("@needunpubtracks", producerTracks);
+          });
+      }
+      restartICE(iceParameters, iceCandidates) {
+          log.log("restart send ice");
+          this._isRestartingICE = true;
+          return Promise.resolve()
+              .then(() => {
+              return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
+          })
+              .then(() => {
+              return this._pc.createOffer({ iceRestart: true });
+          })
+              .then(offer => {
+              return this._pc.setLocalDescription(offer);
+          })
+              .then(() => {
+              const remoteSdp = this._remoteSdp.createRemoteAnswer(this._pc.localDescription.sdp);
+              const answer = { type: "answer", sdp: remoteSdp };
+              return this._pc.setRemoteDescription(answer);
+          });
+      }
+      // needpubpc
+      _setupTransport(tracks) {
+          return Promise.resolve()
+              .then(() => {
+              if (!this._pc.localDescription) {
+                  return this._pc.createOffer();
+              }
+              return this._pc.localDescription;
+          })
+              .then((localDescription) => {
+              // We need transport remote parameters.
+              return this.safeEmitAsPromise("@needpubpc", localDescription.sdp, tracks);
+          })
+              .then((transportRemoteParameters) => {
+              this.pcid = transportRemoteParameters.pcid;
+              this._transportReady = true;
+              this._pcReady = this.getReady(transportRemoteParameters);
+              // Provide the remote SDP handler with transport remote parameters.
+              return this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
+          });
+      }
+  }
+  class RecvHandler extends Handler {
+      constructor(extendedRtpCapabilities, signaling, settings) {
+          super("recv", extendedRtpCapabilities, settings);
+          this._transportCreated = false;
+          this._consumerInfos = new Map();
+          this._signaling = signaling;
+          signaling.on("on-subpc-state", (res) => {
+              if (this._remoteSdp.transportRemoteParameters &&
+                  res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
+                  if (!res.connected) {
+                      this.emit("@connectionstatechange", "remote-disconnected");
+                  }
+              }
+          });
+          log.log("init recvhandler", this);
+      }
+      getReady(transportRemoteParameters) {
+          return new Promise((resolve, reject) => {
+              const callback = (res) => {
+                  if (res.pcid === transportRemoteParameters.pcid) {
+                      this._signaling.off("on-subpc-state", callback);
+                      if (res.connected) {
+                          this.isPcReady = true;
+                          resolve();
+                      }
+                      else {
+                          // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
+                          return;
+                      }
+                  }
+              };
+              this._signaling.on("on-subpc-state", callback);
+          });
+      }
+      /**
+       * 如果发生了重复订阅的情况，策略是直接返回已经保存的 track 信息
+       * 也就是无论传入的 consumer 是否重复，都返回和传入数量一致的 MediaStreamTrack
+       */
+      async addConsumerTracks(consumers) {
+          // 如果是 unified-plan 就一个一个重协商，否则在火狐下会有鬼
+          if (browserReport.unifiedPlan) {
+              const tracks = [];
+              for (const consumer of consumers) {
+                  const track = await this.addConsumerTrack(consumer);
+                  tracks.push(track);
+              }
+              return tracks;
+          }
+          log.log("add consumers", consumers);
+          const consumerInfoList = [];
+          const _consumerInfoArray = Array.from(this._consumerInfos.values());
+          for (const consumer of consumers) {
+              const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
+              if (info && !info.closed) {
+                  consumerInfoList.push(info);
+              }
+              else {
+                  const newInfo = this.genNewConsumerInfo(consumer);
+                  if (browserReport.unifiedPlan) {
+                      // 递增 mid, plan-b 模式下不会使用到这个参数
+                      const mid = _consumerInfoArray.length.toString();
+                      newInfo.mid = mid;
+                      this._consumerInfos.set(mid, newInfo);
+                  }
+                  else {
+                      this._consumerInfos.set(consumer.id, newInfo);
+                  }
+                  consumerInfoList.push(newInfo);
+              }
+          }
+          return Promise.resolve()
+              .then(() => {
+              // createremoteSdp
+              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+              const offer = { type: "offer", sdp: remoteSdp };
+              log.debug("subscribe: set remote offer", offer);
+              return this._pc.setRemoteDescription(offer);
+          })
+              .then(() => {
+              if (browserReport.unifiedPlan) {
+                  return this._pc.createAnswer();
+              }
+              return this._pc.createAnswer();
+          })
+              .then(answer => {
+              log.debug("subscribe, set local answer", answer);
+              return this._pc.setLocalDescription(answer);
+          })
+              // .then(() => {
+              //   if (!this._transportUpdated) { return this._updateTransport(); }
+              // })
+              .then(() => this._pcReady)
+              .then(() => {
+              for (let i = 0; i < consumerInfoList.length; i += 1) {
+                  const consumerInfo = consumerInfoList[i];
+                  const consumer = consumers[i];
+                  if (consumer.track)
+                      continue;
+                  if (browserReport.unifiedPlan) {
+                      const transceiver = this._pc.getTransceivers().find(transceiver => {
+                          if (!transceiver.receiver.track) {
+                              return false;
+                          }
+                          if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
+                              return true;
+                          }
+                          return false;
+                      });
+                      if (transceiver) {
+                          consumer.track = transceiver.receiver.track;
+                      }
+                  }
+                  else {
+                      // chrome 55 以下不支持 getReceivers，使用 getRemoteStreams
+                      if (browserReport.getReceivers) {
+                          const receiver = this._pc.getReceivers()
+                              .find(rtpReceiver => {
+                              const { track } = rtpReceiver;
+                              if (!track) {
+                                  return false;
+                              }
+                              if (consumerInfo.trackId === track.id) {
+                                  return true;
+                              }
+                              return false;
+                          });
+                          if (receiver) {
+                              consumer.track = receiver.track;
+                          }
+                      }
+                      else {
+                          const stream = this._pc.getRemoteStreams().find((s) => s.id === consumerInfo.streamId);
+                          if (stream) {
+                              consumer.track = stream.getTrackById(consumerInfo.trackId);
+                          }
+                      }
+                  }
+                  if (!consumer.track) {
+                      throw UNEXPECTED_ERROR("remote track not found");
+                  }
+                  log.log("subscribe: get new track", consumer.track);
+              }
+              return consumers.map(c => c.track);
+          });
+      }
+      genNewConsumerInfo(consumer) {
+          const _consumerInfoArray = Array.from(this._consumerInfos.values());
+          const encoding = consumer.rtpParameters.encodings[0];
+          const cname = consumer.rtpParameters.rtcp.cname;
+          const mid = _consumerInfoArray.length.toString();
+          const newInfo = {
+              kind: consumer.kind,
+              streamId: `mid${mid}-stream-${consumer.id}`,
+              trackId: `mid${mid}-${consumer.kind}-${encoding.ssrc}`,
+              ssrc: encoding.ssrc,
+              rtxSsrc: encoding.rtx ? encoding.rtx.ssrc : undefined,
+              cname: cname,
+              consumerId: consumer.id,
+              closed: false,
+          };
+          return newInfo;
+      }
+      async addConsumerTrack(consumer) {
+          log.log("add consumer", consumer);
+          let consumerInfo = null;
+          const _consumerInfoArray = Array.from(this._consumerInfos.values());
+          const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
+          if (info && !info.closed) {
+              consumerInfo = info;
+          }
+          else {
+              const newInfo = this.genNewConsumerInfo(consumer);
+              if (browserReport.unifiedPlan) {
+                  // 递增 mid, plan-b 模式下不会使用到这个参数
+                  const mid = _consumerInfoArray.length.toString();
+                  newInfo.mid = mid;
+                  this._consumerInfos.set(mid, newInfo);
+              }
+              else {
+                  this._consumerInfos.set(consumer.id, newInfo);
+              }
+              consumerInfo = newInfo;
+          }
+          return Promise.resolve()
+              .then(() => {
+              // createremoteSdp
+              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+              const offer = { type: "offer", sdp: remoteSdp };
+              log.debug("subscribe: set remote offer", offer);
+              return this._pc.setRemoteDescription(offer);
+          })
+              .then(() => {
+              if (browserReport.unifiedPlan) {
+                  return this._pc.createAnswer();
+              }
+              return this._pc.createAnswer();
+          })
+              .then(answer => {
+              log.debug("subscribe, set local answer", answer);
+              return this._pc.setLocalDescription(answer);
+          })
+              // .then(() => {
+              //   if (!this._transportUpdated) { return this._updateTransport(); }
+              // })
+              .then(() => this._pcReady)
+              .then(() => {
+              let newTrack = null;
+              if (browserReport.unifiedPlan && browserReport.supportTransceivers && !!consumer && !!consumerInfo) {
+                  const transceiver = this._pc.getTransceivers().find(transceiver => {
+                      if (!transceiver.receiver.track) {
+                          return false;
+                      }
+                      if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
+                          consumer.track = transceiver.receiver.track;
+                          return true;
+                      }
+                      return false;
+                  });
+                  if (transceiver) {
+                      newTrack = transceiver.receiver.track;
+                  }
+              }
+              else if (!!consumer && !!consumerInfo) {
+                  const receiver = this._pc.getReceivers()
+                      .find(rtpReceiver => {
+                      const { track } = rtpReceiver;
+                      if (!track) {
+                          return false;
+                      }
+                      if (consumerInfo.trackId === track.id) {
+                          consumer.track = track;
+                          return true;
+                      }
+                      return false;
+                  });
+                  if (receiver) {
+                      newTrack = receiver.track;
+                  }
+              }
+              if (!newTrack && !!consumer) {
+                  throw UNEXPECTED_ERROR("remote track not found");
+              }
+              log.log("subscribe: get new track", newTrack);
+              return newTrack;
+          });
+      }
+      removeConsumerTracks(consumers) {
+          log.log("remove consumer", consumers);
+          let needToUpdateOffer = false;
+          for (const consumer of consumers) {
+              const info = Array.from(this._consumerInfos.values()).find(i => i.consumerId === consumer.id && !i.closed);
+              if (!info) {
+                  log.log(`can not find unpublish track target, ignore`);
+                  continue;
+              }
+              needToUpdateOffer = true;
+              /**
+               * 对于 unified-plan 不能直接删除 consumer
+               * 因为重协商必须保证前后 mid 只增不减，这里将 consumer 置为 closed
+               * 使得生成 sdp 的时候改 mid 不会带上 ssrc 和 ext，也就不会产生订阅
+               */
+              if (browserReport.unifiedPlan) {
+                  consumer.track = null;
+                  info.closed = true;
+              }
+              else {
+                  this._consumerInfos.delete(consumer.id);
+              }
+          }
+          if (!needToUpdateOffer)
+              return Promise.resolve();
+          return Promise.resolve()
+              .then(() => {
+              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+              const offer = { type: "offer", sdp: remoteSdp };
+              log.log("unsubscribe set remote offer", offer);
+              return this._pc.setRemoteDescription(offer);
+          })
+              .then(() => {
+              return this._pc.createAnswer();
+          })
+              .then(answer => {
+              log.log("unsubscribe set local answer", answer);
+              return this._pc.setLocalDescription(answer);
+          });
+      }
+      restartICE(iceParameters, iceCandidates) {
+          log.log("recv restart ice");
+          this._isRestartingICE = true;
+          return Promise.resolve()
+              .then(() => {
+              return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
+          })
+              .then(() => {
+              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+              const offer = { type: "offer", sdp: remoteSdp };
+              return this._pc.setRemoteDescription(offer);
+          })
+              .then(() => {
+              return this._pc.createAnswer();
+          })
+              .then(answer => {
+              this._pc.setLocalDescription(answer);
+          });
+      }
+      async setupTransport(trackIds) {
+          if (this._transportCreated)
+              return await this._pcReady;
+          const transportRemoteParameters = await this.safeEmitAsPromise("@needsubpc", trackIds);
+          this.pcid = transportRemoteParameters.pcid;
+          this._transportCreated = true;
+          this._pcReady = this.getReady(transportRemoteParameters);
+          log.log("init subscribe, get transport remote", transportRemoteParameters);
+          await this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
+          return transportRemoteParameters;
+      }
+  }
+  function getHandler(direction, extendedRtpCapabilities, signaling, settings) {
+      // let rtpParametersByKind;
+      switch (direction) {
+          case "send":
+              {
+                  return new SendHandler(extendedRtpCapabilities, signaling, settings);
+              }
+          case "recv": {
+              return new RecvHandler(extendedRtpCapabilities, signaling, settings);
+          }
+      }
+  }
+
+  class TaskQueue extends EventEmitter {
+      constructor(name) {
+          super();
+          // Closed flag.
+          this._closed = false;
+          // Busy running a command.
+          this._busy = false;
+          // Queue for pending commands. Each command is an Object with method,
+          // resolve, reject, and other members (depending the case).
+          this._queue = [];
+          this.name = name || "TaskQueue";
+      }
+      close() {
+          this._closed = true;
+      }
+      push(method, data) {
+          log.debug(`${this.name} push()`, method, data);
+          return new Promise((resolve, reject) => {
+              const queue = this._queue;
+              // Append command to the queue.
+              queue.push({ method, data, resolve, reject });
+              this._handlePendingCommands();
+          });
+      }
+      _handlePendingCommands() {
+          if (this._busy) {
+              return;
+          }
+          const queue = this._queue;
+          // Take the first command.
+          const command = queue[0];
+          if (!command) {
+              return;
+          }
+          this._busy = true;
+          // Execute it.
+          this._handleCommand(command)
+              .then(() => {
+              this._busy = false;
+              // Remove the first command (the completed one) from the queue.
+              queue.shift();
+              // And continue.
+              this._handlePendingCommands();
+          });
+      }
+      _handleCommand(command) {
+          log.debug(`${this.name} _handleCommand() `, command.method, command.data);
+          if (this._closed) {
+              command.reject(new InvalidStateError("closed"));
+              return Promise.resolve();
+          }
+          const promiseHolder = { promise: null };
+          this.emit("exec", command, promiseHolder);
+          return Promise.resolve()
+              .then(() => {
+              return promiseHolder.promise;
+          })
+              .then(result => {
+              log.debug(`${this.name} _handleCommand() | command succeeded`, command.method);
+              if (this._closed) {
+                  command.reject(new InvalidStateError("closed"));
+                  return;
+              }
+              // Resolve the command with the given result (if any).
+              command.resolve(result);
+          })
+              .catch(error => {
+              log.warning(`${this.name} _handleCommand() | command failed [method:%s]: %o`, command.method, error);
+              // Reject the command with the error.
+              command.reject(error);
+          });
+      }
+  }
+
+  var TaskCommandEnum;
+  (function (TaskCommandEnum) {
+      TaskCommandEnum["SEND_TRACKS"] = "@transport:send-tracks";
+      TaskCommandEnum["RESTART_SEND_ICE"] = "@transport:send-restart-ice";
+      TaskCommandEnum["REMOVE_TRACKS"] = "@transport:remove-tracks";
+      TaskCommandEnum["INIT_RECV"] = "@transport:init-recv";
+      TaskCommandEnum["RESTART_RECV_ICE"] = "@transport:recv-restart-ice";
+      TaskCommandEnum["ADD_CONUMERS"] = "@transport:add-consumers";
+      TaskCommandEnum["REMOVE_CONSUMERS"] = "@transport:remove-consumers";
+  })(TaskCommandEnum || (TaskCommandEnum = {}));
+  class ConnectionTransport extends EnhancedEventEmitter {
+      constructor(rtpcap, signaling) {
+          super();
+          this.sendCommandQueue = new TaskQueue("SendQueue");
+          this.recvCommandQueue = new TaskQueue("RecvQueue");
+          /**
+           * sub-pc 创建单独走一个 queue
+           */
+          this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
+          this.sendTrackQueue = [];
+          this.consumerQueue = [];
+          this._publishTracks = new Map();
+          this.extendedRtpCapabilities = rtpcap;
+          this.signaling = signaling;
+          this.sendHandler = getHandler("send", rtpcap, signaling, {});
+          this.recvHandler = getHandler("recv", rtpcap, signaling, {});
+          this.handleSendHandler();
+          this.handleRecvHandler();
+          this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
+          this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
+          this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
+          this.initSubPcPromise = new Promise(resolve => {
+              this.initSubPcPromiseResolve = resolve;
+          });
+      }
+      get publishTracks() {
+          return Array.from(this._publishTracks.values());
+      }
+      resolveInitSubPcPromise() {
+          if (!this.initSubPcPromiseResolve)
+              return;
+          this.initSubPcPromiseResolve();
+          this.initSubPcPromiseResolve = undefined;
+      }
+      handleSendHandler() {
+          this.sendHandler.on("@needpubpc", (sdp, tracks, cb, errcb) => {
+              this.safeEmitAsPromise("@needpubpc", sdp, tracks).then(cb).catch(errcb);
+          })
+              .on("@connectionstatechange", (state) => {
+              log.log("pubpc connectionstatechange", state);
+              switch (state) {
+                  case "remote-disconnected":
+                  case "closed":
+                  case "failed": {
+                      if (this.signaling.state === SignalingState.OPEN) {
+                          this.reconnectProducer();
+                      }
+                      else {
+                          this.sendHandler.close();
+                      }
+                      break;
+                  }
+                  case "disconnected": {
+                      if (this.sendHandler._isRestartingICE || !this.sendHandler.pcid)
+                          return;
+                      if (this.signaling.state === SignalingState.OPEN) {
+                          this.restartSendICE(this.sendHandler.pcid);
+                      }
+                      else {
+                          this.signaling.once("@signalingauth", (data) => {
+                              if (this.sendHandler.getCurrentIceConnectionState() !== "disconnected")
+                                  return;
+                              this.extendedRtpCapabilities = data.rtpcaps;
+                              this.restartSendICE(this.sendHandler.pcid);
+                          });
+                      }
+                      break;
+                  }
+                  default:
+                      break;
+              }
+          })
+              .on("@needpubtracks", (targetTracks, sdp, cb, errcb) => {
+              const publishTrackData = targetTracks.map(transferTrackToPublishTrack);
+              this.signaling.request("pub-tracks", { tracks: publishTrackData, sdp })
+                  .then((data) => {
+                  switch (data.code) {
+                      case 0:
+                          break;
+                      case 10052:
+                          return errcb(SERVER_UNAVAILABLE());
+                      // pc 断开，重新走 pub-pc 的过程
+                      case 10061:
+                          this.reconnectProducer();
+                          return errcb(PUBLISH_ERROR(10061, data.error));
+                      default:
+                          return errcb(PUBLISH_ERROR(data.code, data.error));
+                  }
+                  for (const track of data.tracks) {
+                      if (!track.status) {
+                          errcb(PUBLISH_ERROR(data.code, data.error));
+                          return;
+                      }
+                  }
+                  cb(data);
+              }, errcb);
+          })
+              .on("@needunpubtracks", (targetPCTracks, cb, errcb) => {
+              this.signaling.request("unpub-tracks", {
+                  tracks: targetPCTracks.map(t => ({ trackid: t.trackId })),
+              })
+                  .then((data) => {
+                  cb(data);
+              });
+          });
+      }
+      async sendTracks(tracks) {
+          if (tracks.length === 0)
+              return Promise.resolve();
+          return this.sendCommandQueue.push(TaskCommandEnum.SEND_TRACKS, tracks);
+      }
+      removeTracks(tracks) {
+          if (tracks.length === 0)
+              return Promise.resolve();
+          return this.sendCommandQueue.push(TaskCommandEnum.REMOVE_TRACKS, tracks);
+      }
+      async restartSendICE(pcid) {
+          if (!browserReport.supportRestartICE)
+              return Promise.resolve(this.reconnectProducer());
+          return this.sendCommandQueue.push(TaskCommandEnum.RESTART_SEND_ICE, pcid);
+      }
+      handleSendCommandTask(command, ph) {
+          switch (command.method) {
+              case TaskCommandEnum.SEND_TRACKS: {
+                  ph.promise = this._execAddProducerTracks(command.data);
+                  return;
+              }
+              case TaskCommandEnum.REMOVE_TRACKS: {
+                  ph.promise = this._execRemoveTracks(command.data);
+                  return;
+              }
+              case TaskCommandEnum.RESTART_SEND_ICE: {
+                  ph.promise = this._execRestartSendICE(command.data);
+                  return;
+              }
+          }
+      }
+      /**
+       * 将 Track 添加到 transport 的 PCTrack 列表中
+       * 将这一步抽成同步方法是为了保证多个 publish 操作同时触发时
+       * 上层能够正确监测到非法订阅操作并及时抛出错误
+       */
+      addTrackToPublishTracks(tracks) {
+          const pcTracks = tracks.map(t => new PCTrack(this, "send", t));
+          for (const pcTrack of pcTracks) {
+              this._publishTracks.set(pcTrack.track.mediaTrack.id, pcTrack);
+          }
+          return pcTracks;
+      }
+      /**
+       * 当发布任务遇到无法重试的失败时清理添加的 Tracks
+       */
+      removeTrackFromPublishTracks(tracks) {
+          for (const track of tracks) {
+              this._publishTracks.delete(track.mediaTrack.id);
+          }
+      }
+      async _execAddProducerTracks(pcTracks) {
+          const data = await this.sendHandler.addProducerTracks(pcTracks.map(t => t.track));
+          for (const pcTrack of pcTracks) {
+              const trackData = getElementFromArray(data.tracks, "localid", pcTrack.track.mediaTrack.id);
+              if (trackData) {
+                  pcTrack.addTrackId(trackData.trackid);
+                  pcTrack.track.setInfo({ versionid: trackData.versionid });
+                  pcTrack.track.resetStats();
+              }
+          }
+          pcTracks.map(p => p.connectStatus = exports.TrackConnectStatus.Connect);
+          return data;
+      }
+      _execRemoveTracks(pcTracks) {
+          this.removeTrackFromPublishTracks(pcTracks.map(p => p.track));
+          pcTracks.map(p => p.release());
+          return this.sendHandler.removeProducerTracks(pcTracks);
+      }
+      async _execRestartSendICE(pcid) {
+          this.sendHandler._isRestartingICE = true;
+          const res = await this.signaling.request("pubpc-restart", { pcid });
+          if (res.code !== 0) {
+              this.sendHandler._isRestartingICE = false;
+              log.debug("restart ice faild", res.code, res.error);
+              this.reconnectProducer();
+              return;
+          }
+          try {
+              await this.sendHandler.restartICE(res.iceParameters, res.iceCandidates);
+              this.sendHandler._isRestartingICE = false;
+          }
+          catch (e) {
+              log.debug("restart ice faild", res.code, res.error);
+              this.sendHandler._isRestartingICE = false;
+              this.reconnectProducer();
+          }
+      }
+      reconnectProducer() {
+          this.resetSendCommandQueue();
+          this.sendHandler.close();
+          const targetPCTracks = this.publishTracks;
+          this.sendHandler = getHandler("send", this.extendedRtpCapabilities, this.signaling, {});
+          this.handleSendHandler();
+          targetPCTracks.forEach(t => {
+              t.connectStatus = exports.TrackConnectStatus.Connecting;
+          });
+          this.emit("@needrepub", targetPCTracks);
+      }
+      handleRecvHandler() {
+          this.recvHandler.on("@needsubpc", (d, cb, errcb) => {
+              this.safeEmitAsPromise("@needsubpc", d).then(cb, errcb);
+          })
+              .on("@connectionstatechange", (state) => {
+              log.log("sub pc connection state change", state);
+              switch (state) {
+                  case "remote-disconnected":
+                  case "closed":
+                  case "failed": {
+                      if (this.signaling.state === SignalingState.OPEN) {
+                          this.resetRecvHandler();
+                      }
+                      else {
+                          // 置为 close，等待信令重连完成后统一重新创建
+                          this.recvHandler.close();
+                      }
+                      break;
+                  }
+                  case "disconnected": {
+                      if (this.recvHandler._isRestartingICE || !this.recvHandler.pcid)
+                          return;
+                      if (this.signaling.state === SignalingState.OPEN) {
+                          this.restartRecvICE(this.recvHandler.pcid);
+                      }
+                      else {
+                          this.signaling.once("@signalingauth", (data) => {
+                              if (this.recvHandler.getCurrentIceConnectionState() !== "disconnected")
+                                  return;
+                              this.extendedRtpCapabilities = data.rtpcaps;
+                              this.restartRecvICE(this.recvHandler.pcid);
+                          });
+                      }
+                      break;
+                  }
+                  default: {
+                      break;
+                  }
+              }
+          });
+      }
+      appendConsumer(consumer) {
+          this.consumerQueue.push(consumer);
+      }
+      async addConsumers() {
+          const consumers = this.consumerQueue;
+          this.consumerQueue = [];
+          return this.recvCommandQueue.push(TaskCommandEnum.ADD_CONUMERS, consumers);
+      }
+      initRecvHandler(trackIds) {
+          return this.recvInitCommandQueue.push(TaskCommandEnum.INIT_RECV, trackIds);
+      }
+      async removeConsumers(consumers) {
+          await this.recvCommandQueue.push(TaskCommandEnum.REMOVE_CONSUMERS, consumers);
+      }
+      async restartRecvICE(pcid) {
+          if (!browserReport.supportRestartICE)
+              return this.resetRecvHandler();
+          return this.recvCommandQueue.push(TaskCommandEnum.RESTART_RECV_ICE, pcid);
+      }
+      async _removeConsumers(consumers) {
+          await this.recvHandler.removeConsumerTracks(consumers);
+      }
+      async _initRecvHandler(trackIds) {
+          if (!this.recvHandler.isPcReady) {
+              return await this.recvHandler.setupTransport(trackIds);
+          }
+          await this.initSubPcPromise;
+          return null;
+      }
+      async _addConsumers(consumers) {
+          if (consumers.length === 0) {
+              return Promise.resolve([]);
+          }
+          const tracks = await this.recvHandler.addConsumerTracks(consumers);
+          return tracks;
+      }
+      async _execRestartRecvICE(pcid) {
+          this.recvHandler._isRestartingICE = true;
+          const res = await this.signaling.request("subpc-restart", { pcid });
+          if (res.code !== 0) {
+              this.recvHandler._isRestartingICE = false;
+              log.debug("restart ice faild", res.code, res.error);
+              this.resetRecvHandler();
+              return;
+          }
+          try {
+              await this.recvHandler.restartICE(res.iceParameters, res.iceCandidates);
+              this.recvHandler._isRestartingICE = false;
+          }
+          catch (e) {
+              this.recvHandler._isRestartingICE = false;
+              log.debug("restart ice faild", res.code, res.error);
+              this.resetRecvHandler();
+          }
+      }
+      handleRecvCommandTask(command, ph) {
+          switch (command.method) {
+              case TaskCommandEnum.ADD_CONUMERS: {
+                  ph.promise = this._addConsumers(command.data);
+                  return;
+              }
+              case TaskCommandEnum.REMOVE_CONSUMERS: {
+                  ph.promise = this._removeConsumers(command.data);
+                  return;
+              }
+              case TaskCommandEnum.RESTART_RECV_ICE: {
+                  ph.promise = this._execRestartRecvICE(command.data);
+                  return;
+              }
+          }
+      }
+      handleRecvInitCommandTask(command, ph) {
+          switch (command.method) {
+              case TaskCommandEnum.INIT_RECV: {
+                  ph.promise = this._initRecvHandler(command.data);
+                  return;
+              }
+          }
+      }
+      resetSendCommandQueue() {
+          log.log("reset send queue");
+          this.sendCommandQueue = new TaskQueue("SendQueue");
+          this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
+      }
+      resetRecvCommandQueue() {
+          log.log("reset recv queue");
+          this.recvCommandQueue = new TaskQueue("RecvQueue");
+          this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
+          this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
+          this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
+      }
+      resetRecvHandler() {
+          this.resetRecvCommandQueue();
+          // 重置 RecvHandler 时外层 track 需要做一些操作
+          this.emit("@needresetrecv");
+          this.recvHandler.close();
+          this.recvHandler = getHandler("recv", this.extendedRtpCapabilities, this.signaling, {});
+          this.initSubPcPromise = new Promise(resolve => {
+              this.initSubPcPromiseResolve = resolve;
+          });
+          this.handleRecvHandler();
+          // 重连Consumer需要对比服务端的变化，抛出事件
+          this.emit("@needresub");
+      }
+      release() {
+          this.recvHandler.close();
+          this.sendHandler.close();
+          this.publishTracks.forEach(t => t.release());
+      }
+  }
+
+  (function (RoomState) {
+      RoomState[RoomState["Idle"] = 0] = "Idle";
+      RoomState[RoomState["Connecting"] = 1] = "Connecting";
+      RoomState[RoomState["Connected"] = 2] = "Connected";
+      RoomState[RoomState["Reconnecting"] = 3] = "Reconnecting";
+  })(exports.RoomState || (exports.RoomState = {}));
+  const DEFAULT_CONFIG = {
+      transportPolicy: "forceUdp",
+  };
+  class QNRTCCore extends EventEmitter {
+      constructor(config = DEFAULT_CONFIG) {
+          super();
+          this._trackInfo = [];
+          /**
+           * 所有订阅的 PCTrack，需要注意的是这些 PCTrack 可能有 2 种状态
+           * 1. Connecting 表示正在进行连接过程
+           * 2. Conncted 表示连接已经建立（subscribe 已经 resolve）
+           */
+          this.subscribeTracks = [];
+          // userid -> User
+          this._users = new Map();
+          this._roomState = exports.RoomState.Idle;
+          this.mergeJobMerger = {};
+          this.defaultMergeJobTracks = [];
+          this.mergeJobTracks = {};
+          this._publish = (tracks, isReconnect) => new Promise(async (resolve, reject) => {
+              if (this.roomState !== exports.RoomState.Connected) {
+                  reject(UNEXPECTED_ERROR("not connected to the room, please run joinRoom first"));
+                  return;
+              }
+              if (tracks.length === 0) {
+                  resolve();
+              }
+              tracks.forEach(t => t.userId = this.userId);
+              const transport = this.connectionTransport;
+              const signaling = this.signaling;
+              let pcTracks;
+              if (isReconnect) {
+                  const localIds = tracks.map(t => t.mediaTrack.id);
+                  pcTracks = transport.publishTracks.filter(t => localIds.indexOf(t.track.mediaTrack.id) !== -1);
+              }
+              else {
+                  const currentLocalIds = transport.publishTracks.map(t => t.track.mediaTrack.id);
+                  const targetTracks = tracks.filter(t => currentLocalIds.indexOf(t.mediaTrack.id) === -1);
+                  // 这里表示传入的 track 包含已经发布过的 track，直接抛出错误，简化逻辑
+                  if (targetTracks.length !== tracks.length) {
+                      reject(UNEXPECTED_ERROR("there are already published tracks in the provided tracks"));
+                      return;
+                  }
+                  pcTracks = transport.addTrackToPublishTracks(tracks);
+              }
+              log.debug("start publish", pcTracks, isReconnect);
+              if (!isReconnect) {
+                  const connectPromise = pcTracks.map(p => p.startConnect());
+                  Promise.all(connectPromise).then(() => resolve()).catch(() => {
+                      // 表示调用了 unpublish 中止了发布
+                      reject(SUB_PUB_ABORT());
+                  });
+              }
+              try {
+                  await transport.sendTracks(pcTracks);
+                  signaling.sendWsMsg("mute-tracks", {
+                      tracks: pcTracks.map(track => ({ trackid: track.trackId, muted: !!track.track.info.muted })),
+                  });
+                  const user = getElementFromArray(this.users, "userId", this.userId);
+                  if (user) {
+                      user.addTracks(pcTracks.map(p => p.track));
+                      user.addPublishedTrackInfo(pcTracks.map(t => ({
+                          trackId: t.trackId,
+                          muted: !!t.track.info.muted,
+                          kind: t.track.info.kind,
+                          tag: t.track.info.tag,
+                          userId: this.userId,
+                          versionid: t.track.info.versionid,
+                      })));
+                  }
+                  tracks.forEach(t => {
+                      t.on("@get-stats", (lastReport, cb, errorcb) => {
+                          if (!this.connectionTransport)
+                              return cb(defaultTrackStatsReport());
+                          this.connectionTransport.sendHandler.getStats(t.mediaTrack, lastReport)
+                              .then(cb, errorcb);
+                      });
+                  });
+                  this.getAllMerger().forEach(m => m.controller.onAddTracks(tracks.map(t => t.info)));
+              }
+              catch (e) {
+                  if (e instanceof QNRTCError) {
+                      switch (e.code) {
+                          case 10061:
+                          case 30001: {
+                              return;
+                          }
+                          case 10052: {
+                              log.warning(e, "republish");
+                              setTimeout(() => this._publish(tracks, true), 1000);
+                              return;
+                          }
+                          default: {
+                              transport.removeTrackFromPublishTracks(tracks);
+                              reject(e);
+                          }
+                      }
+                  }
+                  else {
+                      log.warning(e, "republish");
+                      setTimeout(() => this._publish(tracks, true), 1000);
+                  }
+              }
+          });
+          this._subscribe = (trackIds, isReconnect, strictMode = false) => new Promise(async (resolve, reject) => {
+              if (this.roomState !== exports.RoomState.Connected) {
+                  reject(UNEXPECTED_ERROR("can not connected to the room, please joinRoom first"));
+                  return;
+              }
+              if (trackIds.length === 0) {
+                  resolve([]);
+                  return;
+              }
+              log.debug("subscribe", trackIds, isReconnect);
+              const availableTrackInfo = this._trackInfo.filter(info => trackIds.includes(info.trackid));
+              if (availableTrackInfo.length !== trackIds.length) {
+                  reject(SUB_ERROR(10041, `can not find track in room ${trackIds}`));
+                  return;
+              }
+              let pcTracks;
+              const transport = this.connectionTransport;
+              const signaling = this.signaling;
+              if (isReconnect) {
+                  pcTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+              }
+              else {
+                  const currentTrackIds = this.subscribeTracks.map(t => t.trackId);
+                  const targetTrackInfo = availableTrackInfo.filter(t => !currentTrackIds.includes(t.trackid));
+                  pcTracks = targetTrackInfo.map(t => new PCTrack(transport, "recv", undefined, t.trackid));
+                  this.subscribeTracks = this.subscribeTracks.concat(pcTracks);
+              }
+              log.log("sub tracks", pcTracks);
+              try {
+                  if (!isReconnect) {
+                      const connectPromise = pcTracks.map(t => t.startConnect());
+                      Promise.all(connectPromise).then(() => resolve(pcTracks.map(p => p.track))).catch(() => {
+                          // 表示调用 unsubscribe 中止了订阅
+                          reject(SUB_PUB_ABORT());
+                      });
+                  }
+                  let data = await transport.initRecvHandler(pcTracks.map(t => t.trackId));
+                  if (!data) {
+                      data = await signaling.request("sub-tracks", { tracks: pcTracks.map(track => ({ trackid: track.trackId })) });
+                  }
+                  log.log("get sub res data", data);
+                  switch (data.code) {
+                      case 0:
+                          break;
+                      case 10052:
+                          throw SERVER_UNAVAILABLE();
+                      case 10062:
+                          transport.resetRecvHandler();
+                          throw SUB_ERROR(10062, data.error);
+                      default:
+                          throw SUB_ERROR(data.code, data.error);
+                  }
+                  const successTracks = data.tracks.filter((t) => !!t.status);
+                  const faildTrackIds = data.tracks.filter((t) => !t.status).map((t) => t.trackid);
+                  // 在严格模式下，直接抛出错误，取消之后的订阅流程
+                  if (successTracks.length < data.tracks.length && strictMode) {
+                      throw SUB_ERROR(10041, `can not find target track id: ${faildTrackIds.join(" ")}`);
+                  }
+                  if (successTracks && !strictMode) {
+                      log.debug(`can not find target track id: ${faildTrackIds.join("")}, continue`);
+                      const removedPcTracks = lodash_remove(pcTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
+                      lodash_remove(this.subscribeTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
+                      removedPcTracks.map(t => t.release());
+                  }
+                  data.tracks = successTracks;
+                  // 先检查后设置
+                  for (const track of data.tracks || []) {
+                      const pcTrack = pcTracks.find(t => t.trackId === track.trackid);
+                      const info = availableTrackInfo.find(t => t.trackid === track.trackid);
+                      if (!pcTrack || !info)
+                          continue;
+                      const rtpparams = track.rtpparams;
+                      pcTrack.appendConsumner(rtpparams, info.kind);
+                  }
+                  await transport.addConsumers();
+                  transport.resolveInitSubPcPromise();
+                  for (const pcTrack of pcTracks) {
+                      const { consumer } = pcTrack;
+                      if (!consumer || !consumer.track)
+                          continue;
+                      const t = consumer.track;
+                      let track = pcTrack.track;
+                      const info = availableTrackInfo.find(t => t.trackid === consumer.id);
+                      if (!info)
+                          continue;
+                      if (!track) {
+                          if (t.kind === "audio") {
+                              track = new AudioTrack(t, info.playerid, "remote");
+                              track.initAudioManager();
+                          }
+                          else {
+                              track = new Track(t, info.playerid, "remote");
+                          }
+                      }
+                      else {
+                          track.resume(t);
+                      }
+                      track.setInfo({
+                          trackId: info.trackid, userId: info.playerid, tag: info.tag,
+                          kind: info.kind, muted: info.muted, versionid: info.versionid,
+                      });
+                      track.setMaster(info.master);
+                      track.removeAllListeners("@get-stats");
+                      track.removeAllListeners("@ended");
+                      track.on("@get-stats", (lastReport, cb, errcb) => {
+                          if (!this.connectionTransport)
+                              return cb(defaultTrackStatsReport());
+                          this.connectionTransport.recvHandler.getStats(track.mediaTrack, lastReport)
+                              .then(cb, errcb);
+                      });
+                      // 如果远端 track ended，重新订阅
+                      track.once("@ended", async () => {
+                          if (!track || !track.info.trackId)
+                              return;
+                          log.warning("remote track ended, try to resubscribe");
+                          try {
+                              await this._unsubscribe([track.info.trackId], true);
+                          }
+                          catch (e) { }
+                          await this._subscribe([track.info.trackId], true);
+                      });
+                      pcTrack.track = track;
+                      const user = this.users.find(u => u.userId === info.playerid);
+                      if (user) {
+                          user.addTracks([track]);
+                      }
+                  }
+                  pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect);
+              }
+              catch (e) {
+                  log.log(e);
+                  const consumers = [];
+                  pcTracks.forEach(t => {
+                      if (t.consumer) {
+                          consumers.push(t.consumer);
+                      }
+                  });
+                  await transport.removeConsumers(consumers);
+                  if (e instanceof QNRTCError) {
+                      switch (e.code) {
+                          case 10062:
+                          case 30001: {
+                              return;
+                          }
+                          case 10052: {
+                              log.warning(e, "resubscribe");
+                              setTimeout(() => this._subscribe(trackIds, true), 1000);
+                              return;
+                          }
+                          default: {
+                              lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
+                              reject(e);
+                          }
+                      }
+                  }
+                  else {
+                      log.warning(e, "resubscribe");
+                      setTimeout(() => this._subscribe(trackIds, true), 1000);
+                      return;
+                  }
+              }
+              resolve(pcTracks.map(p => p.track));
+          });
+          this.config = config;
+          log.log("version", version);
+          log.log("browser report", browserReport, browser);
+      }
+      get users() {
+          return Array.from(this._users.values());
+      }
+      /**
+       * 房间内所有 Track 的信息列表，包括未订阅的，用 TrackBaseInfo 表示
+       */
+      get trackInfoList() {
+          return this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
+      }
+      get roomState() {
+          return this._roomState;
+      }
+      set roomState(state) {
+          if (this._roomState !== state) {
+              this._roomState = state;
+              log.debug("roomState change", this._roomState);
+              this.emit("room-state-change", this._roomState);
+          }
+      }
+      async joinRoomWithToken(roomToken, userData) {
+          if (this.roomState !== exports.RoomState.Reconnecting) {
+              if (this.roomState !== exports.RoomState.Idle) {
+                  throw UNEXPECTED_ERROR("roomState is not idle! Do not repeat join room, please run leaveRoom first");
+              }
+              this.roomState = exports.RoomState.Connecting;
+          }
+          try {
+              this.roomToken = roomToken;
+              this.userData = userData;
+              const roomAccess = getRoomAccessFromToken(roomToken);
+              this.userId = roomAccess.userId;
+              this.roomName = roomAccess.roomName;
+              this.appId = roomAccess.appId;
+              log.log("join room, token:", roomToken);
+              log.debug(`join room, roomName: ${this.roomName}, userId: ${this.userId}`);
+              if (!this.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
+                  this.roomState = exports.RoomState.Idle;
+                  throw UNEXPECTED_ERROR("invalid roomname. roomname must match /^[a-zA-Z0-9_-]{3,64}$/");
+              }
+              if (!this.userId.match(/^[a-zA-Z0-9_-]{3,50}$/)) {
+                  this.roomState = exports.RoomState.Idle;
+                  throw UNEXPECTED_ERROR("invalid userId. userId must match /^[a-zA-Z0-9_-]{3,50}$/");
+              }
+              try {
+                  this.accessToken = await getAccessToken(roomAccess, roomToken);
+              }
+              catch (e) {
+                  throw e;
+              }
+              return await this.joinRoomWithAccess(this.accessToken);
+          }
+          catch (e) {
+              this.roomState = exports.RoomState.Idle;
+              throw e;
+          }
+      }
+      async joinRoomWithAccess(accessToken) {
+          const accessPayload = getPayloadFromJwt(accessToken);
+          const { capsdp } = await getClientCapabilitiesSdp();
+          if (this._roomState === exports.RoomState.Idle) {
+              throw UNEXPECTED_ERROR("roomState is idle, maybe because you left the room.");
+          }
+          const signaling = new SignalingWS(accessPayload.signalingurl2, accessToken, capsdp, this.userData);
+          signaling
+              .on("@error", this.handleDisconnect.bind(this))
+              .on("@ws-state-change", (prev, curr) => {
+              switch (curr) {
+                  case SignalingState.CONNECTING:
+                      if (this.roomState === exports.RoomState.Connected) {
+                          this.roomState = exports.RoomState.Reconnecting;
+                      }
+                      else if (this.roomState !== exports.RoomState.Reconnecting) {
+                          this.roomState = exports.RoomState.Connecting;
+                      }
+                      break;
+                  default:
+                      break;
+              }
+          })
+              .on("@needupdateaccesstoken", (cb, errcb) => {
+              this.updateAccessToken().then(cb).catch(errcb);
+          })
+              /*
+              .on("send", (msgType: string, data: string) => {
+                if (msgType === "pong") return;
+                console.log("send", msgType, data);
+              })
+              .on("receive", (msgType: string, data: string) => {
+                if (msgType === "ping") return;
+                console.log("receive", msgType, data);
+              })
+              */
+              .on("on-player-in", this.handlePlayerIn.bind(this))
+              .on("on-player-out", this.handlePlayerOut.bind(this))
+              .on("on-add-tracks", (d) => {
+              this.filterSignalTracks(d);
+              this.handleAddTracks(d);
+          })
+              .on("on-remove-tracks", (d) => {
+              this.filterSignalTracks(d);
+              this.handleRemoveTracks(d);
+          })
+              .on("mute-tracks", (d) => {
+              this.filterSignalTracks(d);
+              this.handleMute(d);
+          })
+              .on("on-messages", this.handleCustomMessages.bind(this))
+              .on("on-pubpc-restart-notify", (d) => {
+              const transport = this.connectionTransport;
+              if (!transport || !browserReport.supportRestartICE)
+                  return;
+              transport.restartSendICE(d.pcid).catch(log.debug);
+          })
+              .on("on-subpc-restart-notify", (d) => {
+              const transport = this.connectionTransport;
+              if (!transport || !browserReport.supportRestartICE)
+                  return;
+              transport.restartRecvICE(d.pcid).catch(log.debug);
+          })
+              .on("disconnect", this.handleDisconnect.bind(this));
+          log.log("init signaling websocket");
+          this.signaling = signaling;
+          try {
+              const authResData = await signaling.initWs(true);
+              signaling.on("@signalingauth", this.handleAuth.bind(this));
+              await this.handleAuth(authResData);
+          }
+          catch (e) {
+              if (this.signaling) {
+                  this.signaling.release();
+                  this.signaling = undefined;
+              }
+              if (e.code === 10052) {
+                  await timeout(1000);
+                  return this.joinRoomWithToken(this.roomToken, this.userData);
+              }
+              throw e;
+          }
+          return this.users;
+      }
+      async _unpublish(trackIds) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("not connected to the room");
+          }
+          if (trackIds.length === 0)
+              return;
+          log.debug("unpublish", trackIds);
+          const transport = this.connectionTransport;
+          const targetTracks = transport.publishTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+          if (targetTracks.length !== trackIds.length) {
+              throw UNEXPECTED_ERROR("can not find target trackid to unpublish");
+          }
+          await transport.removeTracks(targetTracks);
+          this.getAllMerger().forEach(m => m.controller.onRemoveTracks(targetTracks.map(t => t.track.info)));
+          const user = getElementFromArray(this.users, "userId", this.userId);
+          if (user) {
+              user.removeTracksByTrackId(trackIds);
+              user.removePublishedTrackInfo(trackIds);
+          }
+          this.cleanTrackIdsFromMergeJobs(trackIds);
+      }
+      async createMergeJob(id, option) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("can not createMergeJob, room state is not connected");
+          }
+          const mergeJob = {
+              ...defaultMergeJob,
+              ...option,
+              id,
+          };
+          log.debug("send create merge job", mergeJob, id);
+          const data = await this.signaling.request("create-merge-job", mergeJob);
+          if (data.code !== 0) {
+              throw CREATE_MERGE_JOB_ERROR(data.code, data.error);
+          }
+          if (this.mergeJobTracks[id]) {
+              log.warning("merge job id already exist", id);
+          }
+          else {
+              this.mergeJobTracks[id] = [];
+          }
+      }
+      setDefaultMergeStream(width, height, jobId) {
+          if (jobId && !this.mergeJobTracks[jobId]) {
+              throw NO_MERGE_JOB(jobId);
+          }
+          if (this.merger && !jobId) {
+              this.merger.release();
+              this.merger = undefined;
+          }
+          if (jobId && this.mergeJobMerger[jobId]) {
+              this.mergeJobMerger[jobId].release();
+              delete this.mergeJobMerger[jobId];
+          }
+          const controller = this.CreateMergerSessionController();
+          if (!jobId) {
+              this.merger = new Merger(width, height, controller, jobId);
+          }
+          else {
+              this.mergeJobMerger[jobId] = new Merger(width, height, controller, jobId);
+          }
+      }
+      _stopMerge(jobId) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+          }
+          if (jobId && !this.mergeJobTracks[jobId]) {
+              throw NO_MERGE_JOB(jobId);
+          }
+          this.signaling.sendWsMsg("stop-merge", {
+              id: jobId,
+          });
+          if (jobId) {
+              delete this.mergeJobTracks[jobId];
+              if (this.mergeJobMerger[jobId]) {
+                  this.mergeJobMerger[jobId].release();
+                  delete this.mergeJobMerger[jobId];
+              }
+          }
+          else {
+              this.defaultMergeJobTracks = [];
+              if (this.merger) {
+                  this.merger.release();
+                  this.merger = undefined;
+              }
+          }
+      }
+      async _addMergeTracks(mergeOpts, jobId) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+          }
+          if (jobId && !this.mergeJobTracks[jobId]) {
+              throw NO_MERGE_JOB(jobId);
+          }
+          const addTraget = mergeOpts.map(opt => ({
+              trackid: opt.trackId, x: opt.x, y: opt.y,
+              w: opt.w, h: opt.h, z: opt.z,
+          }));
+          const config = { id: jobId, add: addTraget };
+          log.debug("addMergeTracks", config);
+          if (jobId) {
+              this.mergeJobTracks[jobId] = this.mergeJobTracks[jobId].concat(mergeOpts.map(t => t.trackId));
+              this.mergeJobTracks[jobId] = lodash_uniqby(this.mergeJobTracks[jobId], s => s);
+          }
+          else {
+              this.defaultMergeJobTracks = this.defaultMergeJobTracks.concat(mergeOpts.map(t => t.trackId));
+              this.defaultMergeJobTracks = lodash_uniqby(this.defaultMergeJobTracks, s => s);
+          }
+          await this.signaling.request("update-merge-tracks", config);
+      }
+      async _removeMergeTracks(trackIds, jobId) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+          }
+          if (jobId && !this.mergeJobTracks[jobId]) {
+              throw NO_MERGE_JOB(jobId);
+          }
+          const config = {
+              id: jobId,
+              remove: trackIds.map(t => ({ trackid: t })),
+          };
+          log.debug("removeMergeTracks", config);
+          if (jobId) {
+              lodash_remove(this.mergeJobTracks[jobId], t => trackIds.indexOf(t) !== -1);
+          }
+          else {
+              lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
+          }
+          await this.signaling.request("update-merge-tracks", config);
+      }
+      /**
+       * @param isReconnect 代表这次 unsub 是否是为了重新订阅，如果是 pcTrack 不需要释放
+       */
+      async _unsubscribe(trackIds, isReconnect) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
+          }
+          const targetTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+          log.debug("unsubscribe", targetTracks);
+          if (targetTracks.length === 0) {
+              return;
+          }
+          this.signaling.request("unsub-tracks", {
+              tracks: targetTracks.map(t => ({ trackid: t.trackId })),
+          });
+          if (!isReconnect) {
+              targetTracks.forEach(t => t.release());
+              lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
+          }
+          await this.connectionTransport.removeConsumers(targetTracks.map(p => p.consumer));
+      }
+      _muteTracks(tracks) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
+          }
+          const transport = this.connectionTransport;
+          const trackMuteMap = {};
+          tracks.forEach(t => {
+              trackMuteMap[t.trackId] = t.muted;
+          });
+          const targetTracks = transport.publishTracks.filter(t => trackMuteMap[t.trackId] !== undefined);
+          targetTracks.forEach(t => {
+              t.setMute(trackMuteMap[t.trackId]);
+          });
+          this.signaling.sendWsMsg("mute-tracks", {
+              tracks: tracks.map(t => ({ trackid: t.trackId, muted: t.muted })),
+          });
+      }
+      async kickoutUser(userId) {
+          log.log("kickoutUser", userId);
+          await this.control("kickplayer", userId);
+      }
+      /**
+       * @internal
+       * 向房间中指定目标发送自定义消息
+       * @param data string 自定义消息内容
+       * @param userIds Array<string> 目标用户名列表，如果为空，则在全房间广播
+       */
+      sendCustomMessage(data, userIds) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("room state is not connected, can not send message");
+          }
+          this.signaling.sendWsMsg("send-message", {
+              msgid: randomStringGen(8),
+              target: !userIds || userIds.length === 0 ? undefined : userIds,
+              type: "normal",
+              text: data,
+          });
+          log.debug("send custom message", data, userIds);
+      }
+      /**
+       * leaveRoom 将不会本地的发布流，如果想清除本地的发布流
+       * 或者手动调用 Track 对象的 release 方法
+       */
+      leaveRoom() {
+          log.log("leave room");
+          if (this.signaling) {
+              this.signaling.sendDisconnect();
+          }
+          this.releaseRoom();
+      }
+      _releasePublishTracks() {
+      }
+      async control(command, userId) {
+          if (this.roomState !== exports.RoomState.Connected) {
+              throw UNEXPECTED_ERROR("can not connected to the room, please run joinRoom first");
+          }
+          const data = await this.signaling.request("control", { command, playerid: userId });
+          if (data.error) {
+              throw CONTROL_ERROR(data.code, data.error);
+          }
+      }
+      handlePlayerOut(data) {
+          const removeElement = this._users.get(data.playerid);
+          if (removeElement) {
+              this._users.delete(data.playerid);
+              lodash_remove(this._trackInfo, info => info.playerid === data.playerid);
+              const targetTracks = lodash_remove(this.subscribeTracks, t => t.track.userId === removeElement.userId);
+              targetTracks.forEach(t => t.release());
+              nextTick(() => {
+                  log.debug("user-leave", removeElement);
+                  this.emit("user-leave", removeElement);
+              });
+          }
+      }
+      handlePlayerIn(signalUser) {
+          const user = transferSignalingUserToUser(signalUser);
+          this._users.set(user.userId, user);
+          nextTick(() => {
+              log.debug("user-join", user);
+              this.emit("user-join", user);
+          });
+      }
+      handleAddTracks({ tracks }) {
+          log.log("receive track-add", tracks, { ...this._trackInfo });
+          const publishedUsers = new Set();
+          for (const track of tracks) {
+              const user = getElementFromArray(this.users, "userId", track.playerid);
+              if (!user)
+                  continue;
+              // 如果在收到这个 master track 之前已经有了 master track
+              // 就翻译为 unpublish 后再 publish
+              if (user.published && !publishedUsers.has(user.userId) && this.sessionMode === "stream") {
+                  const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
+                  this.handleRemoveTracks({ tracks: publishedTracks });
+                  publishedTracks.push(track);
+                  this.handleAddTracks({ tracks: publishedTracks });
+              }
+              else {
+                  this._trackInfo.push(track);
+                  user.addPublishedTrackInfo([transferSignalingTrackToTrackBaseInfo(track)]);
+                  publishedUsers.add(user.userId);
+              }
+          }
+          if (this.sessionMode === "stream") {
+              for (const userId of Array.from(publishedUsers)) {
+                  nextTick(() => {
+                      log.debug("user-publish", this._users.get(userId));
+                      this.emit("user-publish", this._users.get(userId));
+                  });
+              }
+          }
+          nextTick(() => {
+              log.debug("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
+              this.emit("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
+          });
+      }
+      handleRemoveTracks({ tracks }) {
+          log.log("receive track-remove", tracks, { ...this._trackInfo });
+          const targetTracks = lodash_remove(this._trackInfo, t => tracks.map(t => t.trackid).includes(t.trackid));
+          const unpublishedUsers = new Set();
+          for (const track of targetTracks) {
+              const user = this._users.get(track.playerid);
+              if (!user)
+                  continue;
+              user.removePublishedTrackInfo([track.trackid]);
+              user.removeTracksByTrackId([track.trackid]);
+              unpublishedUsers.add(user.userId);
+              const subscribeTrack = lodash_remove(this.subscribeTracks, t => t.trackId === track.trackid)[0];
+              if (subscribeTrack) {
+                  subscribeTrack.release();
+              }
+          }
+          this.cleanTrackIdsFromMergeJobs(tracks.map(t => t.trackid));
+          if (this.sessionMode === "stream") {
+              for (const userId of Array.from(unpublishedUsers)) {
+                  const user = this._users.get(userId);
+                  // 如果收到 master track remove 后还留有 master track
+                  // 翻译为先取消发布再重新发布
+                  if (user.published) {
+                      const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
+                      this.handleRemoveTracks({ tracks: publishedTracks });
+                      this.handleAddTracks({ tracks: publishedTracks });
+                  }
+                  else {
+                      nextTick(() => {
+                          log.debug("user-unpublish", user);
+                          this.emit("user-unpublish", user);
+                      });
+                  }
+              }
+          }
+          nextTick(() => {
+              log.debug("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
+              this.emit("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
+          });
+      }
+      handleMute({ tracks }) {
+          for (const sigTrack of tracks) {
+              const trackid = sigTrack.trackid;
+              const muted = sigTrack.muted;
+              const trackInfo = getElementFromArray(this._trackInfo, "trackid", trackid);
+              if (!trackInfo) {
+                  return;
+              }
+              const user = this._users.get(trackInfo.playerid);
+              if (!user) {
+                  return;
+              }
+              const info = user.publishedTrackInfo.find(t => t.trackId === trackid);
+              if (info) {
+                  info.muted = muted;
+              }
+              const track = user.tracks.find(t => t.info.trackId === trackid);
+              if (track) {
+                  track.info.muted = muted;
+                  track.setMute(muted);
+              }
+              trackInfo.muted = muted;
+              const pcTrack = this.subscribeTracks.filter(t => t.trackId === trackid)[0];
+              if (pcTrack) {
+                  pcTrack.setMute(muted);
+              }
+              let anotherTrackInfo = undefined;
+              for (let i = 0; i < this._trackInfo.length; i += 1) {
+                  if (this._trackInfo[i].playerid === trackInfo.playerid && this._trackInfo[i].kind !== trackInfo.kind) {
+                      anotherTrackInfo = this._trackInfo[i];
+                  }
+              }
+              const data = {
+                  userId: trackInfo.playerid,
+                  muteAudio: false, muteVideo: false,
+              };
+              if (trackInfo.kind === "audio") {
+                  data.muteAudio = muted;
+                  data.muteVideo = anotherTrackInfo ? anotherTrackInfo.muted : false;
+              }
+              else {
+                  data.muteVideo = muted;
+                  data.muteAudio = anotherTrackInfo ? anotherTrackInfo.muted : false;
+              }
+              if (this.sessionMode === "stream") {
+                  nextTick(() => {
+                      log.log("user-mute", data);
+                      this.emit("user-mute", data);
+                  });
+              }
+          }
+          nextTick(() => {
+              log.log("mute-tracks", tracks.map(t => ({ trackId: t.trackid, muted: t.muted })));
+              this.emit("mute-tracks", tracks.map(t => ({ trackId: t.trackid, muted: t.muted })));
+          });
+      }
+      /** @internal */
+      handleCustomMessages({ messages }) {
+          log.debug("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
+          this.emit("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
+      }
+      handleDisconnect(data) {
+          log.log("handle disconnect", data);
+          if (data.code === 10052 && this.roomToken) {
+              this.roomState = exports.RoomState.Reconnecting;
+              setTimeout(() => this.signaling.initWs(), 1000);
+              return;
+          }
+          this.releaseRoom();
+          switch (data.code) {
+              case 10006: {
+                  this.emit("disconnect", {
+                      code: data.code,
+                      data: {
+                          userId: data.kickedid,
+                      },
+                  });
+                  break;
+              }
+              default: {
+                  this.emit("disconnect", {
+                      code: data.code,
+                  });
+                  break;
+              }
+          }
+      }
+      /** 更新 AccessToken  */
+      async updateAccessToken() {
+          const roomAccess = getRoomAccessFromToken(this.roomToken);
+          this.accessToken = await getAccessToken(roomAccess, this.roomToken);
+          if (this.signaling) {
+              this.signaling.accessToken = this.accessToken;
+          }
+          else {
+              // 此时 signaling 被释放，已经离开了房间
+              throw UNEXPECTED_ERROR("room state is idle");
+          }
+      }
+      async handleAuth(authData) {
+          this.filterSignalTracks(authData);
+          // auth 鉴权失败，一般是 token 过期，或者长时间断线导致房间被关闭，
+          // 直接重新走加入房间的流程
+          log.debug("handleAuth", authData);
+          if (authData.error) {
+              await this.joinRoomWithToken(this.roomToken, this.userData);
+              return;
+          }
+          authData.tracks = authData.tracks || [];
+          // 只保留除自己以外的 trackInfo，防止补事件出错
+          authData.tracks = authData.tracks.filter(t => t.playerid !== this.userId);
+          authData.players = authData.players || [];
+          const isGetMissingEvent = this.roomState === exports.RoomState.Reconnecting;
+          let missingEvents = {
+              join: [], leave: [], add: [], remove: [], mute: [],
+          };
+          const lastUsers = Array.from(this._users.keys());
+          const currentUsers = authData.players.map(player => player.playerid);
+          missingEvents = getMissingUserEvent(this.userId, this._trackInfo, authData.tracks, lastUsers, currentUsers);
+          // connected 的唯一标准是收到 error 为 0 的 auth-res
+          this.roomState = exports.RoomState.Connected;
+          // 仅在第一次处理的时候设置用户和 TrackInfo, 其余通过补事件来更新
+          if (!isGetMissingEvent) {
+              this._trackInfo = authData.tracks;
+              this._users.clear();
+              for (const player of authData.players || []) {
+                  const user = transferSignalingUserToUser(player);
+                  const userTracks = this._trackInfo.filter(trackInfo => trackInfo.playerid === user.userId);
+                  user.addPublishedTrackInfo(userTracks.map(transferSignalingTrackToTrackBaseInfo));
+                  this._users.set(user.userId, user);
+              }
+          }
+          else {
+              log.debug("get missing events", missingEvents);
+              if (missingEvents.remove.length > 0) {
+                  this.handleRemoveTracks({ tracks: missingEvents.remove });
+              }
+              if (missingEvents.leave.length > 0) {
+                  missingEvents.leave.forEach(this.handlePlayerOut.bind(this));
+              }
+              if (missingEvents.join.length > 0) {
+                  missingEvents.join.forEach(this.handlePlayerIn.bind(this));
+              }
+              if (missingEvents.add.length > 0) {
+                  this.handleAddTracks({ tracks: missingEvents.add });
+              }
+              if (missingEvents.mute.length > 0) {
+                  this.handleMute({ tracks: missingEvents.mute });
+              }
+          }
+          if (!this.connectionTransport) {
+              this.connectionTransport = this.createConnectionTransport(authData.rtpcaps);
+          }
+          else {
+              const publishingTracks = this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
+              const subscribingTracks = this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
+              this.connectionTransport.extendedRtpCapabilities = authData.rtpcaps;
+              if (!this.connectionTransport.sendHandler.isPcReady || this.connectionTransport.sendHandler._isRestartingICE || publishingTracks.length > 0) {
+                  this.connectionTransport.reconnectProducer();
+              }
+              if (!this.connectionTransport.recvHandler.isPcReady || this.connectionTransport.recvHandler._isRestartingICE || subscribingTracks.length > 0) {
+                  this.connectionTransport.resetRecvHandler();
+              }
+          }
+      }
+      createConnectionTransport(rtpcaps) {
+          const signaling = this.signaling;
+          const transport = new ConnectionTransport(rtpcaps, signaling);
+          transport.on("@needpubpc", (sdp, tracks, cb, errcb) => {
+              signaling.request("pubpc", {
+                  sdp, tracks: tracks.map(transferTrackToPublishTrack),
+                  policy: this.config.transportPolicy,
+              })
+                  .then((d) => {
+                  switch (d.code) {
+                      case 0: {
+                          cb(d);
+                          return;
+                      }
+                      case 10052: {
+                          throw SERVER_UNAVAILABLE();
+                      }
+                      default: {
+                          throw PUB_P2P_ERROR(d.error);
+                      }
+                  }
+              })
+                  .catch(errcb);
+          });
+          transport.on("@needsubpc", (trackIds, cb, errcb) => {
+              signaling.request("subpc", {
+                  tracks: trackIds.map(t => ({ trackid: t })),
+                  policy: this.config.transportPolicy,
+              })
+                  .then((d) => {
+                  switch (d.code) {
+                      case 0: {
+                          cb(d);
+                          return;
+                      }
+                      case 10052: {
+                          throw SERVER_UNAVAILABLE();
+                      }
+                      default: {
+                          throw SUB_P2P_ERROR(d.error);
+                      }
+                  }
+              })
+                  .catch(errcb);
+          })
+              .on("@needresub", () => {
+              const allTrackIds = this.subscribeTracks.map(t => t.trackId);
+              this.subscribeTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connecting);
+              this._subscribe(allTrackIds, true);
+          })
+              .on("@needrepub", (tracks) => {
+              this._publish(tracks.map(t => t.track), true);
+          })
+              .on("@needresetrecv", () => {
+              this.subscribeTracks.filter(p => !!p.track).forEach(p => {
+                  p.track.removeAllListeners("@ended");
+              });
+          });
+          return transport;
+      }
+      cleanTrackIdsFromMergeJobs(trackIds) {
+          lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
+          for (const tracks in this.mergeJobTracks) {
+              lodash_remove(tracks, t => trackIds.indexOf(t) !== -1);
+          }
+      }
+      CreateMergerSessionController() {
+          const controller = new MergerSessionController();
+          const handleTrackAdd = (tracks) => {
+              controller.onAddTracks(tracks);
+          };
+          const handleTrackRemove = (tracks) => {
+              controller.onRemoveTracks(tracks);
+          };
+          this.on("track-add", handleTrackAdd);
+          this.on("track-remove", handleTrackRemove);
+          controller.getCurrentTracks = () => {
+              if (!this.connectionTransport)
+                  return [];
+              const tracks = this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
+              const selfPublishedTracks = this.connectionTransport.publishTracks.map(t => t.track.info);
+              return tracks.concat(selfPublishedTracks);
+          };
+          controller.addMergeTrack = (mergeOpt, jobId) => {
+              this._addMergeTracks(mergeOpt, jobId);
+          };
+          controller.release = () => {
+              this.off("track-add", handleTrackAdd);
+              this.off("track-remove", handleTrackRemove);
+          };
+          return controller;
+      }
+      getAllMerger() {
+          const mergers = [];
+          if (this.merger) {
+              mergers.push(this.merger);
+          }
+          for (const jobId in this.mergeJobMerger) {
+              mergers.push(this.mergeJobMerger[jobId]);
+          }
+          return mergers;
+      }
+      // 退出房间后清空房间状态
+      releaseRoom() {
+          this.releaseSession();
+          if (this.signaling) {
+              this.signaling.release();
+              this.signaling = undefined;
+          }
+          if (this.connectionTransport) {
+              this.connectionTransport.release();
+              this.connectionTransport = undefined;
+          }
+          this.getAllMerger().map(merger => {
+              merger.release();
+          });
+          this.defaultMergeJobTracks = [];
+          this.mergeJobTracks = {};
+          this.merger = undefined;
+          this.mergeJobMerger = {};
+          this.roomState = exports.RoomState.Idle;
+          this._trackInfo = [];
+          this._users.clear();
+          this.userId = undefined;
+          this.subscribeTracks.forEach(t => {
+              t.release();
+          });
+          this.subscribeTracks = [];
+      }
+  }
+
+  class StreamModeSession extends QNRTCCore {
+      constructor(config) {
+          super(config);
+          this.subscribedUsers = {};
+          this.sessionMode = "stream";
+      }
+      async publish(stream) {
+          if (this.stream) {
+              log.warning("repeat publish, please unpublish first!");
+              return;
+          }
+          stream.userId = this.userId;
+          this.stream = stream;
+          return await this._publish(stream.trackList);
+      }
+      async unpublish() {
+          if (!this.connectionTransport)
+              return;
+          const alltrackIds = this.connectionTransport.publishTracks.map(t => {
+              return t.trackId;
+          });
+          await this._unpublish(alltrackIds);
+          this.stream = undefined;
+      }
+      async setMergeStreamLayout(userId, opt) {
+          let tracks = undefined;
+          if (opt.id) {
+              tracks = this.mergeJobTracks[opt.id];
+          }
+          else {
+              tracks = this.defaultMergeJobTracks;
+          }
+          if (!tracks) {
+              throw NO_MERGE_JOB(opt.id);
+          }
+          const user = getElementFromArray(this.users, "userId", userId);
+          if (!user || !user.published) {
+              log.warning(`can not setMergeOption, user ${userId} is published ?`);
+              return;
+          }
+          const mergeOptions = opt;
+          // 兼容旧版写法
+          if (opt.visible === false) {
+              mergeOptions.hidden = true;
+          }
+          const id = mergeOptions.id;
+          const hidden = !!mergeOptions.hidden;
+          const muted = !!mergeOptions.muted;
+          delete mergeOptions.id;
+          delete mergeOptions.hidden;
+          delete mergeOptions.muted;
+          const addTarget = [];
+          const removeTarget = [];
+          for (const info of user.publishedTrackInfo) {
+              if (info.kind === "audio" && muted) {
+                  removeTarget.push(info.trackId);
+              }
+              else if (info.kind === "audio") {
+                  addTarget.push({ trackId: info.trackId });
+              }
+              if (info.kind === "video" && hidden) {
+                  removeTarget.push(info.trackId);
+              }
+              else if (info.kind === "video") {
+                  addTarget.push({
+                      ...mergeOptions,
+                      trackId: info.trackId,
+                  });
+              }
+          }
+          await this._addMergeTracks(addTarget, id);
+          await this._removeMergeTracks(removeTarget, id);
+      }
+      stopMergeStream(id) {
+          this._stopMerge(id);
+      }
+      async subscribe(userId) {
+          if (userId === this.userId) {
+              throw SUB_ERROR(10044, "can not subscribe yourself");
+          }
+          const targetTracks = this._trackInfo.filter(track => track.playerid === userId && track.master);
+          if (targetTracks.length === 0) {
+              throw SUB_ERROR(10041, `subscribe user ${userId} is not published`);
+          }
+          const trackIds = targetTracks.map(t => t.trackid);
+          const tracks = await this._subscribe(trackIds, false, true);
+          this.subscribedUsers[userId] = new Stream(tracks, "recv", userId);
+          this.subscribedUsers[userId].once("release", () => {
+              delete this.subscribedUsers[userId];
+          });
+          return this.subscribedUsers[userId];
+      }
+      async unsubscribe(userId) {
+          if (!this.subscribedUsers[userId]) {
+              log.warning("user", userId, "is not in subscribedUsers");
+              return;
+          }
+          await this._unsubscribe(this.subscribedUsers[userId].trackList.map(t => t.info.trackId));
+          delete this.subscribedUsers[userId];
+      }
+      mute(muteaudio, mutevideo = false) {
+          if (!this.stream) {
+              log.warning("can not mute, please run publish first");
+              return;
+          }
+          const tracks = [];
+          if (this.stream._audioTrack && this.stream._audioTrack.info.muted !== muteaudio) {
+              tracks.push({ trackId: this.stream._audioTrack.info.trackId, muted: muteaudio });
+          }
+          if (this.stream._videoTrack && this.stream._videoTrack.info.muted !== mutevideo) {
+              tracks.push({ trackId: this.stream._videoTrack.info.trackId, muted: mutevideo });
+          }
+          this._muteTracks(tracks);
+      }
+      /**
+       * 只关注 master 流
+       */
+      filterSignalTracks(d) {
+          if (!d.tracks)
+              return;
+          d.tracks = d.tracks.filter((t) => {
+              if (t.master !== undefined && t.master !== null)
+                  return t.master;
+              const track = this._trackInfo.find(info => info.trackid === t.trackid);
+              if (!track)
+                  return false;
+              return track.master;
+          });
+      }
+      releaseSession() {
+          if (this.stream) {
+              this.stream.release();
+              this.stream = undefined;
+          }
+          for (const key in this.subscribedUsers) {
+              this.subscribedUsers[key].release();
+          }
+          this.subscribedUsers = {};
+      }
+  }
+
+  class TrackModeSession extends QNRTCCore {
+      /**
+       * 房间中已经发布的 Track 列表
+       */
+      get publishedTracks() {
+          if (!this.connectionTransport)
+              return [];
+          return this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(p => p.track);
+      }
+      /**
+       * 房间中已经订阅的 Track 列表
+       */
+      get subscribedTracks() {
+          return this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(t => t.track);
+      }
+      /**
+       * 已经添加进合流的 Track 列表（只有 trackid 信息）
+       */
+      get mergeStreamTracks() {
+          return this.defaultMergeJobTracks;
+      }
+      /**
+       * 除了默认合流 job 之外的其他 job 的 合流 Track 列表
+       */
+      get mergeStreamJobTracks() {
+          return this.mergeJobTracks;
+      }
+      constructor(config) {
+          super(config);
+          this.sessionMode = "track";
+      }
+      async publish(tracks) {
+          return await this._publish(tracks);
+      }
+      async unpublish(trackIds) {
+          return await this._unpublish(trackIds);
+      }
+      /**
+       * 传入 trackId 列表订阅指定 Track
+       * @param trackIds trackId 列表
+       * @param strictMode 是否开启严格模式
+       * 如果开启严格模式，订阅过程中只要有一个 Track 出现错误就会导致整个订阅失败
+       * 默认不开启严格模式
+       */
+      async subscribe(trackIds, strictMode = false) {
+          return await this._subscribe(trackIds, false, strictMode);
+      }
+      async unsubscribe(trackIds) {
+          return await this._unsubscribe(trackIds);
+      }
+      muteTracks(tracks) {
+          this._muteTracks(tracks);
+      }
+      async addMergeStreamTracks(mergeOpts, jobId) {
+          await this._addMergeTracks(mergeOpts, jobId);
+      }
+      async removeMergeStreamTracks(trackIds, jobId) {
+          await this._removeMergeTracks(trackIds, jobId);
+      }
+      stopMergeStream(id) {
+          this._stopMerge(id);
+      }
+      filterSignalTracks() { }
+      releaseSession() { }
+  }
+
+  class AudioMixingTrack extends AudioTrack {
+      constructor(userId) {
+          const destination = audioContext.createMediaStreamDestination();
+          const audioTrack = destination.stream.getAudioTracks()[0];
+          super(audioTrack, userId, "local");
+          this.initAudioManager(true);
+          this.destination = destination;
+          this.inputList = [];
+      }
+      appendAudioSource(track) {
+          if (this.inputList.find(input => input.track === track)) {
+              log.warning("track is already in the track list");
+              return;
+          }
+          this.inputList.push({
+              track,
+          });
+          track.audioManager.gainNode.connect(this.destination);
+      }
+      removeAudioSource(track) {
+          const targetInput = this.inputList.find(input => input.track === track);
+          if (!targetInput) {
+              return;
+          }
+          targetInput.track.audioManager.gainNode.disconnect(this.destination);
+          lodash_remove(this.inputList, i => i === targetInput);
+      }
+      release() {
+          // remove all audio source
+          for (const input of this.inputList) {
+              this.removeAudioSource(input.track);
+          }
+          super.release();
+      }
+  }
+
+  class AudioEffectManager {
+      constructor(output, playbackEngine) {
+          /** @inrernal */
+          this.effectSourceMap = new Map();
+          /** @inrernal */
+          this.playback = true;
+          this.output = output;
+          this.playbackEngine = playbackEngine;
+      }
+      get effectList() {
+          return Array.from(this.effectSourceMap.keys());
+      }
+      getEffectTrack(key) {
+          return this.effectSourceMap.get(key);
+      }
+      playEffect(key, volume) {
+          const audioTrack = this.effectSourceMap.get(key);
+          if (!audioTrack) {
+              log.warning("can not find target effect", key);
+              return;
+          }
+          if (volume) {
+              audioTrack.setVolume(volume);
+          }
+          if (this.playback && audioTrack.audioManager.audioSource) {
+              this.playbackEngine.addAudioNode(audioTrack.audioManager.gainNode);
+          }
+          audioTrack.startAudioSource();
+      }
+      /**
+       * 添加音效
+       * @param source 音效的源文件，支持本地 File 文件或者在线音乐地址
+       * @param key 音效的 key，每个音效需要指定一个唯一的 key，用于之后调用
+       */
+      async addEffectSource(source, key) {
+          if (this.effectSourceMap.has(key)) {
+              log.warning("duplicate effect key!", key);
+              return;
+          }
+          const audioTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
+          this.effectSourceMap.set(key, audioTrack);
+          this.output.appendAudioSource(audioTrack);
+      }
+      /**
+       * 移除并释放已经添加的音效
+       * @param key 指定音效的 key，如果不指定默认删除全部的音效
+       */
+      removeEffectSource(key) {
+          let targetKeys = [];
+          if (!key) {
+              targetKeys = Array.from(this.effectSourceMap.keys());
+          }
+          else {
+              targetKeys = [key];
+          }
+          for (const k of targetKeys) {
+              const targetAudioTrack = this.effectSourceMap.get(k);
+              if (!targetAudioTrack) {
+                  return;
+              }
+              this.output.removeAudioSource(targetAudioTrack);
+              targetAudioTrack.release();
+              this.effectSourceMap.delete(k);
+          }
+      }
+  }
+
+  class AudioMusicManager extends EventEmitter {
+      constructor(output, playbackEngine) {
+          super();
+          this.musicOption = {
+              loop: false,
+              volume: 1,
+          };
+          /** @internal */
+          this.playback = true;
+          this.output = output;
+          this.playbackEngine = playbackEngine;
+      }
+      /** @internal */
+      get audioNode() {
+          if (!this.musicTrack)
+              return null;
+          return this.musicTrack.audioManager.gainNode;
+      }
+      /**
+       * 更新背景音乐混音的各种参数，支持在混音中途更新
+       * @param option Partical<AudioMusicOption>
+       */
+      setMusicOption(option) {
+          this.musicOption = Object.assign(this.musicOption, option);
+          if (this.musicTrack) {
+              this.musicTrack.setVolume(this.musicOption.volume);
+              this.musicTrack.setLoop(this.musicOption.loop);
+          }
+      }
+      /**
+       * 开始音乐混音
+       * @param source 音乐的源文件，支持本地文件对象或者在线音乐地址
+       */
+      async startMusicMixing(source) {
+          // 如果重复 start，就自动 stop 一次
+          if (this.musicTrack) {
+              this.stopMusicMixing();
+              return await this.startMusicMixing(source);
+          }
+          this.musicTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
+          this.output.appendAudioSource(this.musicTrack);
+          this.setMusicOption({});
+          if (!this.musicTrack.audioManager.audioSource)
+              throw UNEXPECTED_ERROR("can not find audio source");
+          if (this.playback && this.audioNode) {
+              this.playbackEngine.addAudioNode(this.audioNode);
+          }
+          this.musicTrack.on("audio-state-change", (curr, last) => {
+              this.emit("music-state-change", curr, last);
+          });
+          this.musicTrack.startAudioSource();
+      }
+      /**
+       * 暂停音乐混音
+       */
+      pauseMusicMixing() {
+          if (!this.musicTrack) {
+              log.warning("can not find target music, please run startAudioMixing");
+              return;
+          }
+          this.musicTrack.pauseAudioSource();
+      }
+      /**
+       * 恢复音乐混音
+       */
+      resumeMusicMixing() {
+          if (!this.musicTrack) {
+              log.warning("can not find target music, please run startAudioMixing");
+              return;
+          }
+          this.musicTrack.resumeAudioSource();
+      }
+      /**
+       * 停止音乐混音
+       */
+      stopMusicMixing() {
+          if (!this.musicTrack) {
+              return;
+          }
+          this.musicTrack.stopAudioSource();
+          this.output.removeAudioSource(this.musicTrack);
+          this.musicTrack.release();
+          this.musicTrack = undefined;
+      }
+      getMusicDuration() {
+          if (!this.musicTrack) {
+              return 0;
+          }
+          return this.musicTrack.getDuration();
+      }
+      getMusicCurrentTime() {
+          if (!this.musicTrack) {
+              return 0;
+          }
+          return this.musicTrack.getCurrentTime();
+      }
+      setMusicCurrentTime(currentTime) {
+          if (!this.musicTrack) {
+              return;
+          }
+          this.musicTrack.setCurrentTime(currentTime);
+          if (!this.musicTrack.audioManager.audioSource)
+              throw UNEXPECTED_ERROR("can not find audio source");
+      }
+  }
+
+  class AudioPlaybackEngine {
+      constructor() {
+          this.volume = 1;
+          this.gainNode = audioContext.createGain();
+          this.gainNode.connect(audioContext.destination);
+      }
+      addAudioNode(audioNode) {
+          audioNode.connect(this.gainNode);
+      }
+      removeAudioNode(audioNode) {
+          audioNode.disconnect(this.gainNode);
+      }
+      release() {
+          this.gainNode.disconnect();
+      }
+  }
+
+  class TrackMixingManager {
+      constructor(originSource) {
+          this.playbackEngine = new AudioPlaybackEngine();
+          this.sourcePlayebackState = false;
+          if (originSource instanceof AudioTrack) {
+              this.outputTrack = new AudioMixingTrack();
+              this.outputTrack.appendAudioSource(originSource);
+          }
+          else {
+              throw UNEXPECTED_ERROR("audio mixing manager: origin track is not audio track");
+          }
+          this.source = originSource;
+          this.effectManager = new AudioEffectManager(this.outputTrack, this.playbackEngine);
+          this.musicManager = new AudioMusicManager(this.outputTrack, this.playbackEngine);
+      }
+      /**
+       * 获取背景音乐返听的状态, 默认打开
+       */
+      getMusicPlaybackState() {
+          return this.musicManager.playback;
+      }
+      /**
+       * 设置背景音乐的返听状态，默认打开
+       * @param state boolean
+       */
+      setMusicPlaybackState(state) {
+          if (this.musicManager.playback === state)
+              return;
+          this.musicManager.playback = state;
+          if (!this.musicManager.audioNode)
+              return;
+          if (state) {
+              this.playbackEngine.addAudioNode(this.musicManager.audioNode);
+          }
+          else {
+              this.playbackEngine.removeAudioNode(this.musicManager.audioNode);
+          }
+      }
+      /**
+       * 获取输入音源返听的状态，默认关闭
+       */
+      getSourcePlaybackState() {
+          return this.sourcePlayebackState;
+      }
+      /**
+       * 设置输入音源的返听状态，默认关闭
+       * @param state boolean
+       */
+      setSourcePlaybackState(state) {
+          if (this.sourcePlayebackState === state)
+              return;
+          this.sourcePlayebackState = state;
+          if (!this.source.audioManager.audioSource)
+              return;
+          if (state) {
+              this.playbackEngine.addAudioNode(this.source.audioManager.gainNode);
+          }
+          else {
+              this.playbackEngine.removeAudioNode(this.source.audioManager.gainNode);
+          }
+      }
+      /**
+       * 获取音效返听的状态，默认打开
+       */
+      getEffectPlaybackState() {
+          return this.effectManager.playback;
+      }
+      /**
+       * 设置音效返听的状态，默认打开
+       */
+      setEffectPlaybackState(state) {
+          if (this.effectManager.playback === state)
+              return;
+          this.effectManager.playback = state;
+          this.effectManager.effectSourceMap.forEach((v, k) => {
+              if (!v.audioManager.audioSource)
+                  return;
+              if (state) {
+                  this.playbackEngine.addAudioNode(v.audioManager.gainNode);
+              }
+              else {
+                  this.playbackEngine.removeAudioNode(v.audioManager.gainNode);
+              }
+          });
+      }
+      setBitrate(kbps) {
+          this.outputTrack.setInfo({ kbps });
+      }
+      setTag(tag) {
+          this.outputTrack.setInfo({ tag });
+      }
+      /**
+       * 释放整个混音模块，清除 output/音乐/音效等资源
+       * 但是不会释放构造函数传入的原始源
+       */
+      release() {
+          this.effectManager.removeEffectSource();
+          this.musicManager.stopMusicMixing();
+          this.outputTrack.removeAudioSource(this.source);
+          this.outputTrack.release();
+          this.playbackEngine.release();
+      }
+  }
+  class StreamMixingManager extends TrackMixingManager {
+      constructor(input) {
+          if (!input._audioTrack) {
+              throw UNEXPECTED_ERROR("input stream do not have audio track");
+          }
+          super(input._audioTrack);
+          this.input = input;
+          const trackList = [this.outputTrack];
+          if (this.input._videoTrack) {
+              trackList.push(this.input._videoTrack);
+          }
+          this.outputStream = new Stream(trackList, "send", this.input.userId);
+      }
+      /**
+       * 设置输出 Stream 的码率
+       * @param audio 音频码率
+       * @param video 视频码率
+       */
+      setBitrate(audio, video) {
+          if (audio && this.outputStream._audioTrack) {
+              this.outputStream._audioTrack.setKbps(audio);
+          }
+          if (video && this.outputStream._videoTrack) {
+              this.outputStream._videoTrack.setKbps(video);
+          }
+      }
+  }
+
+  (function (AudioUtils) {
+      function createAudioTrackFromURL(url, crossorigin = "anonymous", tag, bitrate) {
+          const audioElement = document.createElement("audio");
+          audioElement.preload = "auto";
+          audioElement.src = url;
+          audioElement.crossOrigin = crossorigin;
+          const track = new AudioSourceTrack(audioElement);
+          if (bitrate) {
+              track.setKbps(bitrate);
+          }
+          track.setInfo({ tag });
+          return track;
+      }
+      AudioUtils.createAudioTrackFromURL = createAudioTrackFromURL;
+      function createAudioTrackFromFile(file, tag, bitrate) {
+          return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                  const data = e.target.result;
+                  decodeAudioData(data).then(buffer => {
+                      const track = new AudioSourceTrack(buffer);
+                      if (bitrate) {
+                          track.setKbps(bitrate);
+                      }
+                      track.setInfo({ tag });
+                      resolve(track);
+                  }).catch(reject);
+              };
+              reader.readAsArrayBuffer(file);
+          });
+      }
+      AudioUtils.createAudioTrackFromFile = createAudioTrackFromFile;
+      function createAudioTrackFromBuffer(buffer, tag, bitrate) {
+          const track = new AudioSourceTrack(buffer);
+          if (bitrate) {
+              track.setKbps(bitrate);
+          }
+          track.setInfo({ tag });
+          return track;
+      }
+      AudioUtils.createAudioTrackFromBuffer = createAudioTrackFromBuffer;
+      async function createAudioTrackFromSource(source, tag, bitrate) {
+          if (source instanceof File) {
+              return await createAudioTrackFromFile(source, tag, bitrate);
+          }
+          else if (source instanceof AudioBuffer) {
+              return createAudioTrackFromBuffer(source, tag, bitrate);
+          }
+          return createAudioTrackFromURL(source, "anonymous", tag, bitrate);
+      }
+      AudioUtils.createAudioTrackFromSource = createAudioTrackFromSource;
+      async function decodeAudioData(data) {
+          if (audioContext.state === "suspended") {
+              await audioContext.resume();
+          }
+          const decodePromise = () => new Promise((resolve, reject) => {
+              audioContext.decodeAudioData(data, (buffer) => {
+                  resolve(buffer);
+              }, (e) => {
+                  reject(AUDIO_DECODE_ERROR(e));
+              });
+          });
+          return await decodePromise();
+      }
+      AudioUtils.decodeAudioData = decodeAudioData;
+      function createAudioMixingManagerFromTrack(track) {
+          return new TrackMixingManager(track);
+      }
+      AudioUtils.createAudioMixingManagerFromTrack = createAudioMixingManagerFromTrack;
+      function createAudioMixingManagerFromStream(stream) {
+          return new StreamMixingManager(stream);
+      }
+      AudioUtils.createAudioMixingManagerFromStream = createAudioMixingManagerFromStream;
+  })(exports.AudioUtils || (exports.AudioUtils = {}));
+
+  /*
+   * device.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const DEFAULT_RECORD_CONFIG = {
+      audio: {
+          enabled: true,
+      },
+      video: {
+          enabled: true,
+          bitrate: 600,
+      },
+  };
+  class DeviceManager extends EventEmitter {
+      constructor() {
+          super();
+          // 记录每个 device 存在的 tick 数量
+          this.deviceMap = {};
+          if (!browserReport.support) {
+              return;
+          }
+          this.updateDeivceInfo();
+          // safari 11 不支持 ondevicechange，使用 setInterval
+          if (!browserReport.ondevicechange) {
+              window.setInterval(this.updateDeivceInfo.bind(this), 1000);
+          }
+          if (browserReport.ondevicechange) {
+              navigator.mediaDevices.ondevicechange = this.updateDeivceInfo.bind(this);
+          }
+      }
+      // TODO: 允许 video/screen 同时打开
+      async getLocalTracks(config = DEFAULT_RECORD_CONFIG) {
+          log.debug("get local tracks", config);
+          /**
+           * 如果同时开启了摄像头和屏幕采集，分 2 次采集完成
+           */
+          if (REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
+              const subConfig = { screen: config.screen };
+              const subConfig2 = { video: config.video, audio: config.audio };
+              const values = await Promise.all([this.getLocalTracks(subConfig), this.getLocalTracks(subConfig2)]);
+              return values[0].concat(values[1]);
+          }
+          const constraints = await transferRecordOptionToMediaConstraints(config);
+          let mediaStream;
+          try {
+              mediaStream = await this.getUserMedia(config, constraints, true);
+          }
+          catch (e) {
+              if (e.name === "NotAllowedError") {
+                  throw DEVICE_NOT_ALLOWED("");
+              }
+              else {
+                  throw e;
+              }
+          }
+          let videoKbps = undefined;
+          let audioKbps = undefined;
+          let videoTag = undefined;
+          let audioTag = undefined;
+          if (REC_AUDIO_ENABLE(config)) {
+              audioKbps = config.audio.bitrate;
+              audioTag = config.audio.tag;
+          }
+          if (REC_SCREEN_ENABLE(config)) {
+              videoKbps = config.screen.bitrate;
+              videoTag = config.screen.tag;
+          }
+          if (REC_VIDEO_ENABLE(config)) {
+              videoKbps = config.video.bitrate;
+              videoTag = config.video.tag;
+          }
+          const mediaTracks = mediaStream ? mediaStream.getTracks() : [];
+          const tracks = [];
+          for (const mediaTrack of mediaTracks) {
+              let track;
+              if (mediaTrack.kind === "audio") {
+                  track = createCustomTrack(mediaTrack, audioTag, audioKbps);
+              }
+              else {
+                  track = createCustomTrack(mediaTrack, videoTag, videoKbps);
+              }
+              tracks.push(track);
+          }
+          if (config.audio && !!config.audio.source) {
+              const track = await exports.AudioUtils.createAudioTrackFromSource(config.audio.source, audioTag, audioKbps);
+              tracks.push(track);
+          }
+          return tracks;
+      }
+      async getLocalStream(config) {
+          if (config && REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
+              throw UNEXPECTED_ERROR("can not get local stream with video and screen");
+          }
+          const tracks = await this.getLocalTracks(config);
+          return new Stream(tracks, "send");
+      }
+      async getUserMedia(config, constraints, init) {
+          log.debug("request to get user media", constraints, config);
+          if (!constraints.audio && !constraints.video) {
+              return null;
+          }
+          let mediaStream;
+          if (REC_SCREEN_ENABLE(config)) {
+              mediaStream = await this.getDisplayMedia(constraints);
+          }
+          else {
+              mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+          }
+          return mediaStream;
+      }
+      /**
+       * getDisplayMedia 不支持同时录制屏幕和麦克风
+       * 在这种情况下分 2 次请求 stream 之后合并
+       */
+      async getDisplayMedia(constraints) {
+          let audioStream;
+          if (constraints.audio) {
+              audioStream = await navigator.mediaDevices.getUserMedia({
+                  audio: constraints.audio,
+              });
+          }
+          let screenStream;
+          if (browserReport.getDisplayMedia) {
+              screenStream = await navigator.mediaDevices.getDisplayMedia({
+                  video: constraints.video,
+              });
+          }
+          else {
+              screenStream = await navigator.mediaDevices.getUserMedia({
+                  video: constraints.video,
+              });
+          }
+          if (audioStream) {
+              screenStream.addTrack(audioStream.getAudioTracks()[0]);
+          }
+          return screenStream;
+      }
+      async updateDeivceInfo() {
+          this.deviceInfo = await navigator.mediaDevices.enumerateDevices();
+          const currentDeviceIds = this.deviceInfo.map(d => d.deviceId);
+          const lastDeviceIds = Object.keys(this.deviceMap);
+          let updateFlag = false;
+          lastDeviceIds.forEach(deviceId => {
+              // device 被拔出
+              if (currentDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
+                  this.emit("device-remove", this.deviceMap[deviceId].device);
+                  delete this.deviceMap[deviceId];
+                  updateFlag = true;
+              }
+              else {
+                  this.deviceMap[deviceId].tick += 1;
+              }
+          });
+          currentDeviceIds.forEach((deviceId, index) => {
+              // device 插入
+              if (lastDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
+                  this.deviceMap[deviceId] = {
+                      device: this.deviceInfo[index],
+                      tick: 0,
+                  };
+                  this.emit("device-add", this.deviceMap[deviceId].device);
+                  updateFlag = true;
+              }
+          });
+          if (updateFlag) {
+              this.emit("device-update", this.deviceInfo);
+          }
+      }
+  }
+  const deviceManager = new DeviceManager();
+
+  /*
+   * index.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+
+  exports.StreamModeSession = StreamModeSession;
+  exports.TrackModeSession = TrackModeSession;
+  exports.version = version;
+  exports.log = log;
+  exports.User = User;
+  exports.Stream = Stream;
+  exports.Track = Track;
+  exports.AudioTrack = AudioTrack;
+  exports.browserReport = browserReport;
+  exports.isChromeExtensionAvailable = isChromeExtensionAvailable;
+  exports.createCustomTrack = createCustomTrack;
+  exports.REC_AUDIO_ENABLE = REC_AUDIO_ENABLE;
+  exports.REC_VIDEO_ENABLE = REC_VIDEO_ENABLE;
+  exports.REC_SCREEN_ENABLE = REC_SCREEN_ENABLE;
+  exports.defaultMergeJob = defaultMergeJob;
+  exports.DeviceManager = DeviceManager;
+  exports.deviceManager = deviceManager;
+  exports.AudioSourceTrack = AudioSourceTrack;
+  exports.TrackMixingManager = TrackMixingManager;
+  exports.StreamMixingManager = StreamMixingManager;
+  exports.AudioEffectManager = AudioEffectManager;
+  exports.AudioMusicManager = AudioMusicManager;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
+
+}));
+//# sourceMappingURL=pili-rtc-web-2.2.0.umd.js.map

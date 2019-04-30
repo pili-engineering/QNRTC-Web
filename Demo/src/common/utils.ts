@@ -1,4 +1,4 @@
-import { decodeAudioData, TrackBaseInfo } from 'pili-rtc-web';
+import { TrackBaseInfo } from 'pili-rtc-web';
 import seedrandom from 'seedrandom';
 
 export function randomNumberGen(): number {
@@ -12,18 +12,6 @@ export const verifyUserId = (str: string): boolean =>
 
 export const verifyRoomId = (str: string): boolean =>
   /^[a-zA-Z0-9_-]{3,64}$/.test(str);
-
-export function decodeAudioFileToBuffer(file: File): Promise<AudioBuffer> {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const data = e.target.result;
-      decodeAudioData(data).then(resolve);
-    };
-
-    reader.readAsArrayBuffer(file);
-  });
-}
 
 export function getTrackNmae(track: TrackBaseInfo): string {
   switch (track.tag) {

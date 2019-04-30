@@ -9,6 +9,7 @@ import {
   deviceManager,
   AudioTrack,
   TrackStatsReport,
+  AudioUtils,
 } from 'pili-rtc-web';
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -329,17 +330,17 @@ export class RoomStore {
         Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video)
       }
       return deviceManager.getLocalTracks(config)
-        .then((tracks: RTCTrack[]) => {
+        .then(async (tracks: RTCTrack[]) => {
           for (const track of tracks) {
+            if (track.info.kind === "audio" && config.audio && config.audio.source) {
+              track.setLoop(true);
+              track.startAudioSource();
+            }
             if (track.info.tag === 'camera') {
               track.setMaster(true);
             }
             if (track.info.kind === 'audio') {
               track.setMaster(true);
-            }
-            if (config.audio && config.audio.buffer) {
-              track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
-              track.playAudioBuffer(true);
             }
             this.localTracks.push(track);
           }
@@ -356,7 +357,11 @@ export class RoomStore {
         }
         // 每次只采集了一路流
         return deviceManager.getLocalTracks(config)
-          .then(([ track ]: RTCTrack[] ) => {
+          .then(async ([ track ]: RTCTrack[] ) => {
+            if (config.audio && config.audio.source) {
+              track.setLoop(true);
+              track.startAudioSource();
+            }
             // 只能发布 一个 video master 和 一个 audio master
             if (track.info.kind === 'video' && videoCount === 0) {
               track.setMaster(true);
@@ -365,10 +370,6 @@ export class RoomStore {
             if (track.info.kind === 'audio' && audioCount === 0) {
               track.setMaster(true);
               audioCount++;
-            }
-            if (config.audio && config.audio.buffer) {
-              track.setAudioBuffer((config.audio as any).audioBuffer as AudioBuffer);
-              track.playAudioBuffer(true);
             }
             this.localTracks.push(track);
             return track;

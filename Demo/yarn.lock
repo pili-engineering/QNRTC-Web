@@ -2414,6 +2414,10 @@ core-js@^2.5.7:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.3.tgz#4b70938bdffdaf64931e66e2db158f0892289c49"
 
+core-js@^2.6.3:
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.5.tgz#44bc8d249e7fb2ff5d00e0341a7ffb94fbf67895"
+
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -6504,9 +6508,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@^2.1.0-patch.0:
-  version "2.1.0-patch.0"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.1.0-patch.0.tgz#dec9bbae52c3f08646d1426245f5573eeee416a1"
+pili-rtc-web@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.2.0.tgz#fef390c31a16938fa3fdf14d0182a14e34d5d0ca"
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@types/detect-browser" "^2.0.1"
@@ -6522,7 +6526,7 @@ pili-rtc-web@^2.1.0-patch.0:
     lodash.uniqby "^4.7.0"
     sdp-transform "^2.4.1"
     semver "^5.6.0"
-    webrtc-adapter "^6.4.4"
+    webrtc-adapter "^7.2.0"
     wolfy87-eventemitter "^5.2.5"
 
 pinkie-promise@^2.0.0:
@@ -7878,7 +7882,7 @@ rsvp@^3.3.3:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.6.2.tgz#2e96491599a96cde1b515d5674a8f7a91452926a"
 
-rtcpeerconnection-shim@^1.2.14:
+rtcpeerconnection-shim@^1.2.15:
   version "1.2.15"
   resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.15.tgz#e7cc189a81b435324c4949aa3dfb51888684b243"
   dependencies:
@@ -9108,11 +9112,11 @@ webpack@4.19.1:
     watchpack "^1.5.0"
     webpack-sources "^1.2.0"
 
-webrtc-adapter@^6.4.4:
-  version "6.4.8"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-6.4.8.tgz#eeca3f0d5b40c0e629b865ef2a936a0b658274de"
+webrtc-adapter@^7.2.0:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-7.2.3.tgz#2b9b60cf34a6d2a38d247fd1d9a6c495aed85a02"
   dependencies:
-    rtcpeerconnection-shim "^1.2.14"
+    rtcpeerconnection-shim "^1.2.15"
     sdp "^2.9.0"
 
 websocket-driver@>=0.5.1:
