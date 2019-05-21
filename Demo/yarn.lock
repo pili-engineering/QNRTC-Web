@@ -915,6 +915,11 @@
     "@svgr/core" "^2.4.1"
     loader-utils "^1.1.0"
 
+"@types/blueimp-md5@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@types/blueimp-md5/-/blueimp-md5-2.7.0.tgz#404222806800478ca2782e8ad46590aba7f14627"
+  integrity sha1-QEIigGgAR4yieC6K1GWQq6fxRic=
+
 "@types/clipboard@^2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/clipboard/-/clipboard-2.0.1.tgz#75a74086c293d75b12bc93ff13bc7797fef05a40"
@@ -937,6 +942,13 @@
   dependencies:
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
+
+"@types/lodash.groupby@^4.6.6":
+  version "4.6.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.groupby/-/lodash.groupby-4.6.6.tgz#4d9b61a4d8b0d83d384975cabfed4c1769d6792e"
+  integrity sha512-kwg3T7Ia63KtDNoQQR8hKrLHCAgrH4I44l5uEMuA6JCbj7DiSccaV4tNV1vbjtAOpX990SolVthJCmBVtRVRgw==
+  dependencies:
+    "@types/lodash" "*"
 
 "@types/lodash.remove@^4.7.4":
   version "4.7.4"
@@ -1744,6 +1756,11 @@ binary-extensions@^1.0.0:
 bluebird@^3.5.1, bluebird@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
+
+blueimp-md5@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.10.0.tgz#02f0843921f90dca14f5b8920a38593201d6964d"
+  integrity sha512-EkNUOi7tpV68TqjpiUz9D9NcT8um2+qtgntmMbi5UKssVX2m/2PLqotcric0RE63pB3HPN/fjf3cKHN2ufGSUQ==
 
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
@@ -3688,9 +3705,10 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-fingerprintjs2@^1.8.1:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/fingerprintjs2/-/fingerprintjs2-1.8.6.tgz#ac92bd3f9965b51f5bf1b2d2d6f4bcc44ac89aab"
+fingerprintjs2@^2.0.6:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fingerprintjs2/-/fingerprintjs2-2.1.0.tgz#21dc3fee27d3b199056ef8eb873debccd8e06323"
+  integrity sha512-H1k/ESTD2rJ3liupyqWBPjZC+LKfCGixQzz/NDN4dkgbmG1bVFyMOh7luKSkVDoyfhgvRm62pviNMPI+eJTZcQ==
 
 flat-cache@^1.2.1:
   version "1.3.4"
@@ -5541,6 +5559,11 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
+lodash.groupby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.groupby/-/lodash.groupby-4.6.0.tgz#0b08a1dcf68397c397855c3239783832df7403d1"
+  integrity sha1-Cwih3PaDl8OXhVwyOXg4Mt90A9E=
+
 lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -6508,20 +6531,25 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.2.0.tgz#fef390c31a16938fa3fdf14d0182a14e34d5d0ca"
+pili-rtc-web@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.2.1.tgz#a2fd4aaa888ecad14b9490ba107b423a30dba78e"
+  integrity sha512-XCQWXGwmYouCM61daLXcdXFW25+JiO6xVLVkI5Ex8okGD4UHyTE+ropVfsEstPQ1P0w6L7/xUuMGRCe9kgWGpQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
+    "@types/blueimp-md5" "^2.7.0"
     "@types/detect-browser" "^2.0.1"
+    "@types/lodash.groupby" "^4.6.6"
     "@types/lodash.remove" "^4.7.4"
     "@types/lodash.uniqby" "^4.7.4"
     "@types/sdp-transform" "^2.4.0"
     "@types/semver" "^5.5.0"
+    blueimp-md5 "^2.10.0"
     detect-browser "^3.0.1"
-    fingerprintjs2 "^1.8.1"
+    fingerprintjs2 "^2.0.6"
     gzip-js "^0.3.2"
     localforage "^1.7.2"
+    lodash.groupby "^4.6.0"
     lodash.remove "^4.7.0"
     lodash.uniqby "^4.7.0"
     sdp-transform "^2.4.1"

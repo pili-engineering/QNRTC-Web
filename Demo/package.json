@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "private": true,
   "description": "multiple track demo",
   "author": "Yu Chao Liang <liangyuchao@qiniu.com>",
@@ -33,7 +33,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "pili-rtc-web": "2.2.0",
+    "pili-rtc-web": "^2.2.1",
     "qs": "^6.6.0",
     "react": "^16.6.3",
     "react-app-polyfill": "^0.2.0",
