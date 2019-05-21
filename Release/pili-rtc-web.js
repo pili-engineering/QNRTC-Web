@@ -1384,9 +1384,9 @@
                   stats: semver_24(browser.version, "67.0.0"),
                   ondevicechange: semver_24(browser.version, "57.0.0"),
                   minMaxWithIdeal: semver_24(browser.version, "56.0.0"),
+                  // TODO: 在 2.3.0 提测时候再开启 unifiedPlan: semver.gte(browser.version, "71.0.0"),
                   unifiedPlan: false,
-                  // semver.gte(browser.version, "71.0.0"),
-                  supportTransceivers: false,
+                  supportTransceivers: true,
                   supportRestartICE: true,
                   getReceivers: semver_24(browser.version, "55.0.0"),
                   needH264FmtpLine: semver_25(browser.version, "51.0.0"),
@@ -10670,6 +10670,10855 @@
   });
 
   /*
+   * device.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const REC_AUDIO_ENABLE = (config) => {
+      return !!config && !!config.audio && config.audio.enabled;
+  };
+  const REC_VIDEO_ENABLE = (config) => {
+      return !!config && !!config.video && config.video.enabled;
+  };
+  const REC_SCREEN_ENABLE = (config) => {
+      return !!config && !!config.screen && config.screen.enabled;
+  };
+
+  /*
+   * stream.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  (function (TrackConnectStatus) {
+      TrackConnectStatus[TrackConnectStatus["Idle"] = 0] = "Idle";
+      TrackConnectStatus[TrackConnectStatus["Connecting"] = 1] = "Connecting";
+      TrackConnectStatus[TrackConnectStatus["Connect"] = 2] = "Connect";
+  })(exports.TrackConnectStatus || (exports.TrackConnectStatus = {}));
+  (function (TrackSourceType) {
+      TrackSourceType[TrackSourceType["NORMAL"] = 0] = "NORMAL";
+      TrackSourceType[TrackSourceType["EXTERNAL"] = 1] = "EXTERNAL";
+      TrackSourceType[TrackSourceType["MIXING"] = 2] = "MIXING";
+  })(exports.TrackSourceType || (exports.TrackSourceType = {}));
+
+  /*
+   * merger.ts
+   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
+   *
+   * Distributed under terms of the MIT license.
+  */
+  const defaultMergeJob = {
+      publishUrl: "",
+      height: 720,
+      width: 1080,
+      fps: 25,
+      kbps: 1000,
+      audioOnly: false,
+      stretchMode: "aspectFill",
+  };
+
+  (function (AudioSourceState) {
+      AudioSourceState["IDLE"] = "idle";
+      AudioSourceState["LOADING"] = "loading";
+      AudioSourceState["PLAY"] = "play";
+      AudioSourceState["PAUSE"] = "pause";
+      AudioSourceState["END"] = "end";
+  })(exports.AudioSourceState || (exports.AudioSourceState = {}));
+
+  const QosEventType = {
+      Init: 1,
+      UnInit: 2,
+      JoinRoom: 3,
+      MCSAuth: 4,
+      SignalAuth: 5,
+      LeaveRoom: 6,
+      PublisherPC: 7,
+      PublishTracks: 8,
+      UnPublishTracks: 9,
+      SubscriberPC: 10,
+      SubscribeTracks: 11,
+      UnSubscribeTracks: 13,
+      MuteTracks: 14,
+      ICEConnectionState: 15,
+      CallbackStatistics: 16,
+      KickoutUser: 17,
+      RoomStateChanged: 18,
+      AudioDeviceInOut: 19,
+      VideoDeviceInOut: 20,
+      SDKError: 21,
+      ApplicationState: 22,
+      CreateMergeJob: 24,
+      UpdateMergeTracks: 25,
+      StopMerge: 26,
+      DeviceChanged: 28,
+  };
+
+  var fingerprint2 = createCommonjsModule(function (module) {
+    /*
+    * Fingerprintjs2 2.0.5 - Modern & flexible browser fingerprint library v2
+    * https://github.com/Valve/fingerprintjs2
+    * Copyright (c) 2015 Valentin Vasilyev (valentin.vasilyev@outlook.com)
+    * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
+    *
+    * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    * ARE DISCLAIMED. IN NO EVENT SHALL VALENTIN VASILYEV BE LIABLE FOR ANY
+    * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+    * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    */
+
+    /* global define */
+    (function (name, context, definition) {
+
+      if (typeof window !== 'undefined' && typeof undefined === 'function' && undefined.amd) {
+        undefined(definition);
+      } else if (module.exports) {
+        module.exports = definition();
+      } else if (context.exports) {
+        context.exports = definition();
+      } else {
+        context[name] = definition();
+      }
+    })('Fingerprint2', commonjsGlobal, function () {
+      //
+      // Given two 64bit ints (as an array of two 32bit ints) returns the two
+      // added together as a 64bit int (as an array of two 32bit ints).
+      //
+
+      var x64Add = function (m, n) {
+        m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
+        n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
+        var o = [0, 0, 0, 0];
+        o[3] += m[3] + n[3];
+        o[2] += o[3] >>> 16;
+        o[3] &= 0xffff;
+        o[2] += m[2] + n[2];
+        o[1] += o[2] >>> 16;
+        o[2] &= 0xffff;
+        o[1] += m[1] + n[1];
+        o[0] += o[1] >>> 16;
+        o[1] &= 0xffff;
+        o[0] += m[0] + n[0];
+        o[0] &= 0xffff;
+        return [o[0] << 16 | o[1], o[2] << 16 | o[3]];
+      }; //
+      // Given two 64bit ints (as an array of two 32bit ints) returns the two
+      // multiplied together as a 64bit int (as an array of two 32bit ints).
+      //
+
+
+      var x64Multiply = function (m, n) {
+        m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
+        n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
+        var o = [0, 0, 0, 0];
+        o[3] += m[3] * n[3];
+        o[2] += o[3] >>> 16;
+        o[3] &= 0xffff;
+        o[2] += m[2] * n[3];
+        o[1] += o[2] >>> 16;
+        o[2] &= 0xffff;
+        o[2] += m[3] * n[2];
+        o[1] += o[2] >>> 16;
+        o[2] &= 0xffff;
+        o[1] += m[1] * n[3];
+        o[0] += o[1] >>> 16;
+        o[1] &= 0xffff;
+        o[1] += m[2] * n[2];
+        o[0] += o[1] >>> 16;
+        o[1] &= 0xffff;
+        o[1] += m[3] * n[1];
+        o[0] += o[1] >>> 16;
+        o[1] &= 0xffff;
+        o[0] += m[0] * n[3] + m[1] * n[2] + m[2] * n[1] + m[3] * n[0];
+        o[0] &= 0xffff;
+        return [o[0] << 16 | o[1], o[2] << 16 | o[3]];
+      }; //
+      // Given a 64bit int (as an array of two 32bit ints) and an int
+      // representing a number of bit positions, returns the 64bit int (as an
+      // array of two 32bit ints) rotated left by that number of positions.
+      //
+
+
+      var x64Rotl = function (m, n) {
+        n %= 64;
+
+        if (n === 32) {
+          return [m[1], m[0]];
+        } else if (n < 32) {
+          return [m[0] << n | m[1] >>> 32 - n, m[1] << n | m[0] >>> 32 - n];
+        } else {
+          n -= 32;
+          return [m[1] << n | m[0] >>> 32 - n, m[0] << n | m[1] >>> 32 - n];
+        }
+      }; //
+      // Given a 64bit int (as an array of two 32bit ints) and an int
+      // representing a number of bit positions, returns the 64bit int (as an
+      // array of two 32bit ints) shifted left by that number of positions.
+      //
+
+
+      var x64LeftShift = function (m, n) {
+        n %= 64;
+
+        if (n === 0) {
+          return m;
+        } else if (n < 32) {
+          return [m[0] << n | m[1] >>> 32 - n, m[1] << n];
+        } else {
+          return [m[1] << n - 32, 0];
+        }
+      }; //
+      // Given two 64bit ints (as an array of two 32bit ints) returns the two
+      // xored together as a 64bit int (as an array of two 32bit ints).
+      //
+
+
+      var x64Xor = function (m, n) {
+        return [m[0] ^ n[0], m[1] ^ n[1]];
+      }; //
+      // Given a block, returns murmurHash3's final x64 mix of that block.
+      // (`[0, h[0] >>> 1]` is a 33 bit unsigned right shift. This is the
+      // only place where we need to right shift 64bit ints.)
+      //
+
+
+      var x64Fmix = function (h) {
+        h = x64Xor(h, [0, h[0] >>> 1]);
+        h = x64Multiply(h, [0xff51afd7, 0xed558ccd]);
+        h = x64Xor(h, [0, h[0] >>> 1]);
+        h = x64Multiply(h, [0xc4ceb9fe, 0x1a85ec53]);
+        h = x64Xor(h, [0, h[0] >>> 1]);
+        return h;
+      }; //
+      // Given a string and an optional seed as an int, returns a 128 bit
+      // hash using the x64 flavor of MurmurHash3, as an unsigned hex.
+      //
+
+
+      var x64hash128 = function (key, seed) {
+        key = key || '';
+        seed = seed || 0;
+        var remainder = key.length % 16;
+        var bytes = key.length - remainder;
+        var h1 = [0, seed];
+        var h2 = [0, seed];
+        var k1 = [0, 0];
+        var k2 = [0, 0];
+        var c1 = [0x87c37b91, 0x114253d5];
+        var c2 = [0x4cf5ad43, 0x2745937f];
+
+        for (var i = 0; i < bytes; i = i + 16) {
+          k1 = [key.charCodeAt(i + 4) & 0xff | (key.charCodeAt(i + 5) & 0xff) << 8 | (key.charCodeAt(i + 6) & 0xff) << 16 | (key.charCodeAt(i + 7) & 0xff) << 24, key.charCodeAt(i) & 0xff | (key.charCodeAt(i + 1) & 0xff) << 8 | (key.charCodeAt(i + 2) & 0xff) << 16 | (key.charCodeAt(i + 3) & 0xff) << 24];
+          k2 = [key.charCodeAt(i + 12) & 0xff | (key.charCodeAt(i + 13) & 0xff) << 8 | (key.charCodeAt(i + 14) & 0xff) << 16 | (key.charCodeAt(i + 15) & 0xff) << 24, key.charCodeAt(i + 8) & 0xff | (key.charCodeAt(i + 9) & 0xff) << 8 | (key.charCodeAt(i + 10) & 0xff) << 16 | (key.charCodeAt(i + 11) & 0xff) << 24];
+          k1 = x64Multiply(k1, c1);
+          k1 = x64Rotl(k1, 31);
+          k1 = x64Multiply(k1, c2);
+          h1 = x64Xor(h1, k1);
+          h1 = x64Rotl(h1, 27);
+          h1 = x64Add(h1, h2);
+          h1 = x64Add(x64Multiply(h1, [0, 5]), [0, 0x52dce729]);
+          k2 = x64Multiply(k2, c2);
+          k2 = x64Rotl(k2, 33);
+          k2 = x64Multiply(k2, c1);
+          h2 = x64Xor(h2, k2);
+          h2 = x64Rotl(h2, 31);
+          h2 = x64Add(h2, h1);
+          h2 = x64Add(x64Multiply(h2, [0, 5]), [0, 0x38495ab5]);
+        }
+
+        k1 = [0, 0];
+        k2 = [0, 0];
+
+        switch (remainder) {
+          case 15:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 14)], 48));
+          // fallthrough
+
+          case 14:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 13)], 40));
+          // fallthrough
+
+          case 13:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 12)], 32));
+          // fallthrough
+
+          case 12:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 11)], 24));
+          // fallthrough
+
+          case 11:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 10)], 16));
+          // fallthrough
+
+          case 10:
+            k2 = x64Xor(k2, x64LeftShift([0, key.charCodeAt(i + 9)], 8));
+          // fallthrough
+
+          case 9:
+            k2 = x64Xor(k2, [0, key.charCodeAt(i + 8)]);
+            k2 = x64Multiply(k2, c2);
+            k2 = x64Rotl(k2, 33);
+            k2 = x64Multiply(k2, c1);
+            h2 = x64Xor(h2, k2);
+          // fallthrough
+
+          case 8:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 7)], 56));
+          // fallthrough
+
+          case 7:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 6)], 48));
+          // fallthrough
+
+          case 6:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 5)], 40));
+          // fallthrough
+
+          case 5:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 4)], 32));
+          // fallthrough
+
+          case 4:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 3)], 24));
+          // fallthrough
+
+          case 3:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 2)], 16));
+          // fallthrough
+
+          case 2:
+            k1 = x64Xor(k1, x64LeftShift([0, key.charCodeAt(i + 1)], 8));
+          // fallthrough
+
+          case 1:
+            k1 = x64Xor(k1, [0, key.charCodeAt(i)]);
+            k1 = x64Multiply(k1, c1);
+            k1 = x64Rotl(k1, 31);
+            k1 = x64Multiply(k1, c2);
+            h1 = x64Xor(h1, k1);
+          // fallthrough
+        }
+
+        h1 = x64Xor(h1, [0, key.length]);
+        h2 = x64Xor(h2, [0, key.length]);
+        h1 = x64Add(h1, h2);
+        h2 = x64Add(h2, h1);
+        h1 = x64Fmix(h1);
+        h2 = x64Fmix(h2);
+        h1 = x64Add(h1, h2);
+        h2 = x64Add(h2, h1);
+        return ('00000000' + (h1[0] >>> 0).toString(16)).slice(-8) + ('00000000' + (h1[1] >>> 0).toString(16)).slice(-8) + ('00000000' + (h2[0] >>> 0).toString(16)).slice(-8) + ('00000000' + (h2[1] >>> 0).toString(16)).slice(-8);
+      };
+
+      var defaultOptions = {
+        preprocessor: null,
+        audio: {
+          timeout: 1000,
+          // On iOS 11, audio context can only be used in response to user interaction.
+          // We require users to explicitly enable audio fingerprinting on iOS 11.
+          // See https://stackoverflow.com/questions/46363048/onaudioprocess-not-called-on-ios11#46534088
+          excludeIOS11: true
+        },
+        fonts: {
+          swfContainerId: 'fingerprintjs2',
+          swfPath: 'flash/compiled/FontList.swf',
+          userDefinedFonts: [],
+          extendedJsFonts: false
+        },
+        screen: {
+          // To ensure consistent fingerprints when users rotate their mobile devices
+          detectScreenOrientation: true
+        },
+        plugins: {
+          sortPluginsFor: [/palemoon/i],
+          excludeIE: false
+        },
+        extraComponents: [],
+        excludes: {
+          // Unreliable on Windows, see https://github.com/Valve/fingerprintjs2/issues/375
+          'enumerateDevices': true,
+          // devicePixelRatio depends on browser zoom, and it's impossible to detect browser zoom
+          'pixelRatio': true,
+          // DNT depends on incognito mode for some browsers (Chrome) and it's impossible to detect incognito mode
+          'doNotTrack': true,
+          // uses js fonts already
+          'fontsFlash': true
+        },
+        NOT_AVAILABLE: 'not available',
+        ERROR: 'error',
+        EXCLUDED: 'excluded'
+      };
+
+      var each = function (obj, iterator) {
+        if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
+          obj.forEach(iterator);
+        } else if (obj.length === +obj.length) {
+          for (var i = 0, l = obj.length; i < l; i++) {
+            iterator(obj[i], i, obj);
+          }
+        } else {
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+              iterator(obj[key], key, obj);
+            }
+          }
+        }
+      };
+
+      var map = function (obj, iterator) {
+        var results = []; // Not using strict equality so that this acts as a
+        // shortcut to checking for `null` and `undefined`.
+
+        if (obj == null) {
+          return results;
+        }
+
+        if (Array.prototype.map && obj.map === Array.prototype.map) {
+          return obj.map(iterator);
+        }
+
+        each(obj, function (value, index, list) {
+          results.push(iterator(value, index, list));
+        });
+        return results;
+      };
+
+      var extendSoft = function (target, source) {
+        if (source == null) {
+          return target;
+        }
+
+        var value;
+        var key;
+
+        for (key in source) {
+          value = source[key];
+
+          if (value != null && !Object.prototype.hasOwnProperty.call(target, key)) {
+            target[key] = value;
+          }
+        }
+
+        return target;
+      }; // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/enumerateDevices
+
+
+      var enumerateDevicesKey = function (done, options) {
+        if (!isEnumerateDevicesSupported()) {
+          return done(options.NOT_AVAILABLE);
+        }
+
+        navigator.mediaDevices.enumerateDevices().then(function (devices) {
+          done(devices.map(function (device) {
+            return 'id=' + device.deviceId + ';gid=' + device.groupId + ';' + device.kind + ';' + device.label;
+          }));
+        }).catch(function (error) {
+          done(error);
+        });
+      };
+
+      var isEnumerateDevicesSupported = function () {
+        return navigator.mediaDevices && navigator.mediaDevices.enumerateDevices;
+      }; // Inspired by and based on https://github.com/cozylife/audio-fingerprint
+
+
+      var audioKey = function (done, options) {
+        var audioOptions = options.audio;
+
+        if (audioOptions.excludeIOS11 && navigator.userAgent.match(/OS 11.+Version\/11.+Safari/)) {
+          // See comment for excludeUserAgent and https://stackoverflow.com/questions/46363048/onaudioprocess-not-called-on-ios11#46534088
+          return done(options.EXCLUDED);
+        }
+
+        var AudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+
+        if (AudioContext == null) {
+          return done(options.NOT_AVAILABLE);
+        }
+
+        var context = new AudioContext(1, 44100, 44100);
+        var oscillator = context.createOscillator();
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(10000, context.currentTime);
+        var compressor = context.createDynamicsCompressor();
+        each([['threshold', -50], ['knee', 40], ['ratio', 12], ['reduction', -20], ['attack', 0], ['release', 0.25]], function (item) {
+          if (compressor[item[0]] !== undefined && typeof compressor[item[0]].setValueAtTime === 'function') {
+            compressor[item[0]].setValueAtTime(item[1], context.currentTime);
+          }
+        });
+        oscillator.connect(compressor);
+        compressor.connect(context.destination);
+        oscillator.start(0);
+        context.startRendering();
+        var audioTimeoutId = setTimeout(function () {
+          console.warn('Audio fingerprint timed out. Please report bug at https://github.com/Valve/fingerprintjs2 with your user agent: "' + navigator.userAgent + '".');
+
+          context.oncomplete = function () {};
+
+          context = null;
+          return done('audioTimeout');
+        }, audioOptions.timeout);
+
+        context.oncomplete = function (event) {
+          var fingerprint;
+
+          try {
+            clearTimeout(audioTimeoutId);
+            fingerprint = event.renderedBuffer.getChannelData(0).slice(4500, 5000).reduce(function (acc, val) {
+              return acc + Math.abs(val);
+            }, 0).toString();
+            oscillator.disconnect();
+            compressor.disconnect();
+          } catch (error) {
+            done(error);
+            return;
+          }
+
+          done(fingerprint);
+        };
+      };
+
+      var UserAgent = function (done) {
+        done(navigator.userAgent);
+      };
+
+      var languageKey = function (done, options) {
+        done(navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage || options.NOT_AVAILABLE);
+      };
+
+      var colorDepthKey = function (done, options) {
+        done(window.screen.colorDepth || options.NOT_AVAILABLE);
+      };
+
+      var deviceMemoryKey = function (done, options) {
+        done(navigator.deviceMemory || options.NOT_AVAILABLE);
+      };
+
+      var pixelRatioKey = function (done, options) {
+        done(window.devicePixelRatio || options.NOT_AVAILABLE);
+      };
+
+      var screenResolutionKey = function (done, options) {
+        done(getScreenResolution(options));
+      };
+
+      var getScreenResolution = function (options) {
+        var resolution = [window.screen.width, window.screen.height];
+
+        if (options.screen.detectScreenOrientation) {
+          resolution.sort().reverse();
+        }
+
+        return resolution;
+      };
+
+      var availableScreenResolutionKey = function (done, options) {
+        done(getAvailableScreenResolution(options));
+      };
+
+      var getAvailableScreenResolution = function (options) {
+        if (window.screen.availWidth && window.screen.availHeight) {
+          var available = [window.screen.availHeight, window.screen.availWidth];
+
+          if (options.screen.detectScreenOrientation) {
+            available.sort().reverse();
+          }
+
+          return available;
+        } // headless browsers
+
+
+        return options.NOT_AVAILABLE;
+      };
+
+      var timezoneOffset = function (done) {
+        done(new Date().getTimezoneOffset());
+      };
+
+      var timezone = function (done, options) {
+        if (window.Intl && window.Intl.DateTimeFormat) {
+          done(new window.Intl.DateTimeFormat().resolvedOptions().timeZone);
+          return;
+        }
+
+        done(options.NOT_AVAILABLE);
+      };
+
+      var sessionStorageKey = function (done, options) {
+        done(hasSessionStorage(options));
+      };
+
+      var localStorageKey = function (done, options) {
+        done(hasLocalStorage(options));
+      };
+
+      var indexedDbKey = function (done, options) {
+        done(hasIndexedDB(options));
+      };
+
+      var addBehaviorKey = function (done) {
+        // body might not be defined at this point or removed programmatically
+        done(!!(document.body && document.body.addBehavior));
+      };
+
+      var openDatabaseKey = function (done) {
+        done(!!window.openDatabase);
+      };
+
+      var cpuClassKey = function (done, options) {
+        done(getNavigatorCpuClass(options));
+      };
+
+      var platformKey = function (done, options) {
+        done(getNavigatorPlatform(options));
+      };
+
+      var doNotTrackKey = function (done, options) {
+        done(getDoNotTrack(options));
+      };
+
+      var canvasKey = function (done, options) {
+        if (isCanvasSupported()) {
+          done(getCanvasFp(options));
+          return;
+        }
+
+        done(options.NOT_AVAILABLE);
+      };
+
+      var webglKey = function (done, options) {
+        if (isWebGlSupported()) {
+          done(getWebglFp());
+          return;
+        }
+
+        done(options.NOT_AVAILABLE);
+      };
+
+      var webglVendorAndRendererKey = function (done) {
+        if (isWebGlSupported()) {
+          done(getWebglVendorAndRenderer());
+          return;
+        }
+
+        done();
+      };
+
+      var adBlockKey = function (done) {
+        done(getAdBlock());
+      };
+
+      var hasLiedLanguagesKey = function (done) {
+        done(getHasLiedLanguages());
+      };
+
+      var hasLiedResolutionKey = function (done) {
+        done(getHasLiedResolution());
+      };
+
+      var hasLiedOsKey = function (done) {
+        done(getHasLiedOs());
+      };
+
+      var hasLiedBrowserKey = function (done) {
+        done(getHasLiedBrowser());
+      }; // flash fonts (will increase fingerprinting time 20X to ~ 130-150ms)
+
+
+      var flashFontsKey = function (done, options) {
+        // we do flash if swfobject is loaded
+        if (!hasSwfObjectLoaded()) {
+          return done('swf object not loaded');
+        }
+
+        if (!hasMinFlashInstalled()) {
+          return done('flash not installed');
+        }
+
+        if (!options.fonts.swfPath) {
+          return done('missing options.fonts.swfPath');
+        }
+
+        loadSwfAndDetectFonts(function (fonts) {
+          done(fonts);
+        }, options);
+      }; // kudos to http://www.lalit.org/lab/javascript-css-font-detect/
+
+
+      var jsFontsKey = function (done, options) {
+        // a font will be compared against all the three default fonts.
+        // and if it doesn't match all 3 then that font is not available.
+        var baseFonts = ['monospace', 'sans-serif', 'serif'];
+        var fontList = ['Andale Mono', 'Arial', 'Arial Black', 'Arial Hebrew', 'Arial MT', 'Arial Narrow', 'Arial Rounded MT Bold', 'Arial Unicode MS', 'Bitstream Vera Sans Mono', 'Book Antiqua', 'Bookman Old Style', 'Calibri', 'Cambria', 'Cambria Math', 'Century', 'Century Gothic', 'Century Schoolbook', 'Comic Sans', 'Comic Sans MS', 'Consolas', 'Courier', 'Courier New', 'Geneva', 'Georgia', 'Helvetica', 'Helvetica Neue', 'Impact', 'Lucida Bright', 'Lucida Calligraphy', 'Lucida Console', 'Lucida Fax', 'LUCIDA GRANDE', 'Lucida Handwriting', 'Lucida Sans', 'Lucida Sans Typewriter', 'Lucida Sans Unicode', 'Microsoft Sans Serif', 'Monaco', 'Monotype Corsiva', 'MS Gothic', 'MS Outlook', 'MS PGothic', 'MS Reference Sans Serif', 'MS Sans Serif', 'MS Serif', 'MYRIAD', 'MYRIAD PRO', 'Palatino', 'Palatino Linotype', 'Segoe Print', 'Segoe Script', 'Segoe UI', 'Segoe UI Light', 'Segoe UI Semibold', 'Segoe UI Symbol', 'Tahoma', 'Times', 'Times New Roman', 'Times New Roman PS', 'Trebuchet MS', 'Verdana', 'Wingdings', 'Wingdings 2', 'Wingdings 3'];
+
+        if (options.fonts.extendedJsFonts) {
+          var extendedFontList = ['Abadi MT Condensed Light', 'Academy Engraved LET', 'ADOBE CASLON PRO', 'Adobe Garamond', 'ADOBE GARAMOND PRO', 'Agency FB', 'Aharoni', 'Albertus Extra Bold', 'Albertus Medium', 'Algerian', 'Amazone BT', 'American Typewriter', 'American Typewriter Condensed', 'AmerType Md BT', 'Andalus', 'Angsana New', 'AngsanaUPC', 'Antique Olive', 'Aparajita', 'Apple Chancery', 'Apple Color Emoji', 'Apple SD Gothic Neo', 'Arabic Typesetting', 'ARCHER', 'ARNO PRO', 'Arrus BT', 'Aurora Cn BT', 'AvantGarde Bk BT', 'AvantGarde Md BT', 'AVENIR', 'Ayuthaya', 'Bandy', 'Bangla Sangam MN', 'Bank Gothic', 'BankGothic Md BT', 'Baskerville', 'Baskerville Old Face', 'Batang', 'BatangChe', 'Bauer Bodoni', 'Bauhaus 93', 'Bazooka', 'Bell MT', 'Bembo', 'Benguiat Bk BT', 'Berlin Sans FB', 'Berlin Sans FB Demi', 'Bernard MT Condensed', 'BernhardFashion BT', 'BernhardMod BT', 'Big Caslon', 'BinnerD', 'Blackadder ITC', 'BlairMdITC TT', 'Bodoni 72', 'Bodoni 72 Oldstyle', 'Bodoni 72 Smallcaps', 'Bodoni MT', 'Bodoni MT Black', 'Bodoni MT Condensed', 'Bodoni MT Poster Compressed', 'Bookshelf Symbol 7', 'Boulder', 'Bradley Hand', 'Bradley Hand ITC', 'Bremen Bd BT', 'Britannic Bold', 'Broadway', 'Browallia New', 'BrowalliaUPC', 'Brush Script MT', 'Californian FB', 'Calisto MT', 'Calligrapher', 'Candara', 'CaslonOpnface BT', 'Castellar', 'Centaur', 'Cezanne', 'CG Omega', 'CG Times', 'Chalkboard', 'Chalkboard SE', 'Chalkduster', 'Charlesworth', 'Charter Bd BT', 'Charter BT', 'Chaucer', 'ChelthmITC Bk BT', 'Chiller', 'Clarendon', 'Clarendon Condensed', 'CloisterBlack BT', 'Cochin', 'Colonna MT', 'Constantia', 'Cooper Black', 'Copperplate', 'Copperplate Gothic', 'Copperplate Gothic Bold', 'Copperplate Gothic Light', 'CopperplGoth Bd BT', 'Corbel', 'Cordia New', 'CordiaUPC', 'Cornerstone', 'Coronet', 'Cuckoo', 'Curlz MT', 'DaunPenh', 'Dauphin', 'David', 'DB LCD Temp', 'DELICIOUS', 'Denmark', 'DFKai-SB', 'Didot', 'DilleniaUPC', 'DIN', 'DokChampa', 'Dotum', 'DotumChe', 'Ebrima', 'Edwardian Script ITC', 'Elephant', 'English 111 Vivace BT', 'Engravers MT', 'EngraversGothic BT', 'Eras Bold ITC', 'Eras Demi ITC', 'Eras Light ITC', 'Eras Medium ITC', 'EucrosiaUPC', 'Euphemia', 'Euphemia UCAS', 'EUROSTILE', 'Exotc350 Bd BT', 'FangSong', 'Felix Titling', 'Fixedsys', 'FONTIN', 'Footlight MT Light', 'Forte', 'FrankRuehl', 'Fransiscan', 'Freefrm721 Blk BT', 'FreesiaUPC', 'Freestyle Script', 'French Script MT', 'FrnkGothITC Bk BT', 'Fruitger', 'FRUTIGER', 'Futura', 'Futura Bk BT', 'Futura Lt BT', 'Futura Md BT', 'Futura ZBlk BT', 'FuturaBlack BT', 'Gabriola', 'Galliard BT', 'Gautami', 'Geeza Pro', 'Geometr231 BT', 'Geometr231 Hv BT', 'Geometr231 Lt BT', 'GeoSlab 703 Lt BT', 'GeoSlab 703 XBd BT', 'Gigi', 'Gill Sans', 'Gill Sans MT', 'Gill Sans MT Condensed', 'Gill Sans MT Ext Condensed Bold', 'Gill Sans Ultra Bold', 'Gill Sans Ultra Bold Condensed', 'Gisha', 'Gloucester MT Extra Condensed', 'GOTHAM', 'GOTHAM BOLD', 'Goudy Old Style', 'Goudy Stout', 'GoudyHandtooled BT', 'GoudyOLSt BT', 'Gujarati Sangam MN', 'Gulim', 'GulimChe', 'Gungsuh', 'GungsuhChe', 'Gurmukhi MN', 'Haettenschweiler', 'Harlow Solid Italic', 'Harrington', 'Heather', 'Heiti SC', 'Heiti TC', 'HELV', 'Herald', 'High Tower Text', 'Hiragino Kaku Gothic ProN', 'Hiragino Mincho ProN', 'Hoefler Text', 'Humanst 521 Cn BT', 'Humanst521 BT', 'Humanst521 Lt BT', 'Imprint MT Shadow', 'Incised901 Bd BT', 'Incised901 BT', 'Incised901 Lt BT', 'INCONSOLATA', 'Informal Roman', 'Informal011 BT', 'INTERSTATE', 'IrisUPC', 'Iskoola Pota', 'JasmineUPC', 'Jazz LET', 'Jenson', 'Jester', 'Jokerman', 'Juice ITC', 'Kabel Bk BT', 'Kabel Ult BT', 'Kailasa', 'KaiTi', 'Kalinga', 'Kannada Sangam MN', 'Kartika', 'Kaufmann Bd BT', 'Kaufmann BT', 'Khmer UI', 'KodchiangUPC', 'Kokila', 'Korinna BT', 'Kristen ITC', 'Krungthep', 'Kunstler Script', 'Lao UI', 'Latha', 'Leelawadee', 'Letter Gothic', 'Levenim MT', 'LilyUPC', 'Lithograph', 'Lithograph Light', 'Long Island', 'Lydian BT', 'Magneto', 'Maiandra GD', 'Malayalam Sangam MN', 'Malgun Gothic', 'Mangal', 'Marigold', 'Marion', 'Marker Felt', 'Market', 'Marlett', 'Matisse ITC', 'Matura MT Script Capitals', 'Meiryo', 'Meiryo UI', 'Microsoft Himalaya', 'Microsoft JhengHei', 'Microsoft New Tai Lue', 'Microsoft PhagsPa', 'Microsoft Tai Le', 'Microsoft Uighur', 'Microsoft YaHei', 'Microsoft Yi Baiti', 'MingLiU', 'MingLiU_HKSCS', 'MingLiU_HKSCS-ExtB', 'MingLiU-ExtB', 'Minion', 'Minion Pro', 'Miriam', 'Miriam Fixed', 'Mistral', 'Modern', 'Modern No. 20', 'Mona Lisa Solid ITC TT', 'Mongolian Baiti', 'MONO', 'MoolBoran', 'Mrs Eaves', 'MS LineDraw', 'MS Mincho', 'MS PMincho', 'MS Reference Specialty', 'MS UI Gothic', 'MT Extra', 'MUSEO', 'MV Boli', 'Nadeem', 'Narkisim', 'NEVIS', 'News Gothic', 'News GothicMT', 'NewsGoth BT', 'Niagara Engraved', 'Niagara Solid', 'Noteworthy', 'NSimSun', 'Nyala', 'OCR A Extended', 'Old Century', 'Old English Text MT', 'Onyx', 'Onyx BT', 'OPTIMA', 'Oriya Sangam MN', 'OSAKA', 'OzHandicraft BT', 'Palace Script MT', 'Papyrus', 'Parchment', 'Party LET', 'Pegasus', 'Perpetua', 'Perpetua Titling MT', 'PetitaBold', 'Pickwick', 'Plantagenet Cherokee', 'Playbill', 'PMingLiU', 'PMingLiU-ExtB', 'Poor Richard', 'Poster', 'PosterBodoni BT', 'PRINCETOWN LET', 'Pristina', 'PTBarnum BT', 'Pythagoras', 'Raavi', 'Rage Italic', 'Ravie', 'Ribbon131 Bd BT', 'Rockwell', 'Rockwell Condensed', 'Rockwell Extra Bold', 'Rod', 'Roman', 'Sakkal Majalla', 'Santa Fe LET', 'Savoye LET', 'Sceptre', 'Script', 'Script MT Bold', 'SCRIPTINA', 'Serifa', 'Serifa BT', 'Serifa Th BT', 'ShelleyVolante BT', 'Sherwood', 'Shonar Bangla', 'Showcard Gothic', 'Shruti', 'Signboard', 'SILKSCREEN', 'SimHei', 'Simplified Arabic', 'Simplified Arabic Fixed', 'SimSun', 'SimSun-ExtB', 'Sinhala Sangam MN', 'Sketch Rockwell', 'Skia', 'Small Fonts', 'Snap ITC', 'Snell Roundhand', 'Socket', 'Souvenir Lt BT', 'Staccato222 BT', 'Steamer', 'Stencil', 'Storybook', 'Styllo', 'Subway', 'Swis721 BlkEx BT', 'Swiss911 XCm BT', 'Sylfaen', 'Synchro LET', 'System', 'Tamil Sangam MN', 'Technical', 'Teletype', 'Telugu Sangam MN', 'Tempus Sans ITC', 'Terminal', 'Thonburi', 'Traditional Arabic', 'Trajan', 'TRAJAN PRO', 'Tristan', 'Tubular', 'Tunga', 'Tw Cen MT', 'Tw Cen MT Condensed', 'Tw Cen MT Condensed Extra Bold', 'TypoUpright BT', 'Unicorn', 'Univers', 'Univers CE 55 Medium', 'Univers Condensed', 'Utsaah', 'Vagabond', 'Vani', 'Vijaya', 'Viner Hand ITC', 'VisualUI', 'Vivaldi', 'Vladimir Script', 'Vrinda', 'Westminster', 'WHITNEY', 'Wide Latin', 'ZapfEllipt BT', 'ZapfHumnst BT', 'ZapfHumnst Dm BT', 'Zapfino', 'Zurich BlkEx BT', 'Zurich Ex BT', 'ZWAdobeF'];
+          fontList = fontList.concat(extendedFontList);
+        }
+
+        fontList = fontList.concat(options.fonts.userDefinedFonts); // remove duplicate fonts
+
+        fontList = fontList.filter(function (font, position) {
+          return fontList.indexOf(font) === position;
+        }); // we use m or w because these two characters take up the maximum width.
+        // And we use a LLi so that the same matching fonts can get separated
+
+        var testString = 'mmmmmmmmmmlli'; // we test using 72px font size, we may use any size. I guess larger the better.
+
+        var testSize = '72px';
+        var h = document.getElementsByTagName('body')[0]; // div to load spans for the base fonts
+
+        var baseFontsDiv = document.createElement('div'); // div to load spans for the fonts to detect
+
+        var fontsDiv = document.createElement('div');
+        var defaultWidth = {};
+        var defaultHeight = {}; // creates a span where the fonts will be loaded
+
+        var createSpan = function () {
+          var s = document.createElement('span');
+          /*
+           * We need this css as in some weird browser this
+           * span elements shows up for a microSec which creates a
+           * bad user experience
+           */
+
+          s.style.position = 'absolute';
+          s.style.left = '-9999px';
+          s.style.fontSize = testSize; // css font reset to reset external styles
+
+          s.style.fontStyle = 'normal';
+          s.style.fontWeight = 'normal';
+          s.style.letterSpacing = 'normal';
+          s.style.lineBreak = 'auto';
+          s.style.lineHeight = 'normal';
+          s.style.textTransform = 'none';
+          s.style.textAlign = 'left';
+          s.style.textDecoration = 'none';
+          s.style.textShadow = 'none';
+          s.style.whiteSpace = 'normal';
+          s.style.wordBreak = 'normal';
+          s.style.wordSpacing = 'normal';
+          s.innerHTML = testString;
+          return s;
+        }; // creates a span and load the font to detect and a base font for fallback
+
+
+        var createSpanWithFonts = function (fontToDetect, baseFont) {
+          var s = createSpan();
+          s.style.fontFamily = "'" + fontToDetect + "'," + baseFont;
+          return s;
+        }; // creates spans for the base fonts and adds them to baseFontsDiv
+
+
+        var initializeBaseFontsSpans = function () {
+          var spans = [];
+
+          for (var index = 0, length = baseFonts.length; index < length; index++) {
+            var s = createSpan();
+            s.style.fontFamily = baseFonts[index];
+            baseFontsDiv.appendChild(s);
+            spans.push(s);
+          }
+
+          return spans;
+        }; // creates spans for the fonts to detect and adds them to fontsDiv
+
+
+        var initializeFontsSpans = function () {
+          var spans = {};
+
+          for (var i = 0, l = fontList.length; i < l; i++) {
+            var fontSpans = [];
+
+            for (var j = 0, numDefaultFonts = baseFonts.length; j < numDefaultFonts; j++) {
+              var s = createSpanWithFonts(fontList[i], baseFonts[j]);
+              fontsDiv.appendChild(s);
+              fontSpans.push(s);
+            }
+
+            spans[fontList[i]] = fontSpans; // Stores {fontName : [spans for that font]}
+          }
+
+          return spans;
+        }; // checks if a font is available
+
+
+        var isFontAvailable = function (fontSpans) {
+          var detected = false;
+
+          for (var i = 0; i < baseFonts.length; i++) {
+            detected = fontSpans[i].offsetWidth !== defaultWidth[baseFonts[i]] || fontSpans[i].offsetHeight !== defaultHeight[baseFonts[i]];
+
+            if (detected) {
+              return detected;
+            }
+          }
+
+          return detected;
+        }; // create spans for base fonts
+
+
+        var baseFontsSpans = initializeBaseFontsSpans(); // add the spans to the DOM
+
+        h.appendChild(baseFontsDiv); // get the default width for the three base fonts
+
+        for (var index = 0, length = baseFonts.length; index < length; index++) {
+          defaultWidth[baseFonts[index]] = baseFontsSpans[index].offsetWidth; // width for the default font
+
+          defaultHeight[baseFonts[index]] = baseFontsSpans[index].offsetHeight; // height for the default font
+        } // create spans for fonts to detect
+
+
+        var fontsSpans = initializeFontsSpans(); // add all the spans to the DOM
+
+        h.appendChild(fontsDiv); // check available fonts
+
+        var available = [];
+
+        for (var i = 0, l = fontList.length; i < l; i++) {
+          if (isFontAvailable(fontsSpans[fontList[i]])) {
+            available.push(fontList[i]);
+          }
+        } // remove spans from DOM
+
+
+        h.removeChild(fontsDiv);
+        h.removeChild(baseFontsDiv);
+        done(available);
+      };
+
+      var pluginsComponent = function (done, options) {
+        if (isIE()) {
+          if (!options.plugins.excludeIE) {
+            done(getIEPlugins(options));
+          } else {
+            done(options.EXCLUDED);
+          }
+        } else {
+          done(getRegularPlugins(options));
+        }
+      };
+
+      var getRegularPlugins = function (options) {
+        if (navigator.plugins == null) {
+          return options.NOT_AVAILABLE;
+        }
+
+        var plugins = []; // plugins isn't defined in Node envs.
+
+        for (var i = 0, l = navigator.plugins.length; i < l; i++) {
+          if (navigator.plugins[i]) {
+            plugins.push(navigator.plugins[i]);
+          }
+        } // sorting plugins only for those user agents, that we know randomize the plugins
+        // every time we try to enumerate them
+
+
+        if (pluginsShouldBeSorted(options)) {
+          plugins = plugins.sort(function (a, b) {
+            if (a.name > b.name) {
+              return 1;
+            }
+
+            if (a.name < b.name) {
+              return -1;
+            }
+
+            return 0;
+          });
+        }
+
+        return map(plugins, function (p) {
+          var mimeTypes = map(p, function (mt) {
+            return [mt.type, mt.suffixes];
+          });
+          return [p.name, p.description, mimeTypes];
+        });
+      };
+
+      var getIEPlugins = function (options) {
+        var result = [];
+
+        if (Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, 'ActiveXObject') || 'ActiveXObject' in window) {
+          var names = ['AcroPDF.PDF', // Adobe PDF reader 7+
+          'Adodb.Stream', 'AgControl.AgControl', // Silverlight
+          'DevalVRXCtrl.DevalVRXCtrl.1', 'MacromediaFlashPaper.MacromediaFlashPaper', 'Msxml2.DOMDocument', 'Msxml2.XMLHTTP', 'PDF.PdfCtrl', // Adobe PDF reader 6 and earlier, brrr
+          'QuickTime.QuickTime', // QuickTime
+          'QuickTimeCheckObject.QuickTimeCheck.1', 'RealPlayer', 'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)', 'RealVideo.RealVideo(tm) ActiveX Control (32-bit)', 'Scripting.Dictionary', 'SWCtl.SWCtl', // ShockWave player
+          'Shell.UIHelper', 'ShockwaveFlash.ShockwaveFlash', // flash plugin
+          'Skype.Detection', 'TDCCtl.TDCCtl', 'WMPlayer.OCX', // Windows media player
+          'rmocx.RealPlayer G2 Control', 'rmocx.RealPlayer G2 Control.1']; // starting to detect plugins in IE
+
+          result = map(names, function (name) {
+            try {
+              // eslint-disable-next-line no-new
+              new window.ActiveXObject(name);
+              return name;
+            } catch (e) {
+              return options.ERROR;
+            }
+          });
+        } else {
+          result.push(options.NOT_AVAILABLE);
+        }
+
+        if (navigator.plugins) {
+          result = result.concat(getRegularPlugins(options));
+        }
+
+        return result;
+      };
+
+      var pluginsShouldBeSorted = function (options) {
+        var should = false;
+
+        for (var i = 0, l = options.plugins.sortPluginsFor.length; i < l; i++) {
+          var re = options.plugins.sortPluginsFor[i];
+
+          if (navigator.userAgent.match(re)) {
+            should = true;
+            break;
+          }
+        }
+
+        return should;
+      };
+
+      var touchSupportKey = function (done) {
+        done(getTouchSupport());
+      };
+
+      var hardwareConcurrencyKey = function (done, options) {
+        done(getHardwareConcurrency(options));
+      };
+
+      var hasSessionStorage = function (options) {
+        try {
+          return !!window.sessionStorage;
+        } catch (e) {
+          return options.ERROR; // SecurityError when referencing it means it exists
+        }
+      }; // https://bugzilla.mozilla.org/show_bug.cgi?id=781447
+
+
+      var hasLocalStorage = function (options) {
+        try {
+          return !!window.localStorage;
+        } catch (e) {
+          return options.ERROR; // SecurityError when referencing it means it exists
+        }
+      };
+
+      var hasIndexedDB = function (options) {
+        try {
+          return !!window.indexedDB;
+        } catch (e) {
+          return options.ERROR; // SecurityError when referencing it means it exists
+        }
+      };
+
+      var getHardwareConcurrency = function (options) {
+        if (navigator.hardwareConcurrency) {
+          return navigator.hardwareConcurrency;
+        }
+
+        return options.NOT_AVAILABLE;
+      };
+
+      var getNavigatorCpuClass = function (options) {
+        return navigator.cpuClass || options.NOT_AVAILABLE;
+      };
+
+      var getNavigatorPlatform = function (options) {
+        if (navigator.platform) {
+          return navigator.platform;
+        } else {
+          return options.NOT_AVAILABLE;
+        }
+      };
+
+      var getDoNotTrack = function (options) {
+        if (navigator.doNotTrack) {
+          return navigator.doNotTrack;
+        } else if (navigator.msDoNotTrack) {
+          return navigator.msDoNotTrack;
+        } else if (window.doNotTrack) {
+          return window.doNotTrack;
+        } else {
+          return options.NOT_AVAILABLE;
+        }
+      }; // This is a crude and primitive touch screen detection.
+      // It's not possible to currently reliably detect the  availability of a touch screen
+      // with a JS, without actually subscribing to a touch event.
+      // http://www.stucox.com/blog/you-cant-detect-a-touchscreen/
+      // https://github.com/Modernizr/Modernizr/issues/548
+      // method returns an array of 3 values:
+      // maxTouchPoints, the success or failure of creating a TouchEvent,
+      // and the availability of the 'ontouchstart' property
+
+
+      var getTouchSupport = function () {
+        var maxTouchPoints = 0;
+        var touchEvent;
+
+        if (typeof navigator.maxTouchPoints !== 'undefined') {
+          maxTouchPoints = navigator.maxTouchPoints;
+        } else if (typeof navigator.msMaxTouchPoints !== 'undefined') {
+          maxTouchPoints = navigator.msMaxTouchPoints;
+        }
+
+        try {
+          document.createEvent('TouchEvent');
+          touchEvent = true;
+        } catch (_) {
+          touchEvent = false;
+        }
+
+        var touchStart = 'ontouchstart' in window;
+        return [maxTouchPoints, touchEvent, touchStart];
+      }; // https://www.browserleaks.com/canvas#how-does-it-work
+
+
+      var getCanvasFp = function (options) {
+        var result = []; // Very simple now, need to make it more complex (geo shapes etc)
+
+        var canvas = document.createElement('canvas');
+        canvas.width = 2000;
+        canvas.height = 200;
+        canvas.style.display = 'inline';
+        var ctx = canvas.getContext('2d'); // detect browser support of canvas winding
+        // http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
+        // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/canvas/winding.js
+
+        ctx.rect(0, 0, 10, 10);
+        ctx.rect(2, 2, 6, 6);
+        result.push('canvas winding:' + (ctx.isPointInPath(5, 5, 'evenodd') === false ? 'yes' : 'no'));
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillStyle = '#f60';
+        ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = '#069'; // https://github.com/Valve/fingerprintjs2/issues/66
+
+        if (options.dontUseFakeFontInCanvas) {
+          ctx.font = '11pt Arial';
+        } else {
+          ctx.font = '11pt no-real-font-123';
+        }
+
+        ctx.fillText('Cwm fjordbank glyphs vext quiz, \ud83d\ude03', 2, 15);
+        ctx.fillStyle = 'rgba(102, 204, 0, 0.2)';
+        ctx.font = '18pt Arial';
+        ctx.fillText('Cwm fjordbank glyphs vext quiz, \ud83d\ude03', 4, 45); // canvas blending
+        // http://blogs.adobe.com/webplatform/2013/01/28/blending-features-in-canvas/
+        // http://jsfiddle.net/NDYV8/16/
+
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.fillStyle = 'rgb(255,0,255)';
+        ctx.beginPath();
+        ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = 'rgb(0,255,255)';
+        ctx.beginPath();
+        ctx.arc(100, 50, 50, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = 'rgb(255,255,0)';
+        ctx.beginPath();
+        ctx.arc(75, 100, 50, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = 'rgb(255,0,255)'; // canvas winding
+        // http://blogs.adobe.com/webplatform/2013/01/30/winding-rules-in-canvas/
+        // http://jsfiddle.net/NDYV8/19/
+
+        ctx.arc(75, 75, 75, 0, Math.PI * 2, true);
+        ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
+        ctx.fill('evenodd');
+
+        if (canvas.toDataURL) {
+          result.push('canvas fp:' + canvas.toDataURL());
+        }
+
+        return result;
+      };
+
+      var getWebglFp = function () {
+        var gl;
+
+        var fa2s = function (fa) {
+          gl.clearColor(0.0, 0.0, 0.0, 1.0);
+          gl.enable(gl.DEPTH_TEST);
+          gl.depthFunc(gl.LEQUAL);
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+          return '[' + fa[0] + ', ' + fa[1] + ']';
+        };
+
+        var maxAnisotropy = function (gl) {
+          var ext = gl.getExtension('EXT_texture_filter_anisotropic') || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic') || gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
+
+          if (ext) {
+            var anisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+
+            if (anisotropy === 0) {
+              anisotropy = 2;
+            }
+
+            return anisotropy;
+          } else {
+            return null;
+          }
+        };
+
+        gl = getWebglCanvas();
+
+        if (!gl) {
+          return null;
+        } // WebGL fingerprinting is a combination of techniques, found in MaxMind antifraud script & Augur fingerprinting.
+        // First it draws a gradient object with shaders and convers the image to the Base64 string.
+        // Then it enumerates all WebGL extensions & capabilities and appends them to the Base64 string, resulting in a huge WebGL string, potentially very unique on each device
+        // Since iOS supports webgl starting from version 8.1 and 8.1 runs on several graphics chips, the results may be different across ios devices, but we need to verify it.
+
+
+        var result = [];
+        var vShaderTemplate = 'attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}';
+        var fShaderTemplate = 'precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}';
+        var vertexPosBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer);
+        var vertices = new Float32Array([-0.2, -0.9, 0, 0.4, -0.26, 0, 0, 0.732134444, 0]);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        vertexPosBuffer.itemSize = 3;
+        vertexPosBuffer.numItems = 3;
+        var program = gl.createProgram();
+        var vshader = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vshader, vShaderTemplate);
+        gl.compileShader(vshader);
+        var fshader = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fshader, fShaderTemplate);
+        gl.compileShader(fshader);
+        gl.attachShader(program, vshader);
+        gl.attachShader(program, fshader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+        program.vertexPosAttrib = gl.getAttribLocation(program, 'attrVertex');
+        program.offsetUniform = gl.getUniformLocation(program, 'uniformOffset');
+        gl.enableVertexAttribArray(program.vertexPosArray);
+        gl.vertexAttribPointer(program.vertexPosAttrib, vertexPosBuffer.itemSize, gl.FLOAT, !1, 0, 0);
+        gl.uniform2f(program.offsetUniform, 1, 1);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexPosBuffer.numItems);
+
+        try {
+          result.push(gl.canvas.toDataURL());
+        } catch (e) {
+          /* .toDataURL may be absent or broken (blocked by extension) */
+        }
+
+        result.push('extensions:' + (gl.getSupportedExtensions() || []).join(';'));
+        result.push('webgl aliased line width range:' + fa2s(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)));
+        result.push('webgl aliased point size range:' + fa2s(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)));
+        result.push('webgl alpha bits:' + gl.getParameter(gl.ALPHA_BITS));
+        result.push('webgl antialiasing:' + (gl.getContextAttributes().antialias ? 'yes' : 'no'));
+        result.push('webgl blue bits:' + gl.getParameter(gl.BLUE_BITS));
+        result.push('webgl depth bits:' + gl.getParameter(gl.DEPTH_BITS));
+        result.push('webgl green bits:' + gl.getParameter(gl.GREEN_BITS));
+        result.push('webgl max anisotropy:' + maxAnisotropy(gl));
+        result.push('webgl max combined texture image units:' + gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+        result.push('webgl max cube map texture size:' + gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE));
+        result.push('webgl max fragment uniform vectors:' + gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS));
+        result.push('webgl max render buffer size:' + gl.getParameter(gl.MAX_RENDERBUFFER_SIZE));
+        result.push('webgl max texture image units:' + gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS));
+        result.push('webgl max texture size:' + gl.getParameter(gl.MAX_TEXTURE_SIZE));
+        result.push('webgl max varying vectors:' + gl.getParameter(gl.MAX_VARYING_VECTORS));
+        result.push('webgl max vertex attribs:' + gl.getParameter(gl.MAX_VERTEX_ATTRIBS));
+        result.push('webgl max vertex texture image units:' + gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+        result.push('webgl max vertex uniform vectors:' + gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS));
+        result.push('webgl max viewport dims:' + fa2s(gl.getParameter(gl.MAX_VIEWPORT_DIMS)));
+        result.push('webgl red bits:' + gl.getParameter(gl.RED_BITS));
+        result.push('webgl renderer:' + gl.getParameter(gl.RENDERER));
+        result.push('webgl shading language version:' + gl.getParameter(gl.SHADING_LANGUAGE_VERSION));
+        result.push('webgl stencil bits:' + gl.getParameter(gl.STENCIL_BITS));
+        result.push('webgl vendor:' + gl.getParameter(gl.VENDOR));
+        result.push('webgl version:' + gl.getParameter(gl.VERSION));
+
+        try {
+          // Add the unmasked vendor and unmasked renderer if the debug_renderer_info extension is available
+          var extensionDebugRendererInfo = gl.getExtension('WEBGL_debug_renderer_info');
+
+          if (extensionDebugRendererInfo) {
+            result.push('webgl unmasked vendor:' + gl.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL));
+            result.push('webgl unmasked renderer:' + gl.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL));
+          }
+        } catch (e) {
+          /* squelch */
+        }
+
+        if (!gl.getShaderPrecisionFormat) {
+          return result;
+        }
+
+        each(['FLOAT', 'INT'], function (numType) {
+          each(['VERTEX', 'FRAGMENT'], function (shader) {
+            each(['HIGH', 'MEDIUM', 'LOW'], function (numSize) {
+              each(['precision', 'rangeMin', 'rangeMax'], function (key) {
+                var format = gl.getShaderPrecisionFormat(gl[shader + '_SHADER'], gl[numSize + '_' + numType])[key];
+
+                if (key !== 'precision') {
+                  key = 'precision ' + key;
+                }
+
+                var line = ['webgl ', shader.toLowerCase(), ' shader ', numSize.toLowerCase(), ' ', numType.toLowerCase(), ' ', key, ':', format].join('');
+                result.push(line);
+              });
+            });
+          });
+        });
+        return result;
+      };
+
+      var getWebglVendorAndRenderer = function () {
+        /* This a subset of the WebGL fingerprint with a lot of entropy, while being reasonably browser-independent */
+        try {
+          var glContext = getWebglCanvas();
+          var extensionDebugRendererInfo = glContext.getExtension('WEBGL_debug_renderer_info');
+          return glContext.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL) + '~' + glContext.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL);
+        } catch (e) {
+          return null;
+        }
+      };
+
+      var getAdBlock = function () {
+        var ads = document.createElement('div');
+        ads.innerHTML = '&nbsp;';
+        ads.className = 'adsbox';
+        var result = false;
+
+        try {
+          // body may not exist, that's why we need try/catch
+          document.body.appendChild(ads);
+          result = document.getElementsByClassName('adsbox')[0].offsetHeight === 0;
+          document.body.removeChild(ads);
+        } catch (e) {
+          result = false;
+        }
+
+        return result;
+      };
+
+      var getHasLiedLanguages = function () {
+        // We check if navigator.language is equal to the first language of navigator.languages
+        if (typeof navigator.languages !== 'undefined') {
+          try {
+            var firstLanguages = navigator.languages[0].substr(0, 2);
+
+            if (firstLanguages !== navigator.language.substr(0, 2)) {
+              return true;
+            }
+          } catch (err) {
+            return true;
+          }
+        }
+
+        return false;
+      };
+
+      var getHasLiedResolution = function () {
+        return window.screen.width < window.screen.availWidth || window.screen.height < window.screen.availHeight;
+      };
+
+      var getHasLiedOs = function () {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var oscpu = navigator.oscpu;
+        var platform = navigator.platform.toLowerCase();
+        var os; // We extract the OS from the user agent (respect the order of the if else if statement)
+
+        if (userAgent.indexOf('windows phone') >= 0) {
+          os = 'Windows Phone';
+        } else if (userAgent.indexOf('win') >= 0) {
+          os = 'Windows';
+        } else if (userAgent.indexOf('android') >= 0) {
+          os = 'Android';
+        } else if (userAgent.indexOf('linux') >= 0) {
+          os = 'Linux';
+        } else if (userAgent.indexOf('iphone') >= 0 || userAgent.indexOf('ipad') >= 0) {
+          os = 'iOS';
+        } else if (userAgent.indexOf('mac') >= 0) {
+          os = 'Mac';
+        } else {
+          os = 'Other';
+        } // We detect if the person uses a mobile device
+
+
+        var mobileDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+
+        if (mobileDevice && os !== 'Windows Phone' && os !== 'Android' && os !== 'iOS' && os !== 'Other') {
+          return true;
+        } // We compare oscpu with the OS extracted from the UA
+
+
+        if (typeof oscpu !== 'undefined') {
+          oscpu = oscpu.toLowerCase();
+
+          if (oscpu.indexOf('win') >= 0 && os !== 'Windows' && os !== 'Windows Phone') {
+            return true;
+          } else if (oscpu.indexOf('linux') >= 0 && os !== 'Linux' && os !== 'Android') {
+            return true;
+          } else if (oscpu.indexOf('mac') >= 0 && os !== 'Mac' && os !== 'iOS') {
+            return true;
+          } else if ((oscpu.indexOf('win') === -1 && oscpu.indexOf('linux') === -1 && oscpu.indexOf('mac') === -1) !== (os === 'Other')) {
+            return true;
+          }
+        } // We compare platform with the OS extracted from the UA
+
+
+        if (platform.indexOf('win') >= 0 && os !== 'Windows' && os !== 'Windows Phone') {
+          return true;
+        } else if ((platform.indexOf('linux') >= 0 || platform.indexOf('android') >= 0 || platform.indexOf('pike') >= 0) && os !== 'Linux' && os !== 'Android') {
+          return true;
+        } else if ((platform.indexOf('mac') >= 0 || platform.indexOf('ipad') >= 0 || platform.indexOf('ipod') >= 0 || platform.indexOf('iphone') >= 0) && os !== 'Mac' && os !== 'iOS') {
+          return true;
+        } else if ((platform.indexOf('win') === -1 && platform.indexOf('linux') === -1 && platform.indexOf('mac') === -1) !== (os === 'Other')) {
+          return true;
+        }
+
+        return typeof navigator.plugins === 'undefined' && os !== 'Windows' && os !== 'Windows Phone';
+      };
+
+      var getHasLiedBrowser = function () {
+        var userAgent = navigator.userAgent.toLowerCase();
+        var productSub = navigator.productSub; // we extract the browser from the user agent (respect the order of the tests)
+
+        var browser;
+
+        if (userAgent.indexOf('firefox') >= 0) {
+          browser = 'Firefox';
+        } else if (userAgent.indexOf('opera') >= 0 || userAgent.indexOf('opr') >= 0) {
+          browser = 'Opera';
+        } else if (userAgent.indexOf('chrome') >= 0) {
+          browser = 'Chrome';
+        } else if (userAgent.indexOf('safari') >= 0) {
+          browser = 'Safari';
+        } else if (userAgent.indexOf('trident') >= 0) {
+          browser = 'Internet Explorer';
+        } else {
+          browser = 'Other';
+        }
+
+        if ((browser === 'Chrome' || browser === 'Safari' || browser === 'Opera') && productSub !== '20030107') {
+          return true;
+        } // eslint-disable-next-line no-eval
+
+
+        var tempRes = eval.toString().length;
+
+        if (tempRes === 37 && browser !== 'Safari' && browser !== 'Firefox' && browser !== 'Other') {
+          return true;
+        } else if (tempRes === 39 && browser !== 'Internet Explorer' && browser !== 'Other') {
+          return true;
+        } else if (tempRes === 33 && browser !== 'Chrome' && browser !== 'Opera' && browser !== 'Other') {
+          return true;
+        } // We create an error to see how it is handled
+
+
+        var errFirefox;
+
+        try {
+          // eslint-disable-next-line no-throw-literal
+          throw 'a';
+        } catch (err) {
+          try {
+            err.toSource();
+            errFirefox = true;
+          } catch (errOfErr) {
+            errFirefox = false;
+          }
+        }
+
+        return errFirefox && browser !== 'Firefox' && browser !== 'Other';
+      };
+
+      var isCanvasSupported = function () {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+      };
+
+      var isWebGlSupported = function () {
+        // code taken from Modernizr
+        if (!isCanvasSupported()) {
+          return false;
+        }
+
+        var glContext = getWebglCanvas();
+        return !!window.WebGLRenderingContext && !!glContext;
+      };
+
+      var isIE = function () {
+        if (navigator.appName === 'Microsoft Internet Explorer') {
+          return true;
+        } else if (navigator.appName === 'Netscape' && /Trident/.test(navigator.userAgent)) {
+          // IE 11
+          return true;
+        }
+
+        return false;
+      };
+
+      var hasSwfObjectLoaded = function () {
+        return typeof window.swfobject !== 'undefined';
+      };
+
+      var hasMinFlashInstalled = function () {
+        return window.swfobject.hasFlashPlayerVersion('9.0.0');
+      };
+
+      var addFlashDivNode = function (options) {
+        var node = document.createElement('div');
+        node.setAttribute('id', options.fonts.swfContainerId);
+        document.body.appendChild(node);
+      };
+
+      var loadSwfAndDetectFonts = function (done, options) {
+        var hiddenCallback = '___fp_swf_loaded';
+
+        window[hiddenCallback] = function (fonts) {
+          done(fonts);
+        };
+
+        var id = options.fonts.swfContainerId;
+        addFlashDivNode();
+        var flashvars = {
+          onReady: hiddenCallback
+        };
+        var flashparams = {
+          allowScriptAccess: 'always',
+          menu: 'false'
+        };
+        window.swfobject.embedSWF(options.fonts.swfPath, id, '1', '1', '9.0.0', false, flashvars, flashparams, {});
+      };
+
+      var getWebglCanvas = function () {
+        var canvas = document.createElement('canvas');
+        var gl = null;
+
+        try {
+          gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        } catch (e) {
+          /* squelch */
+        }
+
+        if (!gl) {
+          gl = null;
+        }
+
+        return gl;
+      };
+
+      var components = [{
+        key: 'userAgent',
+        getData: UserAgent
+      }, {
+        key: 'language',
+        getData: languageKey
+      }, {
+        key: 'colorDepth',
+        getData: colorDepthKey
+      }, {
+        key: 'deviceMemory',
+        getData: deviceMemoryKey
+      }, {
+        key: 'pixelRatio',
+        getData: pixelRatioKey
+      }, {
+        key: 'hardwareConcurrency',
+        getData: hardwareConcurrencyKey
+      }, {
+        key: 'screenResolution',
+        getData: screenResolutionKey
+      }, {
+        key: 'availableScreenResolution',
+        getData: availableScreenResolutionKey
+      }, {
+        key: 'timezoneOffset',
+        getData: timezoneOffset
+      }, {
+        key: 'timezone',
+        getData: timezone
+      }, {
+        key: 'sessionStorage',
+        getData: sessionStorageKey
+      }, {
+        key: 'localStorage',
+        getData: localStorageKey
+      }, {
+        key: 'indexedDb',
+        getData: indexedDbKey
+      }, {
+        key: 'addBehavior',
+        getData: addBehaviorKey
+      }, {
+        key: 'openDatabase',
+        getData: openDatabaseKey
+      }, {
+        key: 'cpuClass',
+        getData: cpuClassKey
+      }, {
+        key: 'platform',
+        getData: platformKey
+      }, {
+        key: 'doNotTrack',
+        getData: doNotTrackKey
+      }, {
+        key: 'plugins',
+        getData: pluginsComponent
+      }, {
+        key: 'canvas',
+        getData: canvasKey
+      }, {
+        key: 'webgl',
+        getData: webglKey
+      }, {
+        key: 'webglVendorAndRenderer',
+        getData: webglVendorAndRendererKey
+      }, {
+        key: 'adBlock',
+        getData: adBlockKey
+      }, {
+        key: 'hasLiedLanguages',
+        getData: hasLiedLanguagesKey
+      }, {
+        key: 'hasLiedResolution',
+        getData: hasLiedResolutionKey
+      }, {
+        key: 'hasLiedOs',
+        getData: hasLiedOsKey
+      }, {
+        key: 'hasLiedBrowser',
+        getData: hasLiedBrowserKey
+      }, {
+        key: 'touchSupport',
+        getData: touchSupportKey
+      }, {
+        key: 'fonts',
+        getData: jsFontsKey,
+        pauseBefore: true
+      }, {
+        key: 'fontsFlash',
+        getData: flashFontsKey,
+        pauseBefore: true
+      }, {
+        key: 'audio',
+        getData: audioKey
+      }, {
+        key: 'enumerateDevices',
+        getData: enumerateDevicesKey
+      }];
+
+      var Fingerprint2 = function (options) {
+        throw new Error("'new Fingerprint()' is deprecated, see https://github.com/Valve/fingerprintjs2#upgrade-guide-from-182-to-200");
+      };
+
+      Fingerprint2.get = function (options, callback) {
+        if (!callback) {
+          callback = options;
+          options = {};
+        } else if (!options) {
+          options = {};
+        }
+
+        extendSoft(options, defaultOptions);
+        options.components = options.extraComponents.concat(components);
+        var keys = {
+          data: [],
+          addPreprocessedComponent: function (key, value) {
+            if (typeof options.preprocessor === 'function') {
+              value = options.preprocessor(key, value);
+            }
+
+            keys.data.push({
+              key: key,
+              value: value
+            });
+          }
+        };
+        var i = -1;
+
+        var chainComponents = function (alreadyWaited) {
+          i += 1;
+
+          if (i >= options.components.length) {
+            // on finish
+            callback(keys.data);
+            return;
+          }
+
+          var component = options.components[i];
+
+          if (options.excludes[component.key]) {
+            chainComponents(false); // skip
+
+            return;
+          }
+
+          if (!alreadyWaited && component.pauseBefore) {
+            i -= 1;
+            setTimeout(function () {
+              chainComponents(true);
+            }, 1);
+            return;
+          }
+
+          try {
+            component.getData(function (value) {
+              keys.addPreprocessedComponent(component.key, value);
+              chainComponents(false);
+            }, options);
+          } catch (error) {
+            // main body error
+            keys.addPreprocessedComponent(component.key, String(error));
+            chainComponents(false);
+          }
+        };
+
+        chainComponents(false);
+      };
+
+      Fingerprint2.getPromise = function (options) {
+        return new Promise(function (resolve, reject) {
+          Fingerprint2.get(options, resolve);
+        });
+      };
+
+      Fingerprint2.getV18 = function (options, callback) {
+        if (callback == null) {
+          callback = options;
+          options = {};
+        }
+
+        return Fingerprint2.get(options, function (components) {
+          var newComponents = [];
+
+          for (var i = 0; i < components.length; i++) {
+            var component = components[i];
+
+            if (component.value === (options.NOT_AVAILABLE || 'not available')) {
+              newComponents.push({
+                key: component.key,
+                value: 'unknown'
+              });
+            } else if (component.key === 'plugins') {
+              newComponents.push({
+                key: 'plugins',
+                value: map(component.value, function (p) {
+                  var mimeTypes = map(p[2], function (mt) {
+                    if (mt.join) {
+                      return mt.join('~');
+                    }
+
+                    return mt;
+                  }).join(',');
+                  return [p[0], p[1], mimeTypes].join('::');
+                })
+              });
+            } else if (['canvas', 'webgl'].indexOf(component.key) !== -1) {
+              newComponents.push({
+                key: component.key,
+                value: component.value.join('~')
+              });
+            } else if (['sessionStorage', 'localStorage', 'indexedDb', 'addBehavior', 'openDatabase'].indexOf(component.key) !== -1) {
+              if (component.value) {
+                newComponents.push({
+                  key: component.key,
+                  value: 1
+                });
+              } else {
+                // skip
+                continue;
+              }
+            } else {
+              if (component.value) {
+                newComponents.push(component.value.join ? {
+                  key: component.key,
+                  value: component.value.join(';')
+                } : component);
+              } else {
+                newComponents.push({
+                  key: component.key,
+                  value: component.value
+                });
+              }
+            }
+          }
+
+          var murmur = x64hash128(map(newComponents, function (component) {
+            return component.value;
+          }).join('~~~'), 31);
+          callback(murmur, newComponents);
+        });
+      };
+
+      Fingerprint2.x64hash128 = x64hash128;
+      Fingerprint2.VERSION = '2.0.0';
+      return Fingerprint2;
+    });
+  });
+
+  var localforage = createCommonjsModule(function (module, exports) {
+    /*!
+        localForage -- Offline Storage, Improved
+        Version 1.7.3
+        https://localforage.github.io/localForage
+        (c) 2013-2017 Mozilla, Apache License 2.0
+    */
+    (function (f) {
+      {
+        module.exports = f();
+      }
+    })(function () {
+      return function e(t, n, r) {
+        function s(o, u) {
+          if (!n[o]) {
+            if (!t[o]) {
+              var a = typeof commonjsRequire == "function" && commonjsRequire;
+              if (!u && a) return a(o, !0);
+              if (i) return i(o, !0);
+              var f = new Error("Cannot find module '" + o + "'");
+              throw f.code = "MODULE_NOT_FOUND", f;
+            }
+
+            var l = n[o] = {
+              exports: {}
+            };
+            t[o][0].call(l.exports, function (e) {
+              var n = t[o][1][e];
+              return s(n ? n : e);
+            }, l, l.exports, e, t, n, r);
+          }
+
+          return n[o].exports;
+        }
+
+        var i = typeof commonjsRequire == "function" && commonjsRequire;
+
+        for (var o = 0; o < r.length; o++) s(r[o]);
+
+        return s;
+      }({
+        1: [function (_dereq_, module, exports) {
+          (function (global) {
+
+            var Mutation = global.MutationObserver || global.WebKitMutationObserver;
+            var scheduleDrain;
+            {
+              if (Mutation) {
+                var called = 0;
+                var observer = new Mutation(nextTick);
+                var element = global.document.createTextNode('');
+                observer.observe(element, {
+                  characterData: true
+                });
+
+                scheduleDrain = function () {
+                  element.data = called = ++called % 2;
+                };
+              } else if (!global.setImmediate && typeof global.MessageChannel !== 'undefined') {
+                var channel = new global.MessageChannel();
+                channel.port1.onmessage = nextTick;
+
+                scheduleDrain = function () {
+                  channel.port2.postMessage(0);
+                };
+              } else if ('document' in global && 'onreadystatechange' in global.document.createElement('script')) {
+                scheduleDrain = function () {
+                  // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+                  // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+                  var scriptEl = global.document.createElement('script');
+
+                  scriptEl.onreadystatechange = function () {
+                    nextTick();
+                    scriptEl.onreadystatechange = null;
+                    scriptEl.parentNode.removeChild(scriptEl);
+                    scriptEl = null;
+                  };
+
+                  global.document.documentElement.appendChild(scriptEl);
+                };
+              } else {
+                scheduleDrain = function () {
+                  setTimeout(nextTick, 0);
+                };
+              }
+            }
+            var draining;
+            var queue = []; //named nextTick for less confusing stack traces
+
+            function nextTick() {
+              draining = true;
+              var i, oldQueue;
+              var len = queue.length;
+
+              while (len) {
+                oldQueue = queue;
+                queue = [];
+                i = -1;
+
+                while (++i < len) {
+                  oldQueue[i]();
+                }
+
+                len = queue.length;
+              }
+
+              draining = false;
+            }
+
+            module.exports = immediate;
+
+            function immediate(task) {
+              if (queue.push(task) === 1 && !draining) {
+                scheduleDrain();
+              }
+            }
+          }).call(this, typeof commonjsGlobal !== "undefined" ? commonjsGlobal : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
+        }, {}],
+        2: [function (_dereq_, module, exports) {
+
+          var immediate = _dereq_(1);
+          /* istanbul ignore next */
+
+
+          function INTERNAL() {}
+
+          var handlers = {};
+          var REJECTED = ['REJECTED'];
+          var FULFILLED = ['FULFILLED'];
+          var PENDING = ['PENDING'];
+          module.exports = Promise;
+
+          function Promise(resolver) {
+            if (typeof resolver !== 'function') {
+              throw new TypeError('resolver must be a function');
+            }
+
+            this.state = PENDING;
+            this.queue = [];
+            this.outcome = void 0;
+
+            if (resolver !== INTERNAL) {
+              safelyResolveThenable(this, resolver);
+            }
+          }
+
+          Promise.prototype["catch"] = function (onRejected) {
+            return this.then(null, onRejected);
+          };
+
+          Promise.prototype.then = function (onFulfilled, onRejected) {
+            if (typeof onFulfilled !== 'function' && this.state === FULFILLED || typeof onRejected !== 'function' && this.state === REJECTED) {
+              return this;
+            }
+
+            var promise = new this.constructor(INTERNAL);
+
+            if (this.state !== PENDING) {
+              var resolver = this.state === FULFILLED ? onFulfilled : onRejected;
+              unwrap(promise, resolver, this.outcome);
+            } else {
+              this.queue.push(new QueueItem(promise, onFulfilled, onRejected));
+            }
+
+            return promise;
+          };
+
+          function QueueItem(promise, onFulfilled, onRejected) {
+            this.promise = promise;
+
+            if (typeof onFulfilled === 'function') {
+              this.onFulfilled = onFulfilled;
+              this.callFulfilled = this.otherCallFulfilled;
+            }
+
+            if (typeof onRejected === 'function') {
+              this.onRejected = onRejected;
+              this.callRejected = this.otherCallRejected;
+            }
+          }
+
+          QueueItem.prototype.callFulfilled = function (value) {
+            handlers.resolve(this.promise, value);
+          };
+
+          QueueItem.prototype.otherCallFulfilled = function (value) {
+            unwrap(this.promise, this.onFulfilled, value);
+          };
+
+          QueueItem.prototype.callRejected = function (value) {
+            handlers.reject(this.promise, value);
+          };
+
+          QueueItem.prototype.otherCallRejected = function (value) {
+            unwrap(this.promise, this.onRejected, value);
+          };
+
+          function unwrap(promise, func, value) {
+            immediate(function () {
+              var returnValue;
+
+              try {
+                returnValue = func(value);
+              } catch (e) {
+                return handlers.reject(promise, e);
+              }
+
+              if (returnValue === promise) {
+                handlers.reject(promise, new TypeError('Cannot resolve promise with itself'));
+              } else {
+                handlers.resolve(promise, returnValue);
+              }
+            });
+          }
+
+          handlers.resolve = function (self, value) {
+            var result = tryCatch(getThen, value);
+
+            if (result.status === 'error') {
+              return handlers.reject(self, result.value);
+            }
+
+            var thenable = result.value;
+
+            if (thenable) {
+              safelyResolveThenable(self, thenable);
+            } else {
+              self.state = FULFILLED;
+              self.outcome = value;
+              var i = -1;
+              var len = self.queue.length;
+
+              while (++i < len) {
+                self.queue[i].callFulfilled(value);
+              }
+            }
+
+            return self;
+          };
+
+          handlers.reject = function (self, error) {
+            self.state = REJECTED;
+            self.outcome = error;
+            var i = -1;
+            var len = self.queue.length;
+
+            while (++i < len) {
+              self.queue[i].callRejected(error);
+            }
+
+            return self;
+          };
+
+          function getThen(obj) {
+            // Make sure we only access the accessor once as required by the spec
+            var then = obj && obj.then;
+
+            if (obj && (typeof obj === 'object' || typeof obj === 'function') && typeof then === 'function') {
+              return function appyThen() {
+                then.apply(obj, arguments);
+              };
+            }
+          }
+
+          function safelyResolveThenable(self, thenable) {
+            // Either fulfill, reject or reject with error
+            var called = false;
+
+            function onError(value) {
+              if (called) {
+                return;
+              }
+
+              called = true;
+              handlers.reject(self, value);
+            }
+
+            function onSuccess(value) {
+              if (called) {
+                return;
+              }
+
+              called = true;
+              handlers.resolve(self, value);
+            }
+
+            function tryToUnwrap() {
+              thenable(onSuccess, onError);
+            }
+
+            var result = tryCatch(tryToUnwrap);
+
+            if (result.status === 'error') {
+              onError(result.value);
+            }
+          }
+
+          function tryCatch(func, value) {
+            var out = {};
+
+            try {
+              out.value = func(value);
+              out.status = 'success';
+            } catch (e) {
+              out.status = 'error';
+              out.value = e;
+            }
+
+            return out;
+          }
+
+          Promise.resolve = resolve;
+
+          function resolve(value) {
+            if (value instanceof this) {
+              return value;
+            }
+
+            return handlers.resolve(new this(INTERNAL), value);
+          }
+
+          Promise.reject = reject;
+
+          function reject(reason) {
+            var promise = new this(INTERNAL);
+            return handlers.reject(promise, reason);
+          }
+
+          Promise.all = all;
+
+          function all(iterable) {
+            var self = this;
+
+            if (Object.prototype.toString.call(iterable) !== '[object Array]') {
+              return this.reject(new TypeError('must be an array'));
+            }
+
+            var len = iterable.length;
+            var called = false;
+
+            if (!len) {
+              return this.resolve([]);
+            }
+
+            var values = new Array(len);
+            var resolved = 0;
+            var i = -1;
+            var promise = new this(INTERNAL);
+
+            while (++i < len) {
+              allResolver(iterable[i], i);
+            }
+
+            return promise;
+
+            function allResolver(value, i) {
+              self.resolve(value).then(resolveFromAll, function (error) {
+                if (!called) {
+                  called = true;
+                  handlers.reject(promise, error);
+                }
+              });
+
+              function resolveFromAll(outValue) {
+                values[i] = outValue;
+
+                if (++resolved === len && !called) {
+                  called = true;
+                  handlers.resolve(promise, values);
+                }
+              }
+            }
+          }
+
+          Promise.race = race;
+
+          function race(iterable) {
+            var self = this;
+
+            if (Object.prototype.toString.call(iterable) !== '[object Array]') {
+              return this.reject(new TypeError('must be an array'));
+            }
+
+            var len = iterable.length;
+            var called = false;
+
+            if (!len) {
+              return this.resolve([]);
+            }
+
+            var i = -1;
+            var promise = new this(INTERNAL);
+
+            while (++i < len) {
+              resolver(iterable[i]);
+            }
+
+            return promise;
+
+            function resolver(value) {
+              self.resolve(value).then(function (response) {
+                if (!called) {
+                  called = true;
+                  handlers.resolve(promise, response);
+                }
+              }, function (error) {
+                if (!called) {
+                  called = true;
+                  handlers.reject(promise, error);
+                }
+              });
+            }
+          }
+        }, {
+          "1": 1
+        }],
+        3: [function (_dereq_, module, exports) {
+          (function (global) {
+
+            if (typeof global.Promise !== 'function') {
+              global.Promise = _dereq_(2);
+            }
+          }).call(this, typeof commonjsGlobal !== "undefined" ? commonjsGlobal : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
+        }, {
+          "2": 2
+        }],
+        4: [function (_dereq_, module, exports) {
+
+          var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+            return typeof obj;
+          } : function (obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+          };
+
+          function _classCallCheck(instance, Constructor) {
+            if (!(instance instanceof Constructor)) {
+              throw new TypeError("Cannot call a class as a function");
+            }
+          }
+
+          function getIDB() {
+            /* global indexedDB,webkitIndexedDB,mozIndexedDB,OIndexedDB,msIndexedDB */
+            try {
+              if (typeof indexedDB !== 'undefined') {
+                return indexedDB;
+              }
+
+              if (typeof webkitIndexedDB !== 'undefined') {
+                return webkitIndexedDB;
+              }
+
+              if (typeof mozIndexedDB !== 'undefined') {
+                return mozIndexedDB;
+              }
+
+              if (typeof OIndexedDB !== 'undefined') {
+                return OIndexedDB;
+              }
+
+              if (typeof msIndexedDB !== 'undefined') {
+                return msIndexedDB;
+              }
+            } catch (e) {
+              return;
+            }
+          }
+
+          var idb = getIDB();
+
+          function isIndexedDBValid() {
+            try {
+              // Initialize IndexedDB; fall back to vendor-prefixed versions
+              // if needed.
+              if (!idb) {
+                return false;
+              } // We mimic PouchDB here;
+              //
+              // We test for openDatabase because IE Mobile identifies itself
+              // as Safari. Oh the lulz...
+
+
+              var isSafari = typeof openDatabase !== 'undefined' && /(Safari|iPhone|iPad|iPod)/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) && !/BlackBerry/.test(navigator.platform);
+              var hasFetch = typeof fetch === 'function' && fetch.toString().indexOf('[native code') !== -1; // Safari <10.1 does not meet our requirements for IDB support (#5572)
+              // since Safari 10.1 shipped with fetch, we can use that to detect it
+
+              return (!isSafari || hasFetch) && typeof indexedDB !== 'undefined' && // some outdated implementations of IDB that appear on Samsung
+              // and HTC Android devices <4.4 are missing IDBKeyRange
+              // See: https://github.com/mozilla/localForage/issues/128
+              // See: https://github.com/mozilla/localForage/issues/272
+              typeof IDBKeyRange !== 'undefined';
+            } catch (e) {
+              return false;
+            }
+          } // Abstracts constructing a Blob object, so it also works in older
+          // browsers that don't support the native Blob constructor. (i.e.
+          // old QtWebKit versions, at least).
+          // Abstracts constructing a Blob object, so it also works in older
+          // browsers that don't support the native Blob constructor. (i.e.
+          // old QtWebKit versions, at least).
+
+
+          function createBlob(parts, properties) {
+            /* global BlobBuilder,MSBlobBuilder,MozBlobBuilder,WebKitBlobBuilder */
+            parts = parts || [];
+            properties = properties || {};
+
+            try {
+              return new Blob(parts, properties);
+            } catch (e) {
+              if (e.name !== 'TypeError') {
+                throw e;
+              }
+
+              var Builder = typeof BlobBuilder !== 'undefined' ? BlobBuilder : typeof MSBlobBuilder !== 'undefined' ? MSBlobBuilder : typeof MozBlobBuilder !== 'undefined' ? MozBlobBuilder : WebKitBlobBuilder;
+              var builder = new Builder();
+
+              for (var i = 0; i < parts.length; i += 1) {
+                builder.append(parts[i]);
+              }
+
+              return builder.getBlob(properties.type);
+            }
+          } // This is CommonJS because lie is an external dependency, so Rollup
+          // can just ignore it.
+
+
+          if (typeof Promise === 'undefined') {
+            // In the "nopromises" build this will just throw if you don't have
+            // a global promise object, but it would throw anyway later.
+            _dereq_(3);
+          }
+
+          var Promise$1 = Promise;
+
+          function executeCallback(promise, callback) {
+            if (callback) {
+              promise.then(function (result) {
+                callback(null, result);
+              }, function (error) {
+                callback(error);
+              });
+            }
+          }
+
+          function executeTwoCallbacks(promise, callback, errorCallback) {
+            if (typeof callback === 'function') {
+              promise.then(callback);
+            }
+
+            if (typeof errorCallback === 'function') {
+              promise["catch"](errorCallback);
+            }
+          }
+
+          function normalizeKey(key) {
+            // Cast the key to a string, as that's all we can set as a key.
+            if (typeof key !== 'string') {
+              console.warn(key + ' used as a key, but it is not a string.');
+              key = String(key);
+            }
+
+            return key;
+          }
+
+          function getCallback() {
+            if (arguments.length && typeof arguments[arguments.length - 1] === 'function') {
+              return arguments[arguments.length - 1];
+            }
+          } // Some code originally from async_storage.js in
+          // [Gaia](https://github.com/mozilla-b2g/gaia).
+
+
+          var DETECT_BLOB_SUPPORT_STORE = 'local-forage-detect-blob-support';
+          var supportsBlobs = void 0;
+          var dbContexts = {};
+          var toString = Object.prototype.toString; // Transaction Modes
+
+          var READ_ONLY = 'readonly';
+          var READ_WRITE = 'readwrite'; // Transform a binary string to an array buffer, because otherwise
+          // weird stuff happens when you try to work with the binary string directly.
+          // It is known.
+          // From http://stackoverflow.com/questions/14967647/ (continues on next line)
+          // encode-decode-image-with-base64-breaks-image (2013-04-21)
+
+          function _binStringToArrayBuffer(bin) {
+            var length = bin.length;
+            var buf = new ArrayBuffer(length);
+            var arr = new Uint8Array(buf);
+
+            for (var i = 0; i < length; i++) {
+              arr[i] = bin.charCodeAt(i);
+            }
+
+            return buf;
+          } //
+          // Blobs are not supported in all versions of IndexedDB, notably
+          // Chrome <37 and Android <5. In those versions, storing a blob will throw.
+          //
+          // Various other blob bugs exist in Chrome v37-42 (inclusive).
+          // Detecting them is expensive and confusing to users, and Chrome 37-42
+          // is at very low usage worldwide, so we do a hacky userAgent check instead.
+          //
+          // content-type bug: https://code.google.com/p/chromium/issues/detail?id=408120
+          // 404 bug: https://code.google.com/p/chromium/issues/detail?id=447916
+          // FileReader bug: https://code.google.com/p/chromium/issues/detail?id=447836
+          //
+          // Code borrowed from PouchDB. See:
+          // https://github.com/pouchdb/pouchdb/blob/master/packages/node_modules/pouchdb-adapter-idb/src/blobSupport.js
+          //
+
+
+          function _checkBlobSupportWithoutCaching(idb) {
+            return new Promise$1(function (resolve) {
+              var txn = idb.transaction(DETECT_BLOB_SUPPORT_STORE, READ_WRITE);
+              var blob = createBlob(['']);
+              txn.objectStore(DETECT_BLOB_SUPPORT_STORE).put(blob, 'key');
+
+              txn.onabort = function (e) {
+                // If the transaction aborts now its due to not being able to
+                // write to the database, likely due to the disk being full
+                e.preventDefault();
+                e.stopPropagation();
+                resolve(false);
+              };
+
+              txn.oncomplete = function () {
+                var matchedChrome = navigator.userAgent.match(/Chrome\/(\d+)/);
+                var matchedEdge = navigator.userAgent.match(/Edge\//); // MS Edge pretends to be Chrome 42:
+                // https://msdn.microsoft.com/en-us/library/hh869301%28v=vs.85%29.aspx
+
+                resolve(matchedEdge || !matchedChrome || parseInt(matchedChrome[1], 10) >= 43);
+              };
+            })["catch"](function () {
+              return false; // error, so assume unsupported
+            });
+          }
+
+          function _checkBlobSupport(idb) {
+            if (typeof supportsBlobs === 'boolean') {
+              return Promise$1.resolve(supportsBlobs);
+            }
+
+            return _checkBlobSupportWithoutCaching(idb).then(function (value) {
+              supportsBlobs = value;
+              return supportsBlobs;
+            });
+          }
+
+          function _deferReadiness(dbInfo) {
+            var dbContext = dbContexts[dbInfo.name]; // Create a deferred object representing the current database operation.
+
+            var deferredOperation = {};
+            deferredOperation.promise = new Promise$1(function (resolve, reject) {
+              deferredOperation.resolve = resolve;
+              deferredOperation.reject = reject;
+            }); // Enqueue the deferred operation.
+
+            dbContext.deferredOperations.push(deferredOperation); // Chain its promise to the database readiness.
+
+            if (!dbContext.dbReady) {
+              dbContext.dbReady = deferredOperation.promise;
+            } else {
+              dbContext.dbReady = dbContext.dbReady.then(function () {
+                return deferredOperation.promise;
+              });
+            }
+          }
+
+          function _advanceReadiness(dbInfo) {
+            var dbContext = dbContexts[dbInfo.name]; // Dequeue a deferred operation.
+
+            var deferredOperation = dbContext.deferredOperations.pop(); // Resolve its promise (which is part of the database readiness
+            // chain of promises).
+
+            if (deferredOperation) {
+              deferredOperation.resolve();
+              return deferredOperation.promise;
+            }
+          }
+
+          function _rejectReadiness(dbInfo, err) {
+            var dbContext = dbContexts[dbInfo.name]; // Dequeue a deferred operation.
+
+            var deferredOperation = dbContext.deferredOperations.pop(); // Reject its promise (which is part of the database readiness
+            // chain of promises).
+
+            if (deferredOperation) {
+              deferredOperation.reject(err);
+              return deferredOperation.promise;
+            }
+          }
+
+          function _getConnection(dbInfo, upgradeNeeded) {
+            return new Promise$1(function (resolve, reject) {
+              dbContexts[dbInfo.name] = dbContexts[dbInfo.name] || createDbContext();
+
+              if (dbInfo.db) {
+                if (upgradeNeeded) {
+                  _deferReadiness(dbInfo);
+
+                  dbInfo.db.close();
+                } else {
+                  return resolve(dbInfo.db);
+                }
+              }
+
+              var dbArgs = [dbInfo.name];
+
+              if (upgradeNeeded) {
+                dbArgs.push(dbInfo.version);
+              }
+
+              var openreq = idb.open.apply(idb, dbArgs);
+
+              if (upgradeNeeded) {
+                openreq.onupgradeneeded = function (e) {
+                  var db = openreq.result;
+
+                  try {
+                    db.createObjectStore(dbInfo.storeName);
+
+                    if (e.oldVersion <= 1) {
+                      // Added when support for blob shims was added
+                      db.createObjectStore(DETECT_BLOB_SUPPORT_STORE);
+                    }
+                  } catch (ex) {
+                    if (ex.name === 'ConstraintError') {
+                      console.warn('The database "' + dbInfo.name + '"' + ' has been upgraded from version ' + e.oldVersion + ' to version ' + e.newVersion + ', but the storage "' + dbInfo.storeName + '" already exists.');
+                    } else {
+                      throw ex;
+                    }
+                  }
+                };
+              }
+
+              openreq.onerror = function (e) {
+                e.preventDefault();
+                reject(openreq.error);
+              };
+
+              openreq.onsuccess = function () {
+                resolve(openreq.result);
+
+                _advanceReadiness(dbInfo);
+              };
+            });
+          }
+
+          function _getOriginalConnection(dbInfo) {
+            return _getConnection(dbInfo, false);
+          }
+
+          function _getUpgradedConnection(dbInfo) {
+            return _getConnection(dbInfo, true);
+          }
+
+          function _isUpgradeNeeded(dbInfo, defaultVersion) {
+            if (!dbInfo.db) {
+              return true;
+            }
+
+            var isNewStore = !dbInfo.db.objectStoreNames.contains(dbInfo.storeName);
+            var isDowngrade = dbInfo.version < dbInfo.db.version;
+            var isUpgrade = dbInfo.version > dbInfo.db.version;
+
+            if (isDowngrade) {
+              // If the version is not the default one
+              // then warn for impossible downgrade.
+              if (dbInfo.version !== defaultVersion) {
+                console.warn('The database "' + dbInfo.name + '"' + " can't be downgraded from version " + dbInfo.db.version + ' to version ' + dbInfo.version + '.');
+              } // Align the versions to prevent errors.
+
+
+              dbInfo.version = dbInfo.db.version;
+            }
+
+            if (isUpgrade || isNewStore) {
+              // If the store is new then increment the version (if needed).
+              // This will trigger an "upgradeneeded" event which is required
+              // for creating a store.
+              if (isNewStore) {
+                var incVersion = dbInfo.db.version + 1;
+
+                if (incVersion > dbInfo.version) {
+                  dbInfo.version = incVersion;
+                }
+              }
+
+              return true;
+            }
+
+            return false;
+          } // encode a blob for indexeddb engines that don't support blobs
+
+
+          function _encodeBlob(blob) {
+            return new Promise$1(function (resolve, reject) {
+              var reader = new FileReader();
+              reader.onerror = reject;
+
+              reader.onloadend = function (e) {
+                var base64 = btoa(e.target.result || '');
+                resolve({
+                  __local_forage_encoded_blob: true,
+                  data: base64,
+                  type: blob.type
+                });
+              };
+
+              reader.readAsBinaryString(blob);
+            });
+          } // decode an encoded blob
+
+
+          function _decodeBlob(encodedBlob) {
+            var arrayBuff = _binStringToArrayBuffer(atob(encodedBlob.data));
+
+            return createBlob([arrayBuff], {
+              type: encodedBlob.type
+            });
+          } // is this one of our fancy encoded blobs?
+
+
+          function _isEncodedBlob(value) {
+            return value && value.__local_forage_encoded_blob;
+          } // Specialize the default `ready()` function by making it dependent
+          // on the current database operations. Thus, the driver will be actually
+          // ready when it's been initialized (default) *and* there are no pending
+          // operations on the database (initiated by some other instances).
+
+
+          function _fullyReady(callback) {
+            var self = this;
+
+            var promise = self._initReady().then(function () {
+              var dbContext = dbContexts[self._dbInfo.name];
+
+              if (dbContext && dbContext.dbReady) {
+                return dbContext.dbReady;
+              }
+            });
+
+            executeTwoCallbacks(promise, callback, callback);
+            return promise;
+          } // Try to establish a new db connection to replace the
+          // current one which is broken (i.e. experiencing
+          // InvalidStateError while creating a transaction).
+
+
+          function _tryReconnect(dbInfo) {
+            _deferReadiness(dbInfo);
+
+            var dbContext = dbContexts[dbInfo.name];
+            var forages = dbContext.forages;
+
+            for (var i = 0; i < forages.length; i++) {
+              var forage = forages[i];
+
+              if (forage._dbInfo.db) {
+                forage._dbInfo.db.close();
+
+                forage._dbInfo.db = null;
+              }
+            }
+
+            dbInfo.db = null;
+            return _getOriginalConnection(dbInfo).then(function (db) {
+              dbInfo.db = db;
+
+              if (_isUpgradeNeeded(dbInfo)) {
+                // Reopen the database for upgrading.
+                return _getUpgradedConnection(dbInfo);
+              }
+
+              return db;
+            }).then(function (db) {
+              // store the latest db reference
+              // in case the db was upgraded
+              dbInfo.db = dbContext.db = db;
+
+              for (var i = 0; i < forages.length; i++) {
+                forages[i]._dbInfo.db = db;
+              }
+            })["catch"](function (err) {
+              _rejectReadiness(dbInfo, err);
+
+              throw err;
+            });
+          } // FF doesn't like Promises (micro-tasks) and IDDB store operations,
+          // so we have to do it with callbacks
+
+
+          function createTransaction(dbInfo, mode, callback, retries) {
+            if (retries === undefined) {
+              retries = 1;
+            }
+
+            try {
+              var tx = dbInfo.db.transaction(dbInfo.storeName, mode);
+              callback(null, tx);
+            } catch (err) {
+              if (retries > 0 && (!dbInfo.db || err.name === 'InvalidStateError' || err.name === 'NotFoundError')) {
+                return Promise$1.resolve().then(function () {
+                  if (!dbInfo.db || err.name === 'NotFoundError' && !dbInfo.db.objectStoreNames.contains(dbInfo.storeName) && dbInfo.version <= dbInfo.db.version) {
+                    // increase the db version, to create the new ObjectStore
+                    if (dbInfo.db) {
+                      dbInfo.version = dbInfo.db.version + 1;
+                    } // Reopen the database for upgrading.
+
+
+                    return _getUpgradedConnection(dbInfo);
+                  }
+                }).then(function () {
+                  return _tryReconnect(dbInfo).then(function () {
+                    createTransaction(dbInfo, mode, callback, retries - 1);
+                  });
+                })["catch"](callback);
+              }
+
+              callback(err);
+            }
+          }
+
+          function createDbContext() {
+            return {
+              // Running localForages sharing a database.
+              forages: [],
+              // Shared database.
+              db: null,
+              // Database readiness (promise).
+              dbReady: null,
+              // Deferred operations on the database.
+              deferredOperations: []
+            };
+          } // Open the IndexedDB database (automatically creates one if one didn't
+          // previously exist), using any options set in the config.
+
+
+          function _initStorage(options) {
+            var self = this;
+            var dbInfo = {
+              db: null
+            };
+
+            if (options) {
+              for (var i in options) {
+                dbInfo[i] = options[i];
+              }
+            } // Get the current context of the database;
+
+
+            var dbContext = dbContexts[dbInfo.name]; // ...or create a new context.
+
+            if (!dbContext) {
+              dbContext = createDbContext(); // Register the new context in the global container.
+
+              dbContexts[dbInfo.name] = dbContext;
+            } // Register itself as a running localForage in the current context.
+
+
+            dbContext.forages.push(self); // Replace the default `ready()` function with the specialized one.
+
+            if (!self._initReady) {
+              self._initReady = self.ready;
+              self.ready = _fullyReady;
+            } // Create an array of initialization states of the related localForages.
+
+
+            var initPromises = [];
+
+            function ignoreErrors() {
+              // Don't handle errors here,
+              // just makes sure related localForages aren't pending.
+              return Promise$1.resolve();
+            }
+
+            for (var j = 0; j < dbContext.forages.length; j++) {
+              var forage = dbContext.forages[j];
+
+              if (forage !== self) {
+                // Don't wait for itself...
+                initPromises.push(forage._initReady()["catch"](ignoreErrors));
+              }
+            } // Take a snapshot of the related localForages.
+
+
+            var forages = dbContext.forages.slice(0); // Initialize the connection process only when
+            // all the related localForages aren't pending.
+
+            return Promise$1.all(initPromises).then(function () {
+              dbInfo.db = dbContext.db; // Get the connection or open a new one without upgrade.
+
+              return _getOriginalConnection(dbInfo);
+            }).then(function (db) {
+              dbInfo.db = db;
+
+              if (_isUpgradeNeeded(dbInfo, self._defaultConfig.version)) {
+                // Reopen the database for upgrading.
+                return _getUpgradedConnection(dbInfo);
+              }
+
+              return db;
+            }).then(function (db) {
+              dbInfo.db = dbContext.db = db;
+              self._dbInfo = dbInfo; // Share the final connection amongst related localForages.
+
+              for (var k = 0; k < forages.length; k++) {
+                var forage = forages[k];
+
+                if (forage !== self) {
+                  // Self is already up-to-date.
+                  forage._dbInfo.db = dbInfo.db;
+                  forage._dbInfo.version = dbInfo.version;
+                }
+              }
+            });
+          }
+
+          function getItem(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var req = store.get(key);
+
+                    req.onsuccess = function () {
+                      var value = req.result;
+
+                      if (value === undefined) {
+                        value = null;
+                      }
+
+                      if (_isEncodedBlob(value)) {
+                        value = _decodeBlob(value);
+                      }
+
+                      resolve(value);
+                    };
+
+                    req.onerror = function () {
+                      reject(req.error);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Iterate over all items stored in database.
+
+
+          function iterate(iterator, callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var req = store.openCursor();
+                    var iterationNumber = 1;
+
+                    req.onsuccess = function () {
+                      var cursor = req.result;
+
+                      if (cursor) {
+                        var value = cursor.value;
+
+                        if (_isEncodedBlob(value)) {
+                          value = _decodeBlob(value);
+                        }
+
+                        var result = iterator(value, cursor.key, iterationNumber++); // when the iterator callback retuns any
+                        // (non-`undefined`) value, then we stop
+                        // the iteration immediately
+
+                        if (result !== void 0) {
+                          resolve(result);
+                        } else {
+                          cursor["continue"]();
+                        }
+                      } else {
+                        resolve();
+                      }
+                    };
+
+                    req.onerror = function () {
+                      reject(req.error);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function setItem(key, value, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              var dbInfo;
+              self.ready().then(function () {
+                dbInfo = self._dbInfo;
+
+                if (toString.call(value) === '[object Blob]') {
+                  return _checkBlobSupport(dbInfo.db).then(function (blobSupport) {
+                    if (blobSupport) {
+                      return value;
+                    }
+
+                    return _encodeBlob(value);
+                  });
+                }
+
+                return value;
+              }).then(function (value) {
+                createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName); // The reason we don't _save_ null is because IE 10 does
+                    // not support saving the `null` type in IndexedDB. How
+                    // ironic, given the bug below!
+                    // See: https://github.com/mozilla/localForage/issues/161
+
+                    if (value === null) {
+                      value = undefined;
+                    }
+
+                    var req = store.put(value, key);
+
+                    transaction.oncomplete = function () {
+                      // Cast to undefined so the value passed to
+                      // callback/promise is the same as what one would get out
+                      // of `getItem()` later. This leads to some weirdness
+                      // (setItem('foo', undefined) will return `null`), but
+                      // it's not my fault localStorage is our baseline and that
+                      // it's weird.
+                      if (value === undefined) {
+                        value = null;
+                      }
+
+                      resolve(value);
+                    };
+
+                    transaction.onabort = transaction.onerror = function () {
+                      var err = req.error ? req.error : req.transaction.error;
+                      reject(err);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function removeItem(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName); // We use a Grunt task to make this safe for IE and some
+                    // versions of Android (including those used by Cordova).
+                    // Normally IE won't like `.delete()` and will insist on
+                    // using `['delete']()`, but we have a build step that
+                    // fixes this for us now.
+
+                    var req = store["delete"](key);
+
+                    transaction.oncomplete = function () {
+                      resolve();
+                    };
+
+                    transaction.onerror = function () {
+                      reject(req.error);
+                    }; // The request will be also be aborted if we've exceeded our storage
+                    // space.
+
+
+                    transaction.onabort = function () {
+                      var err = req.error ? req.error : req.transaction.error;
+                      reject(err);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function clear(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_WRITE, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var req = store.clear();
+
+                    transaction.oncomplete = function () {
+                      resolve();
+                    };
+
+                    transaction.onabort = transaction.onerror = function () {
+                      var err = req.error ? req.error : req.transaction.error;
+                      reject(err);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function length(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var req = store.count();
+
+                    req.onsuccess = function () {
+                      resolve(req.result);
+                    };
+
+                    req.onerror = function () {
+                      reject(req.error);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function key(n, callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              if (n < 0) {
+                resolve(null);
+                return;
+              }
+
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var advanced = false;
+                    var req = store.openCursor();
+
+                    req.onsuccess = function () {
+                      var cursor = req.result;
+
+                      if (!cursor) {
+                        // this means there weren't enough keys
+                        resolve(null);
+                        return;
+                      }
+
+                      if (n === 0) {
+                        // We have the first key, return it if that's what they
+                        // wanted.
+                        resolve(cursor.key);
+                      } else {
+                        if (!advanced) {
+                          // Otherwise, ask the cursor to skip ahead n
+                          // records.
+                          advanced = true;
+                          cursor.advance(n);
+                        } else {
+                          // When we get here, we've got the nth key.
+                          resolve(cursor.key);
+                        }
+                      }
+                    };
+
+                    req.onerror = function () {
+                      reject(req.error);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function keys(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                createTransaction(self._dbInfo, READ_ONLY, function (err, transaction) {
+                  if (err) {
+                    return reject(err);
+                  }
+
+                  try {
+                    var store = transaction.objectStore(self._dbInfo.storeName);
+                    var req = store.openCursor();
+                    var keys = [];
+
+                    req.onsuccess = function () {
+                      var cursor = req.result;
+
+                      if (!cursor) {
+                        resolve(keys);
+                        return;
+                      }
+
+                      keys.push(cursor.key);
+                      cursor["continue"]();
+                    };
+
+                    req.onerror = function () {
+                      reject(req.error);
+                    };
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function dropInstance(options, callback) {
+            callback = getCallback.apply(this, arguments);
+            var currentConfig = this.config();
+            options = typeof options !== 'function' && options || {};
+
+            if (!options.name) {
+              options.name = options.name || currentConfig.name;
+              options.storeName = options.storeName || currentConfig.storeName;
+            }
+
+            var self = this;
+            var promise;
+
+            if (!options.name) {
+              promise = Promise$1.reject('Invalid arguments');
+            } else {
+              var isCurrentDb = options.name === currentConfig.name && self._dbInfo.db;
+              var dbPromise = isCurrentDb ? Promise$1.resolve(self._dbInfo.db) : _getOriginalConnection(options).then(function (db) {
+                var dbContext = dbContexts[options.name];
+                var forages = dbContext.forages;
+                dbContext.db = db;
+
+                for (var i = 0; i < forages.length; i++) {
+                  forages[i]._dbInfo.db = db;
+                }
+
+                return db;
+              });
+
+              if (!options.storeName) {
+                promise = dbPromise.then(function (db) {
+                  _deferReadiness(options);
+
+                  var dbContext = dbContexts[options.name];
+                  var forages = dbContext.forages;
+                  db.close();
+
+                  for (var i = 0; i < forages.length; i++) {
+                    var forage = forages[i];
+                    forage._dbInfo.db = null;
+                  }
+
+                  var dropDBPromise = new Promise$1(function (resolve, reject) {
+                    var req = idb.deleteDatabase(options.name);
+
+                    req.onerror = req.onblocked = function (err) {
+                      var db = req.result;
+
+                      if (db) {
+                        db.close();
+                      }
+
+                      reject(err);
+                    };
+
+                    req.onsuccess = function () {
+                      var db = req.result;
+
+                      if (db) {
+                        db.close();
+                      }
+
+                      resolve(db);
+                    };
+                  });
+                  return dropDBPromise.then(function (db) {
+                    dbContext.db = db;
+
+                    for (var i = 0; i < forages.length; i++) {
+                      var _forage = forages[i];
+
+                      _advanceReadiness(_forage._dbInfo);
+                    }
+                  })["catch"](function (err) {
+                    (_rejectReadiness(options, err) || Promise$1.resolve())["catch"](function () {});
+                    throw err;
+                  });
+                });
+              } else {
+                promise = dbPromise.then(function (db) {
+                  if (!db.objectStoreNames.contains(options.storeName)) {
+                    return;
+                  }
+
+                  var newVersion = db.version + 1;
+
+                  _deferReadiness(options);
+
+                  var dbContext = dbContexts[options.name];
+                  var forages = dbContext.forages;
+                  db.close();
+
+                  for (var i = 0; i < forages.length; i++) {
+                    var forage = forages[i];
+                    forage._dbInfo.db = null;
+                    forage._dbInfo.version = newVersion;
+                  }
+
+                  var dropObjectPromise = new Promise$1(function (resolve, reject) {
+                    var req = idb.open(options.name, newVersion);
+
+                    req.onerror = function (err) {
+                      var db = req.result;
+                      db.close();
+                      reject(err);
+                    };
+
+                    req.onupgradeneeded = function () {
+                      var db = req.result;
+                      db.deleteObjectStore(options.storeName);
+                    };
+
+                    req.onsuccess = function () {
+                      var db = req.result;
+                      db.close();
+                      resolve(db);
+                    };
+                  });
+                  return dropObjectPromise.then(function (db) {
+                    dbContext.db = db;
+
+                    for (var j = 0; j < forages.length; j++) {
+                      var _forage2 = forages[j];
+                      _forage2._dbInfo.db = db;
+
+                      _advanceReadiness(_forage2._dbInfo);
+                    }
+                  })["catch"](function (err) {
+                    (_rejectReadiness(options, err) || Promise$1.resolve())["catch"](function () {});
+                    throw err;
+                  });
+                });
+              }
+            }
+
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          var asyncStorage = {
+            _driver: 'asyncStorage',
+            _initStorage: _initStorage,
+            _support: isIndexedDBValid(),
+            iterate: iterate,
+            getItem: getItem,
+            setItem: setItem,
+            removeItem: removeItem,
+            clear: clear,
+            length: length,
+            key: key,
+            keys: keys,
+            dropInstance: dropInstance
+          };
+
+          function isWebSQLValid() {
+            return typeof openDatabase === 'function';
+          } // Sadly, the best way to save binary data in WebSQL/localStorage is serializing
+          // it to Base64, so this is how we store it to prevent very strange errors with less
+          // verbose ways of binary <-> string data storage.
+
+
+          var BASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+          var BLOB_TYPE_PREFIX = '~~local_forage_type~';
+          var BLOB_TYPE_PREFIX_REGEX = /^~~local_forage_type~([^~]+)~/;
+          var SERIALIZED_MARKER = '__lfsc__:';
+          var SERIALIZED_MARKER_LENGTH = SERIALIZED_MARKER.length; // OMG the serializations!
+
+          var TYPE_ARRAYBUFFER = 'arbf';
+          var TYPE_BLOB = 'blob';
+          var TYPE_INT8ARRAY = 'si08';
+          var TYPE_UINT8ARRAY = 'ui08';
+          var TYPE_UINT8CLAMPEDARRAY = 'uic8';
+          var TYPE_INT16ARRAY = 'si16';
+          var TYPE_INT32ARRAY = 'si32';
+          var TYPE_UINT16ARRAY = 'ur16';
+          var TYPE_UINT32ARRAY = 'ui32';
+          var TYPE_FLOAT32ARRAY = 'fl32';
+          var TYPE_FLOAT64ARRAY = 'fl64';
+          var TYPE_SERIALIZED_MARKER_LENGTH = SERIALIZED_MARKER_LENGTH + TYPE_ARRAYBUFFER.length;
+          var toString$1 = Object.prototype.toString;
+
+          function stringToBuffer(serializedString) {
+            // Fill the string into a ArrayBuffer.
+            var bufferLength = serializedString.length * 0.75;
+            var len = serializedString.length;
+            var i;
+            var p = 0;
+            var encoded1, encoded2, encoded3, encoded4;
+
+            if (serializedString[serializedString.length - 1] === '=') {
+              bufferLength--;
+
+              if (serializedString[serializedString.length - 2] === '=') {
+                bufferLength--;
+              }
+            }
+
+            var buffer = new ArrayBuffer(bufferLength);
+            var bytes = new Uint8Array(buffer);
+
+            for (i = 0; i < len; i += 4) {
+              encoded1 = BASE_CHARS.indexOf(serializedString[i]);
+              encoded2 = BASE_CHARS.indexOf(serializedString[i + 1]);
+              encoded3 = BASE_CHARS.indexOf(serializedString[i + 2]);
+              encoded4 = BASE_CHARS.indexOf(serializedString[i + 3]);
+              /*jslint bitwise: true */
+
+              bytes[p++] = encoded1 << 2 | encoded2 >> 4;
+              bytes[p++] = (encoded2 & 15) << 4 | encoded3 >> 2;
+              bytes[p++] = (encoded3 & 3) << 6 | encoded4 & 63;
+            }
+
+            return buffer;
+          } // Converts a buffer to a string to store, serialized, in the backend
+          // storage library.
+
+
+          function bufferToString(buffer) {
+            // base64-arraybuffer
+            var bytes = new Uint8Array(buffer);
+            var base64String = '';
+            var i;
+
+            for (i = 0; i < bytes.length; i += 3) {
+              /*jslint bitwise: true */
+              base64String += BASE_CHARS[bytes[i] >> 2];
+              base64String += BASE_CHARS[(bytes[i] & 3) << 4 | bytes[i + 1] >> 4];
+              base64String += BASE_CHARS[(bytes[i + 1] & 15) << 2 | bytes[i + 2] >> 6];
+              base64String += BASE_CHARS[bytes[i + 2] & 63];
+            }
+
+            if (bytes.length % 3 === 2) {
+              base64String = base64String.substring(0, base64String.length - 1) + '=';
+            } else if (bytes.length % 3 === 1) {
+              base64String = base64String.substring(0, base64String.length - 2) + '==';
+            }
+
+            return base64String;
+          } // Serialize a value, afterwards executing a callback (which usually
+          // instructs the `setItem()` callback/promise to be executed). This is how
+          // we store binary data with localStorage.
+
+
+          function serialize(value, callback) {
+            var valueType = '';
+
+            if (value) {
+              valueType = toString$1.call(value);
+            } // Cannot use `value instanceof ArrayBuffer` or such here, as these
+            // checks fail when running the tests using casper.js...
+            //
+            // TODO: See why those tests fail and use a better solution.
+
+
+            if (value && (valueType === '[object ArrayBuffer]' || value.buffer && toString$1.call(value.buffer) === '[object ArrayBuffer]')) {
+              // Convert binary arrays to a string and prefix the string with
+              // a special marker.
+              var buffer;
+              var marker = SERIALIZED_MARKER;
+
+              if (value instanceof ArrayBuffer) {
+                buffer = value;
+                marker += TYPE_ARRAYBUFFER;
+              } else {
+                buffer = value.buffer;
+
+                if (valueType === '[object Int8Array]') {
+                  marker += TYPE_INT8ARRAY;
+                } else if (valueType === '[object Uint8Array]') {
+                  marker += TYPE_UINT8ARRAY;
+                } else if (valueType === '[object Uint8ClampedArray]') {
+                  marker += TYPE_UINT8CLAMPEDARRAY;
+                } else if (valueType === '[object Int16Array]') {
+                  marker += TYPE_INT16ARRAY;
+                } else if (valueType === '[object Uint16Array]') {
+                  marker += TYPE_UINT16ARRAY;
+                } else if (valueType === '[object Int32Array]') {
+                  marker += TYPE_INT32ARRAY;
+                } else if (valueType === '[object Uint32Array]') {
+                  marker += TYPE_UINT32ARRAY;
+                } else if (valueType === '[object Float32Array]') {
+                  marker += TYPE_FLOAT32ARRAY;
+                } else if (valueType === '[object Float64Array]') {
+                  marker += TYPE_FLOAT64ARRAY;
+                } else {
+                  callback(new Error('Failed to get type for BinaryArray'));
+                }
+              }
+
+              callback(marker + bufferToString(buffer));
+            } else if (valueType === '[object Blob]') {
+              // Conver the blob to a binaryArray and then to a string.
+              var fileReader = new FileReader();
+
+              fileReader.onload = function () {
+                // Backwards-compatible prefix for the blob type.
+                var str = BLOB_TYPE_PREFIX + value.type + '~' + bufferToString(this.result);
+                callback(SERIALIZED_MARKER + TYPE_BLOB + str);
+              };
+
+              fileReader.readAsArrayBuffer(value);
+            } else {
+              try {
+                callback(JSON.stringify(value));
+              } catch (e) {
+                console.error("Couldn't convert value into a JSON string: ", value);
+                callback(null, e);
+              }
+            }
+          } // Deserialize data we've inserted into a value column/field. We place
+          // special markers into our strings to mark them as encoded; this isn't
+          // as nice as a meta field, but it's the only sane thing we can do whilst
+          // keeping localStorage support intact.
+          //
+          // Oftentimes this will just deserialize JSON content, but if we have a
+          // special marker (SERIALIZED_MARKER, defined above), we will extract
+          // some kind of arraybuffer/binary data/typed array out of the string.
+
+
+          function deserialize(value) {
+            // If we haven't marked this string as being specially serialized (i.e.
+            // something other than serialized JSON), we can just return it and be
+            // done with it.
+            if (value.substring(0, SERIALIZED_MARKER_LENGTH) !== SERIALIZED_MARKER) {
+              return JSON.parse(value);
+            } // The following code deals with deserializing some kind of Blob or
+            // TypedArray. First we separate out the type of data we're dealing
+            // with from the data itself.
+
+
+            var serializedString = value.substring(TYPE_SERIALIZED_MARKER_LENGTH);
+            var type = value.substring(SERIALIZED_MARKER_LENGTH, TYPE_SERIALIZED_MARKER_LENGTH);
+            var blobType; // Backwards-compatible blob type serialization strategy.
+            // DBs created with older versions of localForage will simply not have the blob type.
+
+            if (type === TYPE_BLOB && BLOB_TYPE_PREFIX_REGEX.test(serializedString)) {
+              var matcher = serializedString.match(BLOB_TYPE_PREFIX_REGEX);
+              blobType = matcher[1];
+              serializedString = serializedString.substring(matcher[0].length);
+            }
+
+            var buffer = stringToBuffer(serializedString); // Return the right type based on the code/type set during
+            // serialization.
+
+            switch (type) {
+              case TYPE_ARRAYBUFFER:
+                return buffer;
+
+              case TYPE_BLOB:
+                return createBlob([buffer], {
+                  type: blobType
+                });
+
+              case TYPE_INT8ARRAY:
+                return new Int8Array(buffer);
+
+              case TYPE_UINT8ARRAY:
+                return new Uint8Array(buffer);
+
+              case TYPE_UINT8CLAMPEDARRAY:
+                return new Uint8ClampedArray(buffer);
+
+              case TYPE_INT16ARRAY:
+                return new Int16Array(buffer);
+
+              case TYPE_UINT16ARRAY:
+                return new Uint16Array(buffer);
+
+              case TYPE_INT32ARRAY:
+                return new Int32Array(buffer);
+
+              case TYPE_UINT32ARRAY:
+                return new Uint32Array(buffer);
+
+              case TYPE_FLOAT32ARRAY:
+                return new Float32Array(buffer);
+
+              case TYPE_FLOAT64ARRAY:
+                return new Float64Array(buffer);
+
+              default:
+                throw new Error('Unkown type: ' + type);
+            }
+          }
+
+          var localforageSerializer = {
+            serialize: serialize,
+            deserialize: deserialize,
+            stringToBuffer: stringToBuffer,
+            bufferToString: bufferToString
+          };
+          /*
+           * Includes code from:
+           *
+           * base64-arraybuffer
+           * https://github.com/niklasvh/base64-arraybuffer
+           *
+           * Copyright (c) 2012 Niklas von Hertzen
+           * Licensed under the MIT license.
+           */
+
+          function createDbTable(t, dbInfo, callback, errorCallback) {
+            t.executeSql('CREATE TABLE IF NOT EXISTS ' + dbInfo.storeName + ' ' + '(id INTEGER PRIMARY KEY, key unique, value)', [], callback, errorCallback);
+          } // Open the WebSQL database (automatically creates one if one didn't
+          // previously exist), using any options set in the config.
+
+
+          function _initStorage$1(options) {
+            var self = this;
+            var dbInfo = {
+              db: null
+            };
+
+            if (options) {
+              for (var i in options) {
+                dbInfo[i] = typeof options[i] !== 'string' ? options[i].toString() : options[i];
+              }
+            }
+
+            var dbInfoPromise = new Promise$1(function (resolve, reject) {
+              // Open the database; the openDatabase API will automatically
+              // create it for us if it doesn't exist.
+              try {
+                dbInfo.db = openDatabase(dbInfo.name, String(dbInfo.version), dbInfo.description, dbInfo.size);
+              } catch (e) {
+                return reject(e);
+              } // Create our key/value table if it doesn't exist.
+
+
+              dbInfo.db.transaction(function (t) {
+                createDbTable(t, dbInfo, function () {
+                  self._dbInfo = dbInfo;
+                  resolve();
+                }, function (t, error) {
+                  reject(error);
+                });
+              }, reject);
+            });
+            dbInfo.serializer = localforageSerializer;
+            return dbInfoPromise;
+          }
+
+          function tryExecuteSql(t, dbInfo, sqlStatement, args, callback, errorCallback) {
+            t.executeSql(sqlStatement, args, callback, function (t, error) {
+              if (error.code === error.SYNTAX_ERR) {
+                t.executeSql('SELECT name FROM sqlite_master ' + "WHERE type='table' AND name = ?", [dbInfo.storeName], function (t, results) {
+                  if (!results.rows.length) {
+                    // if the table is missing (was deleted)
+                    // re-create it table and retry
+                    createDbTable(t, dbInfo, function () {
+                      t.executeSql(sqlStatement, args, callback, errorCallback);
+                    }, errorCallback);
+                  } else {
+                    errorCallback(t, error);
+                  }
+                }, errorCallback);
+              } else {
+                errorCallback(t, error);
+              }
+            }, errorCallback);
+          }
+
+          function getItem$1(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'SELECT * FROM ' + dbInfo.storeName + ' WHERE key = ? LIMIT 1', [key], function (t, results) {
+                    var result = results.rows.length ? results.rows.item(0).value : null; // Check to see if this is serialized content we need to
+                    // unpack.
+
+                    if (result) {
+                      result = dbInfo.serializer.deserialize(result);
+                    }
+
+                    resolve(result);
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function iterate$1(iterator, callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'SELECT * FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var rows = results.rows;
+                    var length = rows.length;
+
+                    for (var i = 0; i < length; i++) {
+                      var item = rows.item(i);
+                      var result = item.value; // Check to see if this is serialized content
+                      // we need to unpack.
+
+                      if (result) {
+                        result = dbInfo.serializer.deserialize(result);
+                      }
+
+                      result = iterator(result, item.key, i + 1); // void(0) prevents problems with redefinition
+                      // of `undefined`.
+
+                      if (result !== void 0) {
+                        resolve(result);
+                        return;
+                      }
+                    }
+
+                    resolve();
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function _setItem(key, value, callback, retriesLeft) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                // The localStorage API doesn't return undefined values in an
+                // "expected" way, so undefined is always cast to null in all
+                // drivers. See: https://github.com/mozilla/localForage/pull/42
+                if (value === undefined) {
+                  value = null;
+                } // Save the original value to pass to the callback.
+
+
+                var originalValue = value;
+                var dbInfo = self._dbInfo;
+                dbInfo.serializer.serialize(value, function (value, error) {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    dbInfo.db.transaction(function (t) {
+                      tryExecuteSql(t, dbInfo, 'INSERT OR REPLACE INTO ' + dbInfo.storeName + ' ' + '(key, value) VALUES (?, ?)', [key, value], function () {
+                        resolve(originalValue);
+                      }, function (t, error) {
+                        reject(error);
+                      });
+                    }, function (sqlError) {
+                      // The transaction failed; check
+                      // to see if it's a quota error.
+                      if (sqlError.code === sqlError.QUOTA_ERR) {
+                        // We reject the callback outright for now, but
+                        // it's worth trying to re-run the transaction.
+                        // Even if the user accepts the prompt to use
+                        // more storage on Safari, this error will
+                        // be called.
+                        //
+                        // Try to re-run the transaction.
+                        if (retriesLeft > 0) {
+                          resolve(_setItem.apply(self, [key, originalValue, callback, retriesLeft - 1]));
+                          return;
+                        }
+
+                        reject(sqlError);
+                      }
+                    });
+                  }
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function setItem$1(key, value, callback) {
+            return _setItem.apply(this, [key, value, callback, 1]);
+          }
+
+          function removeItem$1(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'DELETE FROM ' + dbInfo.storeName + ' WHERE key = ?', [key], function () {
+                    resolve();
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Deletes every item in the table.
+          // TODO: Find out if this resets the AUTO_INCREMENT number.
+
+
+          function clear$1(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'DELETE FROM ' + dbInfo.storeName, [], function () {
+                    resolve();
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Does a simple `COUNT(key)` to get the number of items stored in
+          // localForage.
+
+
+          function length$1(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  // Ahhh, SQL makes this one soooooo easy.
+                  tryExecuteSql(t, dbInfo, 'SELECT COUNT(key) as c FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var result = results.rows.item(0).c;
+                    resolve(result);
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Return the key located at key index X; essentially gets the key from a
+          // `WHERE id = ?`. This is the most efficient way I can think to implement
+          // this rarely-used (in my experience) part of the API, but it can seem
+          // inconsistent, because we do `INSERT OR REPLACE INTO` on `setItem()`, so
+          // the ID of each key will change every time it's updated. Perhaps a stored
+          // procedure for the `setItem()` SQL would solve this problem?
+          // TODO: Don't change ID on `setItem()`.
+
+
+          function key$1(n, callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'SELECT key FROM ' + dbInfo.storeName + ' WHERE id = ? LIMIT 1', [n + 1], function (t, results) {
+                    var result = results.rows.length ? results.rows.item(0).key : null;
+                    resolve(result);
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function keys$1(callback) {
+            var self = this;
+            var promise = new Promise$1(function (resolve, reject) {
+              self.ready().then(function () {
+                var dbInfo = self._dbInfo;
+                dbInfo.db.transaction(function (t) {
+                  tryExecuteSql(t, dbInfo, 'SELECT key FROM ' + dbInfo.storeName, [], function (t, results) {
+                    var keys = [];
+
+                    for (var i = 0; i < results.rows.length; i++) {
+                      keys.push(results.rows.item(i).key);
+                    }
+
+                    resolve(keys);
+                  }, function (t, error) {
+                    reject(error);
+                  });
+                });
+              })["catch"](reject);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // https://www.w3.org/TR/webdatabase/#databases
+          // > There is no way to enumerate or delete the databases available for an origin from this API.
+
+
+          function getAllStoreNames(db) {
+            return new Promise$1(function (resolve, reject) {
+              db.transaction(function (t) {
+                t.executeSql('SELECT name FROM sqlite_master ' + "WHERE type='table' AND name <> '__WebKitDatabaseInfoTable__'", [], function (t, results) {
+                  var storeNames = [];
+
+                  for (var i = 0; i < results.rows.length; i++) {
+                    storeNames.push(results.rows.item(i).name);
+                  }
+
+                  resolve({
+                    db: db,
+                    storeNames: storeNames
+                  });
+                }, function (t, error) {
+                  reject(error);
+                });
+              }, function (sqlError) {
+                reject(sqlError);
+              });
+            });
+          }
+
+          function dropInstance$1(options, callback) {
+            callback = getCallback.apply(this, arguments);
+            var currentConfig = this.config();
+            options = typeof options !== 'function' && options || {};
+
+            if (!options.name) {
+              options.name = options.name || currentConfig.name;
+              options.storeName = options.storeName || currentConfig.storeName;
+            }
+
+            var self = this;
+            var promise;
+
+            if (!options.name) {
+              promise = Promise$1.reject('Invalid arguments');
+            } else {
+              promise = new Promise$1(function (resolve) {
+                var db;
+
+                if (options.name === currentConfig.name) {
+                  // use the db reference of the current instance
+                  db = self._dbInfo.db;
+                } else {
+                  db = openDatabase(options.name, '', '', 0);
+                }
+
+                if (!options.storeName) {
+                  // drop all database tables
+                  resolve(getAllStoreNames(db));
+                } else {
+                  resolve({
+                    db: db,
+                    storeNames: [options.storeName]
+                  });
+                }
+              }).then(function (operationInfo) {
+                return new Promise$1(function (resolve, reject) {
+                  operationInfo.db.transaction(function (t) {
+                    function dropTable(storeName) {
+                      return new Promise$1(function (resolve, reject) {
+                        t.executeSql('DROP TABLE IF EXISTS ' + storeName, [], function () {
+                          resolve();
+                        }, function (t, error) {
+                          reject(error);
+                        });
+                      });
+                    }
+
+                    var operations = [];
+
+                    for (var i = 0, len = operationInfo.storeNames.length; i < len; i++) {
+                      operations.push(dropTable(operationInfo.storeNames[i]));
+                    }
+
+                    Promise$1.all(operations).then(function () {
+                      resolve();
+                    })["catch"](function (e) {
+                      reject(e);
+                    });
+                  }, function (sqlError) {
+                    reject(sqlError);
+                  });
+                });
+              });
+            }
+
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          var webSQLStorage = {
+            _driver: 'webSQLStorage',
+            _initStorage: _initStorage$1,
+            _support: isWebSQLValid(),
+            iterate: iterate$1,
+            getItem: getItem$1,
+            setItem: setItem$1,
+            removeItem: removeItem$1,
+            clear: clear$1,
+            length: length$1,
+            key: key$1,
+            keys: keys$1,
+            dropInstance: dropInstance$1
+          };
+
+          function isLocalStorageValid() {
+            try {
+              return typeof localStorage !== 'undefined' && 'setItem' in localStorage && // in IE8 typeof localStorage.setItem === 'object'
+              !!localStorage.setItem;
+            } catch (e) {
+              return false;
+            }
+          }
+
+          function _getKeyPrefix(options, defaultConfig) {
+            var keyPrefix = options.name + '/';
+
+            if (options.storeName !== defaultConfig.storeName) {
+              keyPrefix += options.storeName + '/';
+            }
+
+            return keyPrefix;
+          } // Check if localStorage throws when saving an item
+
+
+          function checkIfLocalStorageThrows() {
+            var localStorageTestKey = '_localforage_support_test';
+
+            try {
+              localStorage.setItem(localStorageTestKey, true);
+              localStorage.removeItem(localStorageTestKey);
+              return false;
+            } catch (e) {
+              return true;
+            }
+          } // Check if localStorage is usable and allows to save an item
+          // This method checks if localStorage is usable in Safari Private Browsing
+          // mode, or in any other case where the available quota for localStorage
+          // is 0 and there wasn't any saved items yet.
+
+
+          function _isLocalStorageUsable() {
+            return !checkIfLocalStorageThrows() || localStorage.length > 0;
+          } // Config the localStorage backend, using options set in the config.
+
+
+          function _initStorage$2(options) {
+            var self = this;
+            var dbInfo = {};
+
+            if (options) {
+              for (var i in options) {
+                dbInfo[i] = options[i];
+              }
+            }
+
+            dbInfo.keyPrefix = _getKeyPrefix(options, self._defaultConfig);
+
+            if (!_isLocalStorageUsable()) {
+              return Promise$1.reject();
+            }
+
+            self._dbInfo = dbInfo;
+            dbInfo.serializer = localforageSerializer;
+            return Promise$1.resolve();
+          } // Remove all keys from the datastore, effectively destroying all data in
+          // the app's key/value store!
+
+
+          function clear$2(callback) {
+            var self = this;
+            var promise = self.ready().then(function () {
+              var keyPrefix = self._dbInfo.keyPrefix;
+
+              for (var i = localStorage.length - 1; i >= 0; i--) {
+                var key = localStorage.key(i);
+
+                if (key.indexOf(keyPrefix) === 0) {
+                  localStorage.removeItem(key);
+                }
+              }
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Retrieve an item from the store. Unlike the original async_storage
+          // library in Gaia, we don't modify return values at all. If a key's value
+          // is `undefined`, we pass that value to the callback function.
+
+
+          function getItem$2(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = self.ready().then(function () {
+              var dbInfo = self._dbInfo;
+              var result = localStorage.getItem(dbInfo.keyPrefix + key); // If a result was found, parse it from the serialized
+              // string into a JS object. If result isn't truthy, the key
+              // is likely undefined and we'll pass it straight to the
+              // callback.
+
+              if (result) {
+                result = dbInfo.serializer.deserialize(result);
+              }
+
+              return result;
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Iterate over all items in the store.
+
+
+          function iterate$2(iterator, callback) {
+            var self = this;
+            var promise = self.ready().then(function () {
+              var dbInfo = self._dbInfo;
+              var keyPrefix = dbInfo.keyPrefix;
+              var keyPrefixLength = keyPrefix.length;
+              var length = localStorage.length; // We use a dedicated iterator instead of the `i` variable below
+              // so other keys we fetch in localStorage aren't counted in
+              // the `iterationNumber` argument passed to the `iterate()`
+              // callback.
+              //
+              // See: github.com/mozilla/localForage/pull/435#discussion_r38061530
+
+              var iterationNumber = 1;
+
+              for (var i = 0; i < length; i++) {
+                var key = localStorage.key(i);
+
+                if (key.indexOf(keyPrefix) !== 0) {
+                  continue;
+                }
+
+                var value = localStorage.getItem(key); // If a result was found, parse it from the serialized
+                // string into a JS object. If result isn't truthy, the
+                // key is likely undefined and we'll pass it straight
+                // to the iterator.
+
+                if (value) {
+                  value = dbInfo.serializer.deserialize(value);
+                }
+
+                value = iterator(value, key.substring(keyPrefixLength), iterationNumber++);
+
+                if (value !== void 0) {
+                  return value;
+                }
+              }
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Same as localStorage's key() method, except takes a callback.
+
+
+          function key$2(n, callback) {
+            var self = this;
+            var promise = self.ready().then(function () {
+              var dbInfo = self._dbInfo;
+              var result;
+
+              try {
+                result = localStorage.key(n);
+              } catch (error) {
+                result = null;
+              } // Remove the prefix from the key, if a key is found.
+
+
+              if (result) {
+                result = result.substring(dbInfo.keyPrefix.length);
+              }
+
+              return result;
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function keys$2(callback) {
+            var self = this;
+            var promise = self.ready().then(function () {
+              var dbInfo = self._dbInfo;
+              var length = localStorage.length;
+              var keys = [];
+
+              for (var i = 0; i < length; i++) {
+                var itemKey = localStorage.key(i);
+
+                if (itemKey.indexOf(dbInfo.keyPrefix) === 0) {
+                  keys.push(itemKey.substring(dbInfo.keyPrefix.length));
+                }
+              }
+
+              return keys;
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Supply the number of keys in the datastore to the callback function.
+
+
+          function length$2(callback) {
+            var self = this;
+            var promise = self.keys().then(function (keys) {
+              return keys.length;
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Remove an item from the store, nice and simple.
+
+
+          function removeItem$2(key, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = self.ready().then(function () {
+              var dbInfo = self._dbInfo;
+              localStorage.removeItem(dbInfo.keyPrefix + key);
+            });
+            executeCallback(promise, callback);
+            return promise;
+          } // Set a key's value and run an optional callback once the value is set.
+          // Unlike Gaia's implementation, the callback function is passed the value,
+          // in case you want to operate on that value only after you're sure it
+          // saved, or something like that.
+
+
+          function setItem$2(key, value, callback) {
+            var self = this;
+            key = normalizeKey(key);
+            var promise = self.ready().then(function () {
+              // Convert undefined values to null.
+              // https://github.com/mozilla/localForage/pull/42
+              if (value === undefined) {
+                value = null;
+              } // Save the original value to pass to the callback.
+
+
+              var originalValue = value;
+              return new Promise$1(function (resolve, reject) {
+                var dbInfo = self._dbInfo;
+                dbInfo.serializer.serialize(value, function (value, error) {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    try {
+                      localStorage.setItem(dbInfo.keyPrefix + key, value);
+                      resolve(originalValue);
+                    } catch (e) {
+                      // localStorage capacity exceeded.
+                      // TODO: Make this a specific error/event.
+                      if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                        reject(e);
+                      }
+
+                      reject(e);
+                    }
+                  }
+                });
+              });
+            });
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          function dropInstance$2(options, callback) {
+            callback = getCallback.apply(this, arguments);
+            options = typeof options !== 'function' && options || {};
+
+            if (!options.name) {
+              var currentConfig = this.config();
+              options.name = options.name || currentConfig.name;
+              options.storeName = options.storeName || currentConfig.storeName;
+            }
+
+            var self = this;
+            var promise;
+
+            if (!options.name) {
+              promise = Promise$1.reject('Invalid arguments');
+            } else {
+              promise = new Promise$1(function (resolve) {
+                if (!options.storeName) {
+                  resolve(options.name + '/');
+                } else {
+                  resolve(_getKeyPrefix(options, self._defaultConfig));
+                }
+              }).then(function (keyPrefix) {
+                for (var i = localStorage.length - 1; i >= 0; i--) {
+                  var key = localStorage.key(i);
+
+                  if (key.indexOf(keyPrefix) === 0) {
+                    localStorage.removeItem(key);
+                  }
+                }
+              });
+            }
+
+            executeCallback(promise, callback);
+            return promise;
+          }
+
+          var localStorageWrapper = {
+            _driver: 'localStorageWrapper',
+            _initStorage: _initStorage$2,
+            _support: isLocalStorageValid(),
+            iterate: iterate$2,
+            getItem: getItem$2,
+            setItem: setItem$2,
+            removeItem: removeItem$2,
+            clear: clear$2,
+            length: length$2,
+            key: key$2,
+            keys: keys$2,
+            dropInstance: dropInstance$2
+          };
+
+          var sameValue = function sameValue(x, y) {
+            return x === y || typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y);
+          };
+
+          var includes = function includes(array, searchElement) {
+            var len = array.length;
+            var i = 0;
+
+            while (i < len) {
+              if (sameValue(array[i], searchElement)) {
+                return true;
+              }
+
+              i++;
+            }
+
+            return false;
+          };
+
+          var isArray = Array.isArray || function (arg) {
+            return Object.prototype.toString.call(arg) === '[object Array]';
+          }; // Drivers are stored here when `defineDriver()` is called.
+          // They are shared across all instances of localForage.
+
+
+          var DefinedDrivers = {};
+          var DriverSupport = {};
+          var DefaultDrivers = {
+            INDEXEDDB: asyncStorage,
+            WEBSQL: webSQLStorage,
+            LOCALSTORAGE: localStorageWrapper
+          };
+          var DefaultDriverOrder = [DefaultDrivers.INDEXEDDB._driver, DefaultDrivers.WEBSQL._driver, DefaultDrivers.LOCALSTORAGE._driver];
+          var OptionalDriverMethods = ['dropInstance'];
+          var LibraryMethods = ['clear', 'getItem', 'iterate', 'key', 'keys', 'length', 'removeItem', 'setItem'].concat(OptionalDriverMethods);
+          var DefaultConfig = {
+            description: '',
+            driver: DefaultDriverOrder.slice(),
+            name: 'localforage',
+            // Default DB size is _JUST UNDER_ 5MB, as it's the highest size
+            // we can use without a prompt.
+            size: 4980736,
+            storeName: 'keyvaluepairs',
+            version: 1.0
+          };
+
+          function callWhenReady(localForageInstance, libraryMethod) {
+            localForageInstance[libraryMethod] = function () {
+              var _args = arguments;
+              return localForageInstance.ready().then(function () {
+                return localForageInstance[libraryMethod].apply(localForageInstance, _args);
+              });
+            };
+          }
+
+          function extend() {
+            for (var i = 1; i < arguments.length; i++) {
+              var arg = arguments[i];
+
+              if (arg) {
+                for (var _key in arg) {
+                  if (arg.hasOwnProperty(_key)) {
+                    if (isArray(arg[_key])) {
+                      arguments[0][_key] = arg[_key].slice();
+                    } else {
+                      arguments[0][_key] = arg[_key];
+                    }
+                  }
+                }
+              }
+            }
+
+            return arguments[0];
+          }
+
+          var LocalForage = function () {
+            function LocalForage(options) {
+              _classCallCheck(this, LocalForage);
+
+              for (var driverTypeKey in DefaultDrivers) {
+                if (DefaultDrivers.hasOwnProperty(driverTypeKey)) {
+                  var driver = DefaultDrivers[driverTypeKey];
+                  var driverName = driver._driver;
+                  this[driverTypeKey] = driverName;
+
+                  if (!DefinedDrivers[driverName]) {
+                    // we don't need to wait for the promise,
+                    // since the default drivers can be defined
+                    // in a blocking manner
+                    this.defineDriver(driver);
+                  }
+                }
+              }
+
+              this._defaultConfig = extend({}, DefaultConfig);
+              this._config = extend({}, this._defaultConfig, options);
+              this._driverSet = null;
+              this._initDriver = null;
+              this._ready = false;
+              this._dbInfo = null;
+
+              this._wrapLibraryMethodsWithReady();
+
+              this.setDriver(this._config.driver)["catch"](function () {});
+            } // Set any config values for localForage; can be called anytime before
+            // the first API call (e.g. `getItem`, `setItem`).
+            // We loop through options so we don't overwrite existing config
+            // values.
+
+
+            LocalForage.prototype.config = function config(options) {
+              // If the options argument is an object, we use it to set values.
+              // Otherwise, we return either a specified config value or all
+              // config values.
+              if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object') {
+                // If localforage is ready and fully initialized, we can't set
+                // any new configuration values. Instead, we return an error.
+                if (this._ready) {
+                  return new Error("Can't call config() after localforage " + 'has been used.');
+                }
+
+                for (var i in options) {
+                  if (i === 'storeName') {
+                    options[i] = options[i].replace(/\W/g, '_');
+                  }
+
+                  if (i === 'version' && typeof options[i] !== 'number') {
+                    return new Error('Database version must be a number.');
+                  }
+
+                  this._config[i] = options[i];
+                } // after all config options are set and
+                // the driver option is used, try setting it
+
+
+                if ('driver' in options && options.driver) {
+                  return this.setDriver(this._config.driver);
+                }
+
+                return true;
+              } else if (typeof options === 'string') {
+                return this._config[options];
+              } else {
+                return this._config;
+              }
+            }; // Used to define a custom driver, shared across all instances of
+            // localForage.
+
+
+            LocalForage.prototype.defineDriver = function defineDriver(driverObject, callback, errorCallback) {
+              var promise = new Promise$1(function (resolve, reject) {
+                try {
+                  var driverName = driverObject._driver;
+                  var complianceError = new Error('Custom driver not compliant; see ' + 'https://mozilla.github.io/localForage/#definedriver'); // A driver name should be defined and not overlap with the
+                  // library-defined, default drivers.
+
+                  if (!driverObject._driver) {
+                    reject(complianceError);
+                    return;
+                  }
+
+                  var driverMethods = LibraryMethods.concat('_initStorage');
+
+                  for (var i = 0, len = driverMethods.length; i < len; i++) {
+                    var driverMethodName = driverMethods[i]; // when the property is there,
+                    // it should be a method even when optional
+
+                    var isRequired = !includes(OptionalDriverMethods, driverMethodName);
+
+                    if ((isRequired || driverObject[driverMethodName]) && typeof driverObject[driverMethodName] !== 'function') {
+                      reject(complianceError);
+                      return;
+                    }
+                  }
+
+                  var configureMissingMethods = function configureMissingMethods() {
+                    var methodNotImplementedFactory = function methodNotImplementedFactory(methodName) {
+                      return function () {
+                        var error = new Error('Method ' + methodName + ' is not implemented by the current driver');
+                        var promise = Promise$1.reject(error);
+                        executeCallback(promise, arguments[arguments.length - 1]);
+                        return promise;
+                      };
+                    };
+
+                    for (var _i = 0, _len = OptionalDriverMethods.length; _i < _len; _i++) {
+                      var optionalDriverMethod = OptionalDriverMethods[_i];
+
+                      if (!driverObject[optionalDriverMethod]) {
+                        driverObject[optionalDriverMethod] = methodNotImplementedFactory(optionalDriverMethod);
+                      }
+                    }
+                  };
+
+                  configureMissingMethods();
+
+                  var setDriverSupport = function setDriverSupport(support) {
+                    if (DefinedDrivers[driverName]) {
+                      console.info('Redefining LocalForage driver: ' + driverName);
+                    }
+
+                    DefinedDrivers[driverName] = driverObject;
+                    DriverSupport[driverName] = support; // don't use a then, so that we can define
+                    // drivers that have simple _support methods
+                    // in a blocking manner
+
+                    resolve();
+                  };
+
+                  if ('_support' in driverObject) {
+                    if (driverObject._support && typeof driverObject._support === 'function') {
+                      driverObject._support().then(setDriverSupport, reject);
+                    } else {
+                      setDriverSupport(!!driverObject._support);
+                    }
+                  } else {
+                    setDriverSupport(true);
+                  }
+                } catch (e) {
+                  reject(e);
+                }
+              });
+              executeTwoCallbacks(promise, callback, errorCallback);
+              return promise;
+            };
+
+            LocalForage.prototype.driver = function driver() {
+              return this._driver || null;
+            };
+
+            LocalForage.prototype.getDriver = function getDriver(driverName, callback, errorCallback) {
+              var getDriverPromise = DefinedDrivers[driverName] ? Promise$1.resolve(DefinedDrivers[driverName]) : Promise$1.reject(new Error('Driver not found.'));
+              executeTwoCallbacks(getDriverPromise, callback, errorCallback);
+              return getDriverPromise;
+            };
+
+            LocalForage.prototype.getSerializer = function getSerializer(callback) {
+              var serializerPromise = Promise$1.resolve(localforageSerializer);
+              executeTwoCallbacks(serializerPromise, callback);
+              return serializerPromise;
+            };
+
+            LocalForage.prototype.ready = function ready(callback) {
+              var self = this;
+
+              var promise = self._driverSet.then(function () {
+                if (self._ready === null) {
+                  self._ready = self._initDriver();
+                }
+
+                return self._ready;
+              });
+
+              executeTwoCallbacks(promise, callback, callback);
+              return promise;
+            };
+
+            LocalForage.prototype.setDriver = function setDriver(drivers, callback, errorCallback) {
+              var self = this;
+
+              if (!isArray(drivers)) {
+                drivers = [drivers];
+              }
+
+              var supportedDrivers = this._getSupportedDrivers(drivers);
+
+              function setDriverToConfig() {
+                self._config.driver = self.driver();
+              }
+
+              function extendSelfWithDriver(driver) {
+                self._extend(driver);
+
+                setDriverToConfig();
+                self._ready = self._initStorage(self._config);
+                return self._ready;
+              }
+
+              function initDriver(supportedDrivers) {
+                return function () {
+                  var currentDriverIndex = 0;
+
+                  function driverPromiseLoop() {
+                    while (currentDriverIndex < supportedDrivers.length) {
+                      var driverName = supportedDrivers[currentDriverIndex];
+                      currentDriverIndex++;
+                      self._dbInfo = null;
+                      self._ready = null;
+                      return self.getDriver(driverName).then(extendSelfWithDriver)["catch"](driverPromiseLoop);
+                    }
+
+                    setDriverToConfig();
+                    var error = new Error('No available storage method found.');
+                    self._driverSet = Promise$1.reject(error);
+                    return self._driverSet;
+                  }
+
+                  return driverPromiseLoop();
+                };
+              } // There might be a driver initialization in progress
+              // so wait for it to finish in order to avoid a possible
+              // race condition to set _dbInfo
+
+
+              var oldDriverSetDone = this._driverSet !== null ? this._driverSet["catch"](function () {
+                return Promise$1.resolve();
+              }) : Promise$1.resolve();
+              this._driverSet = oldDriverSetDone.then(function () {
+                var driverName = supportedDrivers[0];
+                self._dbInfo = null;
+                self._ready = null;
+                return self.getDriver(driverName).then(function (driver) {
+                  self._driver = driver._driver;
+                  setDriverToConfig();
+
+                  self._wrapLibraryMethodsWithReady();
+
+                  self._initDriver = initDriver(supportedDrivers);
+                });
+              })["catch"](function () {
+                setDriverToConfig();
+                var error = new Error('No available storage method found.');
+                self._driverSet = Promise$1.reject(error);
+                return self._driverSet;
+              });
+              executeTwoCallbacks(this._driverSet, callback, errorCallback);
+              return this._driverSet;
+            };
+
+            LocalForage.prototype.supports = function supports(driverName) {
+              return !!DriverSupport[driverName];
+            };
+
+            LocalForage.prototype._extend = function _extend(libraryMethodsAndProperties) {
+              extend(this, libraryMethodsAndProperties);
+            };
+
+            LocalForage.prototype._getSupportedDrivers = function _getSupportedDrivers(drivers) {
+              var supportedDrivers = [];
+
+              for (var i = 0, len = drivers.length; i < len; i++) {
+                var driverName = drivers[i];
+
+                if (this.supports(driverName)) {
+                  supportedDrivers.push(driverName);
+                }
+              }
+
+              return supportedDrivers;
+            };
+
+            LocalForage.prototype._wrapLibraryMethodsWithReady = function _wrapLibraryMethodsWithReady() {
+              // Add a stub for each driver API method that delays the call to the
+              // corresponding driver method until localForage is ready. These stubs
+              // will be replaced by the driver methods as soon as the driver is
+              // loaded, so there is no performance impact.
+              for (var i = 0, len = LibraryMethods.length; i < len; i++) {
+                callWhenReady(this, LibraryMethods[i]);
+              }
+            };
+
+            LocalForage.prototype.createInstance = function createInstance(options) {
+              return new LocalForage(options);
+            };
+
+            return LocalForage;
+          }(); // The actual localForage object that we expose as a module or via a
+          // global. It's extended by pulling in one of our other libraries.
+
+
+          var localforage_js = new LocalForage();
+          module.exports = localforage_js;
+        }, {
+          "3": 3
+        }]
+      }, {}, [4])(4);
+    });
+  });
+
+  var crc32 = createCommonjsModule(function (module) {
+    (function () {
+
+      var table = [],
+          poly = 0xEDB88320; // reverse polynomial
+      // build the table
+
+      function makeTable() {
+        var c, n, k;
+
+        for (n = 0; n < 256; n += 1) {
+          c = n;
+
+          for (k = 0; k < 8; k += 1) {
+            if (c & 1) {
+              c = poly ^ c >>> 1;
+            } else {
+              c = c >>> 1;
+            }
+          }
+
+          table[n] = c >>> 0;
+        }
+      }
+
+      function strToArr(str) {
+        // sweet hack to turn string into a 'byte' array
+        return Array.prototype.map.call(str, function (c) {
+          return c.charCodeAt(0);
+        });
+      }
+      /*
+       * Compute CRC of array directly.
+       *
+       * This is slower for repeated calls, so append mode is not supported.
+       */
+
+
+      function crcDirect(arr) {
+        var crc = -1,
+            // initial contents of LFBSR
+        i,
+            j,
+            l,
+            temp;
+
+        for (i = 0, l = arr.length; i < l; i += 1) {
+          temp = (crc ^ arr[i]) & 0xff; // read 8 bits one at a time
+
+          for (j = 0; j < 8; j += 1) {
+            if ((temp & 1) === 1) {
+              temp = temp >>> 1 ^ poly;
+            } else {
+              temp = temp >>> 1;
+            }
+          }
+
+          crc = crc >>> 8 ^ temp;
+        } // flip bits
+
+
+        return crc ^ -1;
+      }
+      /*
+       * Compute CRC with the help of a pre-calculated table.
+       *
+       * This supports append mode, if the second parameter is set.
+       */
+
+
+      function crcTable(arr, append) {
+        var crc, i, l; // if we're in append mode, don't reset crc
+        // if arr is null or undefined, reset table and return
+
+        if (typeof crcTable.crc === 'undefined' || !append || !arr) {
+          crcTable.crc = 0 ^ -1;
+
+          if (!arr) {
+            return;
+          }
+        } // store in temp variable for minor speed gain
+
+
+        crc = crcTable.crc;
+
+        for (i = 0, l = arr.length; i < l; i += 1) {
+          crc = crc >>> 8 ^ table[(crc ^ arr[i]) & 0xff];
+        }
+
+        crcTable.crc = crc;
+        return crc ^ -1;
+      } // build the table
+      // this isn't that costly, and most uses will be for table assisted mode
+
+
+      makeTable();
+
+      module.exports = function (val, direct) {
+        var val = typeof val === 'string' ? strToArr(val) : val,
+            ret = direct ? crcDirect(val) : crcTable(val); // convert to 2's complement hex
+
+        return (ret >>> 0).toString(16);
+      };
+
+      module.exports.direct = crcDirect;
+      module.exports.table = crcTable;
+    })();
+  });
+  var crc32_1 = crc32.direct;
+  var crc32_2 = crc32.table;
+
+  var rawinflate = createCommonjsModule(function (module) {
+    /*
+     * $Id: rawinflate.js,v 0.2 2009/03/01 18:32:24 dankogai Exp $
+     *
+     * original:
+     * http://www.onicos.com/staff/iz/amuse/javascript/expert/inflate.txt
+     */
+
+    /* Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
+     * Version: 1.0.0.1
+     * LastModified: Dec 25 1999
+     */
+
+    /* Interface:
+     * data = inflate(src);
+     */
+    (function () {
+      /* constant parameters */
+      var WSIZE = 32768,
+          // Sliding Window size
+      STORED_BLOCK = 0,
+          STATIC_TREES = 1,
+          DYN_TREES = 2,
+
+      /* for inflate */
+      lbits = 9,
+          // bits in base literal/length lookup table
+      dbits = 6,
+          // bits in base distance lookup table
+
+      /* variables (inflate) */
+      slide,
+          wp,
+          // current position in slide
+      fixed_tl = null,
+          // inflate static
+      fixed_td,
+          // inflate static
+      fixed_bl,
+          // inflate static
+      fixed_bd,
+          // inflate static
+      bit_buf,
+          // bit buffer
+      bit_len,
+          // bits in bit buffer
+      method,
+          eof,
+          copy_leng,
+          copy_dist,
+          tl,
+          // literal length decoder table
+      td,
+          // literal distance decoder table
+      bl,
+          // number of bits decoded by tl
+      bd,
+          // number of bits decoded by td
+      inflate_data,
+          inflate_pos,
+
+      /* constant tables (inflate) */
+      MASK_BITS = [0x0000, 0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff, 0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff],
+          // Tables for deflate from PKZIP's appnote.txt.
+      // Copy lengths for literal codes 257..285
+      cplens = [3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0],
+
+      /* note: see note #13 above about the 258 in this list. */
+      // Extra bits for literal codes 257..285
+      cplext = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 99, 99 // 99==invalid
+      ],
+          // Copy offsets for distance codes 0..29
+      cpdist = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577],
+          // Extra bits for distance codes
+      cpdext = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13],
+          // Order of the bit length code lengths
+      border = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+      /* objects (inflate) */
+
+      function HuftList() {
+        this.next = null;
+        this.list = null;
+      }
+
+      function HuftNode() {
+        this.e = 0; // number of extra bits or operation
+
+        this.b = 0; // number of bits in this code or subcode
+        // union
+
+        this.n = 0; // literal, length base, or distance base
+
+        this.t = null; // (HuftNode) pointer to next level of table
+      }
+      /*
+       * @param b-  code lengths in bits (all assumed <= BMAX)
+       * @param n- number of codes (assumed <= N_MAX)
+       * @param s- number of simple-valued codes (0..s-1)
+       * @param d- list of base values for non-simple codes
+       * @param e- list of extra bits for non-simple codes
+       * @param mm- maximum lookup bits
+       */
+
+
+      function HuftBuild(b, n, s, d, e, mm) {
+        this.BMAX = 16; // maximum bit length of any code
+
+        this.N_MAX = 288; // maximum number of codes in any set
+
+        this.status = 0; // 0: success, 1: incomplete table, 2: bad input
+
+        this.root = null; // (HuftList) starting table
+
+        this.m = 0; // maximum lookup bits, returns actual
+
+        /* Given a list of code lengths and a maximum table size, make a set of
+           tables to decode that set of codes. Return zero on success, one if
+           the given code set is incomplete (the tables are still built in this
+           case), two if the input is invalid (all zero length codes or an
+           oversubscribed set of lengths), and three if not enough memory.
+           The code with value 256 is special, and the tables are constructed
+           so that no bits beyond that code are fetched when that code is
+           decoded. */
+
+        var a; // counter for codes of length k
+
+        var c = [];
+        var el; // length of EOB code (value 256)
+
+        var f; // i repeats in table every f entries
+
+        var g; // maximum code length
+
+        var h; // table level
+
+        var i; // counter, current code
+
+        var j; // counter
+
+        var k; // number of bits in current code
+
+        var lx = [];
+        var p; // pointer into c[], b[], or v[]
+
+        var pidx; // index of p
+
+        var q; // (HuftNode) points to current table
+
+        var r = new HuftNode(); // table entry for structure assignment
+
+        var u = [];
+        var v = [];
+        var w;
+        var x = [];
+        var xp; // pointer into x or c
+
+        var y; // number of dummy codes added
+
+        var z; // number of entries in current table
+
+        var o;
+        var tail; // (HuftList)
+
+        tail = this.root = null; // bit length count table
+
+        for (i = 0; i < this.BMAX + 1; i++) {
+          c[i] = 0;
+        } // stack of bits per table
+
+
+        for (i = 0; i < this.BMAX + 1; i++) {
+          lx[i] = 0;
+        } // HuftNode[BMAX][]  table stack
+
+
+        for (i = 0; i < this.BMAX; i++) {
+          u[i] = null;
+        } // values in order of bit length
+
+
+        for (i = 0; i < this.N_MAX; i++) {
+          v[i] = 0;
+        } // bit offsets, then code stack
+
+
+        for (i = 0; i < this.BMAX + 1; i++) {
+          x[i] = 0;
+        } // Generate counts for each bit length
+
+
+        el = n > 256 ? b[256] : this.BMAX; // set length of EOB code, if any
+
+        p = b;
+        pidx = 0;
+        i = n;
+
+        do {
+          c[p[pidx]]++; // assume all entries <= BMAX
+
+          pidx++;
+        } while (--i > 0);
+
+        if (c[0] === n) {
+          // null input--all zero length codes
+          this.root = null;
+          this.m = 0;
+          this.status = 0;
+          return;
+        } // Find minimum and maximum length, bound *m by those
+
+
+        for (j = 1; j <= this.BMAX; j++) {
+          if (c[j] !== 0) {
+            break;
+          }
+        }
+
+        k = j; // minimum code length
+
+        if (mm < j) {
+          mm = j;
+        }
+
+        for (i = this.BMAX; i !== 0; i--) {
+          if (c[i] !== 0) {
+            break;
+          }
+        }
+
+        g = i; // maximum code length
+
+        if (mm > i) {
+          mm = i;
+        } // Adjust last length count to fill out codes, if needed
+
+
+        for (y = 1 << j; j < i; j++, y <<= 1) {
+          if ((y -= c[j]) < 0) {
+            this.status = 2; // bad input: more codes than bits
+
+            this.m = mm;
+            return;
+          }
+        }
+
+        if ((y -= c[i]) < 0) {
+          this.status = 2;
+          this.m = mm;
+          return;
+        }
+
+        c[i] += y; // Generate starting offsets into the value table for each length
+
+        x[1] = j = 0;
+        p = c;
+        pidx = 1;
+        xp = 2;
+
+        while (--i > 0) {
+          // note that i == g from above
+          x[xp++] = j += p[pidx++];
+        } // Make a table of values in order of bit lengths
+
+
+        p = b;
+        pidx = 0;
+        i = 0;
+
+        do {
+          if ((j = p[pidx++]) !== 0) {
+            v[x[j]++] = i;
+          }
+        } while (++i < n);
+
+        n = x[g]; // set n to length of v
+        // Generate the Huffman codes and for each, make the table entries
+
+        x[0] = i = 0; // first Huffman code is zero
+
+        p = v;
+        pidx = 0; // grab values in bit order
+
+        h = -1; // no tables yet--level -1
+
+        w = lx[0] = 0; // no bits decoded yet
+
+        q = null; // ditto
+
+        z = 0; // ditto
+        // go through the bit lengths (k already is bits in shortest code)
+
+        for (null; k <= g; k++) {
+          a = c[k];
+
+          while (a-- > 0) {
+            // here i is the Huffman code of length k bits for value p[pidx]
+            // make tables up to required level
+            while (k > w + lx[1 + h]) {
+              w += lx[1 + h]; // add bits already decoded
+
+              h++; // compute minimum size table less than or equal to *m bits
+
+              z = (z = g - w) > mm ? mm : z; // upper limit
+
+              if ((f = 1 << (j = k - w)) > a + 1) {
+                // try a k-w bit table
+                // too few codes for k-w bit table
+                f -= a + 1; // deduct codes from patterns left
+
+                xp = k;
+
+                while (++j < z) {
+                  // try smaller tables up to z bits
+                  if ((f <<= 1) <= c[++xp]) {
+                    break; // enough codes to use up j bits
+                  }
+
+                  f -= c[xp]; // else deduct codes from patterns
+                }
+              }
+
+              if (w + j > el && w < el) {
+                j = el - w; // make EOB code end at table
+              }
+
+              z = 1 << j; // table entries for j-bit table
+
+              lx[1 + h] = j; // set table size in stack
+              // allocate and link in new table
+
+              q = [];
+
+              for (o = 0; o < z; o++) {
+                q[o] = new HuftNode();
+              }
+
+              if (!tail) {
+                tail = this.root = new HuftList();
+              } else {
+                tail = tail.next = new HuftList();
+              }
+
+              tail.next = null;
+              tail.list = q;
+              u[h] = q; // table starts after link
+
+              /* connect to last table, if there is one */
+
+              if (h > 0) {
+                x[h] = i; // save pattern for backing up
+
+                r.b = lx[h]; // bits to dump before this table
+
+                r.e = 16 + j; // bits in this table
+
+                r.t = q; // pointer to this table
+
+                j = (i & (1 << w) - 1) >> w - lx[h];
+                u[h - 1][j].e = r.e;
+                u[h - 1][j].b = r.b;
+                u[h - 1][j].n = r.n;
+                u[h - 1][j].t = r.t;
+              }
+            } // set up table entry in r
+
+
+            r.b = k - w;
+
+            if (pidx >= n) {
+              r.e = 99; // out of values--invalid code
+            } else if (p[pidx] < s) {
+              r.e = p[pidx] < 256 ? 16 : 15; // 256 is end-of-block code
+
+              r.n = p[pidx++]; // simple code is just the value
+            } else {
+              r.e = e[p[pidx] - s]; // non-simple--look up in lists
+
+              r.n = d[p[pidx++] - s];
+            } // fill code-like entries with r //
+
+
+            f = 1 << k - w;
+
+            for (j = i >> w; j < z; j += f) {
+              q[j].e = r.e;
+              q[j].b = r.b;
+              q[j].n = r.n;
+              q[j].t = r.t;
+            } // backwards increment the k-bit code i
+
+
+            for (j = 1 << k - 1; (i & j) !== 0; j >>= 1) {
+              i ^= j;
+            }
+
+            i ^= j; // backup over finished tables
+
+            while ((i & (1 << w) - 1) !== x[h]) {
+              w -= lx[h]; // don't need to update q
+
+              h--;
+            }
+          }
+        }
+        /* return actual size of base table */
+
+
+        this.m = lx[1];
+        /* Return true (1) if we were given an incomplete table */
+
+        this.status = y !== 0 && g !== 1 ? 1 : 0;
+      }
+      /* routines (inflate) */
+
+
+      function GET_BYTE() {
+        if (inflate_data.length === inflate_pos) {
+          return -1;
+        }
+
+        return inflate_data[inflate_pos++] & 0xff;
+      }
+
+      function NEEDBITS(n) {
+        while (bit_len < n) {
+          bit_buf |= GET_BYTE() << bit_len;
+          bit_len += 8;
+        }
+      }
+
+      function GETBITS(n) {
+        return bit_buf & MASK_BITS[n];
+      }
+
+      function DUMPBITS(n) {
+        bit_buf >>= n;
+        bit_len -= n;
+      }
+
+      function inflate_codes(buff, off, size) {
+        // inflate (decompress) the codes in a deflated (compressed) block.
+        // Return an error code or zero if it all goes ok.
+        var e; // table entry flag/number of extra bits
+
+        var t; // (HuftNode) pointer to table entry
+
+        var n;
+
+        if (size === 0) {
+          return 0;
+        } // inflate the coded data
+
+
+        n = 0;
+
+        for (;;) {
+          // do until end of block
+          NEEDBITS(bl);
+          t = tl.list[GETBITS(bl)];
+          e = t.e;
+
+          while (e > 16) {
+            if (e === 99) {
+              return -1;
+            }
+
+            DUMPBITS(t.b);
+            e -= 16;
+            NEEDBITS(e);
+            t = t.t[GETBITS(e)];
+            e = t.e;
+          }
+
+          DUMPBITS(t.b);
+
+          if (e === 16) {
+            // then it's a literal
+            wp &= WSIZE - 1;
+            buff[off + n++] = slide[wp++] = t.n;
+
+            if (n === size) {
+              return size;
+            }
+
+            continue;
+          } // exit if end of block
+
+
+          if (e === 15) {
+            break;
+          } // it's an EOB or a length
+          // get length of block to copy
+
+
+          NEEDBITS(e);
+          copy_leng = t.n + GETBITS(e);
+          DUMPBITS(e); // decode distance of block to copy
+
+          NEEDBITS(bd);
+          t = td.list[GETBITS(bd)];
+          e = t.e;
+
+          while (e > 16) {
+            if (e === 99) {
+              return -1;
+            }
+
+            DUMPBITS(t.b);
+            e -= 16;
+            NEEDBITS(e);
+            t = t.t[GETBITS(e)];
+            e = t.e;
+          }
+
+          DUMPBITS(t.b);
+          NEEDBITS(e);
+          copy_dist = wp - t.n - GETBITS(e);
+          DUMPBITS(e); // do the copy
+
+          while (copy_leng > 0 && n < size) {
+            copy_leng--;
+            copy_dist &= WSIZE - 1;
+            wp &= WSIZE - 1;
+            buff[off + n++] = slide[wp++] = slide[copy_dist++];
+          }
+
+          if (n === size) {
+            return size;
+          }
+        }
+
+        method = -1; // done
+
+        return n;
+      }
+
+      function inflate_stored(buff, off, size) {
+        /* "decompress" an inflated type 0 (stored) block. */
+        var n; // go to byte boundary
+
+        n = bit_len & 7;
+        DUMPBITS(n); // get the length and its complement
+
+        NEEDBITS(16);
+        n = GETBITS(16);
+        DUMPBITS(16);
+        NEEDBITS(16);
+
+        if (n !== (~bit_buf & 0xffff)) {
+          return -1; // error in compressed data
+        }
+
+        DUMPBITS(16); // read and output the compressed data
+
+        copy_leng = n;
+        n = 0;
+
+        while (copy_leng > 0 && n < size) {
+          copy_leng--;
+          wp &= WSIZE - 1;
+          NEEDBITS(8);
+          buff[off + n++] = slide[wp++] = GETBITS(8);
+          DUMPBITS(8);
+        }
+
+        if (copy_leng === 0) {
+          method = -1; // done
+        }
+
+        return n;
+      }
+
+      function inflate_fixed(buff, off, size) {
+        // decompress an inflated type 1 (fixed Huffman codes) block.  We should
+        // either replace this with a custom decoder, or at least precompute the
+        // Huffman tables.
+        // if first time, set up tables for fixed blocks
+        if (!fixed_tl) {
+          var i; // temporary variable
+
+          var l = []; // 288 length list for huft_build (initialized below)
+
+          var h; // HuftBuild
+          // literal table
+
+          for (i = 0; i < 144; i++) {
+            l[i] = 8;
+          }
+
+          for (null; i < 256; i++) {
+            l[i] = 9;
+          }
+
+          for (null; i < 280; i++) {
+            l[i] = 7;
+          }
+
+          for (null; i < 288; i++) {
+            // make a complete, but wrong code set
+            l[i] = 8;
+          }
+
+          fixed_bl = 7;
+          h = new HuftBuild(l, 288, 257, cplens, cplext, fixed_bl);
+
+          if (h.status !== 0) {
+            console.error("HufBuild error: " + h.status);
+            return -1;
+          }
+
+          fixed_tl = h.root;
+          fixed_bl = h.m; // distance table
+
+          for (i = 0; i < 30; i++) {
+            // make an incomplete code set
+            l[i] = 5;
+          }
+
+          fixed_bd = 5;
+          h = new HuftBuild(l, 30, 0, cpdist, cpdext, fixed_bd);
+
+          if (h.status > 1) {
+            fixed_tl = null;
+            console.error("HufBuild error: " + h.status);
+            return -1;
+          }
+
+          fixed_td = h.root;
+          fixed_bd = h.m;
+        }
+
+        tl = fixed_tl;
+        td = fixed_td;
+        bl = fixed_bl;
+        bd = fixed_bd;
+        return inflate_codes(buff, off, size);
+      }
+
+      function inflate_dynamic(buff, off, size) {
+        // decompress an inflated type 2 (dynamic Huffman codes) block.
+        var i; // temporary variables
+
+        var j;
+        var l; // last length
+
+        var n; // number of lengths to get
+
+        var t; // (HuftNode) literal/length code table
+
+        var nb; // number of bit length codes
+
+        var nl; // number of literal/length codes
+
+        var nd; // number of distance codes
+
+        var ll = [];
+        var h; // (HuftBuild)
+        // literal/length and distance code lengths
+
+        for (i = 0; i < 286 + 30; i++) {
+          ll[i] = 0;
+        } // read in table lengths
+
+
+        NEEDBITS(5);
+        nl = 257 + GETBITS(5); // number of literal/length codes
+
+        DUMPBITS(5);
+        NEEDBITS(5);
+        nd = 1 + GETBITS(5); // number of distance codes
+
+        DUMPBITS(5);
+        NEEDBITS(4);
+        nb = 4 + GETBITS(4); // number of bit length codes
+
+        DUMPBITS(4);
+
+        if (nl > 286 || nd > 30) {
+          return -1; // bad lengths
+        } // read in bit-length-code lengths
+
+
+        for (j = 0; j < nb; j++) {
+          NEEDBITS(3);
+          ll[border[j]] = GETBITS(3);
+          DUMPBITS(3);
+        }
+
+        for (null; j < 19; j++) {
+          ll[border[j]] = 0;
+        } // build decoding table for trees--single level, 7 bit lookup
+
+
+        bl = 7;
+        h = new HuftBuild(ll, 19, 19, null, null, bl);
+
+        if (h.status !== 0) {
+          return -1; // incomplete code set
+        }
+
+        tl = h.root;
+        bl = h.m; // read in literal and distance code lengths
+
+        n = nl + nd;
+        i = l = 0;
+
+        while (i < n) {
+          NEEDBITS(bl);
+          t = tl.list[GETBITS(bl)];
+          j = t.b;
+          DUMPBITS(j);
+          j = t.n;
+
+          if (j < 16) {
+            // length of code in bits (0..15)
+            ll[i++] = l = j; // save last length in l
+          } else if (j === 16) {
+            // repeat last length 3 to 6 times
+            NEEDBITS(2);
+            j = 3 + GETBITS(2);
+            DUMPBITS(2);
+
+            if (i + j > n) {
+              return -1;
+            }
+
+            while (j-- > 0) {
+              ll[i++] = l;
+            }
+          } else if (j === 17) {
+            // 3 to 10 zero length codes
+            NEEDBITS(3);
+            j = 3 + GETBITS(3);
+            DUMPBITS(3);
+
+            if (i + j > n) {
+              return -1;
+            }
+
+            while (j-- > 0) {
+              ll[i++] = 0;
+            }
+
+            l = 0;
+          } else {
+            // j === 18: 11 to 138 zero length codes
+            NEEDBITS(7);
+            j = 11 + GETBITS(7);
+            DUMPBITS(7);
+
+            if (i + j > n) {
+              return -1;
+            }
+
+            while (j-- > 0) {
+              ll[i++] = 0;
+            }
+
+            l = 0;
+          }
+        } // build the decoding tables for literal/length and distance codes
+
+
+        bl = lbits;
+        h = new HuftBuild(ll, nl, 257, cplens, cplext, bl);
+
+        if (bl === 0) {
+          // no literals or lengths
+          h.status = 1;
+        }
+
+        if (h.status !== 0) {
+          if (h.status !== 1) {
+            return -1; // incomplete code set
+          } // **incomplete literal tree**
+
+        }
+
+        tl = h.root;
+        bl = h.m;
+
+        for (i = 0; i < nd; i++) {
+          ll[i] = ll[i + nl];
+        }
+
+        bd = dbits;
+        h = new HuftBuild(ll, nd, 0, cpdist, cpdext, bd);
+        td = h.root;
+        bd = h.m;
+
+        if (bd === 0 && nl > 257) {
+          // lengths but no distances
+          // **incomplete distance tree**
+          return -1;
+        }
+        /*
+        		if (h.status === 1) {
+        			// **incomplete distance tree**
+        		}
+        */
+
+
+        if (h.status !== 0) {
+          return -1;
+        } // decompress until an end-of-block code
+
+
+        return inflate_codes(buff, off, size);
+      }
+
+      function inflate_start() {
+        if (!slide) {
+          slide = []; // new Array(2 * WSIZE); // slide.length is never called
+        }
+
+        wp = 0;
+        bit_buf = 0;
+        bit_len = 0;
+        method = -1;
+        eof = false;
+        copy_leng = copy_dist = 0;
+        tl = null;
+      }
+
+      function inflate_internal(buff, off, size) {
+        // decompress an inflated entry
+        var n, i;
+        n = 0;
+
+        while (n < size) {
+          if (eof && method === -1) {
+            return n;
+          }
+
+          if (copy_leng > 0) {
+            if (method !== STORED_BLOCK) {
+              // STATIC_TREES or DYN_TREES
+              while (copy_leng > 0 && n < size) {
+                copy_leng--;
+                copy_dist &= WSIZE - 1;
+                wp &= WSIZE - 1;
+                buff[off + n++] = slide[wp++] = slide[copy_dist++];
+              }
+            } else {
+              while (copy_leng > 0 && n < size) {
+                copy_leng--;
+                wp &= WSIZE - 1;
+                NEEDBITS(8);
+                buff[off + n++] = slide[wp++] = GETBITS(8);
+                DUMPBITS(8);
+              }
+
+              if (copy_leng === 0) {
+                method = -1; // done
+              }
+            }
+
+            if (n === size) {
+              return n;
+            }
+          }
+
+          if (method === -1) {
+            if (eof) {
+              break;
+            } // read in last block bit
+
+
+            NEEDBITS(1);
+
+            if (GETBITS(1) !== 0) {
+              eof = true;
+            }
+
+            DUMPBITS(1); // read in block type
+
+            NEEDBITS(2);
+            method = GETBITS(2);
+            DUMPBITS(2);
+            tl = null;
+            copy_leng = 0;
+          }
+
+          switch (method) {
+            case STORED_BLOCK:
+              i = inflate_stored(buff, off + n, size - n);
+              break;
+
+            case STATIC_TREES:
+              if (tl) {
+                i = inflate_codes(buff, off + n, size - n);
+              } else {
+                i = inflate_fixed(buff, off + n, size - n);
+              }
+
+              break;
+
+            case DYN_TREES:
+              if (tl) {
+                i = inflate_codes(buff, off + n, size - n);
+              } else {
+                i = inflate_dynamic(buff, off + n, size - n);
+              }
+
+              break;
+
+            default:
+              // error
+              i = -1;
+              break;
+          }
+
+          if (i === -1) {
+            if (eof) {
+              return 0;
+            }
+
+            return -1;
+          }
+
+          n += i;
+        }
+
+        return n;
+      }
+
+      function inflate(arr) {
+        var buff = [],
+            i;
+        inflate_start();
+        inflate_data = arr;
+        inflate_pos = 0;
+
+        do {
+          i = inflate_internal(buff, buff.length, 1024);
+        } while (i > 0);
+
+        inflate_data = null; // G.C.
+
+        return buff;
+      }
+
+      module.exports = inflate;
+    })();
+  });
+
+  var rawdeflate = createCommonjsModule(function (module) {
+    /*
+     * $Id: rawdeflate.js,v 0.3 2009/03/01 19:05:05 dankogai Exp dankogai $
+     *
+     * Original:
+     *   http://www.onicos.com/staff/iz/amuse/javascript/expert/deflate.txt
+     */
+
+    /* Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
+     * Version: 1.0.1
+     * LastModified: Dec 25 1999
+     */
+
+    /* Interface:
+     * data = deflate(src);
+     */
+    (function () {
+      /* constant parameters */
+      var WSIZE = 32768,
+          // Sliding Window size
+      STORED_BLOCK = 0,
+          STATIC_TREES = 1,
+          DYN_TREES = 2,
+
+      /* for deflate */
+      DEFAULT_LEVEL = 6,
+          // Input buffer size
+      //INBUF_EXTRA = 64, // Extra buffer
+      OUTBUFSIZ = 1024 * 8,
+          window_size = 2 * WSIZE,
+          MIN_MATCH = 3,
+          MAX_MATCH = 258,
+          // for SMALL_MEM
+      LIT_BUFSIZE = 0x2000,
+          //		HASH_BITS = 13,
+      //for MEDIUM_MEM
+      //	LIT_BUFSIZE = 0x4000,
+      //	HASH_BITS = 14,
+      // for BIG_MEM
+      //	LIT_BUFSIZE = 0x8000,
+      HASH_BITS = 15,
+          DIST_BUFSIZE = LIT_BUFSIZE,
+          HASH_SIZE = 1 << HASH_BITS,
+          HASH_MASK = HASH_SIZE - 1,
+          WMASK = WSIZE - 1,
+          NIL = 0,
+          // Tail of hash chains
+      TOO_FAR = 4096,
+          MIN_LOOKAHEAD = MAX_MATCH + MIN_MATCH + 1,
+          MAX_DIST = WSIZE - MIN_LOOKAHEAD,
+          SMALLEST = 1,
+          MAX_BITS = 15,
+          MAX_BL_BITS = 7,
+          LENGTH_CODES = 29,
+          LITERALS = 256,
+          END_BLOCK = 256,
+          L_CODES = LITERALS + 1 + LENGTH_CODES,
+          D_CODES = 30,
+          BL_CODES = 19,
+          REP_3_6 = 16,
+          REPZ_3_10 = 17,
+          REPZ_11_138 = 18,
+          HEAP_SIZE = 2 * L_CODES + 1,
+          H_SHIFT = parseInt((HASH_BITS + MIN_MATCH - 1) / MIN_MATCH, 10),
+
+      /* variables */
+      free_queue,
+          qhead,
+          qtail,
+          initflag,
+          outbuf = null,
+          outcnt,
+          outoff,
+          complete,
+          window,
+          d_buf,
+          l_buf,
+          prev,
+          bi_buf,
+          bi_valid,
+          block_start,
+          ins_h,
+          hash_head,
+          prev_match,
+          match_available,
+          match_length,
+          prev_length,
+          strstart,
+          match_start,
+          eofile,
+          lookahead,
+          max_chain_length,
+          max_lazy_match,
+          compr_level,
+          good_match,
+          nice_match,
+          dyn_ltree,
+          dyn_dtree,
+          static_ltree,
+          static_dtree,
+          bl_tree,
+          l_desc,
+          d_desc,
+          bl_desc,
+          bl_count,
+          heap,
+          heap_len,
+          heap_max,
+          depth,
+          length_code,
+          dist_code,
+          base_length,
+          base_dist,
+          flag_buf,
+          last_lit,
+          last_dist,
+          last_flags,
+          flags,
+          flag_bit,
+          opt_len,
+          static_len,
+          deflate_data,
+          deflate_pos;
+      /* objects (deflate) */
+
+
+      function DeflateCT() {
+        this.fc = 0; // frequency count or bit string
+
+        this.dl = 0; // father node in Huffman tree or length of bit string
+      }
+
+      function DeflateTreeDesc() {
+        this.dyn_tree = null; // the dynamic tree
+
+        this.static_tree = null; // corresponding static tree or NULL
+
+        this.extra_bits = null; // extra bits for each code or NULL
+
+        this.extra_base = 0; // base index for extra_bits
+
+        this.elems = 0; // max number of elements in the tree
+
+        this.max_length = 0; // max bit length for the codes
+
+        this.max_code = 0; // largest code with non zero frequency
+      }
+      /* Values for max_lazy_match, good_match and max_chain_length, depending on
+       * the desired pack level (0..9). The values given below have been tuned to
+       * exclude worst case performance for pathological files. Better values may be
+       * found for specific files.
+       */
+
+
+      function DeflateConfiguration(a, b, c, d) {
+        this.good_length = a; // reduce lazy search above this match length
+
+        this.max_lazy = b; // do not perform lazy search above this match length
+
+        this.nice_length = c; // quit search above this match length
+
+        this.max_chain = d;
+      }
+
+      function DeflateBuffer() {
+        this.next = null;
+        this.len = 0;
+        this.ptr = []; // new Array(OUTBUFSIZ); // ptr.length is never read
+
+        this.off = 0;
+      }
+      /* constant tables */
+
+
+      var extra_lbits = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0];
+      var extra_dbits = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
+      var extra_blbits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
+      var bl_order = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
+      var configuration_table = [new DeflateConfiguration(0, 0, 0, 0), new DeflateConfiguration(4, 4, 8, 4), new DeflateConfiguration(4, 5, 16, 8), new DeflateConfiguration(4, 6, 32, 32), new DeflateConfiguration(4, 4, 16, 16), new DeflateConfiguration(8, 16, 32, 32), new DeflateConfiguration(8, 16, 128, 128), new DeflateConfiguration(8, 32, 128, 256), new DeflateConfiguration(32, 128, 258, 1024), new DeflateConfiguration(32, 258, 258, 4096)];
+      /* routines (deflate) */
+
+      function deflate_start(level) {
+        var i;
+
+        if (!level) {
+          level = DEFAULT_LEVEL;
+        } else if (level < 1) {
+          level = 1;
+        } else if (level > 9) {
+          level = 9;
+        }
+
+        compr_level = level;
+        initflag = false;
+        eofile = false;
+
+        if (outbuf !== null) {
+          return;
+        }
+
+        free_queue = qhead = qtail = null;
+        outbuf = []; // new Array(OUTBUFSIZ); // outbuf.length never called
+
+        window = []; // new Array(window_size); // window.length never called
+
+        d_buf = []; // new Array(DIST_BUFSIZE); // d_buf.length never called
+
+        l_buf = []; // new Array(INBUFSIZ + INBUF_EXTRA); // l_buf.length never called
+
+        prev = []; // new Array(1 << BITS); // prev.length never called
+
+        dyn_ltree = [];
+
+        for (i = 0; i < HEAP_SIZE; i++) {
+          dyn_ltree[i] = new DeflateCT();
+        }
+
+        dyn_dtree = [];
+
+        for (i = 0; i < 2 * D_CODES + 1; i++) {
+          dyn_dtree[i] = new DeflateCT();
+        }
+
+        static_ltree = [];
+
+        for (i = 0; i < L_CODES + 2; i++) {
+          static_ltree[i] = new DeflateCT();
+        }
+
+        static_dtree = [];
+
+        for (i = 0; i < D_CODES; i++) {
+          static_dtree[i] = new DeflateCT();
+        }
+
+        bl_tree = [];
+
+        for (i = 0; i < 2 * BL_CODES + 1; i++) {
+          bl_tree[i] = new DeflateCT();
+        }
+
+        l_desc = new DeflateTreeDesc();
+        d_desc = new DeflateTreeDesc();
+        bl_desc = new DeflateTreeDesc();
+        bl_count = []; // new Array(MAX_BITS+1); // bl_count.length never called
+
+        heap = []; // new Array(2*L_CODES+1); // heap.length never called
+
+        depth = []; // new Array(2*L_CODES+1); // depth.length never called
+
+        length_code = []; // new Array(MAX_MATCH-MIN_MATCH+1); // length_code.length never called
+
+        dist_code = []; // new Array(512); // dist_code.length never called
+
+        base_length = []; // new Array(LENGTH_CODES); // base_length.length never called
+
+        base_dist = []; // new Array(D_CODES); // base_dist.length never called
+
+        flag_buf = []; // new Array(parseInt(LIT_BUFSIZE / 8, 10)); // flag_buf.length never called
+      }
+
+      function reuse_queue(p) {
+        p.next = free_queue;
+        free_queue = p;
+      }
+
+      function new_queue() {
+        var p;
+
+        if (free_queue !== null) {
+          p = free_queue;
+          free_queue = free_queue.next;
+        } else {
+          p = new DeflateBuffer();
+        }
+
+        p.next = null;
+        p.len = p.off = 0;
+        return p;
+      }
+
+      function head1(i) {
+        return prev[WSIZE + i];
+      }
+
+      function head2(i, val) {
+        return prev[WSIZE + i] = val;
+      }
+      /* put_byte is used for the compressed output, put_ubyte for the
+       * uncompressed output. However unlzw() uses window for its
+       * suffix table instead of its output buffer, so it does not use put_ubyte
+       * (to be cleaned up).
+       */
+
+
+      function put_byte(c) {
+        outbuf[outoff + outcnt++] = c;
+
+        if (outoff + outcnt === OUTBUFSIZ) {
+          qoutbuf();
+        }
+      }
+      /* Output a 16 bit value, lsb first */
+
+
+      function put_short(w) {
+        w &= 0xffff;
+
+        if (outoff + outcnt < OUTBUFSIZ - 2) {
+          outbuf[outoff + outcnt++] = w & 0xff;
+          outbuf[outoff + outcnt++] = w >>> 8;
+        } else {
+          put_byte(w & 0xff);
+          put_byte(w >>> 8);
+        }
+      }
+      /* ==========================================================================
+       * Insert string s in the dictionary and set match_head to the previous head
+       * of the hash chain (the most recent string with same hash key). Return
+       * the previous length of the hash chain.
+       * IN  assertion: all calls to to INSERT_STRING are made with consecutive
+       *    input characters and the first MIN_MATCH bytes of s are valid
+       *    (except for the last MIN_MATCH-1 bytes of the input file).
+       */
+
+
+      function INSERT_STRING() {
+        ins_h = (ins_h << H_SHIFT ^ window[strstart + MIN_MATCH - 1] & 0xff) & HASH_MASK;
+        hash_head = head1(ins_h);
+        prev[strstart & WMASK] = hash_head;
+        head2(ins_h, strstart);
+      }
+      /* Send a code of the given tree. c and tree must not have side effects */
+
+
+      function SEND_CODE(c, tree) {
+        send_bits(tree[c].fc, tree[c].dl);
+      }
+      /* Mapping from a distance to a distance code. dist is the distance - 1 and
+       * must not have side effects. dist_code[256] and dist_code[257] are never
+       * used.
+       */
+
+
+      function D_CODE(dist) {
+        return (dist < 256 ? dist_code[dist] : dist_code[256 + (dist >> 7)]) & 0xff;
+      }
+      /* ==========================================================================
+       * Compares to subtrees, using the tree depth as tie breaker when
+       * the subtrees have equal frequency. This minimizes the worst case length.
+       */
+
+
+      function SMALLER(tree, n, m) {
+        return tree[n].fc < tree[m].fc || tree[n].fc === tree[m].fc && depth[n] <= depth[m];
+      }
+      /* ==========================================================================
+       * read string data
+       */
+
+
+      function read_buff(buff, offset, n) {
+        var i;
+
+        for (i = 0; i < n && deflate_pos < deflate_data.length; i++) {
+          buff[offset + i] = deflate_data[deflate_pos++] & 0xff;
+        }
+
+        return i;
+      }
+      /* ==========================================================================
+       * Initialize the "longest match" routines for a new file
+       */
+
+
+      function lm_init() {
+        var j; // Initialize the hash table. */
+
+        for (j = 0; j < HASH_SIZE; j++) {
+          // head2(j, NIL);
+          prev[WSIZE + j] = 0;
+        } // prev will be initialized on the fly */
+        // Set the default configuration parameters:
+
+
+        max_lazy_match = configuration_table[compr_level].max_lazy;
+        good_match = configuration_table[compr_level].good_length;
+
+        {
+          nice_match = configuration_table[compr_level].nice_length;
+        }
+
+        max_chain_length = configuration_table[compr_level].max_chain;
+        strstart = 0;
+        block_start = 0;
+        lookahead = read_buff(window, 0, 2 * WSIZE);
+
+        if (lookahead <= 0) {
+          eofile = true;
+          lookahead = 0;
+          return;
+        }
+
+        eofile = false; // Make sure that we always have enough lookahead. This is important
+        // if input comes from a device such as a tty.
+
+        while (lookahead < MIN_LOOKAHEAD && !eofile) {
+          fill_window();
+        } // If lookahead < MIN_MATCH, ins_h is garbage, but this is
+        // not important since only literal bytes will be emitted.
+
+
+        ins_h = 0;
+
+        for (j = 0; j < MIN_MATCH - 1; j++) {
+          // UPDATE_HASH(ins_h, window[j]);
+          ins_h = (ins_h << H_SHIFT ^ window[j] & 0xff) & HASH_MASK;
+        }
+      }
+      /* ==========================================================================
+       * Set match_start to the longest match starting at the given string and
+       * return its length. Matches shorter or equal to prev_length are discarded,
+       * in which case the result is equal to prev_length and match_start is
+       * garbage.
+       * IN assertions: cur_match is the head of the hash chain for the current
+       *   string (strstart) and its distance is <= MAX_DIST, and prev_length >= 1
+       */
+
+
+      function longest_match(cur_match) {
+        var chain_length = max_chain_length; // max hash chain length
+
+        var scanp = strstart; // current string
+
+        var matchp; // matched string
+
+        var len; // length of current match
+
+        var best_len = prev_length; // best match length so far
+        // Stop when cur_match becomes <= limit. To simplify the code,
+        // we prevent matches with the string of window index 0.
+
+        var limit = strstart > MAX_DIST ? strstart - MAX_DIST : NIL;
+        var strendp = strstart + MAX_MATCH;
+        var scan_end1 = window[scanp + best_len - 1];
+        var scan_end = window[scanp + best_len];
+        var i, broke; // Do not waste too much time if we already have a good match: */
+
+        if (prev_length >= good_match) {
+          chain_length >>= 2;
+        } // Assert(encoder->strstart <= window_size-MIN_LOOKAHEAD, "insufficient lookahead");
+
+
+        do {
+          // Assert(cur_match < encoder->strstart, "no future");
+          matchp = cur_match; // Skip to next match if the match length cannot increase
+          // or if the match length is less than 2:
+
+          if (window[matchp + best_len] !== scan_end || window[matchp + best_len - 1] !== scan_end1 || window[matchp] !== window[scanp] || window[++matchp] !== window[scanp + 1]) {
+            continue;
+          } // The check at best_len-1 can be removed because it will be made
+          // again later. (This heuristic is not always a win.)
+          // It is not necessary to compare scan[2] and match[2] since they
+          // are always equal when the other bytes match, given that
+          // the hash keys are equal and that HASH_BITS >= 8.
+
+
+          scanp += 2;
+          matchp++; // We check for insufficient lookahead only every 8th comparison;
+          // the 256th check will be made at strstart+258.
+
+          while (scanp < strendp) {
+            broke = false;
+
+            for (i = 0; i < 8; i += 1) {
+              scanp += 1;
+              matchp += 1;
+
+              if (window[scanp] !== window[matchp]) {
+                broke = true;
+                break;
+              }
+            }
+
+            if (broke) {
+              break;
+            }
+          }
+
+          len = MAX_MATCH - (strendp - scanp);
+          scanp = strendp - MAX_MATCH;
+
+          if (len > best_len) {
+            match_start = cur_match;
+            best_len = len;
+
+            {
+              if (len >= nice_match) {
+                break;
+              }
+            }
+
+            scan_end1 = window[scanp + best_len - 1];
+            scan_end = window[scanp + best_len];
+          }
+        } while ((cur_match = prev[cur_match & WMASK]) > limit && --chain_length !== 0);
+
+        return best_len;
+      }
+      /* ==========================================================================
+       * Fill the window when the lookahead becomes insufficient.
+       * Updates strstart and lookahead, and sets eofile if end of input file.
+       * IN assertion: lookahead < MIN_LOOKAHEAD && strstart + lookahead > 0
+       * OUT assertions: at least one byte has been read, or eofile is set;
+       *    file reads are performed for at least two bytes (required for the
+       *    translate_eol option).
+       */
+
+
+      function fill_window() {
+        var n, m; // Amount of free space at the end of the window.
+
+        var more = window_size - lookahead - strstart; // If the window is almost full and there is insufficient lookahead,
+        // move the upper half to the lower one to make room in the upper half.
+
+        if (more === -1) {
+          // Very unlikely, but possible on 16 bit machine if strstart == 0
+          // and lookahead == 1 (input done one byte at time)
+          more--;
+        } else if (strstart >= WSIZE + MAX_DIST) {
+          // By the IN assertion, the window is not empty so we can't confuse
+          // more == 0 with more == 64K on a 16 bit machine.
+          // Assert(window_size == (ulg)2*WSIZE, "no sliding with BIG_MEM");
+          // System.arraycopy(window, WSIZE, window, 0, WSIZE);
+          for (n = 0; n < WSIZE; n++) {
+            window[n] = window[n + WSIZE];
+          }
+
+          match_start -= WSIZE;
+          strstart -= WSIZE;
+          /* we now have strstart >= MAX_DIST: */
+
+          block_start -= WSIZE;
+
+          for (n = 0; n < HASH_SIZE; n++) {
+            m = head1(n);
+            head2(n, m >= WSIZE ? m - WSIZE : NIL);
+          }
+
+          for (n = 0; n < WSIZE; n++) {
+            // If n is not on any hash chain, prev[n] is garbage but
+            // its value will never be used.
+            m = prev[n];
+            prev[n] = m >= WSIZE ? m - WSIZE : NIL;
+          }
+
+          more += WSIZE;
+        } // At this point, more >= 2
+
+
+        if (!eofile) {
+          n = read_buff(window, strstart + lookahead, more);
+
+          if (n <= 0) {
+            eofile = true;
+          } else {
+            lookahead += n;
+          }
+        }
+      }
+      /* ==========================================================================
+       * Processes a new input file and return its compressed length. This
+       * function does not perform lazy evaluationof matches and inserts
+       * new strings in the dictionary only for unmatched strings or for short
+       * matches. It is used only for the fast compression options.
+       */
+
+
+      function deflate_fast() {
+        while (lookahead !== 0 && qhead === null) {
+          var flush; // set if current block must be flushed
+          // Insert the string window[strstart .. strstart+2] in the
+          // dictionary, and set hash_head to the head of the hash chain:
+
+          INSERT_STRING(); // Find the longest match, discarding those <= prev_length.
+          // At this point we have always match_length < MIN_MATCH
+
+          if (hash_head !== NIL && strstart - hash_head <= MAX_DIST) {
+            // To simplify the code, we prevent matches with the string
+            // of window index 0 (in particular we have to avoid a match
+            // of the string with itself at the start of the input file).
+            match_length = longest_match(hash_head); // longest_match() sets match_start */
+
+            if (match_length > lookahead) {
+              match_length = lookahead;
+            }
+          }
+
+          if (match_length >= MIN_MATCH) {
+            // check_match(strstart, match_start, match_length);
+            flush = ct_tally(strstart - match_start, match_length - MIN_MATCH);
+            lookahead -= match_length; // Insert new strings in the hash table only if the match length
+            // is not too large. This saves time but degrades compression.
+
+            if (match_length <= max_lazy_match) {
+              match_length--; // string at strstart already in hash table
+
+              do {
+                strstart++;
+                INSERT_STRING(); // strstart never exceeds WSIZE-MAX_MATCH, so there are
+                // always MIN_MATCH bytes ahead. If lookahead < MIN_MATCH
+                // these bytes are garbage, but it does not matter since
+                // the next lookahead bytes will be emitted as literals.
+              } while (--match_length !== 0);
+
+              strstart++;
+            } else {
+              strstart += match_length;
+              match_length = 0;
+              ins_h = window[strstart] & 0xff; // UPDATE_HASH(ins_h, window[strstart + 1]);
+
+              ins_h = (ins_h << H_SHIFT ^ window[strstart + 1] & 0xff) & HASH_MASK; //#if MIN_MATCH !== 3
+              //		Call UPDATE_HASH() MIN_MATCH-3 more times
+              //#endif
+            }
+          } else {
+            // No match, output a literal byte */
+            flush = ct_tally(0, window[strstart] & 0xff);
+            lookahead--;
+            strstart++;
+          }
+
+          if (flush) {
+            flush_block(0);
+            block_start = strstart;
+          } // Make sure that we always have enough lookahead, except
+          // at the end of the input file. We need MAX_MATCH bytes
+          // for the next match, plus MIN_MATCH bytes to insert the
+          // string following the next match.
+
+
+          while (lookahead < MIN_LOOKAHEAD && !eofile) {
+            fill_window();
+          }
+        }
+      }
+
+      function deflate_better() {
+        // Process the input block. */
+        while (lookahead !== 0 && qhead === null) {
+          // Insert the string window[strstart .. strstart+2] in the
+          // dictionary, and set hash_head to the head of the hash chain:
+          INSERT_STRING(); // Find the longest match, discarding those <= prev_length.
+
+          prev_length = match_length;
+          prev_match = match_start;
+          match_length = MIN_MATCH - 1;
+
+          if (hash_head !== NIL && prev_length < max_lazy_match && strstart - hash_head <= MAX_DIST) {
+            // To simplify the code, we prevent matches with the string
+            // of window index 0 (in particular we have to avoid a match
+            // of the string with itself at the start of the input file).
+            match_length = longest_match(hash_head); // longest_match() sets match_start */
+
+            if (match_length > lookahead) {
+              match_length = lookahead;
+            } // Ignore a length 3 match if it is too distant: */
+
+
+            if (match_length === MIN_MATCH && strstart - match_start > TOO_FAR) {
+              // If prev_match is also MIN_MATCH, match_start is garbage
+              // but we will ignore the current match anyway.
+              match_length--;
+            }
+          } // If there was a match at the previous step and the current
+          // match is not better, output the previous match:
+
+
+          if (prev_length >= MIN_MATCH && match_length <= prev_length) {
+            var flush; // set if current block must be flushed
+            // check_match(strstart - 1, prev_match, prev_length);
+
+            flush = ct_tally(strstart - 1 - prev_match, prev_length - MIN_MATCH); // Insert in hash table all strings up to the end of the match.
+            // strstart-1 and strstart are already inserted.
+
+            lookahead -= prev_length - 1;
+            prev_length -= 2;
+
+            do {
+              strstart++;
+              INSERT_STRING(); // strstart never exceeds WSIZE-MAX_MATCH, so there are
+              // always MIN_MATCH bytes ahead. If lookahead < MIN_MATCH
+              // these bytes are garbage, but it does not matter since the
+              // next lookahead bytes will always be emitted as literals.
+            } while (--prev_length !== 0);
+
+            match_available = false;
+            match_length = MIN_MATCH - 1;
+            strstart++;
+
+            if (flush) {
+              flush_block(0);
+              block_start = strstart;
+            }
+          } else if (match_available) {
+            // If there was no match at the previous position, output a
+            // single literal. If there was a match but the current match
+            // is longer, truncate the previous match to a single literal.
+            if (ct_tally(0, window[strstart - 1] & 0xff)) {
+              flush_block(0);
+              block_start = strstart;
+            }
+
+            strstart++;
+            lookahead--;
+          } else {
+            // There is no previous match to compare with, wait for
+            // the next step to decide.
+            match_available = true;
+            strstart++;
+            lookahead--;
+          } // Make sure that we always have enough lookahead, except
+          // at the end of the input file. We need MAX_MATCH bytes
+          // for the next match, plus MIN_MATCH bytes to insert the
+          // string following the next match.
+
+
+          while (lookahead < MIN_LOOKAHEAD && !eofile) {
+            fill_window();
+          }
+        }
+      }
+
+      function init_deflate() {
+        if (eofile) {
+          return;
+        }
+
+        bi_buf = 0;
+        bi_valid = 0;
+        ct_init();
+        lm_init();
+        qhead = null;
+        outcnt = 0;
+        outoff = 0;
+
+        if (compr_level <= 3) {
+          prev_length = MIN_MATCH - 1;
+          match_length = 0;
+        } else {
+          match_length = MIN_MATCH - 1;
+          match_available = false;
+        }
+
+        complete = false;
+      }
+      /* ==========================================================================
+       * Same as above, but achieves better compression. We use a lazy
+       * evaluation for matches: a match is finally adopted only if there is
+       * no better match at the next window position.
+       */
+
+
+      function deflate_internal(buff, off, buff_size) {
+        var n;
+
+        if (!initflag) {
+          init_deflate();
+          initflag = true;
+
+          if (lookahead === 0) {
+            // empty
+            complete = true;
+            return 0;
+          }
+        }
+
+        n = qcopy(buff, off, buff_size);
+
+        if (n === buff_size) {
+          return buff_size;
+        }
+
+        if (complete) {
+          return n;
+        }
+
+        if (compr_level <= 3) {
+          // optimized for speed
+          deflate_fast();
+        } else {
+          deflate_better();
+        }
+
+        if (lookahead === 0) {
+          if (match_available) {
+            ct_tally(0, window[strstart - 1] & 0xff);
+          }
+
+          flush_block(1);
+          complete = true;
+        }
+
+        return n + qcopy(buff, n + off, buff_size - n);
+      }
+
+      function qcopy(buff, off, buff_size) {
+        var n, i, j;
+        n = 0;
+
+        while (qhead !== null && n < buff_size) {
+          i = buff_size - n;
+
+          if (i > qhead.len) {
+            i = qhead.len;
+          } // System.arraycopy(qhead.ptr, qhead.off, buff, off + n, i);
+
+
+          for (j = 0; j < i; j++) {
+            buff[off + n + j] = qhead.ptr[qhead.off + j];
+          }
+
+          qhead.off += i;
+          qhead.len -= i;
+          n += i;
+
+          if (qhead.len === 0) {
+            var p;
+            p = qhead;
+            qhead = qhead.next;
+            reuse_queue(p);
+          }
+        }
+
+        if (n === buff_size) {
+          return n;
+        }
+
+        if (outoff < outcnt) {
+          i = buff_size - n;
+
+          if (i > outcnt - outoff) {
+            i = outcnt - outoff;
+          } // System.arraycopy(outbuf, outoff, buff, off + n, i);
+
+
+          for (j = 0; j < i; j++) {
+            buff[off + n + j] = outbuf[outoff + j];
+          }
+
+          outoff += i;
+          n += i;
+
+          if (outcnt === outoff) {
+            outcnt = outoff = 0;
+          }
+        }
+
+        return n;
+      }
+      /* ==========================================================================
+       * Allocate the match buffer, initialize the various tables and save the
+       * location of the internal file attribute (ascii/binary) and method
+       * (DEFLATE/STORE).
+       */
+
+
+      function ct_init() {
+        var n; // iterates over tree elements
+
+        var bits; // bit counter
+
+        var length; // length value
+
+        var code; // code value
+
+        var dist; // distance index
+
+        if (static_dtree[0].dl !== 0) {
+          return; // ct_init already called
+        }
+
+        l_desc.dyn_tree = dyn_ltree;
+        l_desc.static_tree = static_ltree;
+        l_desc.extra_bits = extra_lbits;
+        l_desc.extra_base = LITERALS + 1;
+        l_desc.elems = L_CODES;
+        l_desc.max_length = MAX_BITS;
+        l_desc.max_code = 0;
+        d_desc.dyn_tree = dyn_dtree;
+        d_desc.static_tree = static_dtree;
+        d_desc.extra_bits = extra_dbits;
+        d_desc.extra_base = 0;
+        d_desc.elems = D_CODES;
+        d_desc.max_length = MAX_BITS;
+        d_desc.max_code = 0;
+        bl_desc.dyn_tree = bl_tree;
+        bl_desc.static_tree = null;
+        bl_desc.extra_bits = extra_blbits;
+        bl_desc.extra_base = 0;
+        bl_desc.elems = BL_CODES;
+        bl_desc.max_length = MAX_BL_BITS;
+        bl_desc.max_code = 0; // Initialize the mapping length (0..255) -> length code (0..28)
+
+        length = 0;
+
+        for (code = 0; code < LENGTH_CODES - 1; code++) {
+          base_length[code] = length;
+
+          for (n = 0; n < 1 << extra_lbits[code]; n++) {
+            length_code[length++] = code;
+          }
+        } // Assert (length === 256, "ct_init: length !== 256");
+        // Note that the length 255 (match length 258) can be represented
+        // in two different ways: code 284 + 5 bits or code 285, so we
+        // overwrite length_code[255] to use the best encoding:
+
+
+        length_code[length - 1] = code; // Initialize the mapping dist (0..32K) -> dist code (0..29) */
+
+        dist = 0;
+
+        for (code = 0; code < 16; code++) {
+          base_dist[code] = dist;
+
+          for (n = 0; n < 1 << extra_dbits[code]; n++) {
+            dist_code[dist++] = code;
+          }
+        } // Assert (dist === 256, "ct_init: dist !== 256");
+        // from now on, all distances are divided by 128
+
+
+        for (dist >>= 7; code < D_CODES; code++) {
+          base_dist[code] = dist << 7;
+
+          for (n = 0; n < 1 << extra_dbits[code] - 7; n++) {
+            dist_code[256 + dist++] = code;
+          }
+        } // Assert (dist === 256, "ct_init: 256+dist !== 512");
+        // Construct the codes of the static literal tree
+
+
+        for (bits = 0; bits <= MAX_BITS; bits++) {
+          bl_count[bits] = 0;
+        }
+
+        n = 0;
+
+        while (n <= 143) {
+          static_ltree[n++].dl = 8;
+          bl_count[8]++;
+        }
+
+        while (n <= 255) {
+          static_ltree[n++].dl = 9;
+          bl_count[9]++;
+        }
+
+        while (n <= 279) {
+          static_ltree[n++].dl = 7;
+          bl_count[7]++;
+        }
+
+        while (n <= 287) {
+          static_ltree[n++].dl = 8;
+          bl_count[8]++;
+        } // Codes 286 and 287 do not exist, but we must include them in the
+        // tree construction to get a canonical Huffman tree (longest code
+        // all ones)
+
+
+        gen_codes(static_ltree, L_CODES + 1); // The static distance tree is trivial: */
+
+        for (n = 0; n < D_CODES; n++) {
+          static_dtree[n].dl = 5;
+          static_dtree[n].fc = bi_reverse(n, 5);
+        } // Initialize the first block of the first file:
+
+
+        init_block();
+      }
+      /* ==========================================================================
+       * Initialize a new block.
+       */
+
+
+      function init_block() {
+        var n; // iterates over tree elements
+        // Initialize the trees.
+
+        for (n = 0; n < L_CODES; n++) {
+          dyn_ltree[n].fc = 0;
+        }
+
+        for (n = 0; n < D_CODES; n++) {
+          dyn_dtree[n].fc = 0;
+        }
+
+        for (n = 0; n < BL_CODES; n++) {
+          bl_tree[n].fc = 0;
+        }
+
+        dyn_ltree[END_BLOCK].fc = 1;
+        opt_len = static_len = 0;
+        last_lit = last_dist = last_flags = 0;
+        flags = 0;
+        flag_bit = 1;
+      }
+      /* ==========================================================================
+       * Restore the heap property by moving down the tree starting at node k,
+       * exchanging a node with the smallest of its two sons if necessary, stopping
+       * when the heap property is re-established (each father smaller than its
+       * two sons).
+       *
+       * @param tree- tree to restore
+       * @param k- node to move down
+       */
+
+
+      function pqdownheap(tree, k) {
+        var v = heap[k],
+            j = k << 1; // left son of k
+
+        while (j <= heap_len) {
+          // Set j to the smallest of the two sons:
+          if (j < heap_len && SMALLER(tree, heap[j + 1], heap[j])) {
+            j++;
+          } // Exit if v is smaller than both sons
+
+
+          if (SMALLER(tree, v, heap[j])) {
+            break;
+          } // Exchange v with the smallest son
+
+
+          heap[k] = heap[j];
+          k = j; // And continue down the tree, setting j to the left son of k
+
+          j <<= 1;
+        }
+
+        heap[k] = v;
+      }
+      /* ==========================================================================
+       * Compute the optimal bit lengths for a tree and update the total bit length
+       * for the current block.
+       * IN assertion: the fields freq and dad are set, heap[heap_max] and
+       *    above are the tree nodes sorted by increasing frequency.
+       * OUT assertions: the field len is set to the optimal bit length, the
+       *     array bl_count contains the frequencies for each bit length.
+       *     The length opt_len is updated; static_len is also updated if stree is
+       *     not null.
+       */
+
+
+      function gen_bitlen(desc) {
+        // the tree descriptor
+        var tree = desc.dyn_tree;
+        var extra = desc.extra_bits;
+        var base = desc.extra_base;
+        var max_code = desc.max_code;
+        var max_length = desc.max_length;
+        var stree = desc.static_tree;
+        var h; // heap index
+
+        var n, m; // iterate over the tree elements
+
+        var bits; // bit length
+
+        var xbits; // extra bits
+
+        var f; // frequency
+
+        var overflow = 0; // number of elements with bit length too large
+
+        for (bits = 0; bits <= MAX_BITS; bits++) {
+          bl_count[bits] = 0;
+        } // In a first pass, compute the optimal bit lengths (which may
+        // overflow in the case of the bit length tree).
+
+
+        tree[heap[heap_max]].dl = 0; // root of the heap
+
+        for (h = heap_max + 1; h < HEAP_SIZE; h++) {
+          n = heap[h];
+          bits = tree[tree[n].dl].dl + 1;
+
+          if (bits > max_length) {
+            bits = max_length;
+            overflow++;
+          }
+
+          tree[n].dl = bits; // We overwrite tree[n].dl which is no longer needed
+
+          if (n > max_code) {
+            continue; // not a leaf node
+          }
+
+          bl_count[bits]++;
+          xbits = 0;
+
+          if (n >= base) {
+            xbits = extra[n - base];
+          }
+
+          f = tree[n].fc;
+          opt_len += f * (bits + xbits);
+
+          if (stree !== null) {
+            static_len += f * (stree[n].dl + xbits);
+          }
+        }
+
+        if (overflow === 0) {
+          return;
+        } // This happens for example on obj2 and pic of the Calgary corpus
+        // Find the first bit length which could increase:
+
+
+        do {
+          bits = max_length - 1;
+
+          while (bl_count[bits] === 0) {
+            bits--;
+          }
+
+          bl_count[bits]--; // move one leaf down the tree
+
+          bl_count[bits + 1] += 2; // move one overflow item as its brother
+
+          bl_count[max_length]--; // The brother of the overflow item also moves one step up,
+          // but this does not affect bl_count[max_length]
+
+          overflow -= 2;
+        } while (overflow > 0); // Now recompute all bit lengths, scanning in increasing frequency.
+        // h is still equal to HEAP_SIZE. (It is simpler to reconstruct all
+        // lengths instead of fixing only the wrong ones. This idea is taken
+        // from 'ar' written by Haruhiko Okumura.)
+
+
+        for (bits = max_length; bits !== 0; bits--) {
+          n = bl_count[bits];
+
+          while (n !== 0) {
+            m = heap[--h];
+
+            if (m > max_code) {
+              continue;
+            }
+
+            if (tree[m].dl !== bits) {
+              opt_len += (bits - tree[m].dl) * tree[m].fc;
+              tree[m].fc = bits;
+            }
+
+            n--;
+          }
+        }
+      }
+      /* ==========================================================================
+       * Generate the codes for a given tree and bit counts (which need not be
+       * optimal).
+       * IN assertion: the array bl_count contains the bit length statistics for
+       * the given tree and the field len is set for all tree elements.
+       * OUT assertion: the field code is set for all tree elements of non
+       *     zero code length.
+       * @param tree- the tree to decorate
+       * @param max_code- largest code with non-zero frequency
+       */
+
+
+      function gen_codes(tree, max_code) {
+        var next_code = []; // new Array(MAX_BITS + 1); // next code value for each bit length
+
+        var code = 0; // running code value
+
+        var bits; // bit index
+
+        var n; // code index
+        // The distribution counts are first used to generate the code values
+        // without bit reversal.
+
+        for (bits = 1; bits <= MAX_BITS; bits++) {
+          code = code + bl_count[bits - 1] << 1;
+          next_code[bits] = code;
+        } // Check that the bit counts in bl_count are consistent. The last code
+        // must be all ones.
+        // Assert (code + encoder->bl_count[MAX_BITS]-1 === (1<<MAX_BITS)-1, "inconsistent bit counts");
+        // Tracev((stderr,"\ngen_codes: max_code %d ", max_code));
+
+
+        for (n = 0; n <= max_code; n++) {
+          var len = tree[n].dl;
+
+          if (len === 0) {
+            continue;
+          } // Now reverse the bits
+
+
+          tree[n].fc = bi_reverse(next_code[len]++, len); // Tracec(tree !== static_ltree, (stderr,"\nn %3d %c l %2d c %4x (%x) ", n, (isgraph(n) ? n : ' '), len, tree[n].fc, next_code[len]-1));
+        }
+      }
+      /* ==========================================================================
+       * Construct one Huffman tree and assigns the code bit strings and lengths.
+       * Update the total bit length for the current block.
+       * IN assertion: the field freq is set for all tree elements.
+       * OUT assertions: the fields len and code are set to the optimal bit length
+       *     and corresponding code. The length opt_len is updated; static_len is
+       *     also updated if stree is not null. The field max_code is set.
+       */
+
+
+      function build_tree(desc) {
+        // the tree descriptor
+        var tree = desc.dyn_tree;
+        var stree = desc.static_tree;
+        var elems = desc.elems;
+        var n, m; // iterate over heap elements
+
+        var max_code = -1; // largest code with non zero frequency
+
+        var node = elems; // next internal node of the tree
+        // Construct the initial heap, with least frequent element in
+        // heap[SMALLEST]. The sons of heap[n] are heap[2*n] and heap[2*n+1].
+        // heap[0] is not used.
+
+        heap_len = 0;
+        heap_max = HEAP_SIZE;
+
+        for (n = 0; n < elems; n++) {
+          if (tree[n].fc !== 0) {
+            heap[++heap_len] = max_code = n;
+            depth[n] = 0;
+          } else {
+            tree[n].dl = 0;
+          }
+        } // The pkzip format requires that at least one distance code exists,
+        // and that at least one bit should be sent even if there is only one
+        // possible code. So to avoid special checks later on we force at least
+        // two codes of non zero frequency.
+
+
+        while (heap_len < 2) {
+          var xnew = heap[++heap_len] = max_code < 2 ? ++max_code : 0;
+          tree[xnew].fc = 1;
+          depth[xnew] = 0;
+          opt_len--;
+
+          if (stree !== null) {
+            static_len -= stree[xnew].dl;
+          } // new is 0 or 1 so it does not have extra bits
+
+        }
+
+        desc.max_code = max_code; // The elements heap[heap_len/2+1 .. heap_len] are leaves of the tree,
+        // establish sub-heaps of increasing lengths:
+
+        for (n = heap_len >> 1; n >= 1; n--) {
+          pqdownheap(tree, n);
+        } // Construct the Huffman tree by repeatedly combining the least two
+        // frequent nodes.
+
+
+        do {
+          n = heap[SMALLEST];
+          heap[SMALLEST] = heap[heap_len--];
+          pqdownheap(tree, SMALLEST);
+          m = heap[SMALLEST]; // m = node of next least frequency
+          // keep the nodes sorted by frequency
+
+          heap[--heap_max] = n;
+          heap[--heap_max] = m; // Create a new node father of n and m
+
+          tree[node].fc = tree[n].fc + tree[m].fc; //	depth[node] = (char)(MAX(depth[n], depth[m]) + 1);
+
+          if (depth[n] > depth[m] + 1) {
+            depth[node] = depth[n];
+          } else {
+            depth[node] = depth[m] + 1;
+          }
+
+          tree[n].dl = tree[m].dl = node; // and insert the new node in the heap
+
+          heap[SMALLEST] = node++;
+          pqdownheap(tree, SMALLEST);
+        } while (heap_len >= 2);
+
+        heap[--heap_max] = heap[SMALLEST]; // At this point, the fields freq and dad are set. We can now
+        // generate the bit lengths.
+
+        gen_bitlen(desc); // The field len is now set, we can generate the bit codes
+
+        gen_codes(tree, max_code);
+      }
+      /* ==========================================================================
+       * Scan a literal or distance tree to determine the frequencies of the codes
+       * in the bit length tree. Updates opt_len to take into account the repeat
+       * counts. (The contribution of the bit length codes will be added later
+       * during the construction of bl_tree.)
+       *
+       * @param tree- the tree to be scanned
+       * @param max_code- and its largest code of non zero frequency
+       */
+
+
+      function scan_tree(tree, max_code) {
+        var n,
+            // iterates over all tree elements
+        prevlen = -1,
+            // last emitted length
+        curlen,
+            // length of current code
+        nextlen = tree[0].dl,
+            // length of next code
+        count = 0,
+            // repeat count of the current code
+        max_count = 7,
+            // max repeat count
+        min_count = 4; // min repeat count
+
+        if (nextlen === 0) {
+          max_count = 138;
+          min_count = 3;
+        }
+
+        tree[max_code + 1].dl = 0xffff; // guard
+
+        for (n = 0; n <= max_code; n++) {
+          curlen = nextlen;
+          nextlen = tree[n + 1].dl;
+
+          if (++count < max_count && curlen === nextlen) {
+            continue;
+          } else if (count < min_count) {
+            bl_tree[curlen].fc += count;
+          } else if (curlen !== 0) {
+            if (curlen !== prevlen) {
+              bl_tree[curlen].fc++;
+            }
+
+            bl_tree[REP_3_6].fc++;
+          } else if (count <= 10) {
+            bl_tree[REPZ_3_10].fc++;
+          } else {
+            bl_tree[REPZ_11_138].fc++;
+          }
+
+          count = 0;
+          prevlen = curlen;
+
+          if (nextlen === 0) {
+            max_count = 138;
+            min_count = 3;
+          } else if (curlen === nextlen) {
+            max_count = 6;
+            min_count = 3;
+          } else {
+            max_count = 7;
+            min_count = 4;
+          }
+        }
+      }
+      /* ==========================================================================
+       * Send a literal or distance tree in compressed form, using the codes in
+       * bl_tree.
+       *
+       * @param tree- the tree to be scanned
+       * @param max_code- and its largest code of non zero frequency
+       */
+
+
+      function send_tree(tree, max_code) {
+        var n; // iterates over all tree elements
+
+        var prevlen = -1; // last emitted length
+
+        var curlen; // length of current code
+
+        var nextlen = tree[0].dl; // length of next code
+
+        var count = 0; // repeat count of the current code
+
+        var max_count = 7; // max repeat count
+
+        var min_count = 4; // min repeat count
+        // tree[max_code+1].dl = -1; */  /* guard already set */
+
+        if (nextlen === 0) {
+          max_count = 138;
+          min_count = 3;
+        }
+
+        for (n = 0; n <= max_code; n++) {
+          curlen = nextlen;
+          nextlen = tree[n + 1].dl;
+
+          if (++count < max_count && curlen === nextlen) {
+            continue;
+          } else if (count < min_count) {
+            do {
+              SEND_CODE(curlen, bl_tree);
+            } while (--count !== 0);
+          } else if (curlen !== 0) {
+            if (curlen !== prevlen) {
+              SEND_CODE(curlen, bl_tree);
+              count--;
+            } // Assert(count >= 3 && count <= 6, " 3_6?");
+
+
+            SEND_CODE(REP_3_6, bl_tree);
+            send_bits(count - 3, 2);
+          } else if (count <= 10) {
+            SEND_CODE(REPZ_3_10, bl_tree);
+            send_bits(count - 3, 3);
+          } else {
+            SEND_CODE(REPZ_11_138, bl_tree);
+            send_bits(count - 11, 7);
+          }
+
+          count = 0;
+          prevlen = curlen;
+
+          if (nextlen === 0) {
+            max_count = 138;
+            min_count = 3;
+          } else if (curlen === nextlen) {
+            max_count = 6;
+            min_count = 3;
+          } else {
+            max_count = 7;
+            min_count = 4;
+          }
+        }
+      }
+      /* ==========================================================================
+       * Construct the Huffman tree for the bit lengths and return the index in
+       * bl_order of the last bit length code to send.
+       */
+
+
+      function build_bl_tree() {
+        var max_blindex; // index of last bit length code of non zero freq
+        // Determine the bit length frequencies for literal and distance trees
+
+        scan_tree(dyn_ltree, l_desc.max_code);
+        scan_tree(dyn_dtree, d_desc.max_code); // Build the bit length tree:
+
+        build_tree(bl_desc); // opt_len now includes the length of the tree representations, except
+        // the lengths of the bit lengths codes and the 5+5+4 bits for the counts.
+        // Determine the number of bit length codes to send. The pkzip format
+        // requires that at least 4 bit length codes be sent. (appnote.txt says
+        // 3 but the actual value used is 4.)
+
+        for (max_blindex = BL_CODES - 1; max_blindex >= 3; max_blindex--) {
+          if (bl_tree[bl_order[max_blindex]].dl !== 0) {
+            break;
+          }
+        } // Update opt_len to include the bit length tree and counts */
+
+
+        opt_len += 3 * (max_blindex + 1) + 5 + 5 + 4; // Tracev((stderr, "\ndyn trees: dyn %ld, stat %ld",
+        // encoder->opt_len, encoder->static_len));
+
+        return max_blindex;
+      }
+      /* ==========================================================================
+       * Send the header for a block using dynamic Huffman trees: the counts, the
+       * lengths of the bit length codes, the literal tree and the distance tree.
+       * IN assertion: lcodes >= 257, dcodes >= 1, blcodes >= 4.
+       */
+
+
+      function send_all_trees(lcodes, dcodes, blcodes) {
+        // number of codes for each tree
+        var rank; // index in bl_order
+        // Assert (lcodes >= 257 && dcodes >= 1 && blcodes >= 4, "not enough codes");
+        // Assert (lcodes <= L_CODES && dcodes <= D_CODES && blcodes <= BL_CODES, "too many codes");
+        // Tracev((stderr, "\nbl counts: "));
+
+        send_bits(lcodes - 257, 5); // not +255 as stated in appnote.txt
+
+        send_bits(dcodes - 1, 5);
+        send_bits(blcodes - 4, 4); // not -3 as stated in appnote.txt
+
+        for (rank = 0; rank < blcodes; rank++) {
+          // Tracev((stderr, "\nbl code %2d ", bl_order[rank]));
+          send_bits(bl_tree[bl_order[rank]].dl, 3);
+        } // send the literal tree
+
+
+        send_tree(dyn_ltree, lcodes - 1); // send the distance tree
+
+        send_tree(dyn_dtree, dcodes - 1);
+      }
+      /* ==========================================================================
+       * Determine the best encoding for the current block: dynamic trees, static
+       * trees or store, and output the encoded block to the zip file.
+       */
+
+
+      function flush_block(eof) {
+        // true if this is the last block for a file
+        var opt_lenb, static_lenb, // opt_len and static_len in bytes
+        max_blindex, // index of last bit length code of non zero freq
+        stored_len, // length of input block
+        i;
+        stored_len = strstart - block_start;
+        flag_buf[last_flags] = flags; // Save the flags for the last 8 items
+        // Construct the literal and distance trees
+
+        build_tree(l_desc); // Tracev((stderr, "\nlit data: dyn %ld, stat %ld",
+        // encoder->opt_len, encoder->static_len));
+
+        build_tree(d_desc); // Tracev((stderr, "\ndist data: dyn %ld, stat %ld",
+        // encoder->opt_len, encoder->static_len));
+        // At this point, opt_len and static_len are the total bit lengths of
+        // the compressed block data, excluding the tree representations.
+        // Build the bit length tree for the above two trees, and get the index
+        // in bl_order of the last bit length code to send.
+
+        max_blindex = build_bl_tree(); // Determine the best encoding. Compute first the block length in bytes
+
+        opt_lenb = opt_len + 3 + 7 >> 3;
+        static_lenb = static_len + 3 + 7 >> 3; //  Trace((stderr, "\nopt %lu(%lu) stat %lu(%lu) stored %lu lit %u dist %u ", opt_lenb, encoder->opt_len, static_lenb, encoder->static_len, stored_len, encoder->last_lit, encoder->last_dist));
+
+        if (static_lenb <= opt_lenb) {
+          opt_lenb = static_lenb;
+        }
+
+        if (stored_len + 4 <= opt_lenb && block_start >= 0) {
+          // 4: two words for the lengths
+          // The test buf !== NULL is only necessary if LIT_BUFSIZE > WSIZE.
+          // Otherwise we can't have processed more than WSIZE input bytes since
+          // the last block flush, because compression would have been
+          // successful. If LIT_BUFSIZE <= WSIZE, it is never too late to
+          // transform a block into a stored block.
+          send_bits((STORED_BLOCK << 1) + eof, 3);
+          /* send block type */
+
+          bi_windup();
+          /* align on byte boundary */
+
+          put_short(stored_len);
+          put_short(~stored_len); // copy block
+
+          /*
+          	p = &window[block_start];
+          	for (i = 0; i < stored_len; i++) {
+          		put_byte(p[i]);
+          	}
+          */
+
+          for (i = 0; i < stored_len; i++) {
+            put_byte(window[block_start + i]);
+          }
+        } else if (static_lenb === opt_lenb) {
+          send_bits((STATIC_TREES << 1) + eof, 3);
+          compress_block(static_ltree, static_dtree);
+        } else {
+          send_bits((DYN_TREES << 1) + eof, 3);
+          send_all_trees(l_desc.max_code + 1, d_desc.max_code + 1, max_blindex + 1);
+          compress_block(dyn_ltree, dyn_dtree);
+        }
+
+        init_block();
+
+        if (eof !== 0) {
+          bi_windup();
+        }
+      }
+      /* ==========================================================================
+       * Save the match info and tally the frequency counts. Return true if
+       * the current block must be flushed.
+       *
+       * @param dist- distance of matched string
+       * @param lc- (match length - MIN_MATCH) or unmatched char (if dist === 0)
+       */
+
+
+      function ct_tally(dist, lc) {
+        l_buf[last_lit++] = lc;
+
+        if (dist === 0) {
+          // lc is the unmatched char
+          dyn_ltree[lc].fc++;
+        } else {
+          // Here, lc is the match length - MIN_MATCH
+          dist--; // dist = match distance - 1
+          // Assert((ush)dist < (ush)MAX_DIST && (ush)lc <= (ush)(MAX_MATCH-MIN_MATCH) && (ush)D_CODE(dist) < (ush)D_CODES,  "ct_tally: bad match");
+
+          dyn_ltree[length_code[lc] + LITERALS + 1].fc++;
+          dyn_dtree[D_CODE(dist)].fc++;
+          d_buf[last_dist++] = dist;
+          flags |= flag_bit;
+        }
+
+        flag_bit <<= 1; // Output the flags if they fill a byte
+
+        if ((last_lit & 7) === 0) {
+          flag_buf[last_flags++] = flags;
+          flags = 0;
+          flag_bit = 1;
+        } // Try to guess if it is profitable to stop the current block here
+
+
+        if (compr_level > 2 && (last_lit & 0xfff) === 0) {
+          // Compute an upper bound for the compressed length
+          var out_length = last_lit * 8;
+          var in_length = strstart - block_start;
+          var dcode;
+
+          for (dcode = 0; dcode < D_CODES; dcode++) {
+            out_length += dyn_dtree[dcode].fc * (5 + extra_dbits[dcode]);
+          }
+
+          out_length >>= 3; // Trace((stderr,"\nlast_lit %u, last_dist %u, in %ld, out ~%ld(%ld%%) ", encoder->last_lit, encoder->last_dist, in_length, out_length, 100L - out_length*100L/in_length));
+
+          if (last_dist < parseInt(last_lit / 2, 10) && out_length < parseInt(in_length / 2, 10)) {
+            return true;
+          }
+        }
+
+        return last_lit === LIT_BUFSIZE - 1 || last_dist === DIST_BUFSIZE; // We avoid equality with LIT_BUFSIZE because of wraparound at 64K
+        // on 16 bit machines and because stored blocks are restricted to
+        // 64K-1 bytes.
+      }
+      /* ==========================================================================
+       * Send the block data compressed using the given Huffman trees
+       *
+       * @param ltree- literal tree
+       * @param dtree- distance tree
+       */
+
+
+      function compress_block(ltree, dtree) {
+        var dist; // distance of matched string
+
+        var lc; // match length or unmatched char (if dist === 0)
+
+        var lx = 0; // running index in l_buf
+
+        var dx = 0; // running index in d_buf
+
+        var fx = 0; // running index in flag_buf
+
+        var flag = 0; // current flags
+
+        var code; // the code to send
+
+        var extra; // number of extra bits to send
+
+        if (last_lit !== 0) {
+          do {
+            if ((lx & 7) === 0) {
+              flag = flag_buf[fx++];
+            }
+
+            lc = l_buf[lx++] & 0xff;
+
+            if ((flag & 1) === 0) {
+              SEND_CODE(lc, ltree);
+              /* send a literal byte */
+              //	Tracecv(isgraph(lc), (stderr," '%c' ", lc));
+            } else {
+              // Here, lc is the match length - MIN_MATCH
+              code = length_code[lc];
+              SEND_CODE(code + LITERALS + 1, ltree); // send the length code
+
+              extra = extra_lbits[code];
+
+              if (extra !== 0) {
+                lc -= base_length[code];
+                send_bits(lc, extra); // send the extra length bits
+              }
+
+              dist = d_buf[dx++]; // Here, dist is the match distance - 1
+
+              code = D_CODE(dist); //	Assert (code < D_CODES, "bad d_code");
+
+              SEND_CODE(code, dtree); // send the distance code
+
+              extra = extra_dbits[code];
+
+              if (extra !== 0) {
+                dist -= base_dist[code];
+                send_bits(dist, extra); // send the extra distance bits
+              }
+            } // literal or match pair ?
+
+
+            flag >>= 1;
+          } while (lx < last_lit);
+        }
+
+        SEND_CODE(END_BLOCK, ltree);
+      }
+      /* ==========================================================================
+       * Send a value on a given number of bits.
+       * IN assertion: length <= 16 and value fits in length bits.
+       *
+       * @param value- value to send
+       * @param length- number of bits
+       */
+
+
+      var Buf_size = 16; // bit size of bi_buf
+
+      function send_bits(value, length) {
+        // If not enough room in bi_buf, use (valid) bits from bi_buf and
+        // (16 - bi_valid) bits from value, leaving (width - (16-bi_valid))
+        // unused bits in value.
+        if (bi_valid > Buf_size - length) {
+          bi_buf |= value << bi_valid;
+          put_short(bi_buf);
+          bi_buf = value >> Buf_size - bi_valid;
+          bi_valid += length - Buf_size;
+        } else {
+          bi_buf |= value << bi_valid;
+          bi_valid += length;
+        }
+      }
+      /* ==========================================================================
+       * Reverse the first len bits of a code, using straightforward code (a faster
+       * method would use a table)
+       * IN assertion: 1 <= len <= 15
+       *
+       * @param code- the value to invert
+       * @param len- its bit length
+       */
+
+
+      function bi_reverse(code, len) {
+        var res = 0;
+
+        do {
+          res |= code & 1;
+          code >>= 1;
+          res <<= 1;
+        } while (--len > 0);
+
+        return res >> 1;
+      }
+      /* ==========================================================================
+       * Write out any remaining bits in an incomplete byte.
+       */
+
+
+      function bi_windup() {
+        if (bi_valid > 8) {
+          put_short(bi_buf);
+        } else if (bi_valid > 0) {
+          put_byte(bi_buf);
+        }
+
+        bi_buf = 0;
+        bi_valid = 0;
+      }
+
+      function qoutbuf() {
+        var q, i;
+
+        if (outcnt !== 0) {
+          q = new_queue();
+
+          if (qhead === null) {
+            qhead = qtail = q;
+          } else {
+            qtail = qtail.next = q;
+          }
+
+          q.len = outcnt - outoff; // System.arraycopy(outbuf, outoff, q.ptr, 0, q.len);
+
+          for (i = 0; i < q.len; i++) {
+            q.ptr[i] = outbuf[outoff + i];
+          }
+
+          outcnt = outoff = 0;
+        }
+      }
+
+      function deflate(arr, level) {
+        var i, buff;
+        deflate_data = arr;
+        deflate_pos = 0;
+
+        if (typeof level === "undefined") {
+          level = DEFAULT_LEVEL;
+        }
+
+        deflate_start(level);
+        buff = [];
+
+        do {
+          i = deflate_internal(buff, buff.length, 1024);
+        } while (i > 0);
+
+        deflate_data = null; // G.C.
+
+        return buff;
+      }
+
+      module.exports = deflate;
+      module.exports.DEFAULT_LEVEL = DEFAULT_LEVEL;
+    })();
+  });
+  var rawdeflate_1 = rawdeflate.DEFAULT_LEVEL;
+
+  var deflateJs = createCommonjsModule(function (module) {
+    (function () {
+
+      module.exports = {
+        'inflate': rawinflate,
+        'deflate': rawdeflate
+      };
+    })();
+  });
+
+  var gzip = createCommonjsModule(function (module) {
+    (function () {
+
+      var crc32$1 = crc32,
+          deflate = deflateJs,
+          // magic numbers marking this file as GZIP
+      ID1 = 0x1F,
+          ID2 = 0x8B,
+          compressionMethods = {
+        'deflate': 8
+      },
+          possibleFlags = {
+        'FTEXT': 0x01,
+        'FHCRC': 0x02,
+        'FEXTRA': 0x04,
+        'FNAME': 0x08,
+        'FCOMMENT': 0x10
+      },
+          osMap = {
+        'fat': 0,
+        // FAT file system (DOS, OS/2, NT) + PKZIPW 2.50 VFAT, NTFS
+        'amiga': 1,
+        // Amiga
+        'vmz': 2,
+        // VMS (VAX or Alpha AXP)
+        'unix': 3,
+        // Unix
+        'vm/cms': 4,
+        // VM/CMS
+        'atari': 5,
+        // Atari
+        'hpfs': 6,
+        // HPFS file system (OS/2, NT 3.x)
+        'macintosh': 7,
+        // Macintosh
+        'z-system': 8,
+        // Z-System
+        'cplm': 9,
+        // CP/M
+        'tops-20': 10,
+        // TOPS-20
+        'ntfs': 11,
+        // NTFS file system (NT)
+        'qdos': 12,
+        // SMS/QDOS
+        'acorn': 13,
+        // Acorn RISC OS
+        'vfat': 14,
+        // VFAT file system (Win95, NT)
+        'vms': 15,
+        // MVS (code also taken for PRIMOS)
+        'beos': 16,
+        // BeOS (BeBox or PowerMac)
+        'tandem': 17,
+        // Tandem/NSK
+        'theos': 18 // THEOS
+
+      },
+          os = 'unix',
+          DEFAULT_LEVEL = 6;
+
+      function putByte(n, arr) {
+        arr.push(n & 0xFF);
+      } // LSB first
+
+
+      function putShort(n, arr) {
+        arr.push(n & 0xFF);
+        arr.push(n >>> 8);
+      } // LSB first
+
+
+      function putLong(n, arr) {
+        putShort(n & 0xffff, arr);
+        putShort(n >>> 16, arr);
+      }
+
+      function putString(s, arr) {
+        var i,
+            len = s.length;
+
+        for (i = 0; i < len; i += 1) {
+          putByte(s.charCodeAt(i), arr);
+        }
+      }
+
+      function readByte(arr) {
+        return arr.shift();
+      }
+
+      function readShort(arr) {
+        return arr.shift() | arr.shift() << 8;
+      }
+
+      function readLong(arr) {
+        var n1 = readShort(arr),
+            n2 = readShort(arr); // JavaScript can't handle bits in the position 32
+        // we'll emulate this by removing the left-most bit (if it exists)
+        // and add it back in via multiplication, which does work
+
+        if (n2 > 32768) {
+          n2 -= 32768;
+          return (n2 << 16 | n1) + 32768 * Math.pow(2, 16);
+        }
+
+        return n2 << 16 | n1;
+      }
+
+      function readString(arr) {
+        var charArr = []; // turn all bytes into chars until the terminating null
+
+        while (arr[0] !== 0) {
+          charArr.push(String.fromCharCode(arr.shift()));
+        } // throw away terminating null
+
+
+        arr.shift(); // join all characters into a cohesive string
+
+        return charArr.join('');
+      }
+      /*
+       * Reads n number of bytes and return as an array.
+       *
+       * @param arr- Array of bytes to read from
+       * @param n- Number of bytes to read
+       */
+
+
+      function readBytes(arr, n) {
+        var i,
+            ret = [];
+
+        for (i = 0; i < n; i += 1) {
+          ret.push(arr.shift());
+        }
+
+        return ret;
+      }
+      /*
+       * ZIPs a file in GZIP format. The format is as given by the spec, found at:
+       * http://www.gzip.org/zlib/rfc-gzip.html
+       *
+       * Omitted parts in this implementation:
+       */
+
+
+      function zip(data, options) {
+        var flags = 0,
+            level,
+            out = [];
+
+        if (!options) {
+          options = {};
+        }
+
+        level = options.level || DEFAULT_LEVEL;
+
+        if (typeof data === 'string') {
+          data = Array.prototype.map.call(data, function (char) {
+            return char.charCodeAt(0);
+          });
+        } // magic number marking this file as GZIP
+
+
+        putByte(ID1, out);
+        putByte(ID2, out);
+        putByte(compressionMethods['deflate'], out);
+
+        if (options.name) {
+          flags |= possibleFlags['FNAME'];
+        }
+
+        putByte(flags, out);
+        putLong(options.timestamp || parseInt(Date.now() / 1000, 10), out); // put deflate args (extra flags)
+
+        if (level === 1) {
+          // fastest algorithm
+          putByte(4, out);
+        } else if (level === 9) {
+          // maximum compression (fastest algorithm)
+          putByte(2, out);
+        } else {
+          putByte(0, out);
+        } // OS identifier
+
+
+        putByte(osMap[os], out);
+
+        if (options.name) {
+          // ignore the directory part
+          putString(options.name.substring(options.name.lastIndexOf('/') + 1), out); // terminating null
+
+          putByte(0, out);
+        }
+
+        deflate.deflate(data, level).forEach(function (byte) {
+          putByte(byte, out);
+        });
+        putLong(parseInt(crc32$1(data), 16), out);
+        putLong(data.length, out);
+        return out;
+      }
+
+      function unzip(data, options) {
+        // start with a copy of the array
+        var arr = Array.prototype.slice.call(data, 0),
+            t,
+            compressionMethod,
+            flags,
+            mtime,
+            xFlags,
+            crc,
+            size,
+            res; // check the first two bytes for the magic numbers
+
+        if (readByte(arr) !== ID1 || readByte(arr) !== ID2) {
+          throw 'Not a GZIP file';
+        }
+
+        t = readByte(arr);
+        t = Object.keys(compressionMethods).some(function (key) {
+          compressionMethod = key;
+          return compressionMethods[key] === t;
+        });
+
+        if (!t) {
+          throw 'Unsupported compression method';
+        }
+
+        flags = readByte(arr);
+        mtime = readLong(arr);
+        xFlags = readByte(arr);
+        t = readByte(arr);
+        Object.keys(osMap).some(function (key) {
+          if (osMap[key] === t) {
+            return true;
+          }
+        }); // just throw away the bytes for now
+
+        if (flags & possibleFlags['FEXTRA']) {
+          t = readShort(arr);
+          readBytes(arr, t);
+        } // just throw away for now
+
+
+        if (flags & possibleFlags['FNAME']) {
+          readString(arr);
+        } // just throw away for now
+
+
+        if (flags & possibleFlags['FCOMMENT']) {
+          readString(arr);
+        } // just throw away for now
+
+
+        if (flags & possibleFlags['FHCRC']) {
+          readShort(arr);
+        }
+
+        if (compressionMethod === 'deflate') {
+          // give deflate everything but the last 8 bytes
+          // the last 8 bytes are for the CRC32 checksum and filesize
+          res = deflate.inflate(arr.splice(0, arr.length - 8));
+        }
+
+        if (flags & possibleFlags['FTEXT']) {
+          res = Array.prototype.map.call(res, function (byte) {
+            return String.fromCharCode(byte);
+          }).join('');
+        }
+
+        crc = readLong(arr);
+
+        if (crc !== parseInt(crc32$1(res), 16)) {
+          throw 'Checksum does not match';
+        }
+
+        size = readLong(arr);
+
+        if (size !== res.length) {
+          throw 'Size of decompressed file not correct';
+        }
+
+        return res;
+      }
+
+      module.exports = {
+        zip: zip,
+        unzip: unzip,
+
+        get DEFAULT_LEVEL() {
+          return DEFAULT_LEVEL;
+        }
+
+      };
+    })();
+  });
+  var gzip_1 = gzip.zip;
+  var gzip_2 = gzip.unzip;
+  var gzip_3 = gzip.DEFAULT_LEVEL;
+
+  var md5 = createCommonjsModule(function (module) {
+
+    (function ($) {
+      /*
+      * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+      * to work around bugs in some JS interpreters.
+      */
+
+      function safeAdd(x, y) {
+        var lsw = (x & 0xffff) + (y & 0xffff);
+        var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+        return msw << 16 | lsw & 0xffff;
+      }
+      /*
+      * Bitwise rotate a 32-bit number to the left.
+      */
+
+
+      function bitRotateLeft(num, cnt) {
+        return num << cnt | num >>> 32 - cnt;
+      }
+      /*
+      * These functions implement the four basic operations the algorithm uses.
+      */
+
+
+      function md5cmn(q, a, b, x, s, t) {
+        return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b);
+      }
+
+      function md5ff(a, b, c, d, x, s, t) {
+        return md5cmn(b & c | ~b & d, a, b, x, s, t);
+      }
+
+      function md5gg(a, b, c, d, x, s, t) {
+        return md5cmn(b & d | c & ~d, a, b, x, s, t);
+      }
+
+      function md5hh(a, b, c, d, x, s, t) {
+        return md5cmn(b ^ c ^ d, a, b, x, s, t);
+      }
+
+      function md5ii(a, b, c, d, x, s, t) {
+        return md5cmn(c ^ (b | ~d), a, b, x, s, t);
+      }
+      /*
+      * Calculate the MD5 of an array of little-endian words, and a bit length.
+      */
+
+
+      function binlMD5(x, len) {
+        /* append padding */
+        x[len >> 5] |= 0x80 << len % 32;
+        x[(len + 64 >>> 9 << 4) + 14] = len;
+        var i;
+        var olda;
+        var oldb;
+        var oldc;
+        var oldd;
+        var a = 1732584193;
+        var b = -271733879;
+        var c = -1732584194;
+        var d = 271733878;
+
+        for (i = 0; i < x.length; i += 16) {
+          olda = a;
+          oldb = b;
+          oldc = c;
+          oldd = d;
+          a = md5ff(a, b, c, d, x[i], 7, -680876936);
+          d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
+          c = md5ff(c, d, a, b, x[i + 2], 17, 606105819);
+          b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
+          a = md5ff(a, b, c, d, x[i + 4], 7, -176418897);
+          d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
+          c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341);
+          b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
+          a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416);
+          d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
+          c = md5ff(c, d, a, b, x[i + 10], 17, -42063);
+          b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
+          a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682);
+          d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
+          c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290);
+          b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
+          a = md5gg(a, b, c, d, x[i + 1], 5, -165796510);
+          d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
+          c = md5gg(c, d, a, b, x[i + 11], 14, 643717713);
+          b = md5gg(b, c, d, a, x[i], 20, -373897302);
+          a = md5gg(a, b, c, d, x[i + 5], 5, -701558691);
+          d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
+          c = md5gg(c, d, a, b, x[i + 15], 14, -660478335);
+          b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
+          a = md5gg(a, b, c, d, x[i + 9], 5, 568446438);
+          d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
+          c = md5gg(c, d, a, b, x[i + 3], 14, -187363961);
+          b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
+          a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467);
+          d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
+          c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473);
+          b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
+          a = md5hh(a, b, c, d, x[i + 5], 4, -378558);
+          d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
+          c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562);
+          b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
+          a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060);
+          d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
+          c = md5hh(c, d, a, b, x[i + 7], 16, -155497632);
+          b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
+          a = md5hh(a, b, c, d, x[i + 13], 4, 681279174);
+          d = md5hh(d, a, b, c, x[i], 11, -358537222);
+          c = md5hh(c, d, a, b, x[i + 3], 16, -722521979);
+          b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
+          a = md5hh(a, b, c, d, x[i + 9], 4, -640364487);
+          d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
+          c = md5hh(c, d, a, b, x[i + 15], 16, 530742520);
+          b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
+          a = md5ii(a, b, c, d, x[i], 6, -198630844);
+          d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
+          c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905);
+          b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
+          a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571);
+          d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
+          c = md5ii(c, d, a, b, x[i + 10], 15, -1051523);
+          b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
+          a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359);
+          d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
+          c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380);
+          b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
+          a = md5ii(a, b, c, d, x[i + 4], 6, -145523070);
+          d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
+          c = md5ii(c, d, a, b, x[i + 2], 15, 718787259);
+          b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
+          a = safeAdd(a, olda);
+          b = safeAdd(b, oldb);
+          c = safeAdd(c, oldc);
+          d = safeAdd(d, oldd);
+        }
+
+        return [a, b, c, d];
+      }
+      /*
+      * Convert an array of little-endian words to a string
+      */
+
+
+      function binl2rstr(input) {
+        var i;
+        var output = '';
+        var length32 = input.length * 32;
+
+        for (i = 0; i < length32; i += 8) {
+          output += String.fromCharCode(input[i >> 5] >>> i % 32 & 0xff);
+        }
+
+        return output;
+      }
+      /*
+      * Convert a raw string to an array of little-endian words
+      * Characters >255 have their high-byte silently ignored.
+      */
+
+
+      function rstr2binl(input) {
+        var i;
+        var output = [];
+        output[(input.length >> 2) - 1] = undefined;
+
+        for (i = 0; i < output.length; i += 1) {
+          output[i] = 0;
+        }
+
+        var length8 = input.length * 8;
+
+        for (i = 0; i < length8; i += 8) {
+          output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
+        }
+
+        return output;
+      }
+      /*
+      * Calculate the MD5 of a raw string
+      */
+
+
+      function rstrMD5(s) {
+        return binl2rstr(binlMD5(rstr2binl(s), s.length * 8));
+      }
+      /*
+      * Calculate the HMAC-MD5, of a key and some data (raw strings)
+      */
+
+
+      function rstrHMACMD5(key, data) {
+        var i;
+        var bkey = rstr2binl(key);
+        var ipad = [];
+        var opad = [];
+        var hash;
+        ipad[15] = opad[15] = undefined;
+
+        if (bkey.length > 16) {
+          bkey = binlMD5(bkey, key.length * 8);
+        }
+
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5c5c5c5c;
+        }
+
+        hash = binlMD5(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binlMD5(opad.concat(hash), 512 + 128));
+      }
+      /*
+      * Convert a raw string to a hex string
+      */
+
+
+      function rstr2hex(input) {
+        var hexTab = '0123456789abcdef';
+        var output = '';
+        var x;
+        var i;
+
+        for (i = 0; i < input.length; i += 1) {
+          x = input.charCodeAt(i);
+          output += hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f);
+        }
+
+        return output;
+      }
+      /*
+      * Encode a string as utf-8
+      */
+
+
+      function str2rstrUTF8(input) {
+        return unescape(encodeURIComponent(input));
+      }
+      /*
+      * Take string arguments and return either raw or hex encoded strings
+      */
+
+
+      function rawMD5(s) {
+        return rstrMD5(str2rstrUTF8(s));
+      }
+
+      function hexMD5(s) {
+        return rstr2hex(rawMD5(s));
+      }
+
+      function rawHMACMD5(k, d) {
+        return rstrHMACMD5(str2rstrUTF8(k), str2rstrUTF8(d));
+      }
+
+      function hexHMACMD5(k, d) {
+        return rstr2hex(rawHMACMD5(k, d));
+      }
+
+      function md5(string, key, raw) {
+        if (!key) {
+          if (!raw) {
+            return hexMD5(string);
+          }
+
+          return rawMD5(string);
+        }
+
+        if (!raw) {
+          return hexHMACMD5(key, string);
+        }
+
+        return rawHMACMD5(key, string);
+      }
+
+      if (module.exports) {
+        module.exports = md5;
+      } else {
+        $.md5 = md5;
+      }
+    })(commonjsGlobal);
+  });
+
+  var lodash_groupby = createCommonjsModule(function (module, exports) {
+    /**
+     * lodash (Custom Build) <https://lodash.com/>
+     * Build: `lodash modularize exports="npm" -o ./`
+     * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+     * Released under MIT license <https://lodash.com/license>
+     * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+     * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+     */
+
+    /** Used as the size to enable large array optimizations. */
+    var LARGE_ARRAY_SIZE = 200;
+    /** Used as the `TypeError` message for "Functions" methods. */
+
+    var FUNC_ERROR_TEXT = 'Expected a function';
+    /** Used to stand-in for `undefined` hash values. */
+
+    var HASH_UNDEFINED = '__lodash_hash_undefined__';
+    /** Used to compose bitmasks for comparison styles. */
+
+    var UNORDERED_COMPARE_FLAG = 1,
+        PARTIAL_COMPARE_FLAG = 2;
+    /** Used as references for various `Number` constants. */
+
+    var INFINITY = 1 / 0,
+        MAX_SAFE_INTEGER = 9007199254740991;
+    /** `Object#toString` result references. */
+
+    var argsTag = '[object Arguments]',
+        arrayTag = '[object Array]',
+        boolTag = '[object Boolean]',
+        dateTag = '[object Date]',
+        errorTag = '[object Error]',
+        funcTag = '[object Function]',
+        genTag = '[object GeneratorFunction]',
+        mapTag = '[object Map]',
+        numberTag = '[object Number]',
+        objectTag = '[object Object]',
+        promiseTag = '[object Promise]',
+        regexpTag = '[object RegExp]',
+        setTag = '[object Set]',
+        stringTag = '[object String]',
+        symbolTag = '[object Symbol]',
+        weakMapTag = '[object WeakMap]';
+    var arrayBufferTag = '[object ArrayBuffer]',
+        dataViewTag = '[object DataView]',
+        float32Tag = '[object Float32Array]',
+        float64Tag = '[object Float64Array]',
+        int8Tag = '[object Int8Array]',
+        int16Tag = '[object Int16Array]',
+        int32Tag = '[object Int32Array]',
+        uint8Tag = '[object Uint8Array]',
+        uint8ClampedTag = '[object Uint8ClampedArray]',
+        uint16Tag = '[object Uint16Array]',
+        uint32Tag = '[object Uint32Array]';
+    /** Used to match property names within property paths. */
+
+    var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+        reIsPlainProp = /^\w*$/,
+        reLeadingDot = /^\./,
+        rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
+    /**
+     * Used to match `RegExp`
+     * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+     */
+
+    var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+    /** Used to match backslashes in property paths. */
+
+    var reEscapeChar = /\\(\\)?/g;
+    /** Used to detect host constructors (Safari). */
+
+    var reIsHostCtor = /^\[object .+?Constructor\]$/;
+    /** Used to detect unsigned integer values. */
+
+    var reIsUint = /^(?:0|[1-9]\d*)$/;
+    /** Used to identify `toStringTag` values of typed arrays. */
+
+    var typedArrayTags = {};
+    typedArrayTags[float32Tag] = typedArrayTags[float64Tag] = typedArrayTags[int8Tag] = typedArrayTags[int16Tag] = typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] = typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] = typedArrayTags[uint32Tag] = true;
+    typedArrayTags[argsTag] = typedArrayTags[arrayTag] = typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] = typedArrayTags[dataViewTag] = typedArrayTags[dateTag] = typedArrayTags[errorTag] = typedArrayTags[funcTag] = typedArrayTags[mapTag] = typedArrayTags[numberTag] = typedArrayTags[objectTag] = typedArrayTags[regexpTag] = typedArrayTags[setTag] = typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
+    /** Detect free variable `global` from Node.js. */
+
+    var freeGlobal = typeof commonjsGlobal == 'object' && commonjsGlobal && commonjsGlobal.Object === Object && commonjsGlobal;
+    /** Detect free variable `self`. */
+
+    var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+    /** Used as a reference to the global object. */
+
+    var root = freeGlobal || freeSelf || Function('return this')();
+    /** Detect free variable `exports`. */
+
+    var freeExports = exports && !exports.nodeType && exports;
+    /** Detect free variable `module`. */
+
+    var freeModule = freeExports && 'object' == 'object' && module && !module.nodeType && module;
+    /** Detect the popular CommonJS extension `module.exports`. */
+
+    var moduleExports = freeModule && freeModule.exports === freeExports;
+    /** Detect free variable `process` from Node.js. */
+
+    var freeProcess = moduleExports && freeGlobal.process;
+    /** Used to access faster Node.js helpers. */
+
+    var nodeUtil = function () {
+      try {
+        return freeProcess && freeProcess.binding('util');
+      } catch (e) {}
+    }();
+    /* Node.js helper references. */
+
+
+    var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
+    /**
+     * A specialized version of `baseAggregator` for arrays.
+     *
+     * @private
+     * @param {Array} [array] The array to iterate over.
+     * @param {Function} setter The function to set `accumulator` values.
+     * @param {Function} iteratee The iteratee to transform keys.
+     * @param {Object} accumulator The initial aggregated object.
+     * @returns {Function} Returns `accumulator`.
+     */
+
+    function arrayAggregator(array, setter, iteratee, accumulator) {
+      var index = -1,
+          length = array ? array.length : 0;
+
+      while (++index < length) {
+        var value = array[index];
+        setter(accumulator, value, iteratee(value), array);
+      }
+
+      return accumulator;
+    }
+    /**
+     * A specialized version of `_.some` for arrays without support for iteratee
+     * shorthands.
+     *
+     * @private
+     * @param {Array} [array] The array to iterate over.
+     * @param {Function} predicate The function invoked per iteration.
+     * @returns {boolean} Returns `true` if any element passes the predicate check,
+     *  else `false`.
+     */
+
+
+    function arraySome(array, predicate) {
+      var index = -1,
+          length = array ? array.length : 0;
+
+      while (++index < length) {
+        if (predicate(array[index], index, array)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+    /**
+     * The base implementation of `_.property` without support for deep paths.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function baseProperty(key) {
+      return function (object) {
+        return object == null ? undefined : object[key];
+      };
+    }
+    /**
+     * The base implementation of `_.times` without support for iteratee shorthands
+     * or max array length checks.
+     *
+     * @private
+     * @param {number} n The number of times to invoke `iteratee`.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Array} Returns the array of results.
+     */
+
+
+    function baseTimes(n, iteratee) {
+      var index = -1,
+          result = Array(n);
+
+      while (++index < n) {
+        result[index] = iteratee(index);
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.unary` without support for storing metadata.
+     *
+     * @private
+     * @param {Function} func The function to cap arguments for.
+     * @returns {Function} Returns the new capped function.
+     */
+
+
+    function baseUnary(func) {
+      return function (value) {
+        return func(value);
+      };
+    }
+    /**
+     * Gets the value at `key` of `object`.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {string} key The key of the property to get.
+     * @returns {*} Returns the property value.
+     */
+
+
+    function getValue(object, key) {
+      return object == null ? undefined : object[key];
+    }
+    /**
+     * Checks if `value` is a host object in IE < 9.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+     */
+
+
+    function isHostObject(value) {
+      // Many host objects are `Object` objects that can coerce to strings
+      // despite having improperly defined `toString` methods.
+      var result = false;
+
+      if (value != null && typeof value.toString != 'function') {
+        try {
+          result = !!(value + '');
+        } catch (e) {}
+      }
+
+      return result;
+    }
+    /**
+     * Converts `map` to its key-value pairs.
+     *
+     * @private
+     * @param {Object} map The map to convert.
+     * @returns {Array} Returns the key-value pairs.
+     */
+
+
+    function mapToArray(map) {
+      var index = -1,
+          result = Array(map.size);
+      map.forEach(function (value, key) {
+        result[++index] = [key, value];
+      });
+      return result;
+    }
+    /**
+     * Creates a unary function that invokes `func` with its argument transformed.
+     *
+     * @private
+     * @param {Function} func The function to wrap.
+     * @param {Function} transform The argument transform.
+     * @returns {Function} Returns the new function.
+     */
+
+
+    function overArg(func, transform) {
+      return function (arg) {
+        return func(transform(arg));
+      };
+    }
+    /**
+     * Converts `set` to an array of its values.
+     *
+     * @private
+     * @param {Object} set The set to convert.
+     * @returns {Array} Returns the values.
+     */
+
+
+    function setToArray(set) {
+      var index = -1,
+          result = Array(set.size);
+      set.forEach(function (value) {
+        result[++index] = value;
+      });
+      return result;
+    }
+    /** Used for built-in method references. */
+
+
+    var arrayProto = Array.prototype,
+        funcProto = Function.prototype,
+        objectProto = Object.prototype;
+    /** Used to detect overreaching core-js shims. */
+
+    var coreJsData = root['__core-js_shared__'];
+    /** Used to detect methods masquerading as native. */
+
+    var maskSrcKey = function () {
+      var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+      return uid ? 'Symbol(src)_1.' + uid : '';
+    }();
+    /** Used to resolve the decompiled source of functions. */
+
+
+    var funcToString = funcProto.toString;
+    /** Used to check objects for own properties. */
+
+    var hasOwnProperty = objectProto.hasOwnProperty;
+    /**
+     * Used to resolve the
+     * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+     * of values.
+     */
+
+    var objectToString = objectProto.toString;
+    /** Used to detect if a method is native. */
+
+    var reIsNative = RegExp('^' + funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&').replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+    /** Built-in value references. */
+
+    var Symbol = root.Symbol,
+        Uint8Array = root.Uint8Array,
+        propertyIsEnumerable = objectProto.propertyIsEnumerable,
+        splice = arrayProto.splice;
+    /* Built-in method references for those with the same name as other `lodash` methods. */
+
+    var nativeKeys = overArg(Object.keys, Object);
+    /* Built-in method references that are verified to be native. */
+
+    var DataView = getNative(root, 'DataView'),
+        Map = getNative(root, 'Map'),
+        Promise = getNative(root, 'Promise'),
+        Set = getNative(root, 'Set'),
+        WeakMap = getNative(root, 'WeakMap'),
+        nativeCreate = getNative(Object, 'create');
+    /** Used to detect maps, sets, and weakmaps. */
+
+    var dataViewCtorString = toSource(DataView),
+        mapCtorString = toSource(Map),
+        promiseCtorString = toSource(Promise),
+        setCtorString = toSource(Set),
+        weakMapCtorString = toSource(WeakMap);
+    /** Used to convert symbols to primitives and strings. */
+
+    var symbolProto = Symbol ? Symbol.prototype : undefined,
+        symbolValueOf = symbolProto ? symbolProto.valueOf : undefined,
+        symbolToString = symbolProto ? symbolProto.toString : undefined;
+    /**
+     * Creates a hash object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Hash(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the hash.
+     *
+     * @private
+     * @name clear
+     * @memberOf Hash
+     */
+
+
+    function hashClear() {
+      this.__data__ = nativeCreate ? nativeCreate(null) : {};
+    }
+    /**
+     * Removes `key` and its value from the hash.
+     *
+     * @private
+     * @name delete
+     * @memberOf Hash
+     * @param {Object} hash The hash to modify.
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function hashDelete(key) {
+      return this.has(key) && delete this.__data__[key];
+    }
+    /**
+     * Gets the hash value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Hash
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function hashGet(key) {
+      var data = this.__data__;
+
+      if (nativeCreate) {
+        var result = data[key];
+        return result === HASH_UNDEFINED ? undefined : result;
+      }
+
+      return hasOwnProperty.call(data, key) ? data[key] : undefined;
+    }
+    /**
+     * Checks if a hash value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Hash
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function hashHas(key) {
+      var data = this.__data__;
+      return nativeCreate ? data[key] !== undefined : hasOwnProperty.call(data, key);
+    }
+    /**
+     * Sets the hash `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Hash
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the hash instance.
+     */
+
+
+    function hashSet(key, value) {
+      var data = this.__data__;
+      data[key] = nativeCreate && value === undefined ? HASH_UNDEFINED : value;
+      return this;
+    } // Add methods to `Hash`.
+
+
+    Hash.prototype.clear = hashClear;
+    Hash.prototype['delete'] = hashDelete;
+    Hash.prototype.get = hashGet;
+    Hash.prototype.has = hashHas;
+    Hash.prototype.set = hashSet;
+    /**
+     * Creates an list cache object.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function ListCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the list cache.
+     *
+     * @private
+     * @name clear
+     * @memberOf ListCache
+     */
+
+
+    function listCacheClear() {
+      this.__data__ = [];
+    }
+    /**
+     * Removes `key` and its value from the list cache.
+     *
+     * @private
+     * @name delete
+     * @memberOf ListCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function listCacheDelete(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        return false;
+      }
+
+      var lastIndex = data.length - 1;
+
+      if (index == lastIndex) {
+        data.pop();
+      } else {
+        splice.call(data, index, 1);
+      }
+
+      return true;
+    }
+    /**
+     * Gets the list cache value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf ListCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function listCacheGet(key) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+      return index < 0 ? undefined : data[index][1];
+    }
+    /**
+     * Checks if a list cache value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf ListCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function listCacheHas(key) {
+      return assocIndexOf(this.__data__, key) > -1;
+    }
+    /**
+     * Sets the list cache `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf ListCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the list cache instance.
+     */
+
+
+    function listCacheSet(key, value) {
+      var data = this.__data__,
+          index = assocIndexOf(data, key);
+
+      if (index < 0) {
+        data.push([key, value]);
+      } else {
+        data[index][1] = value;
+      }
+
+      return this;
+    } // Add methods to `ListCache`.
+
+
+    ListCache.prototype.clear = listCacheClear;
+    ListCache.prototype['delete'] = listCacheDelete;
+    ListCache.prototype.get = listCacheGet;
+    ListCache.prototype.has = listCacheHas;
+    ListCache.prototype.set = listCacheSet;
+    /**
+     * Creates a map cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function MapCache(entries) {
+      var index = -1,
+          length = entries ? entries.length : 0;
+      this.clear();
+
+      while (++index < length) {
+        var entry = entries[index];
+        this.set(entry[0], entry[1]);
+      }
+    }
+    /**
+     * Removes all key-value entries from the map.
+     *
+     * @private
+     * @name clear
+     * @memberOf MapCache
+     */
+
+
+    function mapCacheClear() {
+      this.__data__ = {
+        'hash': new Hash(),
+        'map': new (Map || ListCache)(),
+        'string': new Hash()
+      };
+    }
+    /**
+     * Removes `key` and its value from the map.
+     *
+     * @private
+     * @name delete
+     * @memberOf MapCache
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function mapCacheDelete(key) {
+      return getMapData(this, key)['delete'](key);
+    }
+    /**
+     * Gets the map value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf MapCache
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function mapCacheGet(key) {
+      return getMapData(this, key).get(key);
+    }
+    /**
+     * Checks if a map value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf MapCache
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function mapCacheHas(key) {
+      return getMapData(this, key).has(key);
+    }
+    /**
+     * Sets the map `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf MapCache
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the map cache instance.
+     */
+
+
+    function mapCacheSet(key, value) {
+      getMapData(this, key).set(key, value);
+      return this;
+    } // Add methods to `MapCache`.
+
+
+    MapCache.prototype.clear = mapCacheClear;
+    MapCache.prototype['delete'] = mapCacheDelete;
+    MapCache.prototype.get = mapCacheGet;
+    MapCache.prototype.has = mapCacheHas;
+    MapCache.prototype.set = mapCacheSet;
+    /**
+     *
+     * Creates an array cache object to store unique values.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [values] The values to cache.
+     */
+
+    function SetCache(values) {
+      var index = -1,
+          length = values ? values.length : 0;
+      this.__data__ = new MapCache();
+
+      while (++index < length) {
+        this.add(values[index]);
+      }
+    }
+    /**
+     * Adds `value` to the array cache.
+     *
+     * @private
+     * @name add
+     * @memberOf SetCache
+     * @alias push
+     * @param {*} value The value to cache.
+     * @returns {Object} Returns the cache instance.
+     */
+
+
+    function setCacheAdd(value) {
+      this.__data__.set(value, HASH_UNDEFINED);
+
+      return this;
+    }
+    /**
+     * Checks if `value` is in the array cache.
+     *
+     * @private
+     * @name has
+     * @memberOf SetCache
+     * @param {*} value The value to search for.
+     * @returns {number} Returns `true` if `value` is found, else `false`.
+     */
+
+
+    function setCacheHas(value) {
+      return this.__data__.has(value);
+    } // Add methods to `SetCache`.
+
+
+    SetCache.prototype.add = SetCache.prototype.push = setCacheAdd;
+    SetCache.prototype.has = setCacheHas;
+    /**
+     * Creates a stack cache object to store key-value pairs.
+     *
+     * @private
+     * @constructor
+     * @param {Array} [entries] The key-value pairs to cache.
+     */
+
+    function Stack(entries) {
+      this.__data__ = new ListCache(entries);
+    }
+    /**
+     * Removes all key-value entries from the stack.
+     *
+     * @private
+     * @name clear
+     * @memberOf Stack
+     */
+
+
+    function stackClear() {
+      this.__data__ = new ListCache();
+    }
+    /**
+     * Removes `key` and its value from the stack.
+     *
+     * @private
+     * @name delete
+     * @memberOf Stack
+     * @param {string} key The key of the value to remove.
+     * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+     */
+
+
+    function stackDelete(key) {
+      return this.__data__['delete'](key);
+    }
+    /**
+     * Gets the stack value for `key`.
+     *
+     * @private
+     * @name get
+     * @memberOf Stack
+     * @param {string} key The key of the value to get.
+     * @returns {*} Returns the entry value.
+     */
+
+
+    function stackGet(key) {
+      return this.__data__.get(key);
+    }
+    /**
+     * Checks if a stack value for `key` exists.
+     *
+     * @private
+     * @name has
+     * @memberOf Stack
+     * @param {string} key The key of the entry to check.
+     * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+     */
+
+
+    function stackHas(key) {
+      return this.__data__.has(key);
+    }
+    /**
+     * Sets the stack `key` to `value`.
+     *
+     * @private
+     * @name set
+     * @memberOf Stack
+     * @param {string} key The key of the value to set.
+     * @param {*} value The value to set.
+     * @returns {Object} Returns the stack cache instance.
+     */
+
+
+    function stackSet(key, value) {
+      var cache = this.__data__;
+
+      if (cache instanceof ListCache) {
+        var pairs = cache.__data__;
+
+        if (!Map || pairs.length < LARGE_ARRAY_SIZE - 1) {
+          pairs.push([key, value]);
+          return this;
+        }
+
+        cache = this.__data__ = new MapCache(pairs);
+      }
+
+      cache.set(key, value);
+      return this;
+    } // Add methods to `Stack`.
+
+
+    Stack.prototype.clear = stackClear;
+    Stack.prototype['delete'] = stackDelete;
+    Stack.prototype.get = stackGet;
+    Stack.prototype.has = stackHas;
+    Stack.prototype.set = stackSet;
+    /**
+     * Creates an array of the enumerable property names of the array-like `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @param {boolean} inherited Specify returning inherited property names.
+     * @returns {Array} Returns the array of property names.
+     */
+
+    function arrayLikeKeys(value, inherited) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      // Safari 9 makes `arguments.length` enumerable in strict mode.
+      var result = isArray(value) || isArguments(value) ? baseTimes(value.length, String) : [];
+      var length = result.length,
+          skipIndexes = !!length;
+
+      for (var key in value) {
+        if ((inherited || hasOwnProperty.call(value, key)) && !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * Gets the index at which the `key` is found in `array` of key-value pairs.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @param {*} key The key to search for.
+     * @returns {number} Returns the index of the matched value, else `-1`.
+     */
+
+
+    function assocIndexOf(array, key) {
+      var length = array.length;
+
+      while (length--) {
+        if (eq(array[length][0], key)) {
+          return length;
+        }
+      }
+
+      return -1;
+    }
+    /**
+     * Aggregates elements of `collection` on `accumulator` with keys transformed
+     * by `iteratee` and values set by `setter`.
+     *
+     * @private
+     * @param {Array|Object} collection The collection to iterate over.
+     * @param {Function} setter The function to set `accumulator` values.
+     * @param {Function} iteratee The iteratee to transform keys.
+     * @param {Object} accumulator The initial aggregated object.
+     * @returns {Function} Returns `accumulator`.
+     */
+
+
+    function baseAggregator(collection, setter, iteratee, accumulator) {
+      baseEach(collection, function (value, key, collection) {
+        setter(accumulator, value, iteratee(value), collection);
+      });
+      return accumulator;
+    }
+    /**
+     * The base implementation of `_.forEach` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Array|Object} collection The collection to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Array|Object} Returns `collection`.
+     */
+
+
+    var baseEach = createBaseEach(baseForOwn);
+    /**
+     * The base implementation of `baseForOwn` which iterates over `object`
+     * properties returned by `keysFunc` and invokes `iteratee` for each property.
+     * Iteratee functions may exit iteration early by explicitly returning `false`.
+     *
+     * @private
+     * @param {Object} object The object to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @param {Function} keysFunc The function to get the keys of `object`.
+     * @returns {Object} Returns `object`.
+     */
+
+    var baseFor = createBaseFor();
+    /**
+     * The base implementation of `_.forOwn` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Object} object The object to iterate over.
+     * @param {Function} iteratee The function invoked per iteration.
+     * @returns {Object} Returns `object`.
+     */
+
+    function baseForOwn(object, iteratee) {
+      return object && baseFor(object, iteratee, keys);
+    }
+    /**
+     * The base implementation of `_.get` without support for default values.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @returns {*} Returns the resolved value.
+     */
+
+
+    function baseGet(object, path) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var index = 0,
+          length = path.length;
+
+      while (object != null && index < length) {
+        object = object[toKey(path[index++])];
+      }
+
+      return index && index == length ? object : undefined;
+    }
+    /**
+     * The base implementation of `getTag`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    function baseGetTag(value) {
+      return objectToString.call(value);
+    }
+    /**
+     * The base implementation of `_.hasIn` without support for deep paths.
+     *
+     * @private
+     * @param {Object} [object] The object to query.
+     * @param {Array|string} key The key to check.
+     * @returns {boolean} Returns `true` if `key` exists, else `false`.
+     */
+
+
+    function baseHasIn(object, key) {
+      return object != null && key in Object(object);
+    }
+    /**
+     * The base implementation of `_.isEqual` which supports partial comparisons
+     * and tracks traversed objects.
+     *
+     * @private
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {boolean} [bitmask] The bitmask of comparison flags.
+     *  The bitmask may be composed of the following flags:
+     *     1 - Unordered comparison
+     *     2 - Partial comparison
+     * @param {Object} [stack] Tracks traversed `value` and `other` objects.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     */
+
+
+    function baseIsEqual(value, other, customizer, bitmask, stack) {
+      if (value === other) {
+        return true;
+      }
+
+      if (value == null || other == null || !isObject(value) && !isObjectLike(other)) {
+        return value !== value && other !== other;
+      }
+
+      return baseIsEqualDeep(value, other, baseIsEqual, customizer, bitmask, stack);
+    }
+    /**
+     * A specialized version of `baseIsEqual` for arrays and objects which performs
+     * deep comparisons and tracks traversed objects enabling objects with circular
+     * references to be compared.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @param {number} [bitmask] The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} [stack] Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function baseIsEqualDeep(object, other, equalFunc, customizer, bitmask, stack) {
+      var objIsArr = isArray(object),
+          othIsArr = isArray(other),
+          objTag = arrayTag,
+          othTag = arrayTag;
+
+      if (!objIsArr) {
+        objTag = getTag(object);
+        objTag = objTag == argsTag ? objectTag : objTag;
+      }
+
+      if (!othIsArr) {
+        othTag = getTag(other);
+        othTag = othTag == argsTag ? objectTag : othTag;
+      }
+
+      var objIsObj = objTag == objectTag && !isHostObject(object),
+          othIsObj = othTag == objectTag && !isHostObject(other),
+          isSameTag = objTag == othTag;
+
+      if (isSameTag && !objIsObj) {
+        stack || (stack = new Stack());
+        return objIsArr || isTypedArray(object) ? equalArrays(object, other, equalFunc, customizer, bitmask, stack) : equalByTag(object, other, objTag, equalFunc, customizer, bitmask, stack);
+      }
+
+      if (!(bitmask & PARTIAL_COMPARE_FLAG)) {
+        var objIsWrapped = objIsObj && hasOwnProperty.call(object, '__wrapped__'),
+            othIsWrapped = othIsObj && hasOwnProperty.call(other, '__wrapped__');
+
+        if (objIsWrapped || othIsWrapped) {
+          var objUnwrapped = objIsWrapped ? object.value() : object,
+              othUnwrapped = othIsWrapped ? other.value() : other;
+          stack || (stack = new Stack());
+          return equalFunc(objUnwrapped, othUnwrapped, customizer, bitmask, stack);
+        }
+      }
+
+      if (!isSameTag) {
+        return false;
+      }
+
+      stack || (stack = new Stack());
+      return equalObjects(object, other, equalFunc, customizer, bitmask, stack);
+    }
+    /**
+     * The base implementation of `_.isMatch` without support for iteratee shorthands.
+     *
+     * @private
+     * @param {Object} object The object to inspect.
+     * @param {Object} source The object of property values to match.
+     * @param {Array} matchData The property names, values, and compare flags to match.
+     * @param {Function} [customizer] The function to customize comparisons.
+     * @returns {boolean} Returns `true` if `object` is a match, else `false`.
+     */
+
+
+    function baseIsMatch(object, source, matchData, customizer) {
+      var index = matchData.length,
+          length = index,
+          noCustomizer = !customizer;
+
+      if (object == null) {
+        return !length;
+      }
+
+      object = Object(object);
+
+      while (index--) {
+        var data = matchData[index];
+
+        if (noCustomizer && data[2] ? data[1] !== object[data[0]] : !(data[0] in object)) {
+          return false;
+        }
+      }
+
+      while (++index < length) {
+        data = matchData[index];
+        var key = data[0],
+            objValue = object[key],
+            srcValue = data[1];
+
+        if (noCustomizer && data[2]) {
+          if (objValue === undefined && !(key in object)) {
+            return false;
+          }
+        } else {
+          var stack = new Stack();
+
+          if (customizer) {
+            var result = customizer(objValue, srcValue, key, object, source, stack);
+          }
+
+          if (!(result === undefined ? baseIsEqual(srcValue, objValue, customizer, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG, stack) : result)) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+    /**
+     * The base implementation of `_.isNative` without bad shim checks.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a native function,
+     *  else `false`.
+     */
+
+
+    function baseIsNative(value) {
+      if (!isObject(value) || isMasked(value)) {
+        return false;
+      }
+
+      var pattern = isFunction(value) || isHostObject(value) ? reIsNative : reIsHostCtor;
+      return pattern.test(toSource(value));
+    }
+    /**
+     * The base implementation of `_.isTypedArray` without Node.js optimizations.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     */
+
+
+    function baseIsTypedArray(value) {
+      return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+    }
+    /**
+     * The base implementation of `_.iteratee`.
+     *
+     * @private
+     * @param {*} [value=_.identity] The value to convert to an iteratee.
+     * @returns {Function} Returns the iteratee.
+     */
+
+
+    function baseIteratee(value) {
+      // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+      // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+      if (typeof value == 'function') {
+        return value;
+      }
+
+      if (value == null) {
+        return identity;
+      }
+
+      if (typeof value == 'object') {
+        return isArray(value) ? baseMatchesProperty(value[0], value[1]) : baseMatches(value);
+      }
+
+      return property(value);
+    }
+    /**
+     * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     */
+
+
+    function baseKeys(object) {
+      if (!isPrototype(object)) {
+        return nativeKeys(object);
+      }
+
+      var result = [];
+
+      for (var key in Object(object)) {
+        if (hasOwnProperty.call(object, key) && key != 'constructor') {
+          result.push(key);
+        }
+      }
+
+      return result;
+    }
+    /**
+     * The base implementation of `_.matches` which doesn't clone `source`.
+     *
+     * @private
+     * @param {Object} source The object of property values to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatches(source) {
+      var matchData = getMatchData(source);
+
+      if (matchData.length == 1 && matchData[0][2]) {
+        return matchesStrictComparable(matchData[0][0], matchData[0][1]);
+      }
+
+      return function (object) {
+        return object === source || baseIsMatch(object, source, matchData);
+      };
+    }
+    /**
+     * The base implementation of `_.matchesProperty` which doesn't clone `srcValue`.
+     *
+     * @private
+     * @param {string} path The path of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function baseMatchesProperty(path, srcValue) {
+      if (isKey(path) && isStrictComparable(srcValue)) {
+        return matchesStrictComparable(toKey(path), srcValue);
+      }
+
+      return function (object) {
+        var objValue = get(object, path);
+        return objValue === undefined && objValue === srcValue ? hasIn(object, path) : baseIsEqual(srcValue, objValue, undefined, UNORDERED_COMPARE_FLAG | PARTIAL_COMPARE_FLAG);
+      };
+    }
+    /**
+     * A specialized version of `baseProperty` which supports deep paths.
+     *
+     * @private
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     */
+
+
+    function basePropertyDeep(path) {
+      return function (object) {
+        return baseGet(object, path);
+      };
+    }
+    /**
+     * The base implementation of `_.toString` which doesn't convert nullish
+     * values to empty strings.
+     *
+     * @private
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     */
+
+
+    function baseToString(value) {
+      // Exit early for strings to avoid a performance hit in some environments.
+      if (typeof value == 'string') {
+        return value;
+      }
+
+      if (isSymbol(value)) {
+        return symbolToString ? symbolToString.call(value) : '';
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * Casts `value` to a path array if it's not one.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {Array} Returns the cast property path array.
+     */
+
+
+    function castPath(value) {
+      return isArray(value) ? value : stringToPath(value);
+    }
+    /**
+     * Creates a function like `_.groupBy`.
+     *
+     * @private
+     * @param {Function} setter The function to set accumulator values.
+     * @param {Function} [initializer] The accumulator object initializer.
+     * @returns {Function} Returns the new aggregator function.
+     */
+
+
+    function createAggregator(setter, initializer) {
+      return function (collection, iteratee) {
+        var func = isArray(collection) ? arrayAggregator : baseAggregator,
+            accumulator = initializer ? initializer() : {};
+        return func(collection, setter, baseIteratee(iteratee, 2), accumulator);
+      };
+    }
+    /**
+     * Creates a `baseEach` or `baseEachRight` function.
+     *
+     * @private
+     * @param {Function} eachFunc The function to iterate over a collection.
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new base function.
+     */
+
+
+    function createBaseEach(eachFunc, fromRight) {
+      return function (collection, iteratee) {
+        if (collection == null) {
+          return collection;
+        }
+
+        if (!isArrayLike(collection)) {
+          return eachFunc(collection, iteratee);
+        }
+
+        var length = collection.length,
+            index = fromRight ? length : -1,
+            iterable = Object(collection);
+
+        while (fromRight ? index-- : ++index < length) {
+          if (iteratee(iterable[index], index, iterable) === false) {
+            break;
+          }
+        }
+
+        return collection;
+      };
+    }
+    /**
+     * Creates a base function for methods like `_.forIn` and `_.forOwn`.
+     *
+     * @private
+     * @param {boolean} [fromRight] Specify iterating from right to left.
+     * @returns {Function} Returns the new base function.
+     */
+
+
+    function createBaseFor(fromRight) {
+      return function (object, iteratee, keysFunc) {
+        var index = -1,
+            iterable = Object(object),
+            props = keysFunc(object),
+            length = props.length;
+
+        while (length--) {
+          var key = props[fromRight ? length : ++index];
+
+          if (iteratee(iterable[key], key, iterable) === false) {
+            break;
+          }
+        }
+
+        return object;
+      };
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for arrays with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Array} array The array to compare.
+     * @param {Array} other The other array to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `array` and `other` objects.
+     * @returns {boolean} Returns `true` if the arrays are equivalent, else `false`.
+     */
+
+
+    function equalArrays(array, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          arrLength = array.length,
+          othLength = other.length;
+
+      if (arrLength != othLength && !(isPartial && othLength > arrLength)) {
+        return false;
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(array);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var index = -1,
+          result = true,
+          seen = bitmask & UNORDERED_COMPARE_FLAG ? new SetCache() : undefined;
+      stack.set(array, other);
+      stack.set(other, array); // Ignore non-index properties.
+
+      while (++index < arrLength) {
+        var arrValue = array[index],
+            othValue = other[index];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, arrValue, index, other, array, stack) : customizer(arrValue, othValue, index, array, other, stack);
+        }
+
+        if (compared !== undefined) {
+          if (compared) {
+            continue;
+          }
+
+          result = false;
+          break;
+        } // Recursively compare arrays (susceptible to call stack limits).
+
+
+        if (seen) {
+          if (!arraySome(other, function (othValue, othIndex) {
+            if (!seen.has(othIndex) && (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+              return seen.add(othIndex);
+            }
+          })) {
+            result = false;
+            break;
+          }
+        } else if (!(arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
+          result = false;
+          break;
+        }
+      }
+
+      stack['delete'](array);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for comparing objects of
+     * the same `toStringTag`.
+     *
+     * **Note:** This function only supports comparing values with tags of
+     * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {string} tag The `toStringTag` of the objects to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalByTag(object, other, tag, equalFunc, customizer, bitmask, stack) {
+      switch (tag) {
+        case dataViewTag:
+          if (object.byteLength != other.byteLength || object.byteOffset != other.byteOffset) {
+            return false;
+          }
+
+          object = object.buffer;
+          other = other.buffer;
+
+        case arrayBufferTag:
+          if (object.byteLength != other.byteLength || !equalFunc(new Uint8Array(object), new Uint8Array(other))) {
+            return false;
+          }
+
+          return true;
+
+        case boolTag:
+        case dateTag:
+        case numberTag:
+          // Coerce booleans to `1` or `0` and dates to milliseconds.
+          // Invalid dates are coerced to `NaN`.
+          return eq(+object, +other);
+
+        case errorTag:
+          return object.name == other.name && object.message == other.message;
+
+        case regexpTag:
+        case stringTag:
+          // Coerce regexes to strings and treat strings, primitives and objects,
+          // as equal. See http://www.ecma-international.org/ecma-262/7.0/#sec-regexp.prototype.tostring
+          // for more details.
+          return object == other + '';
+
+        case mapTag:
+          var convert = mapToArray;
+
+        case setTag:
+          var isPartial = bitmask & PARTIAL_COMPARE_FLAG;
+          convert || (convert = setToArray);
+
+          if (object.size != other.size && !isPartial) {
+            return false;
+          } // Assume cyclic values are equal.
+
+
+          var stacked = stack.get(object);
+
+          if (stacked) {
+            return stacked == other;
+          }
+
+          bitmask |= UNORDERED_COMPARE_FLAG; // Recursively compare objects (susceptible to call stack limits).
+
+          stack.set(object, other);
+          var result = equalArrays(convert(object), convert(other), equalFunc, customizer, bitmask, stack);
+          stack['delete'](object);
+          return result;
+
+        case symbolTag:
+          if (symbolValueOf) {
+            return symbolValueOf.call(object) == symbolValueOf.call(other);
+          }
+
+      }
+
+      return false;
+    }
+    /**
+     * A specialized version of `baseIsEqualDeep` for objects with support for
+     * partial deep comparisons.
+     *
+     * @private
+     * @param {Object} object The object to compare.
+     * @param {Object} other The other object to compare.
+     * @param {Function} equalFunc The function to determine equivalents of values.
+     * @param {Function} customizer The function to customize comparisons.
+     * @param {number} bitmask The bitmask of comparison flags. See `baseIsEqual`
+     *  for more details.
+     * @param {Object} stack Tracks traversed `object` and `other` objects.
+     * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+     */
+
+
+    function equalObjects(object, other, equalFunc, customizer, bitmask, stack) {
+      var isPartial = bitmask & PARTIAL_COMPARE_FLAG,
+          objProps = keys(object),
+          objLength = objProps.length,
+          othProps = keys(other),
+          othLength = othProps.length;
+
+      if (objLength != othLength && !isPartial) {
+        return false;
+      }
+
+      var index = objLength;
+
+      while (index--) {
+        var key = objProps[index];
+
+        if (!(isPartial ? key in other : hasOwnProperty.call(other, key))) {
+          return false;
+        }
+      } // Assume cyclic values are equal.
+
+
+      var stacked = stack.get(object);
+
+      if (stacked && stack.get(other)) {
+        return stacked == other;
+      }
+
+      var result = true;
+      stack.set(object, other);
+      stack.set(other, object);
+      var skipCtor = isPartial;
+
+      while (++index < objLength) {
+        key = objProps[index];
+        var objValue = object[key],
+            othValue = other[key];
+
+        if (customizer) {
+          var compared = isPartial ? customizer(othValue, objValue, key, other, object, stack) : customizer(objValue, othValue, key, object, other, stack);
+        } // Recursively compare objects (susceptible to call stack limits).
+
+
+        if (!(compared === undefined ? objValue === othValue || equalFunc(objValue, othValue, customizer, bitmask, stack) : compared)) {
+          result = false;
+          break;
+        }
+
+        skipCtor || (skipCtor = key == 'constructor');
+      }
+
+      if (result && !skipCtor) {
+        var objCtor = object.constructor,
+            othCtor = other.constructor; // Non `Object` object instances with different constructors are not equal.
+
+        if (objCtor != othCtor && 'constructor' in object && 'constructor' in other && !(typeof objCtor == 'function' && objCtor instanceof objCtor && typeof othCtor == 'function' && othCtor instanceof othCtor)) {
+          result = false;
+        }
+      }
+
+      stack['delete'](object);
+      stack['delete'](other);
+      return result;
+    }
+    /**
+     * Gets the data for `map`.
+     *
+     * @private
+     * @param {Object} map The map to query.
+     * @param {string} key The reference key.
+     * @returns {*} Returns the map data.
+     */
+
+
+    function getMapData(map, key) {
+      var data = map.__data__;
+      return isKeyable(key) ? data[typeof key == 'string' ? 'string' : 'hash'] : data.map;
+    }
+    /**
+     * Gets the property names, values, and compare flags of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the match data of `object`.
+     */
+
+
+    function getMatchData(object) {
+      var result = keys(object),
+          length = result.length;
+
+      while (length--) {
+        var key = result[length],
+            value = object[key];
+        result[length] = [key, value, isStrictComparable(value)];
+      }
+
+      return result;
+    }
+    /**
+     * Gets the native function at `key` of `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {string} key The key of the method to get.
+     * @returns {*} Returns the function if it's native, else `undefined`.
+     */
+
+
+    function getNative(object, key) {
+      var value = getValue(object, key);
+      return baseIsNative(value) ? value : undefined;
+    }
+    /**
+     * Gets the `toStringTag` of `value`.
+     *
+     * @private
+     * @param {*} value The value to query.
+     * @returns {string} Returns the `toStringTag`.
+     */
+
+
+    var getTag = baseGetTag; // Fallback for data views, maps, sets, and weak maps in IE 11,
+    // for data views in Edge < 14, and promises in Node.js.
+
+    if (DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag || Map && getTag(new Map()) != mapTag || Promise && getTag(Promise.resolve()) != promiseTag || Set && getTag(new Set()) != setTag || WeakMap && getTag(new WeakMap()) != weakMapTag) {
+      getTag = function (value) {
+        var result = objectToString.call(value),
+            Ctor = result == objectTag ? value.constructor : undefined,
+            ctorString = Ctor ? toSource(Ctor) : undefined;
+
+        if (ctorString) {
+          switch (ctorString) {
+            case dataViewCtorString:
+              return dataViewTag;
+
+            case mapCtorString:
+              return mapTag;
+
+            case promiseCtorString:
+              return promiseTag;
+
+            case setCtorString:
+              return setTag;
+
+            case weakMapCtorString:
+              return weakMapTag;
+          }
+        }
+
+        return result;
+      };
+    }
+    /**
+     * Checks if `path` exists on `object`.
+     *
+     * @private
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @param {Function} hasFunc The function to check properties.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     */
+
+
+    function hasPath(object, path, hasFunc) {
+      path = isKey(path, object) ? [path] : castPath(path);
+      var result,
+          index = -1,
+          length = path.length;
+
+      while (++index < length) {
+        var key = toKey(path[index]);
+
+        if (!(result = object != null && hasFunc(object, key))) {
+          break;
+        }
+
+        object = object[key];
+      }
+
+      if (result) {
+        return result;
+      }
+
+      var length = object ? object.length : 0;
+      return !!length && isLength(length) && isIndex(key, length) && (isArray(object) || isArguments(object));
+    }
+    /**
+     * Checks if `value` is a valid array-like index.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+     * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+     */
+
+
+    function isIndex(value, length) {
+      length = length == null ? MAX_SAFE_INTEGER : length;
+      return !!length && (typeof value == 'number' || reIsUint.test(value)) && value > -1 && value % 1 == 0 && value < length;
+    }
+    /**
+     * Checks if `value` is a property name and not a property path.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @param {Object} [object] The object to query keys on.
+     * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
+     */
+
+
+    function isKey(value, object) {
+      if (isArray(value)) {
+        return false;
+      }
+
+      var type = typeof value;
+
+      if (type == 'number' || type == 'symbol' || type == 'boolean' || value == null || isSymbol(value)) {
+        return true;
+      }
+
+      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) || object != null && value in Object(object);
+    }
+    /**
+     * Checks if `value` is suitable for use as unique object key.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
+     */
+
+
+    function isKeyable(value) {
+      var type = typeof value;
+      return type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean' ? value !== '__proto__' : value === null;
+    }
+    /**
+     * Checks if `func` has its source masked.
+     *
+     * @private
+     * @param {Function} func The function to check.
+     * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+     */
+
+
+    function isMasked(func) {
+      return !!maskSrcKey && maskSrcKey in func;
+    }
+    /**
+     * Checks if `value` is likely a prototype object.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+     */
+
+
+    function isPrototype(value) {
+      var Ctor = value && value.constructor,
+          proto = typeof Ctor == 'function' && Ctor.prototype || objectProto;
+      return value === proto;
+    }
+    /**
+     * Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` if suitable for strict
+     *  equality comparisons, else `false`.
+     */
+
+
+    function isStrictComparable(value) {
+      return value === value && !isObject(value);
+    }
+    /**
+     * A specialized version of `matchesProperty` for source values suitable
+     * for strict equality comparisons, i.e. `===`.
+     *
+     * @private
+     * @param {string} key The key of the property to get.
+     * @param {*} srcValue The value to match.
+     * @returns {Function} Returns the new spec function.
+     */
+
+
+    function matchesStrictComparable(key, srcValue) {
+      return function (object) {
+        if (object == null) {
+          return false;
+        }
+
+        return object[key] === srcValue && (srcValue !== undefined || key in Object(object));
+      };
+    }
+    /**
+     * Converts `string` to a property path array.
+     *
+     * @private
+     * @param {string} string The string to convert.
+     * @returns {Array} Returns the property path array.
+     */
+
+
+    var stringToPath = memoize(function (string) {
+      string = toString(string);
+      var result = [];
+
+      if (reLeadingDot.test(string)) {
+        result.push('');
+      }
+
+      string.replace(rePropName, function (match, number, quote, string) {
+        result.push(quote ? string.replace(reEscapeChar, '$1') : number || match);
+      });
+      return result;
+    });
+    /**
+     * Converts `value` to a string key if it's not a string or symbol.
+     *
+     * @private
+     * @param {*} value The value to inspect.
+     * @returns {string|symbol} Returns the key.
+     */
+
+    function toKey(value) {
+      if (typeof value == 'string' || isSymbol(value)) {
+        return value;
+      }
+
+      var result = value + '';
+      return result == '0' && 1 / value == -INFINITY ? '-0' : result;
+    }
+    /**
+     * Converts `func` to its source code.
+     *
+     * @private
+     * @param {Function} func The function to process.
+     * @returns {string} Returns the source code.
+     */
+
+
+    function toSource(func) {
+      if (func != null) {
+        try {
+          return funcToString.call(func);
+        } catch (e) {}
+
+        try {
+          return func + '';
+        } catch (e) {}
+      }
+
+      return '';
+    }
+    /**
+     * Creates an object composed of keys generated from the results of running
+     * each element of `collection` thru `iteratee`. The order of grouped values
+     * is determined by the order they occur in `collection`. The corresponding
+     * value of each key is an array of elements responsible for generating the
+     * key. The iteratee is invoked with one argument: (value).
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Collection
+     * @param {Array|Object} collection The collection to iterate over.
+     * @param {Function} [iteratee=_.identity]
+     *  The iteratee to transform keys.
+     * @returns {Object} Returns the composed aggregate object.
+     * @example
+     *
+     * _.groupBy([6.1, 4.2, 6.3], Math.floor);
+     * // => { '4': [4.2], '6': [6.1, 6.3] }
+     *
+     * // The `_.property` iteratee shorthand.
+     * _.groupBy(['one', 'two', 'three'], 'length');
+     * // => { '3': ['one', 'two'], '5': ['three'] }
+     */
+
+
+    var groupBy = createAggregator(function (result, value, key) {
+      if (hasOwnProperty.call(result, key)) {
+        result[key].push(value);
+      } else {
+        result[key] = [value];
+      }
+    });
+    /**
+     * Creates a function that memoizes the result of `func`. If `resolver` is
+     * provided, it determines the cache key for storing the result based on the
+     * arguments provided to the memoized function. By default, the first argument
+     * provided to the memoized function is used as the map cache key. The `func`
+     * is invoked with the `this` binding of the memoized function.
+     *
+     * **Note:** The cache is exposed as the `cache` property on the memoized
+     * function. Its creation may be customized by replacing the `_.memoize.Cache`
+     * constructor with one whose instances implement the
+     * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
+     * method interface of `delete`, `get`, `has`, and `set`.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Function
+     * @param {Function} func The function to have its output memoized.
+     * @param {Function} [resolver] The function to resolve the cache key.
+     * @returns {Function} Returns the new memoized function.
+     * @example
+     *
+     * var object = { 'a': 1, 'b': 2 };
+     * var other = { 'c': 3, 'd': 4 };
+     *
+     * var values = _.memoize(_.values);
+     * values(object);
+     * // => [1, 2]
+     *
+     * values(other);
+     * // => [3, 4]
+     *
+     * object.a = 2;
+     * values(object);
+     * // => [1, 2]
+     *
+     * // Modify the result cache.
+     * values.cache.set(object, ['a', 'b']);
+     * values(object);
+     * // => ['a', 'b']
+     *
+     * // Replace `_.memoize.Cache`.
+     * _.memoize.Cache = WeakMap;
+     */
+
+    function memoize(func, resolver) {
+      if (typeof func != 'function' || resolver && typeof resolver != 'function') {
+        throw new TypeError(FUNC_ERROR_TEXT);
+      }
+
+      var memoized = function () {
+        var args = arguments,
+            key = resolver ? resolver.apply(this, args) : args[0],
+            cache = memoized.cache;
+
+        if (cache.has(key)) {
+          return cache.get(key);
+        }
+
+        var result = func.apply(this, args);
+        memoized.cache = cache.set(key, result);
+        return result;
+      };
+
+      memoized.cache = new (memoize.Cache || MapCache)();
+      return memoized;
+    } // Assign cache to `_.memoize`.
+
+
+    memoize.Cache = MapCache;
+    /**
+     * Performs a
+     * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+     * comparison between two values to determine if they are equivalent.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to compare.
+     * @param {*} other The other value to compare.
+     * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     * var other = { 'a': 1 };
+     *
+     * _.eq(object, object);
+     * // => true
+     *
+     * _.eq(object, other);
+     * // => false
+     *
+     * _.eq('a', 'a');
+     * // => true
+     *
+     * _.eq('a', Object('a'));
+     * // => false
+     *
+     * _.eq(NaN, NaN);
+     * // => true
+     */
+
+    function eq(value, other) {
+      return value === other || value !== value && other !== other;
+    }
+    /**
+     * Checks if `value` is likely an `arguments` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArguments(function() { return arguments; }());
+     * // => true
+     *
+     * _.isArguments([1, 2, 3]);
+     * // => false
+     */
+
+
+    function isArguments(value) {
+      // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+      return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') && (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+    }
+    /**
+     * Checks if `value` is classified as an `Array` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+     * @example
+     *
+     * _.isArray([1, 2, 3]);
+     * // => true
+     *
+     * _.isArray(document.body.children);
+     * // => false
+     *
+     * _.isArray('abc');
+     * // => false
+     *
+     * _.isArray(_.noop);
+     * // => false
+     */
+
+
+    var isArray = Array.isArray;
+    /**
+     * Checks if `value` is array-like. A value is considered array-like if it's
+     * not a function and has a `value.length` that's an integer greater than or
+     * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+     * @example
+     *
+     * _.isArrayLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLike(document.body.children);
+     * // => true
+     *
+     * _.isArrayLike('abc');
+     * // => true
+     *
+     * _.isArrayLike(_.noop);
+     * // => false
+     */
+
+    function isArrayLike(value) {
+      return value != null && isLength(value.length) && !isFunction(value);
+    }
+    /**
+     * This method is like `_.isArrayLike` except that it also checks if `value`
+     * is an object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an array-like object,
+     *  else `false`.
+     * @example
+     *
+     * _.isArrayLikeObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isArrayLikeObject(document.body.children);
+     * // => true
+     *
+     * _.isArrayLikeObject('abc');
+     * // => false
+     *
+     * _.isArrayLikeObject(_.noop);
+     * // => false
+     */
+
+
+    function isArrayLikeObject(value) {
+      return isObjectLike(value) && isArrayLike(value);
+    }
+    /**
+     * Checks if `value` is classified as a `Function` object.
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+     * @example
+     *
+     * _.isFunction(_);
+     * // => true
+     *
+     * _.isFunction(/abc/);
+     * // => false
+     */
+
+
+    function isFunction(value) {
+      // The use of `Object#toString` avoids issues with the `typeof` operator
+      // in Safari 8-9 which returns 'object' for typed array and other constructors.
+      var tag = isObject(value) ? objectToString.call(value) : '';
+      return tag == funcTag || tag == genTag;
+    }
+    /**
+     * Checks if `value` is a valid array-like length.
+     *
+     * **Note:** This method is loosely based on
+     * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+     * @example
+     *
+     * _.isLength(3);
+     * // => true
+     *
+     * _.isLength(Number.MIN_VALUE);
+     * // => false
+     *
+     * _.isLength(Infinity);
+     * // => false
+     *
+     * _.isLength('3');
+     * // => false
+     */
+
+
+    function isLength(value) {
+      return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+    }
+    /**
+     * Checks if `value` is the
+     * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+     * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+     *
+     * @static
+     * @memberOf _
+     * @since 0.1.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+     * @example
+     *
+     * _.isObject({});
+     * // => true
+     *
+     * _.isObject([1, 2, 3]);
+     * // => true
+     *
+     * _.isObject(_.noop);
+     * // => true
+     *
+     * _.isObject(null);
+     * // => false
+     */
+
+
+    function isObject(value) {
+      var type = typeof value;
+      return !!value && (type == 'object' || type == 'function');
+    }
+    /**
+     * Checks if `value` is object-like. A value is object-like if it's not `null`
+     * and has a `typeof` result of "object".
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+     * @example
+     *
+     * _.isObjectLike({});
+     * // => true
+     *
+     * _.isObjectLike([1, 2, 3]);
+     * // => true
+     *
+     * _.isObjectLike(_.noop);
+     * // => false
+     *
+     * _.isObjectLike(null);
+     * // => false
+     */
+
+
+    function isObjectLike(value) {
+      return !!value && typeof value == 'object';
+    }
+    /**
+     * Checks if `value` is classified as a `Symbol` primitive or object.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+     * @example
+     *
+     * _.isSymbol(Symbol.iterator);
+     * // => true
+     *
+     * _.isSymbol('abc');
+     * // => false
+     */
+
+
+    function isSymbol(value) {
+      return typeof value == 'symbol' || isObjectLike(value) && objectToString.call(value) == symbolTag;
+    }
+    /**
+     * Checks if `value` is classified as a typed array.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.0.0
+     * @category Lang
+     * @param {*} value The value to check.
+     * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+     * @example
+     *
+     * _.isTypedArray(new Uint8Array);
+     * // => true
+     *
+     * _.isTypedArray([]);
+     * // => false
+     */
+
+
+    var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
+    /**
+     * Converts `value` to a string. An empty string is returned for `null`
+     * and `undefined` values. The sign of `-0` is preserved.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Lang
+     * @param {*} value The value to process.
+     * @returns {string} Returns the string.
+     * @example
+     *
+     * _.toString(null);
+     * // => ''
+     *
+     * _.toString(-0);
+     * // => '-0'
+     *
+     * _.toString([1, 2, 3]);
+     * // => '1,2,3'
+     */
+
+    function toString(value) {
+      return value == null ? '' : baseToString(value);
+    }
+    /**
+     * Gets the value at `path` of `object`. If the resolved value is
+     * `undefined`, the `defaultValue` is returned in its place.
+     *
+     * @static
+     * @memberOf _
+     * @since 3.7.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path of the property to get.
+     * @param {*} [defaultValue] The value returned for `undefined` resolved values.
+     * @returns {*} Returns the resolved value.
+     * @example
+     *
+     * var object = { 'a': [{ 'b': { 'c': 3 } }] };
+     *
+     * _.get(object, 'a[0].b.c');
+     * // => 3
+     *
+     * _.get(object, ['a', '0', 'b', 'c']);
+     * // => 3
+     *
+     * _.get(object, 'a.b.c', 'default');
+     * // => 'default'
+     */
+
+
+    function get(object, path, defaultValue) {
+      var result = object == null ? undefined : baseGet(object, path);
+      return result === undefined ? defaultValue : result;
+    }
+    /**
+     * Checks if `path` is a direct or inherited property of `object`.
+     *
+     * @static
+     * @memberOf _
+     * @since 4.0.0
+     * @category Object
+     * @param {Object} object The object to query.
+     * @param {Array|string} path The path to check.
+     * @returns {boolean} Returns `true` if `path` exists, else `false`.
+     * @example
+     *
+     * var object = _.create({ 'a': _.create({ 'b': 2 }) });
+     *
+     * _.hasIn(object, 'a');
+     * // => true
+     *
+     * _.hasIn(object, 'a.b');
+     * // => true
+     *
+     * _.hasIn(object, ['a', 'b']);
+     * // => true
+     *
+     * _.hasIn(object, 'b');
+     * // => false
+     */
+
+
+    function hasIn(object, path) {
+      return object != null && hasPath(object, path, baseHasIn);
+    }
+    /**
+     * Creates an array of the own enumerable property names of `object`.
+     *
+     * **Note:** Non-object values are coerced to objects. See the
+     * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+     * for more details.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Object
+     * @param {Object} object The object to query.
+     * @returns {Array} Returns the array of property names.
+     * @example
+     *
+     * function Foo() {
+     *   this.a = 1;
+     *   this.b = 2;
+     * }
+     *
+     * Foo.prototype.c = 3;
+     *
+     * _.keys(new Foo);
+     * // => ['a', 'b'] (iteration order is not guaranteed)
+     *
+     * _.keys('hi');
+     * // => ['0', '1']
+     */
+
+
+    function keys(object) {
+      return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+    }
+    /**
+     * This method returns the first argument it receives.
+     *
+     * @static
+     * @since 0.1.0
+     * @memberOf _
+     * @category Util
+     * @param {*} value Any value.
+     * @returns {*} Returns `value`.
+     * @example
+     *
+     * var object = { 'a': 1 };
+     *
+     * console.log(_.identity(object) === object);
+     * // => true
+     */
+
+
+    function identity(value) {
+      return value;
+    }
+    /**
+     * Creates a function that returns the value at `path` of a given object.
+     *
+     * @static
+     * @memberOf _
+     * @since 2.4.0
+     * @category Util
+     * @param {Array|string} path The path of the property to get.
+     * @returns {Function} Returns the new accessor function.
+     * @example
+     *
+     * var objects = [
+     *   { 'a': { 'b': 2 } },
+     *   { 'a': { 'b': 1 } }
+     * ];
+     *
+     * _.map(objects, _.property('a.b'));
+     * // => [2, 1]
+     *
+     * _.map(_.sortBy(objects, _.property(['a', 'b'])), 'a.b');
+     * // => [1, 2]
+     */
+
+
+    function property(path) {
+      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+    }
+
+    module.exports = groupBy;
+  });
+
+  /**
+   * SDK版本号
+   */
+  const version = "2.2.1";
+
+  class LogModel {
+      constructor(level) {
+          this.level = level;
+      }
+      setLevel(level) {
+          this.level = level;
+      }
+      log(...args) {
+          if (this.level !== "log") {
+              return;
+          }
+          const pretitle = `${getLogTimeString()} %cLOG-QNRTC`;
+          const style = "color: #66ccff; font-weight: bold;";
+          console.info(pretitle, style, ...args);
+      }
+      debug(...args) {
+          if (this.level !== "log" && this.level !== "debug") {
+              return;
+          }
+          const pretitle = `${getLogTimeString()} %cDEBUG-QNRTC`;
+          const style = "color: #A28148; font-weight: bold;";
+          console.info(pretitle, style, ...args);
+      }
+      warning(...args) {
+          if (this.level === "disable") {
+              return;
+          }
+          const pretitle = `${getLogTimeString()} %cWARNING-QNRTC`;
+          const style = "color: #E44F44; font-weight: bold;";
+          console.warn(pretitle, style, ...args);
+      }
+  }
+  function getLogTimeString() {
+      const date = new Date();
+      function padingStart(num) {
+          const str = num.toString();
+          if (str.length < 2) {
+              return "0" + str;
+          }
+          return str;
+      }
+      const hours = padingStart(date.getHours());
+      const mins = padingStart(date.getMinutes());
+      const secs = padingStart(date.getSeconds());
+      const msecs = date.getMilliseconds();
+      return `[${hours}:${mins}:${secs}.${msecs}]`;
+  }
+  const log = new LogModel("log");
+
+  class TaskQueue extends EventEmitter {
+      constructor(name, debug = true) {
+          super();
+          // Closed flag.
+          this._closed = false;
+          // Busy running a command.
+          this._busy = false;
+          // Queue for pending commands. Each command is an Object with method,
+          // resolve, reject, and other members (depending the case).
+          this._queue = [];
+          this.name = name || "TaskQueue";
+          this.isDebug = debug;
+      }
+      close() {
+          this._closed = true;
+      }
+      push(method, data) {
+          if (this.isDebug) {
+              log.debug(`${this.name} push()`, method, data);
+          }
+          return new Promise((resolve, reject) => {
+              const queue = this._queue;
+              // Append command to the queue.
+              queue.push({ method, data, resolve, reject });
+              this._handlePendingCommands();
+          });
+      }
+      _handlePendingCommands() {
+          if (this._busy) {
+              return;
+          }
+          const queue = this._queue;
+          // Take the first command.
+          const command = queue[0];
+          if (!command) {
+              return;
+          }
+          this._busy = true;
+          // Execute it.
+          this._handleCommand(command)
+              .then(() => {
+              this._busy = false;
+              // Remove the first command (the completed one) from the queue.
+              queue.shift();
+              // And continue.
+              this._handlePendingCommands();
+          });
+      }
+      _handleCommand(command) {
+          if (this.isDebug) {
+              log.debug(`${this.name} _handleCommand() `, command.method, command.data);
+          }
+          if (this._closed) {
+              command.reject(new InvalidStateError("closed"));
+              return Promise.resolve();
+          }
+          const promiseHolder = { promise: null };
+          this.emit("exec", command, promiseHolder);
+          return Promise.resolve()
+              .then(() => {
+              return promiseHolder.promise;
+          })
+              .then(result => {
+              if (this.isDebug) {
+                  log.debug(`${this.name} _handleCommand() | command succeeded`, command.method);
+              }
+              if (this._closed) {
+                  command.reject(new InvalidStateError("closed"));
+                  return;
+              }
+              // Resolve the command with the given result (if any).
+              command.resolve(result);
+          })
+              .catch(error => {
+              if (this.isDebug) {
+                  log.warning(`${this.name} _handleCommand() | command failed [method:%s]: %o`, command.method, error);
+              }
+              // Reject the command with the error.
+              command.reject(error);
+          });
+      }
+  }
+
+  const QNRTC_EVENTS_STORATE_KEY = "qnrtcqosevents";
+  class QosModel {
+      constructor() {
+          this.events = [];
+          this.lastSubmitTime = Date.now();
+          this.submitQueue = new TaskQueue("qossubmit", false);
+          getDeviceId().then(deviceId => {
+              this.deviceId = deviceId;
+              this.base.device_id = this.deviceId;
+          });
+          this.base = {
+              qos_version: "2.0",
+              device_id: "",
+              bundle_id: window.location.href,
+              app_version: "",
+              sdk_version: version,
+              device_model: `${browser.name}${browser.version}`,
+              os_platform: browser.os,
+              os_version: "",
+          };
+          this.initSubmitQueue();
+          this.submitQueue.push("resume").catch(noop);
+      }
+      setSessionId(sessionId) {
+          for (let i = this.events.length - 1; i >= 0; i -= 1) {
+              const event = this.events[i];
+              if (event.session_id)
+                  break;
+              event.session_id = sessionId;
+          }
+          this.sessionId = sessionId;
+      }
+      setUserBase(userName, roomName) {
+          this.userBase = {
+              user_id: userName,
+              room_name: roomName,
+              app_id: "",
+          };
+          for (let i = this.events.length - 1; i >= 0; i -= 1) {
+              const event = this.events[i];
+              if (event.user_base)
+                  break;
+              event.user_base = this.userBase;
+          }
+      }
+      addEvent(eventType, data, isForce) {
+          const event = {
+              timestamp: Date.now(),
+              event_id: QosEventType[eventType],
+              event_name: eventType,
+              ...data,
+          };
+          this.submitQueue.push("add", event).catch(noop);
+          this.submit(isForce);
+      }
+      submit(isForce = false) {
+          this.submitQueue.push("submit", isForce).catch(noop);
+      }
+      initSubmitQueue() {
+          this.submitQueue.on("exec", (command, ph) => {
+              switch (command.method) {
+                  case "submit": {
+                      ph.promise = this._submit(command.data);
+                      return;
+                  }
+                  case "add": {
+                      ph.promise = this._addEvent(command.data);
+                      return;
+                  }
+                  case "resume": {
+                      ph.promise = this._recoverStoredEvents();
+                      return;
+                  }
+              }
+          });
+      }
+      async _recoverStoredEvents() {
+          const res = await localforage.getItem(QNRTC_EVENTS_STORATE_KEY);
+          console.log("get item", res);
+          await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
+          if (!res)
+              return;
+          this.events = JSON.parse(window.atob(decodeURIComponent(res)));
+          // 没有 sessionid 或者 user_base 的数据将被丢弃
+          this.events = this.events.filter(e => !!e.session_id && !!e.user_base).sort((a, b) => {
+              return a.event.timestamp - b.event.timestamp;
+          });
+      }
+      _addEvent(event) {
+          this.events.push({
+              user_base: this.userBase,
+              event,
+              session_id: this.sessionId,
+          });
+          this.submit();
+          return Promise.resolve();
+      }
+      saveEvents() {
+          const events = encodeURIComponent(window.btoa(JSON.stringify(this.events)));
+          localforage.setItem(QNRTC_EVENTS_STORATE_KEY, events).catch(noop);
+      }
+      submitCheck() {
+          if (!this.sessionId || !this.deviceId || !this.userBase)
+              return false;
+          if (Date.now() - this.lastSubmitTime > 60000 * 5)
+              return true;
+          if (this.events.length >= 30)
+              return true;
+          return false;
+      }
+      async _submit(isForce = false) {
+          const result = isForce ? true : this.submitCheck();
+          if (!result) {
+              this.saveEvents();
+              return;
+          }
+          try {
+              const submitData = this.encodeQosSubmitData();
+              for (const data of submitData) {
+                  const res = await fetch("https://pili-rtc-qos.qiniuapi.com/v1/rtcevent", {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/x-gzip",
+                      },
+                      body: data.buffer,
+                  });
+                  if (!res.ok) {
+                      throw UNEXPECTED_ERROR("rtcevent error");
+                  }
+              }
+              this.lastSubmitTime = Date.now();
+              this.events = [];
+              await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
+          }
+          catch (e) {
+              log.log(e);
+          }
+      }
+      encodeQosSubmitData() {
+          const submitDataGroup = lodash_groupby(this.events, (e) => {
+              return e.session_id || "" + JSON.stringify(e.user_base);
+          });
+          const data = [];
+          for (const key in submitDataGroup) {
+              const events = submitDataGroup[key];
+              if (events.length === 0)
+                  continue;
+              const submitData = {
+                  session_id: events[0].session_id,
+                  user_base: events[0].user_base,
+                  base: this.base,
+                  items: events.map(e => e.event),
+              };
+              console.log("encode", submitData);
+              const byteArray = new Uint8Array(gzip.zip(toUTF8Array(JSON.stringify(submitData))));
+              data.push(byteArray);
+          }
+          return data;
+      }
+  }
+  function getDeviceId() {
+      return new Promise((resolve, reject) => {
+          if (window.requestIdleCallback) {
+              window.requestIdleCallback(() => {
+                  fingerprint2.get((components) => {
+                      const deviceId = md5(JSON.stringify(components));
+                      resolve(deviceId);
+                  });
+              });
+          }
+          else {
+              setTimeout(() => {
+                  fingerprint2.get((components) => {
+                      const deviceId = md5(JSON.stringify(components));
+                      resolve(deviceId);
+                  });
+              }, 500);
+          }
+      });
+  }
+  function toUTF8Array(str) {
+      const utf8 = [];
+      for (let i = 0; i < str.length; i++) {
+          let charcode = str.charCodeAt(i);
+          if (charcode < 0x80)
+              utf8.push(charcode);
+          else if (charcode < 0x800) {
+              utf8.push(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
+          }
+          else if (charcode < 0xd800 || charcode >= 0xe000) {
+              utf8.push(0xe0 | (charcode >> 12), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
+          }
+          // surrogate pair
+          else {
+              i++;
+              // UTF-16 encodes 0x10000-0x10FFFF by
+              // subtracting 0x10000 and splitting the
+              // 20 bits of 0x0-0xFFFFF into two halves
+              charcode = 0x10000 + (((charcode & 0x3ff) << 10)
+                  | (str.charCodeAt(i) & 0x3ff));
+              utf8.push(0xf0 | (charcode >> 18), 0x80 | ((charcode >> 12) & 0x3f), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
+          }
+      }
+      return new Uint8Array(utf8);
+  }
+  const qos = new QosModel();
+
+  /*
    * error.ts
    * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
    *
@@ -10680,6 +21529,10 @@
           super(message);
           this.code = code;
           this.error = message;
+          qos.addEvent("SDKError", {
+              error_code: code,
+              error_msg: message,
+          });
       }
   }
   const UNEXPECTED_ERROR = (msg) => new QNRTCError(11000, `piliRTC: unexpected error ${msg}`);
@@ -10755,40 +21608,6 @@
     InvalidStateError: InvalidStateError
   });
 
-  class LogModel {
-      constructor(level) {
-          this.level = level;
-      }
-      setLevel(level) {
-          this.level = level;
-      }
-      log(...args) {
-          if (this.level !== "log") {
-              return;
-          }
-          const pretitle = "%cLOG-QNRTC";
-          const style = "color: #66ccff; font-weight: bold;";
-          console.info(pretitle, style, ...args);
-      }
-      debug(...args) {
-          if (this.level !== "log" && this.level !== "debug") {
-              return;
-          }
-          const pretitle = "%cDEBUG-QNRTC";
-          const style = "color: #A28148; font-weight: bold;";
-          console.info(pretitle, style, ...args);
-      }
-      warning(...args) {
-          if (this.level === "disable") {
-              return;
-          }
-          const pretitle = "%cWARNING-QNRTC";
-          const style = "color: #E44F44; font-weight: bold;";
-          console.warn(pretitle, style, ...args);
-      }
-  }
-  const log = new LogModel("log");
-
   function getPayloadFromJwt(jwttoken) {
       const payloadString = jwttoken.split(".")[1];
       if (!payloadString) {
@@ -10831,6 +21650,8 @@
           }
       }
       return null;
+  }
+  function noop() {
   }
   function removeUndefinedKey(obj, depth = 0) {
       if (depth >= 4) {
@@ -10941,7 +21762,8 @@
           return func();
       }
   }
-  function showPlayWarn() {
+  function showPlayWarn(e) {
+      log.warning("play failed!", e);
       log.warning("play failed due to browser security policy, see: http://s.qnsdk.com/s/Txsdz");
   }
 
@@ -11081,58 +21903,6 @@
       }
       return newReport;
   }
-
-  /*
-   * device.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
-  const REC_AUDIO_ENABLE = (config) => {
-      return !!config && !!config.audio && config.audio.enabled;
-  };
-  const REC_VIDEO_ENABLE = (config) => {
-      return !!config && !!config.video && config.video.enabled;
-  };
-  const REC_SCREEN_ENABLE = (config) => {
-      return !!config && !!config.screen && config.screen.enabled;
-  };
-
-  /*
-   * stream.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
-  (function (TrackConnectStatus) {
-      TrackConnectStatus[TrackConnectStatus["Idle"] = 0] = "Idle";
-      TrackConnectStatus[TrackConnectStatus["Connecting"] = 1] = "Connecting";
-      TrackConnectStatus[TrackConnectStatus["Connect"] = 2] = "Connect";
-  })(exports.TrackConnectStatus || (exports.TrackConnectStatus = {}));
-
-  /*
-   * merger.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
-  const defaultMergeJob = {
-      publishUrl: "",
-      height: 720,
-      width: 1080,
-      fps: 25,
-      kbps: 1000,
-      audioOnly: false,
-      stretchMode: "aspectFill",
-  };
-
-  (function (AudioSourceState) {
-      AudioSourceState["IDLE"] = "idle";
-      AudioSourceState["LOADING"] = "loading";
-      AudioSourceState["PLAY"] = "play";
-      AudioSourceState["PAUSE"] = "pause";
-      AudioSourceState["END"] = "end";
-  })(exports.AudioSourceState || (exports.AudioSourceState = {}));
 
   /*
    * screen.ts
@@ -11331,6 +22101,7 @@
       audio.className = `qnrtc-audio-player qnrtc-stream-player`;
       audio.dataset.localid = track.id;
       audio.srcObject = stream;
+      audio.autoplay = true;
       return audio;
   }
   function createVideoElement(track) {
@@ -11421,6 +22192,7 @@
            * @internal
            */
           this.direction = "local";
+          this.sourceType = exports.TrackSourceType.NORMAL;
           /* @internal */
           this.onended = (event) => {
               log.warning("track ended", this.mediaTrack, this.info.trackId);
@@ -11529,7 +22301,10 @@
           if (this.statsInterval) {
               window.clearInterval(this.statsInterval);
           }
-          this.mediaTrack.stop();
+          // unified-plan 下订阅的 Track 会被复用，不能释放
+          if (this.direction === "local" || !browserReport.unifiedPlan) {
+              this.mediaTrack.stop();
+          }
           this.removeMediaElement();
       }
       /**
@@ -12146,6 +22921,7 @@
           const mediaStream = audioManager.audioStream.stream;
           const audioMediaTrack = mediaStream.getTracks()[0];
           super(audioMediaTrack, userId, "local");
+          this.sourceType = exports.TrackSourceType.EXTERNAL;
           this.isLoop = false;
           this.originSource = source;
           this.audioManager = audioManager;
@@ -12487,6 +23263,7 @@
       return {
           trackId: track.trackid,
           tag: track.tag,
+          mid: track.mid || undefined,
           kind: track.kind,
           userId: track.playerid,
           muted: track.muted,
@@ -12496,6 +23273,7 @@
   function transferTrackBaseInfoToSignalingTrack(track, isMaster) {
       return {
           trackid: track.trackId,
+          mid: track.mid || undefined,
           kind: track.kind,
           master: isMaster,
           muted: !!track.muted,
@@ -12505,8 +23283,12 @@
       };
   }
   function transferTrackToPublishTrack(track) {
+      if (!track.info.mid && browserReport.unifiedPlan) {
+          throw UNEXPECTED_ERROR("can not find track mid!");
+      }
       return {
           localid: track.mediaTrack.id,
+          localmid: track.info.mid || undefined,
           master: track.master,
           kind: track.info.kind,
           kbps: track.info.kbps,
@@ -13324,57 +24106,6 @@
    * Distributed under terms of the MIT license.
   */
   const REMOTE_SERVER_NAME = "qiniu-rtc-client";
-  /**
-   * unified-plan 发布重协商时，chrome 生成的 offer 里 msid 参数没有和实际的 trackId 对应
-   * 这里重新做 msid 的对应
-   */
-  function addPlanBTracksToUnifiedPlan(offer, tracks, mids) {
-      const sdpObj = lib.parse(offer);
-      for (let i = 0; i < tracks.length; i += 1) {
-          const track = tracks[i];
-          const mid = mids[i];
-          const mSection = sdpObj.media.find(m => m.mid.toString() === mid);
-          if (!mSection)
-              continue;
-          const FIDline = (mSection.ssrcGroups || []).find(line => line.semantics === "FID");
-          const _msid = mSection.msid ? mSection.msid.split(" ")[0] : undefined;
-          const ssrcMsidLine = (mSection.ssrcs || []).find(line => line.attribute === "msid");
-          const cname = (mSection.ssrcs || []).find(line => line.attribute === "cname");
-          const ssrcLabelLine = (mSection.ssrcs || []).find(line => line.attribute === "label");
-          mSection.ssrcs = [];
-          mSection.ssrcGroups = [];
-          if (_msid) {
-              mSection.msid = `${_msid} ${track.id}`;
-          }
-          if (ssrcMsidLine) {
-              const ssrc = ssrcMsidLine.id;
-              const msid = ssrcMsidLine.value.split(" ")[0];
-              // 重新绑定 msid
-              mSection.ssrcs.push({ id: ssrc, attribute: "msid", value: `${msid} ${track.id}` });
-          }
-          if (cname) {
-              mSection.ssrcs.push({ id: cname.id, attribute: "cname", value: cname.value });
-          }
-          if (ssrcLabelLine) {
-              // 重新绑定 label
-              mSection.ssrcs.push({ id: ssrcLabelLine.id, attribute: "label", value: track.id });
-          }
-          if (FIDline) {
-              const rtxSSrc = FIDline.ssrcs.split(/\s+/)[1];
-              const ssrc = FIDline.ssrcs.split(/\s+/)[0];
-              mSection.ssrcGroups.push({ semantics: "FID", ssrcs: `${ssrc} ${rtxSSrc}` });
-              if (cname) {
-                  mSection.ssrcs.push({ id: rtxSSrc, attribute: "cname", value: cname.value });
-              }
-              if (ssrcMsidLine) {
-                  const msid = ssrcMsidLine.value.split(" ")[0];
-                  mSection.ssrcs.push({ id: rtxSSrc, attribute: "msid", value: `${msid} ${track.id}` });
-              }
-              mSection.ssrcs.push({ id: rtxSSrc, attribute: "label", value: track.id });
-          }
-      }
-      return lib.write(sdpObj);
-  }
   class RemoteSdp {
       constructor(direction, rtpcap) {
           this.lastSubMids = [];
@@ -13613,7 +24344,8 @@
                       id: info.ssrc,
                       attribute: "cname",
                       value: info.cname,
-                  }] : [],
+                  },
+              ] : [],
               ssrcGroups: [],
           };
           if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
@@ -13639,11 +24371,12 @@
               mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
           }
           if (info.rtxSsrc && !info.closed) {
-              mediaObj.ssrcs.push({
-                  id: info.rtxSsrc,
-                  attribute: "cname",
-                  value: info.cname,
-              });
+              mediaObj.ssrcs = mediaObj.ssrcs.concat([{
+                      id: info.rtxSsrc,
+                      attribute: "cname",
+                      value: info.cname,
+                  },
+              ]);
               mediaObj.ssrcGroups.push({
                   semantics: "FID",
                   ssrcs: `${info.ssrc} ${info.rtxSsrc}`,
@@ -13857,11 +24590,6 @@
    * Distributed under terms of the MIT license.
   */
 
-  /**
-   * SDK版本号
-   */
-  const version = "2.2.0";
-
   /*
    * auth.ts
    * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
@@ -13873,11 +24601,31 @@
       const { appId, roomName, userId } = roomAccess;
       const url = `${RTC_HOST}/v3/apps/${appId}/rooms/${roomName}/auth?user=${userId}&token=${roomToken}`;
       while (true) {
+          const qosItem = {
+              auth_start_time: Date.now(),
+              auth_dns_time: 0,
+              auth_server_ip: "",
+              room_token: roomToken,
+          };
           try {
               const res = await request(url);
-              return res.accessToken;
+              qos.addEvent("MCSAuth", {
+                  ...qosItem,
+                  auth_take_time: Date.now() - qosItem.auth_start_time,
+                  auth_error_code: 0,
+                  auth_error_message: "",
+                  access_token: res.accessToken,
+              });
+              return res;
           }
           catch (e) {
+              qos.addEvent("MCSAuth", {
+                  ...qosItem,
+                  auth_take_time: Date.now() - qosItem.auth_start_time,
+                  auth_error_code: e.retry === undefined ? -1 : Number(e.message),
+                  auth_error_message: e.retry === undefined ? e.toString() : e.message,
+                  access_token: "",
+              });
               if (e.retry === false) {
                   throw AUTH_ENTER_ROOM_ERROR(e.message);
               }
@@ -13904,11 +24652,16 @@
   class SignalingWS extends EnhancedEventEmitter {
       constructor(url, token, capsdp, playerdata) {
           super();
+          /**
+           * 如果为 0 说明鉴权完成，或者还没有开始鉴权
+           */
+          this.startAuthTime = 0;
           this.initWs = (isUserAction = false) => new Promise((resolve, reject) => {
               if (this.ws && this.ws.readyState === WebSocket.OPEN) {
                   this.ws.close();
                   this.ws.onclose = null;
               }
+              this.startAuthTime = Date.now();
               try {
                   this.ws = new WebSocket(this.url);
                   this._state = SignalingState.CONNECTING;
@@ -13936,6 +24689,18 @@
                   }
                   this.request("auth", authData)
                       .then((msgData) => {
+                      if (msgData.code !== 0) {
+                          qos.addEvent("SignalAuth", {
+                              auth_start_time: this.startAuthTime,
+                              auth_dns_time: 0,
+                              auth_server_ip: "",
+                              auth_error_code: msgData.code,
+                              auth_error_message: msgData.error,
+                              auth_take_time: Date.now() - this.startAuthTime,
+                              access_token: this.accessToken,
+                          });
+                          this.startAuthTime = 0;
+                      }
                       switch (msgData.code) {
                           case 0: {
                               this.ws.onclose = this.onWsClose.bind(this, null, null);
@@ -13943,6 +24708,16 @@
                               log.log("signaling: websocket authed");
                               this.emit("@signalingauth", msgData);
                               this._state = SignalingState.OPEN;
+                              qos.addEvent("SignalAuth", {
+                                  auth_start_time: this.startAuthTime,
+                                  auth_dns_time: 0,
+                                  auth_server_ip: "",
+                                  auth_error_code: 0,
+                                  auth_error_message: "",
+                                  auth_take_time: Date.now() - this.startAuthTime,
+                                  access_token: this.accessToken,
+                              });
+                              this.startAuthTime = 0;
                               resolve(msgData);
                               break;
                           }
@@ -13964,7 +24739,13 @@
                               // room not exist, 需要重新签 accessToken
                               this.safeEmitAsPromise("@needupdateaccesstoken").then(() => {
                                   this.reconnect().then(resolve).catch(reject);
-                              }).catch(reject);
+                              }).catch(e => {
+                                  // 如果获取 accesstoken 出错，因为有重试逻辑，只可能是 roomtoken 本身过期了
+                                  this.emit("@error", {
+                                      code: 10002,
+                                  });
+                                  reject(e);
+                              });
                               return;
                           }
                           case 10052: {
@@ -14099,6 +24880,7 @@
                   case "on-subpc-restart-notify":
                   case "pubpc-restart-res":
                   case "subpc-restart-res":
+                  case "create-merge-job-res":
                       this.emit(msgType, msgData);
                       break;
                   default:
@@ -14120,6 +24902,17 @@
       onWsClose(resolve, reject, e) {
           this._state = SignalingState.CLOSED;
           log.warning("signaling: websocket onclose", e);
+          if (this.startAuthTime) {
+              qos.addEvent("SignalAuth", {
+                  auth_start_time: this.startAuthTime,
+                  auth_dns_time: 0,
+                  auth_server_ip: "",
+                  auth_error_code: e.code,
+                  auth_error_message: e.toString(),
+                  auth_take_time: Date.now() - this.startAuthTime,
+                  access_token: this.accessToken,
+              });
+          }
           let reconnectPromise = this.reconnectPromise;
           // See http://tools.ietf.org/html/rfc6455#section-7.4.1
           switch (e.code) {
@@ -14500,8 +25293,9 @@
   }
 
   class Consumer {
-      constructor(id, kind, rtpParameters) {
+      constructor(id, mid, kind, rtpParameters) {
           this.id = id;
+          this.mid = mid;
           // this._closed = false;
           this.kind = kind;
           this.rtpParameters = rtpParameters;
@@ -14512,10 +25306,11 @@
   }
 
   class PCTrack {
-      constructor(transport, direction, track, trackId) {
+      constructor(transport, direction, track, trackId, mid) {
           this._connectStatus = exports.TrackConnectStatus.Idle;
           this.track = track;
           this.trackId = trackId;
+          this.mid = mid;
           this.transport = transport;
           this.direction = direction;
       }
@@ -14547,7 +25342,7 @@
           });
       }
       appendConsumner(rtpparms, kind) {
-          this.consumer = new Consumer(this.trackId, kind, rtpparms);
+          this.consumer = new Consumer(this.trackId, this.mid, kind, rtpparms);
           this.transport.appendConsumer(this.consumer);
       }
       setMute(muted) {
@@ -14566,9 +25361,11 @@
       release() {
           if (this.consumer && this.transport) {
               // 如果释放这个 Track 时发现 pc 已经断开，就跳过
+              /*
               if (this.transport.recvHandler.isPcReady) {
-                  this.transport.removeConsumers([this.consumer]);
+                this.transport.removeConsumers([this.consumer]);
               }
+              */
               // 只有订阅的 Track 才会自动释放
               if (this.track) {
                   this.track.release();
@@ -14686,6 +25483,7 @@
                   }
               }
               else {
+                  log.debug("add tracks", tracks);
                   rtpSenders = tracks.map((track) => this._pc.addTrack(track, this._stream));
               }
               return this._pc.createOffer();
@@ -14693,7 +25491,7 @@
               .then((offer) => {
               let _offer;
               if (browserReport.unifiedPlan) {
-                  _offer = { type: "offer", sdp: addPlanBTracksToUnifiedPlan(offer.sdp, tracks, transceivers.map(t => t.mid)) };
+                  _offer = { type: "offer", sdp: offer.sdp };
               }
               else {
                   if (browserReport.needH264FmtpLine) {
@@ -14706,6 +25504,15 @@
               return this._pc.setLocalDescription(_offer);
           })
               .then(() => {
+              for (const transceiver of transceivers) {
+                  if (!transceiver.sender.track)
+                      continue;
+                  const targetProducerTrack = producerTracks.find(t => t.mediaTrack === transceiver.sender.track);
+                  if (!targetProducerTrack || !transceiver.mid) {
+                      throw UNEXPECTED_ERROR("can not get transceiver mid!");
+                  }
+                  targetProducerTrack.setInfo({ mid: transceiver.mid });
+              }
               if (!this._transportReady) {
                   shouldSendPubTracks = false;
                   return this._setupTransport(producerTracks);
@@ -14833,6 +25640,7 @@
       }
       // needpubpc
       _setupTransport(tracks) {
+          const startTime = Date.now();
           return Promise.resolve()
               .then(() => {
               if (!this._pc.localDescription) {
@@ -14845,6 +25653,27 @@
               return this.safeEmitAsPromise("@needpubpc", localDescription.sdp, tracks);
           })
               .then((transportRemoteParameters) => {
+              qos.addEvent("PublisherPC", {
+                  signal_take_time: Date.now() - startTime,
+                  result_code: transportRemoteParameters.code,
+                  tracks: transportRemoteParameters.tracks.map(t => {
+                      const targetTrack = tracks.find(track => track.mediaTrack.id === t.localid);
+                      if (!targetTrack)
+                          return undefined;
+                      return {
+                          local_id: t.localid,
+                          track_id: t.trackid,
+                          source_type: targetTrack.sourceType,
+                          kind: targetTrack.info.kind,
+                          tag: targetTrack.info.tag || "",
+                          muted: !!targetTrack.info.muted,
+                          master: !!targetTrack.master,
+                          kbps: targetTrack.info.kbps || -1,
+                          encode_video_width: 0,
+                          encode_video_height: 0,
+                      };
+                  }).filter(t => t !== undefined),
+              });
               this.pcid = transportRemoteParameters.pcid;
               this._transportReady = true;
               this._pcReady = this.getReady(transportRemoteParameters);
@@ -14893,7 +25722,7 @@
        */
       async addConsumerTracks(consumers) {
           // 如果是 unified-plan 就一个一个重协商，否则在火狐下会有鬼
-          if (browserReport.unifiedPlan) {
+          if (browserReport.unifiedPlan && isFirefox) {
               const tracks = [];
               for (const consumer of consumers) {
                   const track = await this.addConsumerTrack(consumer);
@@ -14913,7 +25742,7 @@
                   const newInfo = this.genNewConsumerInfo(consumer);
                   if (browserReport.unifiedPlan) {
                       // 递增 mid, plan-b 模式下不会使用到这个参数
-                      const mid = _consumerInfoArray.length.toString();
+                      const mid = consumer.mid;
                       newInfo.mid = mid;
                       this._consumerInfos.set(mid, newInfo);
                   }
@@ -14999,14 +25828,13 @@
           });
       }
       genNewConsumerInfo(consumer) {
-          const _consumerInfoArray = Array.from(this._consumerInfos.values());
           const encoding = consumer.rtpParameters.encodings[0];
           const cname = consumer.rtpParameters.rtcp.cname;
-          const mid = _consumerInfoArray.length.toString();
+          const mid = consumer.mid;
           const newInfo = {
               kind: consumer.kind,
-              streamId: `mid${mid}-stream-${consumer.id}`,
-              trackId: `mid${mid}-${consumer.kind}-${encoding.ssrc}`,
+              streamId: browserReport.unifiedPlan ? `recv-stream-${mid}` : `recv-stream-${encoding.ssrc}`,
+              trackId: browserReport.unifiedPlan ? `consumer-${consumer.kind}-${mid}` : `consumer-${consumer.kind}-${encoding.ssrc}`,
               ssrc: encoding.ssrc,
               rtxSsrc: encoding.rtx ? encoding.rtx.ssrc : undefined,
               cname: cname,
@@ -15026,8 +25854,8 @@
           else {
               const newInfo = this.genNewConsumerInfo(consumer);
               if (browserReport.unifiedPlan) {
-                  // 递增 mid, plan-b 模式下不会使用到这个参数
-                  const mid = _consumerInfoArray.length.toString();
+                  // plan-b 模式下不会使用到这个参数
+                  const mid = consumer.mid;
                   newInfo.mid = mid;
                   this._consumerInfos.set(mid, newInfo);
               }
@@ -15041,13 +25869,14 @@
               // createremoteSdp
               const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
               const offer = { type: "offer", sdp: remoteSdp };
+              console.log("set ontrack");
+              this._pc.ontrack = (e) => {
+                  console.log("ontrack", e.receiver.track);
+              };
               log.debug("subscribe: set remote offer", offer);
               return this._pc.setRemoteDescription(offer);
           })
               .then(() => {
-              if (browserReport.unifiedPlan) {
-                  return this._pc.createAnswer();
-              }
               return this._pc.createAnswer();
           })
               .then(answer => {
@@ -15095,7 +25924,7 @@
               if (!newTrack && !!consumer) {
                   throw UNEXPECTED_ERROR("remote track not found");
               }
-              log.log("subscribe: get new track", newTrack);
+              log.log("subscribe: get new track", newTrack, newTrack.readyState);
               return newTrack;
           });
       }
@@ -15161,7 +25990,16 @@
       async setupTransport(trackIds) {
           if (this._transportCreated)
               return await this._pcReady;
+          const startTime = Date.now();
           const transportRemoteParameters = await this.safeEmitAsPromise("@needsubpc", trackIds);
+          qos.addEvent("SubscriberPC", {
+              signal_take_time: Date.now() - startTime,
+              result_code: transportRemoteParameters.code,
+              tracks: transportRemoteParameters.tracks.map(t => ({
+                  track_id: t.trackid,
+                  status: t.status,
+              })),
+          });
           this.pcid = transportRemoteParameters.pcid;
           this._transportCreated = true;
           this._pcReady = this.getReady(transportRemoteParameters);
@@ -15180,80 +26018,6 @@
           case "recv": {
               return new RecvHandler(extendedRtpCapabilities, signaling, settings);
           }
-      }
-  }
-
-  class TaskQueue extends EventEmitter {
-      constructor(name) {
-          super();
-          // Closed flag.
-          this._closed = false;
-          // Busy running a command.
-          this._busy = false;
-          // Queue for pending commands. Each command is an Object with method,
-          // resolve, reject, and other members (depending the case).
-          this._queue = [];
-          this.name = name || "TaskQueue";
-      }
-      close() {
-          this._closed = true;
-      }
-      push(method, data) {
-          log.debug(`${this.name} push()`, method, data);
-          return new Promise((resolve, reject) => {
-              const queue = this._queue;
-              // Append command to the queue.
-              queue.push({ method, data, resolve, reject });
-              this._handlePendingCommands();
-          });
-      }
-      _handlePendingCommands() {
-          if (this._busy) {
-              return;
-          }
-          const queue = this._queue;
-          // Take the first command.
-          const command = queue[0];
-          if (!command) {
-              return;
-          }
-          this._busy = true;
-          // Execute it.
-          this._handleCommand(command)
-              .then(() => {
-              this._busy = false;
-              // Remove the first command (the completed one) from the queue.
-              queue.shift();
-              // And continue.
-              this._handlePendingCommands();
-          });
-      }
-      _handleCommand(command) {
-          log.debug(`${this.name} _handleCommand() `, command.method, command.data);
-          if (this._closed) {
-              command.reject(new InvalidStateError("closed"));
-              return Promise.resolve();
-          }
-          const promiseHolder = { promise: null };
-          this.emit("exec", command, promiseHolder);
-          return Promise.resolve()
-              .then(() => {
-              return promiseHolder.promise;
-          })
-              .then(result => {
-              log.debug(`${this.name} _handleCommand() | command succeeded`, command.method);
-              if (this._closed) {
-                  command.reject(new InvalidStateError("closed"));
-                  return;
-              }
-              // Resolve the command with the given result (if any).
-              command.resolve(result);
-          })
-              .catch(error => {
-              log.warning(`${this.name} _handleCommand() | command failed [method:%s]: %o`, command.method, error);
-              // Reject the command with the error.
-              command.reject(error);
-          });
       }
   }
 
@@ -15307,6 +26071,11 @@
           })
               .on("@connectionstatechange", (state) => {
               log.log("pubpc connectionstatechange", state);
+              qos.addEvent("ICEConnectionState", {
+                  pc_type: 0,
+                  state: state,
+                  id: this.sendHandler.pcid,
+              });
               switch (state) {
                   case "remote-disconnected":
                   case "closed":
@@ -15341,8 +26110,30 @@
           })
               .on("@needpubtracks", (targetTracks, sdp, cb, errcb) => {
               const publishTrackData = targetTracks.map(transferTrackToPublishTrack);
+              const startTime = Date.now();
               this.signaling.request("pub-tracks", { tracks: publishTrackData, sdp })
                   .then((data) => {
+                  qos.addEvent("PublishTracks", {
+                      signal_take_time: Date.now() - startTime,
+                      result_code: data.code,
+                      tracks: data.tracks.map(t => {
+                          const targetTrack = targetTracks.find(track => track.mediaTrack.id === t.localid);
+                          if (!targetTrack)
+                              return undefined;
+                          return {
+                              local_id: t.localid,
+                              track_id: t.trackid,
+                              source_type: targetTrack.sourceType,
+                              kind: targetTrack.info.kind,
+                              tag: targetTrack.info.tag || "",
+                              muted: !!targetTrack.info.muted,
+                              master: !!targetTrack.master,
+                              kbps: targetTrack.info.kbps || -1,
+                              encode_video_width: 0,
+                              encode_video_height: 0,
+                          };
+                      }).filter(t => t !== undefined),
+                  });
                   switch (data.code) {
                       case 0:
                           break;
@@ -15365,6 +26156,9 @@
               }, errcb);
           })
               .on("@needunpubtracks", (targetPCTracks, cb, errcb) => {
+              qos.addEvent("UnPublishTracks", {
+                  tracks: targetPCTracks.map(p => ({ track_id: p.trackId })),
+              });
               this.signaling.request("unpub-tracks", {
                   tracks: targetPCTracks.map(t => ({ trackid: t.trackId })),
               })
@@ -15478,6 +26272,11 @@
           })
               .on("@connectionstatechange", (state) => {
               log.log("sub pc connection state change", state);
+              qos.addEvent("ICEConnectionState", {
+                  pc_type: 1,
+                  state: state,
+                  id: this.recvHandler.pcid,
+              });
               switch (state) {
                   case "remote-disconnected":
                   case "closed":
@@ -15758,7 +26557,7 @@
               else {
                   const currentTrackIds = this.subscribeTracks.map(t => t.trackId);
                   const targetTrackInfo = availableTrackInfo.filter(t => !currentTrackIds.includes(t.trackid));
-                  pcTracks = targetTrackInfo.map(t => new PCTrack(transport, "recv", undefined, t.trackid));
+                  pcTracks = targetTrackInfo.map(t => new PCTrack(transport, "recv", undefined, t.trackid, t.mid));
                   this.subscribeTracks = this.subscribeTracks.concat(pcTracks);
               }
               log.log("sub tracks", pcTracks);
@@ -15772,7 +26571,16 @@
                   }
                   let data = await transport.initRecvHandler(pcTracks.map(t => t.trackId));
                   if (!data) {
+                      const startTime = Date.now();
                       data = await signaling.request("sub-tracks", { tracks: pcTracks.map(track => ({ trackid: track.trackId })) });
+                      qos.addEvent("SubscribeTracks", {
+                          result_code: data.code,
+                          signal_take_time: Date.now() - startTime,
+                          tracks: data.tracks.map((t) => ({
+                              track_id: t.trackid,
+                              status: t.status,
+                          })),
+                      });
                   }
                   log.log("get sub res data", data);
                   switch (data.code) {
@@ -15918,6 +26726,9 @@
               this._roomState = state;
               log.debug("roomState change", this._roomState);
               this.emit("room-state-change", this._roomState);
+              qos.addEvent("RoomStateChanged", {
+                  room_state: state,
+              });
           }
       }
       async joinRoomWithToken(roomToken, userData) {
@@ -15927,6 +26738,10 @@
               }
               this.roomState = exports.RoomState.Connecting;
           }
+          qos.addEvent("JoinRoom", {
+              room_token: roomToken,
+              user_data: userData,
+          });
           try {
               this.roomToken = roomToken;
               this.userData = userData;
@@ -15945,7 +26760,10 @@
                   throw UNEXPECTED_ERROR("invalid userId. userId must match /^[a-zA-Z0-9_-]{3,50}$/");
               }
               try {
-                  this.accessToken = await getAccessToken(roomAccess, roomToken);
+                  const authRes = await getAccessToken(roomAccess, roomToken);
+                  this.accessToken = authRes.accessToken;
+                  qos.setSessionId(authRes.sessionId);
+                  qos.setUserBase(this.userId, this.roomName);
               }
               catch (e) {
                   throw e;
@@ -16072,7 +26890,12 @@
               id,
           };
           log.debug("send create merge job", mergeJob, id);
+          const startTime = Date.now();
           const data = await this.signaling.request("create-merge-job", mergeJob);
+          qos.addEvent("CreateMergeJob", {
+              signal_take_time: Date.now() - startTime,
+              id: id, result_code: data.code,
+          });
           if (data.code !== 0) {
               throw CREATE_MERGE_JOB_ERROR(data.code, data.error);
           }
@@ -16110,6 +26933,9 @@
           if (jobId && !this.mergeJobTracks[jobId]) {
               throw NO_MERGE_JOB(jobId);
           }
+          qos.addEvent("StopMerge", {
+              id: jobId || "",
+          });
           this.signaling.sendWsMsg("stop-merge", {
               id: jobId,
           });
@@ -16149,6 +26975,13 @@
               this.defaultMergeJobTracks = this.defaultMergeJobTracks.concat(mergeOpts.map(t => t.trackId));
               this.defaultMergeJobTracks = lodash_uniqby(this.defaultMergeJobTracks, s => s);
           }
+          qos.addEvent("UpdateMergeTracks", {
+              id: jobId || "",
+              add: addTraget.map(t => ({
+                  track_id: t.trackid,
+                  x: t.x || 0, y: t.y || 0, w: t.w || 0, h: t.h || 0, z: t.z || 0,
+              })),
+          });
           await this.signaling.request("update-merge-tracks", config);
       }
       async _removeMergeTracks(trackIds, jobId) {
@@ -16183,6 +27016,11 @@
           if (targetTracks.length === 0) {
               return;
           }
+          qos.addEvent("UnSubscribeTracks", {
+              tracks: trackIds.map(t => ({
+                  track_id: t,
+              })),
+          });
           this.signaling.request("unsub-tracks", {
               tracks: targetTracks.map(t => ({ trackid: t.trackId })),
           });
@@ -16204,6 +27042,13 @@
           const targetTracks = transport.publishTracks.filter(t => trackMuteMap[t.trackId] !== undefined);
           targetTracks.forEach(t => {
               t.setMute(trackMuteMap[t.trackId]);
+          });
+          qos.addEvent("MuteTracks", {
+              tracks: targetTracks.map(t => ({
+                  track_id: t.trackId,
+                  muted: t.track.info.muted,
+                  kind: t.track.info.kind,
+              })),
           });
           this.signaling.sendWsMsg("mute-tracks", {
               tracks: tracks.map(t => ({ trackid: t.trackId, muted: t.muted })),
@@ -16236,7 +27081,12 @@
        * 或者手动调用 Track 对象的 release 方法
        */
       leaveRoom() {
+          if (this.roomState === exports.RoomState.Idle) {
+              log.log("can not leave room, please join room first");
+              return;
+          }
           log.log("leave room");
+          qos.addEvent("LeaveRoom", { leave_reason_code: 0 });
           if (this.signaling) {
               this.signaling.sendDisconnect();
           }
@@ -16248,7 +27098,15 @@
           if (this.roomState !== exports.RoomState.Connected) {
               throw UNEXPECTED_ERROR("can not connected to the room, please run joinRoom first");
           }
+          const startTime = Date.now();
           const data = await this.signaling.request("control", { command, playerid: userId });
+          if (command === "kickplayer") {
+              qos.addEvent("KickoutUser", {
+                  signal_take_time: Date.now() - startTime,
+                  user_id: userId,
+                  result_code: data.code,
+              });
+          }
           if (data.error) {
               throw CONTROL_ERROR(data.code, data.error);
           }
@@ -16411,6 +27269,7 @@
       }
       handleDisconnect(data) {
           log.log("handle disconnect", data);
+          qos.addEvent("LeaveRoom", { leave_reason_code: data.code });
           if (data.code === 10052 && this.roomToken) {
               this.roomState = exports.RoomState.Reconnecting;
               setTimeout(() => this.signaling.initWs(), 1000);
@@ -16438,7 +27297,9 @@
       /** 更新 AccessToken  */
       async updateAccessToken() {
           const roomAccess = getRoomAccessFromToken(this.roomToken);
-          this.accessToken = await getAccessToken(roomAccess, this.roomToken);
+          const authRes = await getAccessToken(roomAccess, this.roomToken);
+          qos.setSessionId(authRes.sessionId);
+          this.accessToken = authRes.accessToken;
           if (this.signaling) {
               this.signaling.accessToken = this.accessToken;
           }
@@ -16622,6 +27483,7 @@
               this.signaling.release();
               this.signaling = undefined;
           }
+          qos.addEvent("UnInit", {}, true);
           if (this.connectionTransport) {
               this.connectionTransport.release();
               this.connectionTransport = undefined;
@@ -16649,6 +27511,7 @@
           super(config);
           this.subscribedUsers = {};
           this.sessionMode = "stream";
+          qos.addEvent("Init", { id: `${this.sessionMode}_${Date.now()}` });
       }
       async publish(stream) {
           if (this.stream) {
@@ -16815,6 +27678,7 @@
       constructor(config) {
           super(config);
           this.sessionMode = "track";
+          qos.addEvent("Init", { id: `${this.sessionMode}_${Date.now()}` });
       }
       async publish(tracks) {
           return await this._publish(tracks);
@@ -16856,6 +27720,7 @@
           const destination = audioContext.createMediaStreamDestination();
           const audioTrack = destination.stream.getAudioTracks()[0];
           super(audioTrack, userId, "local");
+          this.sourceType = exports.TrackSourceType.MIXING;
           this.initAudioManager(true);
           this.destination = destination;
           this.inputList = [];
@@ -17328,6 +28193,16 @@
               return values[0].concat(values[1]);
           }
           const constraints = await transferRecordOptionToMediaConstraints(config);
+          if (constraints.video && typeof constraints.video === "object" && constraints.video.deviceId) {
+              qos.addEvent("DeviceChanged", {
+                  type: 0, desc: constraints.video.deviceId,
+              });
+          }
+          if (constraints.audio && typeof constraints.audio === "object" && constraints.audio.deviceId) {
+              qos.addEvent("DeviceChanged", {
+                  type: 1, desc: constraints.audio.deviceId,
+              });
+          }
           let mediaStream;
           try {
               mediaStream = await this.getUserMedia(config, constraints, true);
@@ -17388,7 +28263,7 @@
           }
           let mediaStream;
           if (REC_SCREEN_ENABLE(config)) {
-              mediaStream = await this.getDisplayMedia(constraints);
+              mediaStream = await this.getDisplayMedia(constraints, config);
           }
           else {
               mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -17399,7 +28274,7 @@
        * getDisplayMedia 不支持同时录制屏幕和麦克风
        * 在这种情况下分 2 次请求 stream 之后合并
        */
-      async getDisplayMedia(constraints) {
+      async getDisplayMedia(constraints, config) {
           let audioStream;
           if (constraints.audio) {
               audioStream = await navigator.mediaDevices.getUserMedia({
@@ -17407,7 +28282,7 @@
               });
           }
           let screenStream;
-          if (browserReport.getDisplayMedia) {
+          if (browserReport.getDisplayMedia && config.screen && !config.screen.forceChromePlugin) {
               screenStream = await navigator.mediaDevices.getDisplayMedia({
                   video: constraints.video,
               });
@@ -17431,6 +28306,13 @@
               // device 被拔出
               if (currentDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
                   this.emit("device-remove", this.deviceMap[deviceId].device);
+                  const device = this.deviceMap[deviceId].device;
+                  qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
+                      device_type: device.kind === "audiooutput" ? 1 : 0,
+                      device_state: 0,
+                      device_label: device.label,
+                      device_id: device.deviceId,
+                  });
                   delete this.deviceMap[deviceId];
                   updateFlag = true;
               }
@@ -17445,7 +28327,14 @@
                       device: this.deviceInfo[index],
                       tick: 0,
                   };
-                  this.emit("device-add", this.deviceMap[deviceId].device);
+                  const device = this.deviceMap[deviceId].device;
+                  this.emit("device-add", device);
+                  qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
+                      device_type: device.kind === "audiooutput" ? 1 : 0,
+                      device_state: 1,
+                      device_label: device.label,
+                      device_id: device.deviceId,
+                  });
                   updateFlag = true;
               }
           });
@@ -17478,6 +28367,7 @@
   exports.REC_VIDEO_ENABLE = REC_VIDEO_ENABLE;
   exports.REC_SCREEN_ENABLE = REC_SCREEN_ENABLE;
   exports.defaultMergeJob = defaultMergeJob;
+  exports.QosEventType = QosEventType;
   exports.DeviceManager = DeviceManager;
   exports.deviceManager = deviceManager;
   exports.AudioSourceTrack = AudioSourceTrack;
@@ -17489,4 +28379,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.2.0.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.2.1.umd.js.map
