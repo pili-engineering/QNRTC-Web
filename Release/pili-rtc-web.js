@@ -1394,6 +1394,7 @@
                   getDisplayMedia: supportGetDisplayMedia(),
                   disconnectAudioNode: true,
               };
+          case "ios":
           case "safari":
               return {
                   support: semver_24(browser.version, "11.0.0"),
@@ -1403,6 +1404,8 @@
                   connectionState: true,
                   mediaStreamDest: semver_24(browser.version, "12.0.0"),
                   screenSharing: false,
+                  unifiedPlan: semver_24(browser.version, "12.1.0"),
+                  supportTransceivers: true,
                   minMaxWithIdeal: false,
                   supportRestartICE: true,
                   getReceivers: true,
@@ -21177,7 +21180,7 @@
   /**
    * SDK版本号
    */
-  const version = "2.2.1";
+  const version = "2.2.4";
 
   class LogModel {
       constructor(level) {
@@ -25361,11 +25364,9 @@
       release() {
           if (this.consumer && this.transport) {
               // 如果释放这个 Track 时发现 pc 已经断开，就跳过
-              /*
               if (this.transport.recvHandler.isPcReady) {
-                this.transport.removeConsumers([this.consumer]);
+                  this.transport.removeConsumers([this.consumer]);
               }
-              */
               // 只有订阅的 Track 才会自动释放
               if (this.track) {
                   this.track.release();
@@ -26670,6 +26671,7 @@
                       }
                   }
                   pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect);
+                  this.handleMute({ tracks: data.tracks });
               }
               catch (e) {
                   log.log(e);
@@ -28379,4 +28381,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.2.1.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.2.4.umd.js.map
