@@ -1338,331 +1338,428 @@
   const isChrome = !!window.chrome;
   const isIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i);
   const browser = detectBrowser_1() || {};
+
   function baseSupportCheck() {
-      try {
-          if (!RTCPeerConnection) {
-              return false;
-          }
-          if (!WebSocket) {
-              return false;
-          }
-          if (!navigator.mediaDevices.getUserMedia) {
-              return false;
-          }
-          return true;
+    try {
+      if (!RTCPeerConnection) {
+        return false;
       }
-      catch (e) {
-          return false;
+
+      if (!WebSocket) {
+        return false;
       }
+
+      if (!navigator.mediaDevices.getUserMedia) {
+        return false;
+      }
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
+
   function supportGetDisplayMedia() {
-      const hasGetDisplayMediaAPI = navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
-      const supportDisplaysurface = navigator && navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().displaySurface;
-      // 在 Firefox 支持标准的选择采集源之前，继续使用老的 API，因为反正都不需要插件
-      if (isFirefox) {
-          return !!hasGetDisplayMediaAPI && !!supportDisplaysurface;
-      }
-      return !!hasGetDisplayMediaAPI;
+    const hasGetDisplayMediaAPI = navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia;
+    const supportDisplaysurface = navigator && navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().displaySurface; // 在 Firefox 支持标准的选择采集源之前，继续使用老的 API，因为反正都不需要插件
+
+    if (isFirefox) {
+      return !!hasGetDisplayMediaAPI && !!supportDisplaysurface;
+    }
+
+    return !!hasGetDisplayMediaAPI;
   }
+
   function browserCheck() {
-      if (!browser) {
-          return {
-              support: baseSupportCheck(),
-              supportRestartICE: true,
-              getDisplayMedia: supportGetDisplayMedia(),
-              disconnectAudioNode: true,
-          };
-      }
-      switch (browser.name) {
-          case "chrome":
-              return {
-                  support: semver_24(browser.version, "52.0.0"),
-                  mediaStreamDest: semver_24(browser.version, "55.0.0"),
-                  replaceTrack: semver_24(browser.version, "65.0.0"),
-                  screenSharing: semver_24(browser.version, "55.0.0"),
-                  connectionState: false,
-                  stats: semver_24(browser.version, "67.0.0"),
-                  ondevicechange: semver_24(browser.version, "57.0.0"),
-                  minMaxWithIdeal: semver_24(browser.version, "56.0.0"),
-                  // TODO: 在 2.3.0 提测时候再开启 unifiedPlan: semver.gte(browser.version, "71.0.0"),
-                  unifiedPlan: false,
-                  supportTransceivers: true,
-                  supportRestartICE: true,
-                  getReceivers: semver_24(browser.version, "55.0.0"),
-                  needH264FmtpLine: semver_25(browser.version, "51.0.0"),
-                  audioContextOptions: true,
-                  getDisplayMedia: supportGetDisplayMedia(),
-                  disconnectAudioNode: true,
-              };
-          case "ios":
-          case "safari":
-              return {
-                  support: semver_24(browser.version, "11.0.0"),
-                  replaceTrack: semver_24(browser.version, "11.0.0"),
-                  stats: false,
-                  ondevicechange: false,
-                  connectionState: true,
-                  mediaStreamDest: semver_24(browser.version, "12.0.0"),
-                  screenSharing: false,
-                  unifiedPlan: semver_24(browser.version, "12.1.0"),
-                  supportTransceivers: true,
-                  minMaxWithIdeal: false,
-                  supportRestartICE: true,
-                  getReceivers: true,
-                  audioContextOptions: true,
-                  getDisplayMedia: supportGetDisplayMedia(),
-                  disconnectAudioNode: false,
-              };
-          case "firefox":
-              return {
-                  support: baseSupportCheck() && semver_24(browser.version, "52.0.0"),
-                  replaceTrack: true,
-                  stats: true,
-                  ondevicechange: semver_24(browser.version, "52.0.0"),
-                  connectionState: true,
-                  mediaStreamDest: true,
-                  screenSharing: true,
-                  minMaxWithIdeal: true,
-                  unifiedPlan: true,
-                  // https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/59
-                  supportTransceivers: semver_24(browser.version, "59.0.0"),
-                  supportRestartICE: false,
-                  getReceivers: true,
-                  // Firefox 55 以后不会抛出 audioContext 构造函数错误，但是依旧还是 ignore
-                  audioContextOptions: semver_24(browser.version, "55.0.0"),
-                  getDisplayMedia: supportGetDisplayMedia(),
-                  disconnectAudioNode: true,
-              };
-          default:
-              return {
-                  support: baseSupportCheck(),
-                  supportRestartICE: true,
-                  getDisplayMedia: supportGetDisplayMedia(),
-                  disconnectAudioNode: true,
-              };
-      }
+    if (!browser) {
+      return {
+        support: baseSupportCheck(),
+        supportRestartICE: true,
+        getDisplayMedia: supportGetDisplayMedia(),
+        disconnectAudioNode: true
+      };
+    }
+
+    switch (browser.name) {
+      case "chrome":
+        return {
+          support: semver_24(browser.version, "52.0.0"),
+          mediaStreamDest: semver_24(browser.version, "55.0.0"),
+          replaceTrack: semver_24(browser.version, "65.0.0"),
+          screenSharing: semver_24(browser.version, "55.0.0"),
+          connectionState: false,
+          stats: semver_24(browser.version, "67.0.0"),
+          ondevicechange: semver_24(browser.version, "57.0.0"),
+          minMaxWithIdeal: semver_24(browser.version, "56.0.0"),
+          // TODO: 在 2.3.0 提测时候再开启 unifiedPlan: semver.gte(browser.version, "71.0.0"),
+          unifiedPlan: false,
+          supportTransceivers: true,
+          supportRestartICE: true,
+          getReceivers: semver_24(browser.version, "55.0.0"),
+          needH264FmtpLine: semver_25(browser.version, "51.0.0"),
+          audioContextOptions: true,
+          getDisplayMedia: supportGetDisplayMedia(),
+          disconnectAudioNode: true
+        };
+
+      case "ios":
+      case "safari":
+        return {
+          support: semver_24(browser.version, "11.0.0"),
+          replaceTrack: semver_24(browser.version, "11.0.0"),
+          stats: false,
+          ondevicechange: false,
+          connectionState: true,
+          mediaStreamDest: semver_24(browser.version, "12.0.0"),
+          screenSharing: false,
+          unifiedPlan: semver_24(browser.version, "12.1.0"),
+          supportTransceivers: true,
+          minMaxWithIdeal: false,
+          supportRestartICE: true,
+          getReceivers: true,
+          audioContextOptions: true,
+          getDisplayMedia: supportGetDisplayMedia(),
+          disconnectAudioNode: false
+        };
+
+      case "firefox":
+        return {
+          support: baseSupportCheck() && semver_24(browser.version, "52.0.0"),
+          replaceTrack: true,
+          stats: true,
+          ondevicechange: semver_24(browser.version, "52.0.0"),
+          connectionState: true,
+          mediaStreamDest: true,
+          screenSharing: true,
+          minMaxWithIdeal: true,
+          unifiedPlan: true,
+          // https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/59
+          supportTransceivers: semver_24(browser.version, "59.0.0"),
+          supportRestartICE: false,
+          getReceivers: true,
+          // Firefox 55 以后不会抛出 audioContext 构造函数错误，但是依旧还是 ignore
+          audioContextOptions: semver_24(browser.version, "55.0.0"),
+          getDisplayMedia: supportGetDisplayMedia(),
+          disconnectAudioNode: true
+        };
+
+      default:
+        return {
+          support: baseSupportCheck(),
+          supportRestartICE: true,
+          getDisplayMedia: supportGetDisplayMedia(),
+          disconnectAudioNode: true
+        };
+    }
   }
+
   const browserReport = browserCheck();
 
-  // adapter.js ea47dd2632e15fa77395d1d7d514802d5f0ac71b
   function mediaDevicesShim() {
-      const constraintsToChrome_ = function (c) {
-          if (typeof c !== "object" || c.mandatory || c.optional) {
-              return c;
+    const constraintsToChrome_ = function (c) {
+      if (typeof c !== "object" || c.mandatory || c.optional) {
+        return c;
+      }
+
+      const cc = {};
+      Object.keys(c).forEach(key => {
+        if (key === "require" || key === "advanced" || key === "mediaSource") {
+          return;
+        }
+
+        const r = typeof c[key] === "object" ? c[key] : {
+          ideal: c[key]
+        };
+
+        if (r.exact !== undefined && typeof r.exact === "number") {
+          r.min = r.max = r.exact;
+        }
+
+        const oldname_ = function (prefix, name) {
+          if (prefix) {
+            return prefix + name.charAt(0).toUpperCase() + name.slice(1);
           }
-          const cc = {};
-          Object.keys(c).forEach(key => {
-              if (key === "require" || key === "advanced" || key === "mediaSource") {
-                  return;
-              }
-              const r = (typeof c[key] === "object") ? c[key] : { ideal: c[key] };
-              if (r.exact !== undefined && typeof r.exact === "number") {
-                  r.min = r.max = r.exact;
-              }
-              const oldname_ = function (prefix, name) {
-                  if (prefix) {
-                      return prefix + name.charAt(0).toUpperCase() + name.slice(1);
-                  }
-                  return (name === "deviceId") ? "sourceId" : name;
-              };
-              if (r.ideal !== undefined) {
-                  cc.optional = cc.optional || [];
-                  let oc = {};
-                  if (typeof r.ideal === "number") {
-                      oc[oldname_("min", key)] = r.ideal;
-                      cc.optional.push(oc);
-                      oc = {};
-                      oc[oldname_("max", key)] = r.ideal;
-                      cc.optional.push(oc);
-                  }
-                  else {
-                      oc[oldname_("", key)] = r.ideal;
-                      cc.optional.push(oc);
-                  }
-              }
-              if (r.exact !== undefined && typeof r.exact !== "number") {
-                  cc.mandatory = cc.mandatory || {};
-                  cc.mandatory[oldname_("", key)] = r.exact;
-              }
-              else {
-                  ["min", "max"].forEach(mix => {
-                      if (r[mix] !== undefined) {
-                          cc.mandatory = cc.mandatory || {};
-                          cc.mandatory[oldname_(mix, key)] = r[mix];
-                      }
-                  });
-              }
+
+          return name === "deviceId" ? "sourceId" : name;
+        };
+
+        if (r.ideal !== undefined) {
+          cc.optional = cc.optional || [];
+          let oc = {};
+
+          if (typeof r.ideal === "number") {
+            oc[oldname_("min", key)] = r.ideal;
+            cc.optional.push(oc);
+            oc = {};
+            oc[oldname_("max", key)] = r.ideal;
+            cc.optional.push(oc);
+          } else {
+            oc[oldname_("", key)] = r.ideal;
+            cc.optional.push(oc);
+          }
+        }
+
+        if (r.exact !== undefined && typeof r.exact !== "number") {
+          cc.mandatory = cc.mandatory || {};
+          cc.mandatory[oldname_("", key)] = r.exact;
+        } else {
+          ["min", "max"].forEach(mix => {
+            if (r[mix] !== undefined) {
+              cc.mandatory = cc.mandatory || {};
+              cc.mandatory[oldname_(mix, key)] = r[mix];
+            }
           });
-          if (c.advanced) {
-              cc.optional = (cc.optional || []).concat(c.advanced);
+        }
+      });
+
+      if (c.advanced) {
+        cc.optional = (cc.optional || []).concat(c.advanced);
+      }
+
+      return cc;
+    };
+
+    const shimConstraints_ = function (constraints, func) {
+      if (semver_20(browser.version, "61.0.0")) {
+        return func(constraints);
+      }
+
+      constraints = JSON.parse(JSON.stringify(constraints));
+
+      if (constraints && typeof constraints.audio === "object") {
+        const remap = function (obj, a, b) {
+          if (a in obj && !(b in obj)) {
+            obj[b] = obj[a];
+            delete obj[a];
           }
-          return cc;
-      };
-      const shimConstraints_ = function (constraints, func) {
-          if (semver_20(browser.version, "61.0.0")) {
-              return func(constraints);
+        };
+
+        constraints = JSON.parse(JSON.stringify(constraints));
+        remap(constraints.audio, "autoGainControl", "googAutoGainControl");
+        remap(constraints.audio, "noiseSuppression", "googNoiseSuppression");
+        constraints.audio = constraintsToChrome_(constraints.audio);
+      }
+
+      if (constraints && typeof constraints.video === "object") {
+        // Shim facingMode for mobile & surface pro.
+        let face = constraints.video.facingMode;
+        face = face && (typeof face === "object" ? face : {
+          ideal: face
+        });
+        const getSupportedFacingModeLies = semver_21(browser.version, "66.0.0");
+
+        if (face && (face.exact === "user" || face.exact === "environment" || face.ideal === "user" || face.ideal === "environment") && !(navigator.mediaDevices.getSupportedConstraints && navigator.mediaDevices.getSupportedConstraints().facingMode && !getSupportedFacingModeLies)) {
+          delete constraints.video.facingMode;
+          let matches = undefined;
+
+          if (face.exact === "environment" || face.ideal === "environment") {
+            matches = ["back", "rear"];
+          } else if (face.exact === "user" || face.ideal === "user") {
+            matches = ["front"];
           }
-          constraints = JSON.parse(JSON.stringify(constraints));
-          if (constraints && typeof constraints.audio === "object") {
-              const remap = function (obj, a, b) {
-                  if (a in obj && !(b in obj)) {
-                      obj[b] = obj[a];
-                      delete obj[a];
-                  }
-              };
-              constraints = JSON.parse(JSON.stringify(constraints));
-              remap(constraints.audio, "autoGainControl", "googAutoGainControl");
-              remap(constraints.audio, "noiseSuppression", "googNoiseSuppression");
-              constraints.audio = constraintsToChrome_(constraints.audio);
-          }
-          if (constraints && typeof constraints.video === "object") {
-              // Shim facingMode for mobile & surface pro.
-              let face = constraints.video.facingMode;
-              face = face && ((typeof face === "object") ? face : { ideal: face });
-              const getSupportedFacingModeLies = semver_21(browser.version, "66.0.0");
-              if ((face && (face.exact === "user" || face.exact === "environment" ||
-                  face.ideal === "user" || face.ideal === "environment")) &&
-                  !(navigator.mediaDevices.getSupportedConstraints &&
-                      navigator.mediaDevices.getSupportedConstraints().facingMode &&
-                      !getSupportedFacingModeLies)) {
-                  delete constraints.video.facingMode;
-                  let matches = undefined;
-                  if (face.exact === "environment" || face.ideal === "environment") {
-                      matches = ["back", "rear"];
-                  }
-                  else if (face.exact === "user" || face.ideal === "user") {
-                      matches = ["front"];
-                  }
-                  if (matches) {
-                      // Look for matches in label, or use last cam for back (typical).
-                      return navigator.mediaDevices.enumerateDevices()
-                          .then(devices => {
-                          devices = devices.filter(d => d.kind === "videoinput");
-                          let dev = devices.find(d => matches.some(match => d.label.toLowerCase().includes(match)));
-                          if (!dev && devices.length && matches.includes("back")) {
-                              dev = devices[devices.length - 1]; // more likely the back cam
-                          }
-                          if (dev) {
-                              constraints.video.deviceId = face.exact ? { exact: dev.deviceId } :
-                                  { ideal: dev.deviceId };
-                          }
-                          constraints.video = constraintsToChrome_(constraints.video);
-                          return func(constraints);
-                      });
-                  }
+
+          if (matches) {
+            // Look for matches in label, or use last cam for back (typical).
+            return navigator.mediaDevices.enumerateDevices().then(devices => {
+              devices = devices.filter(d => d.kind === "videoinput");
+              let dev = devices.find(d => matches.some(match => d.label.toLowerCase().includes(match)));
+
+              if (!dev && devices.length && matches.includes("back")) {
+                dev = devices[devices.length - 1]; // more likely the back cam
               }
+
+              if (dev) {
+                constraints.video.deviceId = face.exact ? {
+                  exact: dev.deviceId
+                } : {
+                  ideal: dev.deviceId
+                };
+              }
+
               constraints.video = constraintsToChrome_(constraints.video);
+              return func(constraints);
+            });
           }
-          return func(constraints);
-      };
-      const getUserMedia_ = function (constraints, onSuccess, onError) {
-          shimConstraints_(constraints, (c) => {
-              navigator.webkitGetUserMedia(c, onSuccess, (e) => {
-                  if (onError) {
-                      onError(e);
-                  }
-              });
+        }
+
+        constraints.video = constraintsToChrome_(constraints.video);
+      }
+
+      return func(constraints);
+    };
+
+    const getUserMedia_ = function (constraints, onSuccess, onError) {
+      shimConstraints_(constraints, c => {
+        navigator.webkitGetUserMedia(c, onSuccess, e => {
+          if (onError) {
+            onError(e);
+          }
+        });
+      });
+    };
+
+    navigator.getUserMedia = getUserMedia_; // Returns the result of getUserMedia as a Promise.
+
+    const getUserMediaPromise_ = function (constraints) {
+      return new Promise((resolve, reject) => {
+        navigator.getUserMedia(constraints, resolve, reject);
+      });
+    };
+
+    if (!navigator.mediaDevices) {
+      navigator.mediaDevices = {
+        getUserMedia: getUserMediaPromise_,
+
+        enumerateDevices() {
+          return new Promise(resolve => {
+            const kinds = {
+              audio: "audioinput",
+              video: "videoinput"
+            };
+            return window.MediaStreamTrack.getSources(devices => {
+              resolve(devices.map(device => ({
+                label: device.label,
+                kind: kinds[device.kind],
+                deviceId: device.id,
+                groupId: ""
+              })));
+            });
           });
+        }
+
       };
-      navigator.getUserMedia = getUserMedia_;
-      // Returns the result of getUserMedia as a Promise.
-      const getUserMediaPromise_ = function (constraints) {
-          return new Promise((resolve, reject) => {
-              navigator.getUserMedia(constraints, resolve, reject);
-          });
+    }
+
+    if (!navigator.mediaDevices.getSupportedConstraints) {
+      navigator.mediaDevices.getSupportedConstraints = () => {
+        return {
+          deviceId: true,
+          echoCancellation: true,
+          facingMode: true,
+          frameRate: true,
+          height: true,
+          width: true
+        };
       };
-      if (!navigator.mediaDevices) {
-          navigator.mediaDevices = {
-              getUserMedia: getUserMediaPromise_,
-              enumerateDevices() {
-                  return new Promise(resolve => {
-                      const kinds = { audio: "audioinput", video: "videoinput" };
-                      return window.MediaStreamTrack.getSources((devices) => {
-                          resolve(devices.map((device) => ({
-                              label: device.label,
-                              kind: kinds[device.kind],
-                              deviceId: device.id,
-                              groupId: "",
-                          })));
-                      });
-                  });
-              },
-          };
-      }
-      if (!navigator.mediaDevices.getSupportedConstraints) {
-          navigator.mediaDevices.getSupportedConstraints = () => {
-              return {
-                  deviceId: true, echoCancellation: true, facingMode: true,
-                  frameRate: true, height: true, width: true,
-              };
-          };
-      }
-      // A shim for getUserMedia method on the mediaDevices object.
-      // TODO(KaptenJansson) remove once implemented in Chrome stable.
-      if (!navigator.mediaDevices.getUserMedia) {
-          navigator.mediaDevices.getUserMedia = function (constraints) {
-              return getUserMediaPromise_(constraints);
-          };
-      }
-      else {
-          // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
-          // function which returns a Promise, it does not accept spec-style
-          // constraints.
-          const origGetUserMedia = navigator.mediaDevices.getUserMedia.
-              bind(navigator.mediaDevices);
-          navigator.mediaDevices.getUserMedia = function (cs) {
-              return shimConstraints_(cs, (c) => origGetUserMedia(c).then(stream => {
-                  if (c.audio && !stream.getAudioTracks().length ||
-                      c.video && !stream.getVideoTracks().length) {
-                      stream.getTracks().forEach(track => {
-                          track.stop();
-                      });
-                      throw new DOMException("", "NotFoundError");
-                  }
-                  return stream;
-              }, e => Promise.reject(e)));
-          };
-      }
+    } // A shim for getUserMedia method on the mediaDevices object.
+    // TODO(KaptenJansson) remove once implemented in Chrome stable.
+
+
+    if (!navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia = function (constraints) {
+        return getUserMediaPromise_(constraints);
+      };
+    } else {
+      // Even though Chrome 45 has navigator.mediaDevices and a getUserMedia
+      // function which returns a Promise, it does not accept spec-style
+      // constraints.
+      const origGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
+
+      navigator.mediaDevices.getUserMedia = function (cs) {
+        return shimConstraints_(cs, c => origGetUserMedia(c).then(stream => {
+          if (c.audio && !stream.getAudioTracks().length || c.video && !stream.getVideoTracks().length) {
+            stream.getTracks().forEach(track => {
+              track.stop();
+            });
+            throw new DOMException("", "NotFoundError");
+          }
+
+          return stream;
+        }, e => Promise.reject(e)));
+      };
+    }
   }
 
   // adapter.js 8eca2831b0d11cc14ffb6193d0d49044c6dd9252
   function mediaDevicesShim$1() {
-      const getUserMedia_ = function (constraints, onSuccess, onError) {
-          constraints = JSON.parse(JSON.stringify(constraints));
-          return navigator.mozGetUserMedia(constraints, onSuccess, (e) => {
-              onError(e);
-          });
+    const getUserMedia_ = function (constraints, onSuccess, onError) {
+      constraints = JSON.parse(JSON.stringify(constraints));
+      return navigator.mozGetUserMedia(constraints, onSuccess, e => {
+        onError(e);
+      });
+    }; // Returns the result of getUserMedia as a Promise.
+
+
+    const getUserMediaPromise_ = function (constraints) {
+      return new Promise((resolve, reject) => {
+        getUserMedia_(constraints, resolve, reject);
+      });
+    };
+
+    if (!navigator.mediaDevices) {
+      navigator.mediaDevices = {
+        getUserMedia: getUserMediaPromise_,
+
+        addEventListener() {},
+
+        removeEventListener() {}
+
       };
-      // Returns the result of getUserMedia as a Promise.
-      const getUserMediaPromise_ = function (constraints) {
-          return new Promise((resolve, reject) => {
-              getUserMedia_(constraints, resolve, reject);
-          });
-      };
-      if (!navigator.mediaDevices) {
-          navigator.mediaDevices = { getUserMedia: getUserMediaPromise_,
-              addEventListener() { },
-              removeEventListener() { },
-          };
-      }
-      navigator.mediaDevices.enumerateDevices =
-          navigator.mediaDevices.enumerateDevices || function () {
-              return new Promise(resolve => {
-                  const infos = [
-                      { kind: "audioinput", deviceId: "default", label: "", groupId: "" },
-                      { kind: "videoinput", deviceId: "default", label: "", groupId: "" },
-                  ];
-                  resolve(infos);
-              });
-          };
+    }
+
+    navigator.mediaDevices.enumerateDevices = navigator.mediaDevices.enumerateDevices || function () {
+      return new Promise(resolve => {
+        const infos = [{
+          kind: "audioinput",
+          deviceId: "default",
+          label: "",
+          groupId: ""
+        }, {
+          kind: "videoinput",
+          deviceId: "default",
+          label: "",
+          groupId: ""
+        }];
+        resolve(infos);
+      });
+    };
   }
 
   if (browser.name === "chrome") {
-      mediaDevicesShim();
+    mediaDevicesShim();
   }
+
   if (browser.name === "firefox") {
-      mediaDevicesShim$1();
+    mediaDevicesShim$1();
   }
+
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var defineProperty = _defineProperty;
+
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
+
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
+      }
+
+      ownKeys.forEach(function (key) {
+        defineProperty(target, key, source[key]);
+      });
+    }
+
+    return target;
+  }
+
+  var objectSpread = _objectSpread;
 
   var adapter_no_edge_no_global = createCommonjsModule(function (module) {
     (function () {
@@ -10678,14 +10775,14 @@
    *
    * Distributed under terms of the MIT license.
   */
-  const REC_AUDIO_ENABLE = (config) => {
-      return !!config && !!config.audio && config.audio.enabled;
+  const REC_AUDIO_ENABLE = config => {
+    return !!config && !!config.audio && config.audio.enabled;
   };
-  const REC_VIDEO_ENABLE = (config) => {
-      return !!config && !!config.video && config.video.enabled;
+  const REC_VIDEO_ENABLE = config => {
+    return !!config && !!config.video && config.video.enabled;
   };
-  const REC_SCREEN_ENABLE = (config) => {
-      return !!config && !!config.screen && config.screen.enabled;
+  const REC_SCREEN_ENABLE = config => {
+    return !!config && !!config.screen && config.screen.enabled;
   };
 
   /*
@@ -10694,15 +10791,17 @@
    *
    * Distributed under terms of the MIT license.
   */
+
   (function (TrackConnectStatus) {
-      TrackConnectStatus[TrackConnectStatus["Idle"] = 0] = "Idle";
-      TrackConnectStatus[TrackConnectStatus["Connecting"] = 1] = "Connecting";
-      TrackConnectStatus[TrackConnectStatus["Connect"] = 2] = "Connect";
+    TrackConnectStatus[TrackConnectStatus["Idle"] = 0] = "Idle";
+    TrackConnectStatus[TrackConnectStatus["Connecting"] = 1] = "Connecting";
+    TrackConnectStatus[TrackConnectStatus["Connect"] = 2] = "Connect";
   })(exports.TrackConnectStatus || (exports.TrackConnectStatus = {}));
+
   (function (TrackSourceType) {
-      TrackSourceType[TrackSourceType["NORMAL"] = 0] = "NORMAL";
-      TrackSourceType[TrackSourceType["EXTERNAL"] = 1] = "EXTERNAL";
-      TrackSourceType[TrackSourceType["MIXING"] = 2] = "MIXING";
+    TrackSourceType[TrackSourceType["NORMAL"] = 0] = "NORMAL";
+    TrackSourceType[TrackSourceType["EXTERNAL"] = 1] = "EXTERNAL";
+    TrackSourceType[TrackSourceType["MIXING"] = 2] = "MIXING";
   })(exports.TrackSourceType || (exports.TrackSourceType = {}));
 
   /*
@@ -10712,49 +10811,49 @@
    * Distributed under terms of the MIT license.
   */
   const defaultMergeJob = {
-      publishUrl: "",
-      height: 720,
-      width: 1080,
-      fps: 25,
-      kbps: 1000,
-      audioOnly: false,
-      stretchMode: "aspectFill",
+    publishUrl: "",
+    height: 720,
+    width: 1080,
+    fps: 25,
+    kbps: 1000,
+    audioOnly: false,
+    stretchMode: "aspectFill"
   };
 
   (function (AudioSourceState) {
-      AudioSourceState["IDLE"] = "idle";
-      AudioSourceState["LOADING"] = "loading";
-      AudioSourceState["PLAY"] = "play";
-      AudioSourceState["PAUSE"] = "pause";
-      AudioSourceState["END"] = "end";
+    AudioSourceState["IDLE"] = "idle";
+    AudioSourceState["LOADING"] = "loading";
+    AudioSourceState["PLAY"] = "play";
+    AudioSourceState["PAUSE"] = "pause";
+    AudioSourceState["END"] = "end";
   })(exports.AudioSourceState || (exports.AudioSourceState = {}));
 
   const QosEventType = {
-      Init: 1,
-      UnInit: 2,
-      JoinRoom: 3,
-      MCSAuth: 4,
-      SignalAuth: 5,
-      LeaveRoom: 6,
-      PublisherPC: 7,
-      PublishTracks: 8,
-      UnPublishTracks: 9,
-      SubscriberPC: 10,
-      SubscribeTracks: 11,
-      UnSubscribeTracks: 13,
-      MuteTracks: 14,
-      ICEConnectionState: 15,
-      CallbackStatistics: 16,
-      KickoutUser: 17,
-      RoomStateChanged: 18,
-      AudioDeviceInOut: 19,
-      VideoDeviceInOut: 20,
-      SDKError: 21,
-      ApplicationState: 22,
-      CreateMergeJob: 24,
-      UpdateMergeTracks: 25,
-      StopMerge: 26,
-      DeviceChanged: 28,
+    Init: 1,
+    UnInit: 2,
+    JoinRoom: 3,
+    MCSAuth: 4,
+    SignalAuth: 5,
+    LeaveRoom: 6,
+    PublisherPC: 7,
+    PublishTracks: 8,
+    UnPublishTracks: 9,
+    SubscriberPC: 10,
+    SubscribeTracks: 11,
+    UnSubscribeTracks: 13,
+    MuteTracks: 14,
+    ICEConnectionState: 15,
+    CallbackStatistics: 16,
+    KickoutUser: 17,
+    RoomStateChanged: 18,
+    AudioDeviceInOut: 19,
+    VideoDeviceInOut: 20,
+    SDKError: 21,
+    ApplicationState: 22,
+    CreateMergeJob: 24,
+    UpdateMergeTracks: 25,
+    StopMerge: 26,
+    DeviceChanged: 28
   };
 
   var fingerprint2 = createCommonjsModule(function (module) {
@@ -21180,345 +21279,394 @@
   /**
    * SDK版本号
    */
-  const version = "2.2.4";
+  const version = "2.2.5"; // @internal
 
   class LogModel {
-      constructor(level) {
-          this.level = level;
+    constructor(level) {
+      this.level = level;
+    }
+
+    setLevel(level) {
+      this.level = level;
+    }
+
+    log(...args) {
+      if (this.level !== "log") {
+        return;
       }
-      setLevel(level) {
-          this.level = level;
+      const pretitle = `${getLogTimeString()} %cLOG-QNRTC`;
+      const style = "color: #66ccff; font-weight: bold;";
+      console.info(pretitle, style, ...args);
+    }
+
+    debug(...args) {
+      if (this.level !== "log" && this.level !== "debug") {
+        return;
       }
-      log(...args) {
-          if (this.level !== "log") {
-              return;
-          }
-          const pretitle = `${getLogTimeString()} %cLOG-QNRTC`;
-          const style = "color: #66ccff; font-weight: bold;";
-          console.info(pretitle, style, ...args);
+
+      const pretitle = `${getLogTimeString()} %cDEBUG-QNRTC`;
+      const style = "color: #A28148; font-weight: bold;";
+      console.info(pretitle, style, ...args);
+    }
+
+    warning(...args) {
+      if (this.level === "disable") {
+        return;
       }
-      debug(...args) {
-          if (this.level !== "log" && this.level !== "debug") {
-              return;
-          }
-          const pretitle = `${getLogTimeString()} %cDEBUG-QNRTC`;
-          const style = "color: #A28148; font-weight: bold;";
-          console.info(pretitle, style, ...args);
-      }
-      warning(...args) {
-          if (this.level === "disable") {
-              return;
-          }
-          const pretitle = `${getLogTimeString()} %cWARNING-QNRTC`;
-          const style = "color: #E44F44; font-weight: bold;";
-          console.warn(pretitle, style, ...args);
-      }
+
+      const pretitle = `${getLogTimeString()} %cWARNING-QNRTC`;
+      const style = "color: #E44F44; font-weight: bold;";
+      console.warn(pretitle, style, ...args);
+    }
+
   }
+
   function getLogTimeString() {
-      const date = new Date();
-      function padingStart(num) {
-          const str = num.toString();
-          if (str.length < 2) {
-              return "0" + str;
-          }
-          return str;
+    const date = new Date();
+
+    function padingStart(num) {
+      const str = num.toString();
+
+      if (str.length < 2) {
+        return "0" + str;
       }
-      const hours = padingStart(date.getHours());
-      const mins = padingStart(date.getMinutes());
-      const secs = padingStart(date.getSeconds());
-      const msecs = date.getMilliseconds();
-      return `[${hours}:${mins}:${secs}.${msecs}]`;
+
+      return str;
+    }
+
+    const hours = padingStart(date.getHours());
+    const mins = padingStart(date.getMinutes());
+    const secs = padingStart(date.getSeconds());
+    const msecs = date.getMilliseconds();
+    return `[${hours}:${mins}:${secs}.${msecs}]`;
   }
+
   const log = new LogModel("log");
 
   class TaskQueue extends EventEmitter {
-      constructor(name, debug = true) {
-          super();
-          // Closed flag.
-          this._closed = false;
-          // Busy running a command.
-          this._busy = false;
-          // Queue for pending commands. Each command is an Object with method,
-          // resolve, reject, and other members (depending the case).
-          this._queue = [];
-          this.name = name || "TaskQueue";
-          this.isDebug = debug;
+    constructor(name, debug = true) {
+      super(); // Closed flag.
+
+      this._closed = false; // Busy running a command.
+
+      this._busy = false; // Queue for pending commands. Each command is an Object with method,
+      // resolve, reject, and other members (depending the case).
+
+      this._queue = [];
+      this.name = name || "TaskQueue";
+      this.isDebug = debug;
+    }
+
+    close() {
+      this._closed = true;
+    }
+
+    push(method, data) {
+      if (this.isDebug) {
+        log.debug(`${this.name} push()`, method, data);
       }
-      close() {
-          this._closed = true;
+
+      return new Promise((resolve, reject) => {
+        const queue = this._queue; // Append command to the queue.
+
+        queue.push({
+          method,
+          data,
+          resolve,
+          reject
+        });
+
+        this._handlePendingCommands();
+      });
+    }
+
+    _handlePendingCommands() {
+      if (this._busy) {
+        return;
       }
-      push(method, data) {
-          if (this.isDebug) {
-              log.debug(`${this.name} push()`, method, data);
-          }
-          return new Promise((resolve, reject) => {
-              const queue = this._queue;
-              // Append command to the queue.
-              queue.push({ method, data, resolve, reject });
-              this._handlePendingCommands();
-          });
+
+      const queue = this._queue; // Take the first command.
+
+      const command = queue[0];
+
+      if (!command) {
+        return;
       }
-      _handlePendingCommands() {
-          if (this._busy) {
-              return;
-          }
-          const queue = this._queue;
-          // Take the first command.
-          const command = queue[0];
-          if (!command) {
-              return;
-          }
-          this._busy = true;
-          // Execute it.
-          this._handleCommand(command)
-              .then(() => {
-              this._busy = false;
-              // Remove the first command (the completed one) from the queue.
-              queue.shift();
-              // And continue.
-              this._handlePendingCommands();
-          });
+
+      this._busy = true; // Execute it.
+
+      this._handleCommand(command).then(() => {
+        this._busy = false; // Remove the first command (the completed one) from the queue.
+
+        queue.shift(); // And continue.
+
+        this._handlePendingCommands();
+      });
+    }
+
+    _handleCommand(command) {
+      if (this.isDebug) {
+        log.debug(`${this.name} _handleCommand() `, command.method, command.data);
       }
-      _handleCommand(command) {
-          if (this.isDebug) {
-              log.debug(`${this.name} _handleCommand() `, command.method, command.data);
-          }
-          if (this._closed) {
-              command.reject(new InvalidStateError("closed"));
-              return Promise.resolve();
-          }
-          const promiseHolder = { promise: null };
-          this.emit("exec", command, promiseHolder);
-          return Promise.resolve()
-              .then(() => {
-              return promiseHolder.promise;
-          })
-              .then(result => {
-              if (this.isDebug) {
-                  log.debug(`${this.name} _handleCommand() | command succeeded`, command.method);
-              }
-              if (this._closed) {
-                  command.reject(new InvalidStateError("closed"));
-                  return;
-              }
-              // Resolve the command with the given result (if any).
-              command.resolve(result);
-          })
-              .catch(error => {
-              if (this.isDebug) {
-                  log.warning(`${this.name} _handleCommand() | command failed [method:%s]: %o`, command.method, error);
-              }
-              // Reject the command with the error.
-              command.reject(error);
-          });
+
+      if (this._closed) {
+        command.reject(new InvalidStateError("closed"));
+        return Promise.resolve();
       }
+
+      const promiseHolder = {
+        promise: null
+      };
+      this.emit("exec", command, promiseHolder);
+      return Promise.resolve().then(() => {
+        return promiseHolder.promise;
+      }).then(result => {
+        if (this.isDebug) {
+          log.debug(`${this.name} _handleCommand() | command succeeded`, command.method);
+        }
+
+        if (this._closed) {
+          command.reject(new InvalidStateError("closed"));
+          return;
+        } // Resolve the command with the given result (if any).
+
+
+        command.resolve(result);
+      }).catch(error => {
+        if (this.isDebug) {
+          log.warning(`${this.name} _handleCommand() | command failed [method:%s]: %o`, command.method, error);
+        } // Reject the command with the error.
+
+
+        command.reject(error);
+      });
+    }
+
   }
 
   const QNRTC_EVENTS_STORATE_KEY = "qnrtcqosevents";
+
   class QosModel {
-      constructor() {
-          this.events = [];
-          this.lastSubmitTime = Date.now();
-          this.submitQueue = new TaskQueue("qossubmit", false);
-          getDeviceId().then(deviceId => {
-              this.deviceId = deviceId;
-              this.base.device_id = this.deviceId;
-          });
-          this.base = {
-              qos_version: "2.0",
-              device_id: "",
-              bundle_id: window.location.href,
-              app_version: "",
-              sdk_version: version,
-              device_model: `${browser.name}${browser.version}`,
-              os_platform: browser.os,
-              os_version: "",
-          };
-          this.initSubmitQueue();
-          this.submitQueue.push("resume").catch(noop);
-      }
-      setSessionId(sessionId) {
-          for (let i = this.events.length - 1; i >= 0; i -= 1) {
-              const event = this.events[i];
-              if (event.session_id)
-                  break;
-              event.session_id = sessionId;
-          }
-          this.sessionId = sessionId;
-      }
-      setUserBase(userName, roomName) {
-          this.userBase = {
-              user_id: userName,
-              room_name: roomName,
-              app_id: "",
-          };
-          for (let i = this.events.length - 1; i >= 0; i -= 1) {
-              const event = this.events[i];
-              if (event.user_base)
-                  break;
-              event.user_base = this.userBase;
-          }
-      }
-      addEvent(eventType, data, isForce) {
-          const event = {
-              timestamp: Date.now(),
-              event_id: QosEventType[eventType],
-              event_name: eventType,
-              ...data,
-          };
-          this.submitQueue.push("add", event).catch(noop);
-          this.submit(isForce);
-      }
-      submit(isForce = false) {
-          this.submitQueue.push("submit", isForce).catch(noop);
-      }
-      initSubmitQueue() {
-          this.submitQueue.on("exec", (command, ph) => {
-              switch (command.method) {
-                  case "submit": {
-                      ph.promise = this._submit(command.data);
-                      return;
-                  }
-                  case "add": {
-                      ph.promise = this._addEvent(command.data);
-                      return;
-                  }
-                  case "resume": {
-                      ph.promise = this._recoverStoredEvents();
-                      return;
-                  }
-              }
-          });
-      }
-      async _recoverStoredEvents() {
-          const res = await localforage.getItem(QNRTC_EVENTS_STORATE_KEY);
-          console.log("get item", res);
-          await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
-          if (!res)
-              return;
-          this.events = JSON.parse(window.atob(decodeURIComponent(res)));
-          // 没有 sessionid 或者 user_base 的数据将被丢弃
-          this.events = this.events.filter(e => !!e.session_id && !!e.user_base).sort((a, b) => {
-              return a.event.timestamp - b.event.timestamp;
-          });
-      }
-      _addEvent(event) {
-          this.events.push({
-              user_base: this.userBase,
-              event,
-              session_id: this.sessionId,
-          });
-          this.submit();
-          return Promise.resolve();
-      }
-      saveEvents() {
-          const events = encodeURIComponent(window.btoa(JSON.stringify(this.events)));
-          localforage.setItem(QNRTC_EVENTS_STORATE_KEY, events).catch(noop);
-      }
-      submitCheck() {
-          if (!this.sessionId || !this.deviceId || !this.userBase)
-              return false;
-          if (Date.now() - this.lastSubmitTime > 60000 * 5)
-              return true;
-          if (this.events.length >= 30)
-              return true;
-          return false;
-      }
-      async _submit(isForce = false) {
-          const result = isForce ? true : this.submitCheck();
-          if (!result) {
-              this.saveEvents();
-              return;
-          }
-          try {
-              const submitData = this.encodeQosSubmitData();
-              for (const data of submitData) {
-                  const res = await fetch("https://pili-rtc-qos.qiniuapi.com/v1/rtcevent", {
-                      method: "POST",
-                      headers: {
-                          "Content-Type": "application/x-gzip",
-                      },
-                      body: data.buffer,
-                  });
-                  if (!res.ok) {
-                      throw UNEXPECTED_ERROR("rtcevent error");
-                  }
-              }
-              this.lastSubmitTime = Date.now();
-              this.events = [];
-              await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
-          }
-          catch (e) {
-              log.log(e);
-          }
-      }
-      encodeQosSubmitData() {
-          const submitDataGroup = lodash_groupby(this.events, (e) => {
-              return e.session_id || "" + JSON.stringify(e.user_base);
-          });
-          const data = [];
-          for (const key in submitDataGroup) {
-              const events = submitDataGroup[key];
-              if (events.length === 0)
-                  continue;
-              const submitData = {
-                  session_id: events[0].session_id,
-                  user_base: events[0].user_base,
-                  base: this.base,
-                  items: events.map(e => e.event),
-              };
-              console.log("encode", submitData);
-              const byteArray = new Uint8Array(gzip.zip(toUTF8Array(JSON.stringify(submitData))));
-              data.push(byteArray);
-          }
-          return data;
-      }
-  }
-  function getDeviceId() {
-      return new Promise((resolve, reject) => {
-          if (window.requestIdleCallback) {
-              window.requestIdleCallback(() => {
-                  fingerprint2.get((components) => {
-                      const deviceId = md5(JSON.stringify(components));
-                      resolve(deviceId);
-                  });
-              });
-          }
-          else {
-              setTimeout(() => {
-                  fingerprint2.get((components) => {
-                      const deviceId = md5(JSON.stringify(components));
-                      resolve(deviceId);
-                  });
-              }, 500);
-          }
+    constructor() {
+      this.events = [];
+      this.lastSubmitTime = Date.now();
+      this.submitQueue = new TaskQueue("qossubmit", false);
+      getDeviceId().then(deviceId => {
+        this.deviceId = deviceId;
+        this.base.device_id = this.deviceId;
       });
-  }
-  function toUTF8Array(str) {
-      const utf8 = [];
-      for (let i = 0; i < str.length; i++) {
-          let charcode = str.charCodeAt(i);
-          if (charcode < 0x80)
-              utf8.push(charcode);
-          else if (charcode < 0x800) {
-              utf8.push(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
-          }
-          else if (charcode < 0xd800 || charcode >= 0xe000) {
-              utf8.push(0xe0 | (charcode >> 12), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
-          }
-          // surrogate pair
-          else {
-              i++;
-              // UTF-16 encodes 0x10000-0x10FFFF by
-              // subtracting 0x10000 and splitting the
-              // 20 bits of 0x0-0xFFFFF into two halves
-              charcode = 0x10000 + (((charcode & 0x3ff) << 10)
-                  | (str.charCodeAt(i) & 0x3ff));
-              utf8.push(0xf0 | (charcode >> 18), 0x80 | ((charcode >> 12) & 0x3f), 0x80 | ((charcode >> 6) & 0x3f), 0x80 | (charcode & 0x3f));
-          }
+      this.base = {
+        qos_version: "2.0",
+        device_id: "",
+        bundle_id: window.location.href,
+        app_version: "",
+        sdk_version: version,
+        device_model: `${browser.name}${browser.version}`,
+        os_platform: browser.os,
+        os_version: ""
+      };
+      this.initSubmitQueue();
+      this.submitQueue.push("resume").catch(noop);
+    }
+
+    setSessionId(sessionId) {
+      for (let i = this.events.length - 1; i >= 0; i -= 1) {
+        const event = this.events[i];
+        if (event.session_id) break;
+        event.session_id = sessionId;
       }
-      return new Uint8Array(utf8);
+
+      this.sessionId = sessionId;
+    }
+
+    setUserBase(userName, roomName) {
+      this.userBase = {
+        user_id: userName,
+        room_name: roomName,
+        app_id: ""
+      };
+
+      for (let i = this.events.length - 1; i >= 0; i -= 1) {
+        const event = this.events[i];
+        if (event.user_base) break;
+        event.user_base = this.userBase;
+      }
+    }
+
+    addEvent(eventType, data, isForce) {
+      const event = objectSpread({
+        timestamp: Date.now(),
+        event_id: QosEventType[eventType],
+        event_name: eventType
+      }, data);
+
+      this.submitQueue.push("add", event).catch(noop);
+      this.submit(isForce);
+    }
+
+    submit(isForce = false) {
+      this.submitQueue.push("submit", isForce).catch(noop);
+    }
+
+    initSubmitQueue() {
+      this.submitQueue.on("exec", (command, ph) => {
+        switch (command.method) {
+          case "submit":
+            {
+              ph.promise = this._submit(command.data);
+              return;
+            }
+
+          case "add":
+            {
+              ph.promise = this._addEvent(command.data);
+              return;
+            }
+
+          case "resume":
+            {
+              ph.promise = this._recoverStoredEvents();
+              return;
+            }
+        }
+      });
+    }
+
+    async _recoverStoredEvents() {
+      const res = await localforage.getItem(QNRTC_EVENTS_STORATE_KEY);
+      console.log("get item", res);
+      await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
+      if (!res) return;
+      this.events = JSON.parse(window.atob(decodeURIComponent(res))); // 没有 sessionid 或者 user_base 的数据将被丢弃
+
+      this.events = this.events.filter(e => !!e.session_id && !!e.user_base).sort((a, b) => {
+        return a.event.timestamp - b.event.timestamp;
+      });
+    }
+
+    _addEvent(event) {
+      this.events.push({
+        user_base: this.userBase,
+        event,
+        session_id: this.sessionId
+      });
+      this.submit();
+      return Promise.resolve();
+    }
+
+    saveEvents() {
+      const events = encodeURIComponent(window.btoa(JSON.stringify(this.events)));
+      localforage.setItem(QNRTC_EVENTS_STORATE_KEY, events).catch(noop);
+    }
+
+    submitCheck() {
+      if (!this.sessionId || !this.deviceId || !this.userBase) return false;
+      if (Date.now() - this.lastSubmitTime > 60000 * 5) return true;
+      if (this.events.length >= 30) return true;
+      return false;
+    }
+
+    async _submit(isForce = false) {
+      const result = isForce ? true : this.submitCheck();
+
+      if (!result) {
+        this.saveEvents();
+        return;
+      }
+
+      try {
+        const submitData = this.encodeQosSubmitData();
+
+        for (const data of submitData) {
+          const res = await fetch("https://pili-rtc-qos.qiniuapi.com/v1/rtcevent", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-gzip"
+            },
+            body: data.buffer
+          });
+
+          if (!res.ok) {
+            throw UNEXPECTED_ERROR("rtcevent error");
+          }
+        }
+
+        this.lastSubmitTime = Date.now();
+        this.events = [];
+        await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
+      } catch (e) {
+        log.log(e);
+      }
+    }
+
+    encodeQosSubmitData() {
+      const submitDataGroup = lodash_groupby(this.events, e => {
+        return e.session_id || "" + JSON.stringify(e.user_base);
+      });
+      const data = [];
+
+      for (const key in submitDataGroup) {
+        const events = submitDataGroup[key];
+        if (events.length === 0) continue;
+        const submitData = {
+          session_id: events[0].session_id,
+          user_base: events[0].user_base,
+          base: this.base,
+          items: events.map(e => e.event)
+        };
+        console.log("encode", submitData);
+        const byteArray = new Uint8Array(gzip.zip(toUTF8Array(JSON.stringify(submitData))));
+        data.push(byteArray);
+      }
+
+      return data;
+    }
+
   }
+
+  function getDeviceId() {
+    return new Promise((resolve, reject) => {
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(() => {
+          fingerprint2.get(components => {
+            const deviceId = md5(JSON.stringify(components));
+            resolve(deviceId);
+          });
+        });
+      } else {
+        setTimeout(() => {
+          fingerprint2.get(components => {
+            const deviceId = md5(JSON.stringify(components));
+            resolve(deviceId);
+          });
+        }, 500);
+      }
+    });
+  }
+
+  function toUTF8Array(str) {
+    const utf8 = [];
+
+    for (let i = 0; i < str.length; i++) {
+      let charcode = str.charCodeAt(i);
+      if (charcode < 0x80) utf8.push(charcode);else if (charcode < 0x800) {
+        utf8.push(0xc0 | charcode >> 6, 0x80 | charcode & 0x3f);
+      } else if (charcode < 0xd800 || charcode >= 0xe000) {
+        utf8.push(0xe0 | charcode >> 12, 0x80 | charcode >> 6 & 0x3f, 0x80 | charcode & 0x3f);
+      } // surrogate pair
+      else {
+          i++; // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+
+          charcode = 0x10000 + ((charcode & 0x3ff) << 10 | str.charCodeAt(i) & 0x3ff);
+          utf8.push(0xf0 | charcode >> 18, 0x80 | charcode >> 12 & 0x3f, 0x80 | charcode >> 6 & 0x3f, 0x80 | charcode & 0x3f);
+        }
+    }
+
+    return new Uint8Array(utf8);
+  }
+
   const qos = new QosModel();
 
   /*
@@ -21527,57 +21675,62 @@
    *
    * Distributed under terms of the MIT license.
   */
+
   class QNRTCError extends Error {
-      constructor(code, message) {
-          super(message);
-          this.code = code;
-          this.error = message;
-          qos.addEvent("SDKError", {
-              error_code: code,
-              error_msg: message,
-          });
-      }
+    constructor(code, message) {
+      super(message);
+      this.code = code;
+      this.error = message;
+      qos.addEvent("SDKError", {
+        error_code: code,
+        error_msg: message
+      });
+    }
+
   }
-  const UNEXPECTED_ERROR = (msg) => new QNRTCError(11000, `piliRTC: unexpected error ${msg}`);
-  const AUTH_ENTER_ROOM_ERROR = (msg) => new QNRTCError(11001, `enterRoom error, can not get accessToken. Error: ${msg}\n please check enterRoom arguments`);
+  const UNEXPECTED_ERROR = msg => new QNRTCError(11000, `piliRTC: unexpected error ${msg}`);
+  const AUTH_ENTER_ROOM_ERROR = msg => new QNRTCError(11001, `enterRoom error, can not get accessToken. Error: ${msg}\n please check enterRoom arguments`);
   const PUBLISH_ERROR = (code, msg) => new QNRTCError(code, `publish error, signaling code: ${code}, msg: ${msg}`);
   const CREATE_MERGE_JOB_ERROR = (code, msg) => new QNRTCError(code, `create merge job error, signaling code: ${code}, msg: ${msg}`);
   const PUBLISH_ICE_ERROR = () => new QNRTCError(11002, `publish faild, ice not ready`);
   const SUB_ICE_ERROR = () => new QNRTCError(11003, `subscribe faild, ice not ready`);
-  const SUB_ERROR_NO_STREAM = (userId) => new QNRTCError(11004, `subscribe faild, can not find this player in streams, userId: ${userId}`);
-  const SUB_P2P_ERROR = (msg) => new QNRTCError(11005, `subscribe faild, can not create p2p connection, ${msg}`);
-  const PUB_P2P_ERROR = (msg) => new QNRTCError(11006, `publish faild, can not create p2p connection, ${msg}`);
-  const UNSUPPORT_FMT = (msg) => new QNRTCError(11007, `media format not support, ${msg}`);
+  const SUB_ERROR_NO_STREAM = userId => new QNRTCError(11004, `subscribe faild, can not find this player in streams, userId: ${userId}`);
+  const SUB_P2P_ERROR = msg => new QNRTCError(11005, `subscribe faild, can not create p2p connection, ${msg}`);
+  const PUB_P2P_ERROR = msg => new QNRTCError(11006, `publish faild, can not create p2p connection, ${msg}`);
+  const UNSUPPORT_FMT = msg => new QNRTCError(11007, `media format not support, ${msg}`);
   const JOIN_ROOM_ERROR = (code, msg) => new QNRTCError(code, `joinRoom error, code: ${code}, ${msg}`);
   const SUB_ERROR = (code, msg) => new QNRTCError(code, `subscribe error, signaling code: ${code}, msg: ${msg}`);
   const UNPUBLISH_ERROR = (code, msg) => new QNRTCError(code, "unpublish error, code: ${code}, msg: ${msg}");
   const UNSUB_ERROR = (code, msg) => new QNRTCError(code, "unsubscribe error, code: ${code}, msg: ${msg}");
   const CONTROL_ERROR = (code, msg) => new QNRTCError(code, `send control error, code: ${code}, msg: ${msg}`);
-  const NOT_SUPPORT_ERROR = (msg) => new QNRTCError(11008, `not support! ${msg}`);
+  const NOT_SUPPORT_ERROR = msg => new QNRTCError(11008, `not support! ${msg}`);
   const SERVER_UNAVAILABLE = () => new QNRTCError(10052, "server unavailable");
-  const PLUGIN_NOT_AVALIABLE = (msg) => new QNRTCError(11009, `plugin not avaliable! ${msg}`);
-  const DEVICE_NOT_ALLOWED = (msg) => new QNRTCError(11010, `NotAllowedError: no permission to access media device. ${msg}`);
-  const SUB_ERROR_NO_USER = (userId) => new QNRTCError(11011, `subscribe faild, can not find this user in room, userId: ${userId}`);
-  const NO_MERGE_JOB = (id) => new QNRTCError(11012, `can not set merge layout stream, no merge job id ${id}`);
+  const PLUGIN_NOT_AVALIABLE = msg => new QNRTCError(11009, `plugin not avaliable! ${msg}`);
+  const DEVICE_NOT_ALLOWED = msg => new QNRTCError(11010, `NotAllowedError: no permission to access media device. ${msg}`);
+  const SUB_ERROR_NO_USER = userId => new QNRTCError(11011, `subscribe faild, can not find this user in room, userId: ${userId}`);
+  const NO_MERGE_JOB = id => new QNRTCError(11012, `can not set merge layout stream, no merge job id ${id}`);
   const SCREEN_PERMISSION_DENIED = () => new QNRTCError(11013, `can not sharing screen/window on chrome`);
   const SUB_PUB_ABORT = () => new QNRTCError(11014, `subscribe/publish operation is aborted`);
-  const AUDIO_DECODE_ERROR = (e) => new QNRTCError(11015, `can not decode audio data, ${e.toString()}`);
-  const AUTO_SWITCH_ERROR = (msg) => new QNRTCError(20001, `deviceManager auto switch error. ${msg}`);
+  const AUDIO_DECODE_ERROR = e => new QNRTCError(11015, `can not decode audio data, ${e.toString()}`);
+  const AUTO_SWITCH_ERROR = msg => new QNRTCError(20001, `deviceManager auto switch error. ${msg}`);
   const WS_ABORT = () => new QNRTCError(30001, `websocket abort`);
   /**
    * Error produced when calling a method in an invalid state.
    */
+
   class InvalidStateError extends Error {
-      constructor(message) {
-          super(message);
-          this.name = "InvalidStateError";
-          if (Error.hasOwnProperty("captureStackTrace")) { // Just in V8.
-              Error.captureStackTrace(this, InvalidStateError);
-          }
-          else {
-              this.stack = (new Error(message)).stack;
-          }
+    constructor(message) {
+      super(message);
+      this.name = "InvalidStateError";
+
+      if (Error.hasOwnProperty("captureStackTrace")) {
+        // Just in V8.
+        Error.captureStackTrace(this, InvalidStateError);
+      } else {
+        this.stack = new Error(message).stack;
       }
+    }
+
   }
 
   var error = /*#__PURE__*/Object.freeze({
@@ -21612,162 +21765,185 @@
   });
 
   function getPayloadFromJwt(jwttoken) {
-      const payloadString = jwttoken.split(".")[1];
-      if (!payloadString) {
-          throw new Error("parse jwt error, can not find payload string.");
-      }
-      const decoedString = atob(payloadString);
-      return JSON.parse(decoedString);
+    const payloadString = jwttoken.split(".")[1];
+
+    if (!payloadString) {
+      throw new Error("parse jwt error, can not find payload string.");
+    }
+
+    const decoedString = atob(payloadString);
+    return JSON.parse(decoedString);
   }
   function getRoomAccessFromToken(roomToken) {
-      try {
-          const roomAccessString = roomToken.split(":")[2];
-          const decoedString = atob(roomAccessString);
-          return JSON.parse(decoedString);
-      }
-      catch (e) {
-          throw UNEXPECTED_ERROR(`can not parse roomToken, ${e}`);
-      }
+    try {
+      const roomAccessString = roomToken.split(":")[2];
+      const decoedString = atob(roomAccessString);
+      return JSON.parse(decoedString);
+    } catch (e) {
+      throw UNEXPECTED_ERROR(`can not parse roomToken, ${e}`);
+    }
   }
   function removeElementFromArray(array, key, value) {
-      const newArray = [];
-      let removeElement = null;
-      for (let i = 0; i < array.length; i += 1) {
-          const element = array[i];
-          if (element[key] === value) {
-              removeElement = array[i];
-              continue;
-          }
-          newArray.push(array[i]);
+    const newArray = [];
+    let removeElement = null;
+
+    for (let i = 0; i < array.length; i += 1) {
+      const element = array[i];
+
+      if (element[key] === value) {
+        removeElement = array[i];
+        continue;
       }
-      return { removeElement, newArray };
+
+      newArray.push(array[i]);
+    }
+
+    return {
+      removeElement,
+      newArray
+    };
   }
   function getElementFromArray(array, key, value) {
-      if (!value) {
-          return null;
-      }
-      for (let i = 0; i < array.length; i += 1) {
-          const item = array[i];
-          if (item[key] === value) {
-              return item;
-          }
-      }
+    if (!value) {
       return null;
+    }
+
+    for (let i = 0; i < array.length; i += 1) {
+      const item = array[i];
+
+      if (item[key] === value) {
+        return item;
+      }
+    }
+
+    return null;
   }
-  function noop() {
-  }
+  function noop() {}
   function removeUndefinedKey(obj, depth = 0) {
-      if (depth >= 4) {
-          return obj;
-      }
-      for (const key in obj) {
-          if (obj[key] === undefined) {
-              delete obj[key];
-          }
-          if (typeof obj[key] === "object") {
-              obj[key] = removeUndefinedKey(obj[key], depth + 1);
-          }
-      }
+    if (depth >= 4) {
       return obj;
+    }
+
+    for (const key in obj) {
+      if (obj[key] === undefined) {
+        delete obj[key];
+      }
+
+      if (typeof obj[key] === "object") {
+        obj[key] = removeUndefinedKey(obj[key], depth + 1);
+      }
+    }
+
+    return obj;
   }
   function nextTick(func) {
-      const p = Promise.resolve();
-      p.then(func);
+    const p = Promise.resolve();
+    p.then(func);
   }
   function getMissingUserEvent(currentUserId, lastTracksInfo, currentTracksInfo, lastUsers, currentUsers) {
-      const missingEvent = {
-          join: [],
-          leave: [],
-          add: [],
-          remove: [],
-          mute: [],
-      };
-      const lastTracksIds = lastTracksInfo.map(info => info.trackid);
-      const currentTracksIds = currentTracksInfo.map(info => info.trackid);
-      lastTracksIds.forEach((trackId, i) => {
-          if (lastTracksInfo[i].playerid === currentUserId) {
-              return;
-          }
-          if (currentTracksIds.indexOf(trackId) === -1) {
-              missingEvent.remove.push(lastTracksInfo[i]);
-          }
-          else {
-              const currentTracksInfoItem = currentTracksInfo.find(t => t.trackid === trackId);
-              const lastTrackInfoItem = lastTracksInfo[i];
-              // 如果重连后 trackid 相同但是 versionid 不同，抛出 track-remove 和 track-add
-              if (currentTracksInfoItem.versionid !== lastTrackInfoItem.versionid) {
-                  missingEvent.remove.push(lastTrackInfoItem);
-                  missingEvent.add.push(currentTracksInfoItem);
-              }
-          }
-      });
-      currentTracksIds.forEach((trackId, i) => {
-          if (currentTracksInfo[i].playerid === currentUserId) {
-              return;
-          }
-          const index = lastTracksIds.indexOf(trackId);
-          if (index === -1) {
-              missingEvent.add.push(currentTracksInfo[i]);
-              missingEvent.mute.push({
-                  trackid: trackId,
-                  muted: currentTracksInfo[i].muted,
-              });
-          }
-          else {
-              if (currentTracksInfo[i].muted !== lastTracksInfo[index].muted) {
-                  missingEvent.mute.push({
-                      trackid: trackId,
-                      muted: currentTracksInfo[i].muted,
-                  });
-              }
-          }
-      });
-      lastUsers.forEach(userId => {
-          if (userId === currentUserId) {
-              return;
-          }
-          if (currentUsers.indexOf(userId) === -1) {
-              missingEvent.leave.push({ playerid: userId });
-          }
-      });
-      currentUsers.forEach(userId => {
-          if (userId === currentUserId) {
-              return;
-          }
-          if (lastUsers.indexOf(userId) === -1) {
-              missingEvent.join.push({ playerid: userId });
-          }
-      });
-      return missingEvent;
+    const missingEvent = {
+      join: [],
+      leave: [],
+      add: [],
+      remove: [],
+      mute: []
+    };
+    const lastTracksIds = lastTracksInfo.map(info => info.trackid);
+    const currentTracksIds = currentTracksInfo.map(info => info.trackid);
+    lastTracksIds.forEach((trackId, i) => {
+      if (lastTracksInfo[i].playerid === currentUserId) {
+        return;
+      }
+
+      if (currentTracksIds.indexOf(trackId) === -1) {
+        missingEvent.remove.push(lastTracksInfo[i]);
+      } else {
+        const currentTracksInfoItem = currentTracksInfo.find(t => t.trackid === trackId);
+        const lastTrackInfoItem = lastTracksInfo[i]; // 如果重连后 trackid 相同但是 versionid 不同，抛出 track-remove 和 track-add
+
+        if (currentTracksInfoItem.versionid !== lastTrackInfoItem.versionid) {
+          missingEvent.remove.push(lastTrackInfoItem);
+          missingEvent.add.push(currentTracksInfoItem);
+        }
+      }
+    });
+    currentTracksIds.forEach((trackId, i) => {
+      if (currentTracksInfo[i].playerid === currentUserId) {
+        return;
+      }
+
+      const index = lastTracksIds.indexOf(trackId);
+
+      if (index === -1) {
+        missingEvent.add.push(currentTracksInfo[i]);
+        missingEvent.mute.push({
+          trackid: trackId,
+          muted: currentTracksInfo[i].muted
+        });
+      } else {
+        if (currentTracksInfo[i].muted !== lastTracksInfo[index].muted) {
+          missingEvent.mute.push({
+            trackid: trackId,
+            muted: currentTracksInfo[i].muted
+          });
+        }
+      }
+    });
+    lastUsers.forEach(userId => {
+      if (userId === currentUserId) {
+        return;
+      }
+
+      if (currentUsers.indexOf(userId) === -1) {
+        missingEvent.leave.push({
+          playerid: userId
+        });
+      }
+    });
+    currentUsers.forEach(userId => {
+      if (userId === currentUserId) {
+        return;
+      }
+
+      if (lastUsers.indexOf(userId) === -1) {
+        missingEvent.join.push({
+          playerid: userId
+        });
+      }
+    });
+    return missingEvent;
   }
+
   function dec2hex(dec) {
-      return ("0" + dec.toString(16)).substr(-2);
+    return ("0" + dec.toString(16)).substr(-2);
   }
+
   function randomStringGen(strLength = 5) {
-      const arr = new Uint8Array((strLength || 40) / 2);
-      window.crypto.getRandomValues(arr);
-      return Array.from(arr, dec2hex).join("");
+    const arr = new Uint8Array((strLength || 40) / 2);
+    window.crypto.getRandomValues(arr);
+    return Array.from(arr, dec2hex).join("");
   }
   function timeout(ms) {
-      return new Promise(resolve => {
-          setTimeout(() => {
-              resolve();
-          }, ms);
-      });
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, ms);
+    });
   }
   const runOnceFlag = {};
   /**
    * 对于相同 key 的调用，只会执行一次
    */
+
   function runOnce(func, key) {
-      if (!runOnceFlag[key]) {
-          runOnceFlag[key] = true;
-          return func();
-      }
+    if (!runOnceFlag[key]) {
+      runOnceFlag[key] = true;
+      return func();
+    }
   }
   function showPlayWarn(e) {
-      log.warning("play failed!", e);
-      log.warning("play failed due to browser security policy, see: http://s.qnsdk.com/s/Txsdz");
+    log.warning("play failed!", e);
+    log.warning("play failed due to browser security policy, see: http://s.qnsdk.com/s/Txsdz");
   }
 
   /*
@@ -21776,135 +21952,159 @@
    *
    * Distributed under terms of the MIT license.
    */
+
   async function request(url) {
-      const res = await fetch(url);
-      if (res.status >= 400 && res.status < 500) {
-          throw { retry: false, message: res.status.toString() };
-      }
-      if (res.status !== 200) {
-          throw { retry: true, message: res.status.toString() };
-      }
-      const data = await res.json();
-      return data;
+    const res = await fetch(url);
+
+    if (res.status >= 400 && res.status < 500) {
+      throw {
+        retry: false,
+        message: res.status.toString()
+      };
+    }
+
+    if (res.status !== 200) {
+      throw {
+        retry: true,
+        message: res.status.toString()
+      };
+    }
+
+    const data = await res.json();
+    return data;
   }
   async function resolveIceHost(host) {
-      const ipv6Match = host.match(/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/);
-      const ipv4Match = host.match(/^([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])$/);
-      if (!!ipv4Match || !!ipv6Match)
-          return host;
-      try {
-          const res = await fetch(`https://${host}/ip`);
-          const data = await res.json();
-          return data.ip;
-      }
-      catch (e) {
-          log.warning("resolve ice failed, retry", e);
-          await timeout(1000);
-          return await resolveIceHost(host);
-      }
+    const ipv6Match = host.match(/(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/);
+    const ipv4Match = host.match(/^([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])$/);
+    if (!!ipv4Match || !!ipv6Match) return host;
+
+    try {
+      const res = await fetch(`https://${host}/ip`);
+      const data = await res.json();
+      return data.ip;
+    } catch (e) {
+      log.warning("resolve ice failed, retry", e);
+      await timeout(1000);
+      return await resolveIceHost(host);
+    }
   }
 
   const defaultTrackStatsReport = () => ({
-      packetLossRate: 0,
-      bitrate: 0,
-      bytes: 0,
-      packets: 0,
-      packetLoss: 0,
-      timestamp: Date.now(),
+    packetLossRate: 0,
+    bitrate: 0,
+    bytes: 0,
+    packets: 0,
+    packetLoss: 0,
+    timestamp: Date.now()
   });
   async function getStats(pc, track, pctype) {
-      const statsReport = defaultTrackStatsReport();
-      let report;
-      try {
-          report = await pc.getStats(track);
+    const statsReport = defaultTrackStatsReport();
+    let report;
+
+    try {
+      report = await pc.getStats(track);
+    } catch (e) {
+      log.debug("get stats error, fallback to default", e);
+      return defaultTrackStatsReport();
+    }
+
+    if (!report) {
+      log.debug("get null stats, fallback to default");
+      return defaultTrackStatsReport();
+    }
+
+    for (const item of report.values()) {
+      if (pctype === "send" && item.type === "outbound-rtp" && !item.isRemote || pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote) {
+        const remoteItem = report.get(item.remoteId);
+        const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
+        const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
+        let packetLoss = 0;
+
+        if (remoteItem) {
+          const remotePackets = pctype === "send" ? remoteItem.packetsReceived : remoteItem.packetsSent;
+          packetLoss = pctype === "send" ? remoteItem.packetsLost : remotePackets - packets;
+        }
+
+        statsReport.bytes = bytes;
+        statsReport.packets = packets;
+        statsReport.packetLoss = packetLoss;
       }
-      catch (e) {
-          log.debug("get stats error, fallback to default", e);
-          return defaultTrackStatsReport();
-      }
-      if (!report) {
-          log.debug("get null stats, fallback to default");
-          return defaultTrackStatsReport();
-      }
-      for (const item of report.values()) {
-          if ((pctype === "send" && item.type === "outbound-rtp" && !item.isRemote) ||
-              (pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote)) {
-              const remoteItem = report.get(item.remoteId);
-              const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
-              const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
-              let packetLoss = 0;
-              if (remoteItem) {
-                  const remotePackets = pctype === "send" ? remoteItem.packetsReceived : remoteItem.packetsSent;
-                  packetLoss = pctype === "send" ? remoteItem.packetsLost : remotePackets - packets;
-              }
-              statsReport.bytes = bytes;
-              statsReport.packets = packets;
-              statsReport.packetLoss = packetLoss;
-          }
-      }
-      return statsReport;
+    }
+
+    return statsReport;
   }
 
   function createPC() {
-      const rtcOptions = {
-          bundlePolicy: "max-bundle",
-          rtcpMuxPolicy: "require",
-          iceServers: [],
-      };
-      if (browserReport.unifiedPlan) {
-          rtcOptions.sdpSemantics = "unified-plan";
-      }
-      else {
-          rtcOptions.sdpSemantics = "plan-b";
-      }
-      const pc = new RTCPeerConnection(rtcOptions);
-      return pc;
+    const rtcOptions = {
+      bundlePolicy: "max-bundle",
+      rtcpMuxPolicy: "require",
+      iceServers: []
+    };
+
+    if (browserReport.unifiedPlan) {
+      rtcOptions.sdpSemantics = "unified-plan";
+    } else {
+      rtcOptions.sdpSemantics = "plan-b";
+    }
+
+    const pc = new RTCPeerConnection(rtcOptions);
+    return pc;
   }
   async function addTransceiver(track, pc) {
-      const transceiver = pc.getTransceivers().find(t => t.direction === "inactive" && t.receiver.track.kind === track.kind);
-      if (transceiver) {
-          transceiver.direction = "sendonly";
-          await transceiver.sender.replaceTrack(track);
-          return transceiver;
-      }
-      else {
-          return await pc.addTransceiver(track, { direction: "sendonly" });
-      }
+    const transceiver = pc.getTransceivers().find(t => t.direction === "inactive" && t.receiver.track.kind === track.kind);
+
+    if (transceiver) {
+      transceiver.direction = "sendonly";
+      await transceiver.sender.replaceTrack(track);
+      return transceiver;
+    } else {
+      return await pc.addTransceiver(track, {
+        direction: "sendonly"
+      });
+    }
   }
   async function getPCStats(pc, track, pctype, lastReport) {
-      if (browserReport.stats) {
-          const stats = await getStats(pc, track, pctype);
-          return getRateStats(stats, lastReport);
-      }
-      else {
-          runOnce(() => {
-              log.warning("your browser does not support getStats");
-          }, "not-support-stats-warning");
-          return defaultTrackStatsReport();
-      }
+    if (browserReport.stats) {
+      const stats = await getStats(pc, track, pctype);
+      return getRateStats(stats, lastReport);
+    } else {
+      runOnce(() => {
+        log.warning("your browser does not support getStats");
+      }, "not-support-stats-warning");
+      return defaultTrackStatsReport();
+    }
   }
   function getRateStats(report, lastReport) {
-      if (!lastReport) {
-          return report;
+    if (!lastReport) {
+      return report;
+    }
+
+    const newReport = objectSpread({}, report);
+
+    const packetTrans = report.packets - lastReport.packets;
+    const packetLoss = report.packetLoss - lastReport.packetLoss;
+
+    if (packetLoss > 0) {
+      newReport.packetLossRate = packetLoss / packetTrans;
+
+      if (newReport.packetLossRate > 1) {
+        newReport.packetLossRate = 1;
       }
-      const newReport = { ...report };
-      const packetTrans = report.packets - lastReport.packets;
-      const packetLoss = report.packetLoss - lastReport.packetLoss;
-      if (packetLoss > 0) {
-          newReport.packetLossRate = packetLoss / packetTrans;
-          if (newReport.packetLossRate > 1) {
-              newReport.packetLossRate = 1;
-          }
-      }
-      const time = (report.timestamp - lastReport.timestamp) / 1000;
-      if (time <= 0) {
-          return report;
-      }
-      newReport.bitrate = 8 * (report.bytes - lastReport.bytes) / time;
-      if (newReport.bitrate < 0) {
-          return lastReport;
-      }
-      return newReport;
+    }
+
+    const time = (report.timestamp - lastReport.timestamp) / 1000;
+
+    if (time <= 0) {
+      return report;
+    }
+
+    newReport.bitrate = 8 * (report.bytes - lastReport.bytes) / time;
+
+    if (newReport.bitrate < 0) {
+      return lastReport;
+    }
+
+    return newReport;
   }
 
   /*
@@ -21915,523 +22115,624 @@
    * Distributed under terms of the MIT license.
   */
   window.addEventListener("message", e => {
-      if (e.origin !== window.location.origin) {
-          return;
-      }
-      onMessageCallback(e.data);
-  });
-  // and the function that handles received messages
+    if (e.origin !== window.location.origin) {
+      return;
+    }
+
+    onMessageCallback(e.data);
+  }); // and the function that handles received messages
+
   function onMessageCallback(data) {
-      // "cancel" button is clicked
-      if (data === "PermissionDeniedError") {
-          chromeMediaSource = "PermissionDeniedError";
-          if (screenCallback) {
-              return screenCallback("PermissionDeniedError");
-          }
-          else {
-              throw SCREEN_PERMISSION_DENIED();
-          }
+    // "cancel" button is clicked
+    if (data === "PermissionDeniedError") {
+      chromeMediaSource = "PermissionDeniedError";
+
+      if (screenCallback) {
+        return screenCallback("PermissionDeniedError");
+      } else {
+        throw SCREEN_PERMISSION_DENIED();
       }
-      // extension notified his presence
-      if (data === "qnrtc:rtcmulticonnection-extension-loaded") {
-          chromeMediaSource = "desktop";
-      }
-      // old plugin version
-      if (data === "rtcmulticonnection-extension-loaded") {
-          log.warning("your chrome screen sharing plugin is not the latest version, or you have other screen sharing plugins.");
-      }
-      // extension shared temp sourceId
-      if (data.sourceId && screenCallback) {
-          screenCallback(sourceId = data.sourceId, data.canRequestAudioTrack === true);
-      }
-  }
-  // global variables
+    } // extension notified his presence
+
+
+    if (data === "qnrtc:rtcmulticonnection-extension-loaded") {
+      chromeMediaSource = "desktop";
+    } // old plugin version
+
+
+    if (data === "rtcmulticonnection-extension-loaded") {
+      log.warning("your chrome screen sharing plugin is not the latest version, or you have other screen sharing plugins.");
+    } // extension shared temp sourceId
+
+
+    if (data.sourceId && screenCallback) {
+      screenCallback(sourceId = data.sourceId, data.canRequestAudioTrack === true);
+    }
+  } // global variables
+
+
   let chromeMediaSource = "screen";
   let sourceId;
   let screenCallback;
   async function isChromeExtensionAvailable() {
-      const promise = () => new Promise((resolve, reject) => {
-          if (chromeMediaSource === "desktop") {
-              resolve(true);
-              return;
-          }
-          // ask extension if it is available
-          window.postMessage("qnrtc:are-you-there", "*");
-          setTimeout(() => {
-              if (chromeMediaSource === "screen") {
-                  resolve(false);
-              }
-              else {
-                  resolve(true);
-              }
-          }, 2000);
-      });
-      return await promise();
-  }
-  // this function can be used to get "source-id" from the extension
+    const promise = () => new Promise((resolve, reject) => {
+      if (chromeMediaSource === "desktop") {
+        resolve(true);
+        return;
+      } // ask extension if it is available
+
+
+      window.postMessage("qnrtc:are-you-there", "*");
+      setTimeout(() => {
+        if (chromeMediaSource === "screen") {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      }, 2000);
+    });
+
+    return await promise();
+  } // this function can be used to get "source-id" from the extension
+
   function getSourceId(callback, screenOnly = false, windowOnly = false) {
-      screenCallback = callback;
-      if (screenOnly) {
-          window.postMessage("qnrtc:get-sourceId-screen", "*");
-          return;
-      }
-      if (windowOnly) {
-          window.postMessage("qnrtc:get-sourceId-window", "*");
-          return;
-      }
-      window.postMessage("qnrtc:get-sourceId", "*");
-  }
-  // this function can be used to get "source-id" from the extension
+    screenCallback = callback;
+
+    if (screenOnly) {
+      window.postMessage("qnrtc:get-sourceId-screen", "*");
+      return;
+    }
+
+    if (windowOnly) {
+      window.postMessage("qnrtc:get-sourceId-window", "*");
+      return;
+    }
+
+    window.postMessage("qnrtc:get-sourceId", "*");
+  } // this function can be used to get "source-id" from the extension
+
+
   function getSourceIdWithAudio(callback) {
-      if (sourceId) {
-          return callback(sourceId);
-      }
-      screenCallback = callback;
-      window.postMessage("qnrtc:audio-plus-tab", "*");
+    if (sourceId) {
+      return callback(sourceId);
+    }
+
+    screenCallback = callback;
+    window.postMessage("qnrtc:audio-plus-tab", "*");
   }
-  // this function explains how to use above methods/objects
+
   async function getScreenConstraints(captureSourceIdWithAudio, screen) {
-      const source = screen.source;
-      const contraintPromise = () => new Promise((resolve, reject) => {
-          const firefoxScreenConstraints = {
-              mozMediaSource: source || "window",
-              mediaSource: source || "window",
-              height: screen.height,
-              width: screen.width,
-          };
-          if (isFirefox) {
-              resolve(firefoxScreenConstraints);
+    const source = screen.source;
+
+    const contraintPromise = () => new Promise((resolve, reject) => {
+      const firefoxScreenConstraints = {
+        mozMediaSource: source || "window",
+        mediaSource: source || "window",
+        height: screen.height,
+        width: screen.width
+      };
+
+      if (isFirefox) {
+        resolve(firefoxScreenConstraints);
+        return;
+      } // this statement defines getUserMedia constraints
+      // that will be used to capture content of screen
+
+
+      const screen_constraints = {
+        mandatory: {
+          chromeMediaSource: chromeMediaSource,
+          maxWidth: getNumberRangeMax(screen.width),
+          maxHeight: getNumberRangeMax(screen.height)
+        },
+        optional: []
+      }; // this statement verifies chrome extension availability
+      // if installed and available then it will invoke extension API
+      // otherwise it will fallback to command-line based screen capturing API
+
+      if (chromeMediaSource === "desktop") {
+        if (captureSourceIdWithAudio) {
+          getSourceIdWithAudio(function (sourceId, canRequestAudioTrack) {
+            screen_constraints.mandatory.chromeMediaSourceId = sourceId;
+
+            if (canRequestAudioTrack) {
+              screen_constraints.canRequestAudioTrack = true;
+            }
+
+            if (sourceId === "PermissionDeniedError") {
+              reject(SCREEN_PERMISSION_DENIED());
               return;
-          }
-          // this statement defines getUserMedia constraints
-          // that will be used to capture content of screen
-          const screen_constraints = {
-              mandatory: {
-                  chromeMediaSource: chromeMediaSource,
-                  maxWidth: getNumberRangeMax(screen.width),
-                  maxHeight: getNumberRangeMax(screen.height),
-              },
-              optional: [],
-          };
-          // this statement verifies chrome extension availability
-          // if installed and available then it will invoke extension API
-          // otherwise it will fallback to command-line based screen capturing API
-          if (chromeMediaSource === "desktop") {
-              if (captureSourceIdWithAudio) {
-                  getSourceIdWithAudio(function (sourceId, canRequestAudioTrack) {
-                      screen_constraints.mandatory.chromeMediaSourceId = sourceId;
-                      if (canRequestAudioTrack) {
-                          screen_constraints.canRequestAudioTrack = true;
-                      }
-                      if (sourceId === "PermissionDeniedError") {
-                          reject(SCREEN_PERMISSION_DENIED());
-                          return;
-                      }
-                      resolve(screen_constraints);
-                      return;
-                  });
-              }
-              else {
-                  getSourceId(function (sourceId) {
-                      screen_constraints.mandatory.chromeMediaSourceId = sourceId;
-                      if (sourceId === "PermissionDeniedError") {
-                          reject(SCREEN_PERMISSION_DENIED());
-                          return;
-                      }
-                      resolve(screen_constraints);
-                      return;
-                  }, source === "screen", source === "window");
-              }
+            }
+
+            resolve(screen_constraints);
+            return;
+          });
+        } else {
+          getSourceId(function (sourceId) {
+            screen_constraints.mandatory.chromeMediaSourceId = sourceId;
+
+            if (sourceId === "PermissionDeniedError") {
+              reject(SCREEN_PERMISSION_DENIED());
               return;
-          }
-          resolve(screen_constraints);
-      });
-      return await contraintPromise();
+            }
+
+            resolve(screen_constraints);
+            return;
+          }, source === "screen", source === "window");
+        }
+
+        return;
+      }
+
+      resolve(screen_constraints);
+    });
+
+    return await contraintPromise();
   }
 
   class User {
-      constructor(userId, userData) {
-          /**
-           * 指这个用户在本地的 Track 对象，一般用来播放
-           */
-          this.tracks = [];
-          /**
-           * 指这个用户在这个房间内已经发布的流信息，一般用来发起订阅
-           */
-          this.publishedTrackInfo = [];
-          this.userId = userId;
-          this.userData = userData;
-      }
+    constructor(userId, userData) {
       /**
-       * 只要有 track 就认为其已经发布
+       * 指这个用户在本地的 Track 对象，一般用来播放
        */
-      get published() {
-          return this.publishedTrackInfo.length > 0;
+      this.tracks = [];
+      /**
+       * 指这个用户在这个房间内已经发布的流信息，一般用来发起订阅
+       */
+
+      this.publishedTrackInfo = [];
+      this.userId = userId;
+      this.userData = userData;
+    }
+    /**
+     * 只要有 track 就认为其已经发布
+     */
+
+
+    get published() {
+      return this.publishedTrackInfo.length > 0;
+    }
+    /* @internal */
+
+
+    addTracks(tracks) {
+      this.tracks = this.tracks.concat(tracks);
+      this.tracks = lodash_uniqby(this.tracks, "mediaTrack");
+
+      for (const track of this.tracks) {
+        track.once("release", () => {
+          lodash_remove(this.tracks, t => t === track);
+        });
       }
-      /* @internal */
-      addTracks(tracks) {
-          this.tracks = this.tracks.concat(tracks);
-          this.tracks = lodash_uniqby(this.tracks, "mediaTrack");
-          for (const track of this.tracks) {
-              track.once("release", () => {
-                  lodash_remove(this.tracks, t => t === track);
-              });
-          }
-      }
-      /* @internal */
-      removeTracksByTrackId(trackIds) {
-          lodash_remove(this.tracks, track => {
-              if (!track.info.trackId)
-                  return false;
-              return trackIds.indexOf(track.info.trackId) !== -1;
-          });
-      }
-      /* @internal */
-      addPublishedTrackInfo(info) {
-          this.publishedTrackInfo = this.publishedTrackInfo.concat(info);
-          this.publishedTrackInfo = lodash_uniqby(this.publishedTrackInfo, "trackId");
-      }
-      /* @internal */
-      removePublishedTrackInfo(trackIds) {
-          lodash_remove(this.publishedTrackInfo, info => trackIds.indexOf(info.trackId) !== -1);
-      }
+    }
+    /* @internal */
+
+
+    removeTracksByTrackId(trackIds) {
+      lodash_remove(this.tracks, track => {
+        if (!track.info.trackId) return false;
+        return trackIds.indexOf(track.info.trackId) !== -1;
+      });
+    }
+    /* @internal */
+
+
+    addPublishedTrackInfo(info) {
+      this.publishedTrackInfo = this.publishedTrackInfo.concat(info);
+      this.publishedTrackInfo = lodash_uniqby(this.publishedTrackInfo, "trackId");
+    }
+    /* @internal */
+
+
+    removePublishedTrackInfo(trackIds) {
+      lodash_remove(this.publishedTrackInfo, info => trackIds.indexOf(info.trackId) !== -1);
+    }
+
   }
 
   function createAudioElement(track) {
-      const audio = document.createElement("audio");
-      const stream = new MediaStream([track]);
-      audio.style.visibility = "hidden";
-      audio.className = `qnrtc-audio-player qnrtc-stream-player`;
-      audio.dataset.localid = track.id;
-      audio.srcObject = stream;
-      audio.autoplay = true;
-      return audio;
+    const audio = document.createElement("audio");
+    const stream = new MediaStream([track]);
+    audio.style.visibility = "hidden";
+    audio.className = `qnrtc-audio-player qnrtc-stream-player`;
+    audio.dataset.localid = track.id;
+    audio.srcObject = stream;
+    audio.autoplay = true;
+    return audio;
   }
   function createVideoElement(track) {
-      const video = document.createElement("video");
-      const stream = new MediaStream([track]);
-      video.style.width = "100%";
-      video.style.height = "100%";
-      video.style.objectFit = "contain";
-      video.muted = true;
-      video.className = `qnrtc-video-player qnrtc-stream-player`;
-      video.dataset.localid = track.id;
-      video.setAttribute("playsinline", true);
-      video.autoplay = true;
-      video.srcObject = stream;
-      if (isIOS) {
-          video.setAttribute("controls", true);
-          nextTick(() => {
-              if (video && video.srcObject) {
-                  video.removeAttribute("controls");
-              }
-          });
-      }
-      return video;
+    const video = document.createElement("video");
+    const stream = new MediaStream([track]);
+    video.style.width = "100%";
+    video.style.height = "100%";
+    video.style.objectFit = "contain";
+    video.muted = true;
+    video.className = `qnrtc-video-player qnrtc-stream-player`;
+    video.dataset.localid = track.id;
+    video.setAttribute("playsinline", true);
+    video.autoplay = true;
+    video.srcObject = stream;
+
+    if (isIOS) {
+      video.setAttribute("controls", true);
+      nextTick(() => {
+        if (video && video.srcObject) {
+          video.removeAttribute("controls");
+        }
+      });
+    }
+
+    return video;
   }
   function webAudioUnlock(context) {
-      return new Promise((resolve, reject) => {
-          if (context.state === "suspended") {
-              log.log("audio context state is suspended");
-              const unlock = () => {
-                  context.resume().then(() => {
-                      document.body.removeEventListener("touchstart", unlock);
-                      document.body.removeEventListener("touchend", unlock);
-                      document.body.removeEventListener("mousedown", unlock);
-                      document.body.removeEventListener("mouseup", unlock);
-                      resolve(true);
-                  }).catch(reject);
-              };
-              document.body.addEventListener("touchstart", unlock, true);
-              document.body.addEventListener("touchend", unlock, true);
-              document.body.addEventListener("mousedown", unlock, true);
-              document.body.addEventListener("mouseup", unlock, true);
-          }
-          else {
-              resolve(false);
-          }
-      });
+    return new Promise((resolve, reject) => {
+      if (context.state === "suspended") {
+        log.log("audio context state is suspended");
+
+        const unlock = () => {
+          context.resume().then(() => {
+            document.body.removeEventListener("touchstart", unlock);
+            document.body.removeEventListener("touchend", unlock);
+            document.body.removeEventListener("mousedown", unlock);
+            document.body.removeEventListener("mouseup", unlock);
+            resolve(true);
+          }).catch(reject);
+        };
+
+        document.body.addEventListener("touchstart", unlock, true);
+        document.body.addEventListener("touchend", unlock, true);
+        document.body.addEventListener("mousedown", unlock, true);
+        document.body.addEventListener("mouseup", unlock, true);
+      } else {
+        resolve(false);
+      }
+    });
   }
 
   function getFrameFromVideo(video) {
-      const canvas = document.createElement("canvas");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-          return "data:,";
-      }
-      ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-      return canvas.toDataURL();
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      return "data:,";
+    }
+
+    ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    return canvas.toDataURL();
   }
 
   class EnhancedEventEmitter extends EventEmitter {
-      safeEmit(event, ...args) {
-          try {
-              this.emit(event, ...args);
-          }
-          catch (error) {
-              log.warning("safeEmit() | event listener threw an error [event:%s]:%o", event, error);
-          }
+    safeEmit(event, ...args) {
+      try {
+        this.emit(event, ...args);
+      } catch (error) {
+        log.warning("safeEmit() | event listener threw an error [event:%s]:%o", event, error);
       }
-      safeEmitAsPromise(event, ...args) {
-          return new Promise((resolve, reject) => {
-              const callback = resolve;
-              const errback = (error) => {
-                  log.warning("safeEmitAsPromise() | errback called [event:%s]:%o", event, error);
-                  reject(error);
-              };
-              this.safeEmit(event, ...args, callback, errback);
-          });
-      }
+    }
+
+    safeEmitAsPromise(event, ...args) {
+      return new Promise((resolve, reject) => {
+        const callback = resolve;
+
+        const errback = error => {
+          log.warning("safeEmitAsPromise() | errback called [event:%s]:%o", event, error);
+          reject(error);
+        };
+
+        this.safeEmit(event, ...args, callback, errback);
+      });
+    }
+
   }
 
   class Track extends EnhancedEventEmitter {
-      constructor(track, userId, direction) {
-          super();
-          this.master = false;
-          this.stats = defaultTrackStatsReport();
-          /**
-           * @internal
-           */
-          this.direction = "local";
-          this.sourceType = exports.TrackSourceType.NORMAL;
-          /* @internal */
-          this.onended = (event) => {
-              log.warning("track ended", this.mediaTrack, this.info.trackId);
-              // 如果是订阅下来的流触发 ended，只触发内部事件
-              if (this.direction === "local") {
-                  this.emit("ended", event);
-              }
-              else {
-                  this.emit("@ended", event);
-              }
-          };
-          this.mediaTrack = track;
-          this.mediaTrack.addEventListener("ended", this.onended);
-          this.userId = userId;
-          if (direction) {
-              this.direction = direction;
-          }
-          this.info = {
-              kind: track.kind,
-              muted: !track.enabled,
-              userId: this.userId,
-              versionid: 0,
-          };
-      }
-      play(container, muted) {
-          this.removeMediaElement();
-          const createEleFunc = this.info.kind === "video" ? createVideoElement : createAudioElement;
-          this.mediaElement = createEleFunc(this.mediaTrack);
-          if (this.info.kind === "audio" && muted) {
-              this.mediaElement.muted = true;
-          }
-          container.appendChild(this.mediaElement);
-          this.mediaElement.play()
-              .catch(showPlayWarn);
-      }
+    constructor(track, userId, direction) {
+      super();
+      this.master = false;
+      this.stats = defaultTrackStatsReport();
       /**
        * @internal
        */
-      resume(track) {
-          this.mediaTrack.removeEventListener("ended", this.onended);
-          this.mediaTrack.stop();
-          this.mediaTrack = track;
-          this.mediaTrack.addEventListener("ended", this.onended);
-          if (this.mediaElement) {
-              const stream = new MediaStream([track]);
-              this.mediaElement.dataset.localid = track.id;
-              this.mediaElement.srcObject = stream;
-          }
-          this.removeEvent("@get-stats");
-          this.resetStats();
+
+      this.direction = "local";
+      this.sourceType = exports.TrackSourceType.NORMAL;
+      /* @internal */
+
+      this.onended = event => {
+        log.warning("track ended", this.mediaTrack, this.info.trackId); // 如果是订阅下来的流触发 ended，只触发内部事件
+
+        if (this.direction === "local") {
+          this.emit("ended", event);
+        } else {
+          this.emit("@ended", event);
+        }
+      };
+
+      this.mediaTrack = track;
+      this.mediaTrack.addEventListener("ended", this.onended);
+      this.userId = userId;
+
+      if (direction) {
+        this.direction = direction;
       }
-      getStats() {
-          if (!this.statsInterval) {
-              this.startGetStatsInterval();
-          }
-          return this.stats;
+
+      this.info = {
+        kind: track.kind,
+        muted: !track.enabled,
+        userId: this.userId,
+        versionid: 0
+      };
+    }
+
+    play(container, muted) {
+      this.removeMediaElement();
+      const createEleFunc = this.info.kind === "video" ? createVideoElement : createAudioElement;
+      this.mediaElement = createEleFunc(this.mediaTrack);
+
+      if (this.info.kind === "audio" && muted) {
+        this.mediaElement.muted = true;
       }
-      getCurrentFrameDataURL() {
-          if (!this.mediaElement || !(this.mediaElement instanceof HTMLVideoElement)) {
-              return "data:,";
-          }
-          return getFrameFromVideo(this.mediaElement);
+
+      container.appendChild(this.mediaElement);
+      this.mediaElement.play().catch(showPlayWarn);
+    }
+    /**
+     * @internal
+     */
+
+
+    resume(track) {
+      this.mediaTrack.removeEventListener("ended", this.onended);
+      this.mediaTrack.stop();
+      this.mediaTrack = track;
+      this.mediaTrack.addEventListener("ended", this.onended);
+
+      if (this.mediaElement) {
+        const stream = new MediaStream([track]);
+        this.mediaElement.dataset.localid = track.id;
+        this.mediaElement.srcObject = stream;
       }
-      /**
-       * 设置 Track 为 Master SDK只允许发布一路 Audio Track 和一路 Video Track
-       * @param master 是否为master
-       */
-      setMaster(master) {
-          this.master = master;
+
+      this.removeEvent("@get-stats");
+      this.resetStats();
+    }
+
+    getStats() {
+      if (!this.statsInterval) {
+        this.startGetStatsInterval();
       }
-      /**
-       * @internal
-       */
-      setMute(muted) {
-          this.info.muted = muted;
-          this.mediaTrack.enabled = !muted;
-          this.emit("mute", muted);
+
+      return this.stats;
+    }
+
+    getCurrentFrameDataURL() {
+      if (!this.mediaElement || !(this.mediaElement instanceof HTMLVideoElement)) {
+        return "data:,";
       }
-      /**
-       * @internal
-       */
-      setKbps(v) {
-          this.info.kbps = v;
+
+      return getFrameFromVideo(this.mediaElement);
+    }
+    /**
+     * 设置 Track 为 Master SDK只允许发布一路 Audio Track 和一路 Video Track
+     * @param master 是否为master
+     */
+
+
+    setMaster(master) {
+      this.master = master;
+    }
+    /**
+     * @internal
+     */
+
+
+    setMute(muted) {
+      this.info.muted = muted;
+      this.mediaTrack.enabled = !muted;
+      this.emit("mute", muted);
+    }
+    /**
+     * @internal
+     */
+
+
+    setKbps(v) {
+      this.info.kbps = v;
+    }
+    /**
+     * @internal
+     */
+
+
+    setInfo(info) {
+      this.info = objectSpread({}, this.info, info);
+    }
+    /**
+     * @internal
+     */
+
+
+    removeMediaElement() {
+      if (this.mediaElement) {
+        this.mediaElement.remove();
+        this.mediaElement = undefined;
       }
-      /**
-       * @internal
-       */
-      setInfo(info) {
-          this.info = {
-              ...this.info,
-              ...info,
-          };
+    }
+
+    release() {
+      this.emit("release");
+      this.removeEvent();
+
+      if (this.statsInterval) {
+        window.clearInterval(this.statsInterval);
+      } // unified-plan 下订阅的 Track 会被复用，不能释放
+
+
+      if (this.direction === "local" || !browserReport.unifiedPlan) {
+        this.mediaTrack.stop();
       }
-      /**
-       * @internal
-       */
-      removeMediaElement() {
-          if (this.mediaElement) {
-              this.mediaElement.remove();
-              this.mediaElement = undefined;
-          }
-      }
-      release() {
-          this.emit("release");
-          this.removeEvent();
-          if (this.statsInterval) {
-              window.clearInterval(this.statsInterval);
-          }
-          // unified-plan 下订阅的 Track 会被复用，不能释放
-          if (this.direction === "local" || !browserReport.unifiedPlan) {
-              this.mediaTrack.stop();
-          }
-          this.removeMediaElement();
-      }
-      /**
-       * @internal
-       * 重置 trackId 和 userId，在 unpublish 的时候会自动调用
-       */
-      reset() {
-          this.info.trackId = undefined;
-          this.info.userId = undefined;
-          this.info.versionid = 0;
-          this.userId = undefined;
-          this.resetStats();
-      }
-      /**
-       * @internal
-       * 重置 stats，每当 pc 重新构建的时候调用
-       */
-      resetStats() {
-          this.stats = defaultTrackStatsReport();
-          this.lastStats = undefined;
-      }
-      /**
-       * @internal
-       */
-      async startGetStatsInterval() {
-          const getStatsFunc = async () => {
-              const handlers = this.getListeners("@get-stats");
-              if (!handlers || handlers.length === 0)
-                  return defaultTrackStatsReport();
-              this.stats = await this.safeEmitAsPromise("@get-stats", this.lastStats);
-              this.lastStats = { ...this.stats };
-          };
-          this.statsInterval = window.setInterval(getStatsFunc, 1000);
-      }
-      /**
-       * @abstract
-       */
-      onAudioBuffer(cb, bufferSize) {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      setVolume(value) {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      getCurrentTimeDomainData() {
-          log.warning("not implement");
-          return new Uint8Array();
-      }
-      /**
-       * @abstract
-       */
-      getCurrentFrequencyData() {
-          log.warning("not implement");
-          return new Uint8Array();
-      }
-      /**
-       * @abstract
-       */
-      getVolume() {
-          log.warning("not implement");
-          return 0;
-      }
-      /**
-       * @abstract
-       */
-      getCurrentVolumeLevel() {
-          log.warning("not implement");
-          return 0;
-      }
-      /**
-       * @abstract
-       */
-      setLoop(loop) {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      startAudioSource() {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      pauseAudioSource() {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      resumeAudioSource() {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      stopAudioSource() {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      getCurrentTime() {
-          log.warning("not implement");
-          return 0;
-      }
-      /**
-       * @abstract
-       */
-      setCurrentTime(val) {
-          log.warning("not implement");
-      }
-      /**
-       * @abstract
-       */
-      getDuration() {
-          log.warning("not implement");
-          return 0;
-      }
+
+      this.removeMediaElement();
+    }
+    /**
+     * @internal
+     * 重置 trackId 和 userId，在 unpublish 的时候会自动调用
+     */
+
+
+    reset() {
+      this.info.trackId = undefined;
+      this.info.userId = undefined;
+      this.info.versionid = 0;
+      this.userId = undefined;
+      this.resetStats();
+    }
+    /**
+     * @internal
+     * 重置 stats，每当 pc 重新构建的时候调用
+     */
+
+
+    resetStats() {
+      this.stats = defaultTrackStatsReport();
+      this.lastStats = undefined;
+    }
+    /**
+     * @internal
+     */
+
+
+    async startGetStatsInterval() {
+      const getStatsFunc = async () => {
+        const handlers = this.getListeners("@get-stats");
+        if (!handlers || handlers.length === 0) return defaultTrackStatsReport();
+        this.stats = await this.safeEmitAsPromise("@get-stats", this.lastStats);
+        this.lastStats = objectSpread({}, this.stats);
+      };
+
+      this.statsInterval = window.setInterval(getStatsFunc, 1000);
+    }
+    /**
+     * @abstract
+     */
+
+
+    onAudioBuffer(cb, bufferSize) {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    setVolume(value) {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    getCurrentTimeDomainData() {
+      log.warning("not implement");
+      return new Uint8Array();
+    }
+    /**
+     * @abstract
+     */
+
+
+    getCurrentFrequencyData() {
+      log.warning("not implement");
+      return new Uint8Array();
+    }
+    /**
+     * @abstract
+     */
+
+
+    getVolume() {
+      log.warning("not implement");
+      return 0;
+    }
+    /**
+     * @abstract
+     */
+
+
+    getCurrentVolumeLevel() {
+      log.warning("not implement");
+      return 0;
+    }
+    /**
+     * @abstract
+     */
+
+
+    setLoop(loop) {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    startAudioSource() {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    pauseAudioSource() {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    resumeAudioSource() {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    stopAudioSource() {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    getCurrentTime() {
+      log.warning("not implement");
+      return 0;
+    }
+    /**
+     * @abstract
+     */
+
+
+    setCurrentTime(val) {
+      log.warning("not implement");
+    }
+    /**
+     * @abstract
+     */
+
+
+    getDuration() {
+      log.warning("not implement");
+      return 0;
+    }
+
   }
 
   /*
@@ -22440,812 +22741,976 @@
    *
    * Distributed under terms of the MIT license.
   */
-  // unsupport fallback
+
   const AudioContext = window.AudioContext || window.webkitAudioContext || window.Object;
   const audioContext = browserReport.audioContextOptions ? new AudioContext({
-      // 控制音频延迟，默认为 interactive，在 Chrome 下为 0.01s
-      latencyHint: "interactive",
+    // 控制音频延迟，默认为 interactive，在 Chrome 下为 0.01s
+    latencyHint: "interactive"
   }) : new AudioContext();
   window.audioContext = audioContext;
+
   if (window.Promise) {
-      const unlockWebAudio = () => {
-          webAudioUnlock(audioContext).then(unlocked => {
-              log.debug("web audio context unlocked", unlocked);
-          }).catch(e => {
-              log.warning("can not unlock web audio context", e);
-          });
-          window.removeEventListener("load", unlockWebAudio);
-      };
-      if (!document.body) {
-          window.addEventListener("load", unlockWebAudio);
-      }
-      else {
-          unlockWebAudio();
-      }
+    const unlockWebAudio = () => {
+      webAudioUnlock(audioContext).then(unlocked => {
+        log.debug("web audio context unlocked", unlocked);
+      }).catch(e => {
+        log.warning("can not unlock web audio context", e);
+      });
+      window.removeEventListener("load", unlockWebAudio);
+    };
+
+    if (!document.body) {
+      window.addEventListener("load", unlockWebAudio);
+    } else {
+      unlockWebAudio();
+    }
   }
+
   const FFT_SIZE = 2048;
   const BUFFER_SIZE = 4096;
   const MediaElementEventList = ["play", "playing", "pause", "ended", "waiting", "seeking"];
   class AudioManager extends EnhancedEventEmitter {
-      constructor() {
-          super();
-          // 麦克风音频源 或者 PCM音频源
-          this.audioSource = null;
-          this._audioSourceState = exports.AudioSourceState.IDLE;
-          this.bufferSourceDuration = {
-              startTime: 0,
-              pauseTime: 0,
-              lastPauseTime: 0,
-              offsetTime: 0,
-              stopTime: 0,
-          };
-          this.handleMediaElementEvents = (e) => {
-              switch (e.type) {
-                  case "playing":
-                  case "play": {
-                      this.audioSourceState = exports.AudioSourceState.PLAY;
-                      break;
-                  }
-                  case "pause": {
-                      if (this.audioSourceState === exports.AudioSourceState.END)
-                          break;
-                      this.audioSourceState = exports.AudioSourceState.PAUSE;
-                      break;
-                  }
-                  case "waiting":
-                  case "seeking": {
-                      this.audioSourceState = exports.AudioSourceState.LOADING;
-                      break;
-                  }
-                  case "ended": {
-                      this.audioSourceState = exports.AudioSourceState.END;
-                      break;
-                  }
-              }
-          };
-      }
-      get audioSourceState() {
-          return this._audioSourceState;
-      }
-      set audioSourceState(newState) {
-          if (newState === this._audioSourceState)
-              return;
-          this.emit("@audio-source-state-change", newState, this._audioSourceState);
-          this._audioSourceState = newState;
-      }
-      onAudioBuffer(audioBufferCallback, bufferSize = BUFFER_SIZE) {
-          this.audioBufferCallback = audioBufferCallback;
-          this.audioBufferSize = bufferSize;
-      }
-      initAudioContext() {
-          log.log("init audio context", audioContext.state);
-          // in chrome, audioContext maybe in suspended state after initialization
-          if (audioContext.state === "suspended") {
-              log.log("audio context suspended");
-              audioContext.resume()
-                  .catch((e) => {
-                  log.warning("resume audiocontext failed! see: http://s.qnsdk.com/s/Txsdz", e);
-              });
-          }
-          log.log("init audio finish", audioContext.state);
-          this.analyserNode = audioContext.createAnalyser();
-          this.analyserNode.fftSize = FFT_SIZE;
-          this.gainNode = audioContext.createGain();
-          polyfillAudioNode(this.gainNode);
-          if (browserReport.mediaStreamDest) {
-              this.audioStream = audioContext.createMediaStreamDestination();
-          }
-          this.initScriptNode(BUFFER_SIZE);
-      }
-      setMediaStreamSource(originMediaStream) {
-          this.audioSource = audioContext.createMediaStreamSource(originMediaStream);
-          this.connect();
-      }
-      setAudioBufferSource() {
-          this.audioSource = audioContext.createBufferSource();
-          // 播放结束后清空节点
-          this.audioSource.onended = () => this.stopAudioSource();
-          this.connect();
-      }
-      setMediaElementSource(mediaElement) {
-          this.audioSource = audioContext.createMediaElementSource(mediaElement);
-          this.audioSourceElement = mediaElement;
-          for (const eventItem of MediaElementEventList) {
-              this.audioSourceElement.addEventListener(eventItem, this.handleMediaElementEvents);
-          }
-          this.connect();
-      }
-      setAudioSourceLoop(isLoop) {
-          this.audioSourceLoop = isLoop;
-          if (this.audioSource instanceof AudioBufferSourceNode) {
-              this.audioSource.loop = !!isLoop;
-          }
-          else if (this.audioSourceElement) {
-              this.audioSourceElement.loop = !!isLoop;
-          }
-      }
-      setAudioBuffer(data) {
-          if (!(this.audioSource instanceof AudioBufferSourceNode)) {
-              return;
-          }
-          this.audioSource.buffer = data;
-          this.audioSourceBuffer = data;
-      }
-      playAudioSource(offset = 0) {
-          if (this.audioSource instanceof AudioBufferSourceNode) {
-              this.resetBufferSourceDuration();
-              try {
-                  this.audioSource.start(0, offset);
-                  this.bufferSourceDuration.startTime = audioContext.currentTime;
-                  this.bufferSourceDuration.offsetTime = offset;
-                  this.audioSourceState = exports.AudioSourceState.PLAY;
-              }
-              catch (e) {
-                  // 说明已经 start
-                  this.stopAudioSource();
-                  this.playAudioSource(offset);
-              }
-          }
-          else if (this.audioSourceElement) {
-              this.audioSourceElement.currentTime = 0;
-              this.audioSourceElement.play()
-                  .catch(showPlayWarn);
-          }
-          else if (this.audioSource === null && this.audioSourceBuffer) {
-              this.resetBufferSourceDuration();
-              // 说明原来的 AudioBufferSourceNode 被删掉了，重新创建
-              this.setAudioBufferSource();
-              this.setAudioBuffer(this.audioSourceBuffer);
-              this.setAudioSourceLoop(!!this.audioSourceLoop);
-              // fix ts error
-              this.audioSource.start(0, offset);
-              this.bufferSourceDuration.startTime = audioContext.currentTime;
-              this.bufferSourceDuration.offsetTime = offset;
+    constructor() {
+      super(); // 麦克风音频源 或者 PCM音频源
+
+      this.audioSource = null;
+      this._audioSourceState = exports.AudioSourceState.IDLE;
+      this.bufferSourceDuration = {
+        startTime: 0,
+        pauseTime: 0,
+        lastPauseTime: 0,
+        offsetTime: 0,
+        stopTime: 0
+      };
+
+      this.handleMediaElementEvents = e => {
+        switch (e.type) {
+          case "playing":
+          case "play":
+            {
               this.audioSourceState = exports.AudioSourceState.PLAY;
-          }
-      }
-      resumeAudioSource() {
-          if (this.audioSource instanceof AudioBufferSourceNode) {
-              if (this.audioSourceState !== exports.AudioSourceState.PAUSE)
-                  return;
-              this.audioSource.playbackRate.value = 1;
-              this.bufferSourceDuration.pauseTime += (audioContext.currentTime - this.bufferSourceDuration.lastPauseTime);
-              this.bufferSourceDuration.lastPauseTime = 0;
-              this.audioSourceState = exports.AudioSourceState.PLAY;
-          }
-          else if (this.audioSourceElement) {
-              this.audioSourceElement.play()
-                  .catch(showPlayWarn);
-          }
-      }
-      pauseAudioSource() {
-          if (this.audioSource instanceof AudioBufferSourceNode) {
-              // hack to pause, but firefox does not support MIN_VALUE
-              if (isFirefox) {
-                  this.audioSource.playbackRate.value = 10e-8;
-              }
-              else {
-                  this.audioSource.playbackRate.value = Number.MIN_VALUE;
-              }
-              if (!this.bufferSourceDuration.lastPauseTime) {
-                  this.bufferSourceDuration.lastPauseTime = audioContext.currentTime;
-              }
+              break;
+            }
+
+          case "pause":
+            {
+              if (this.audioSourceState === exports.AudioSourceState.END) break;
               this.audioSourceState = exports.AudioSourceState.PAUSE;
-          }
-          else if (this.audioSourceElement) {
-              this.audioSourceElement.pause();
-          }
-      }
-      stopAudioSource(useToSeek = false) {
-          if (this.audioSource instanceof AudioBufferSourceNode) {
-              /**
-               * 一个 AudioBufferSourceNode 节点在其生命周期只允许开始一次
-               * 所以这里停止了之后是无法再次开始的
-               * 我们就直接删掉这个 Node，等待下次开始的时候重新创建
-               */
-              this.audioSource.onended = null;
-              this.audioSource.stop();
-              this.audioSource.disconnect();
-              this.audioSource = null;
-              this.bufferSourceDuration.stopTime = audioContext.currentTime;
-              if (!useToSeek) {
-                  this.audioSourceState = exports.AudioSourceState.END;
-              }
-          }
-          else if (this.audioSourceElement) {
+              break;
+            }
+
+          case "waiting":
+          case "seeking":
+            {
+              this.audioSourceState = exports.AudioSourceState.LOADING;
+              break;
+            }
+
+          case "ended":
+            {
               this.audioSourceState = exports.AudioSourceState.END;
-              this.audioSourceElement.pause();
-              this.audioSourceElement.currentTime = 0;
-          }
+              break;
+            }
+        }
+      };
+    }
+
+    get audioSourceState() {
+      return this._audioSourceState;
+    }
+
+    set audioSourceState(newState) {
+      if (newState === this._audioSourceState) return;
+      this.emit("@audio-source-state-change", newState, this._audioSourceState);
+      this._audioSourceState = newState;
+    }
+
+    onAudioBuffer(audioBufferCallback, bufferSize = BUFFER_SIZE) {
+      this.audioBufferCallback = audioBufferCallback;
+      this.audioBufferSize = bufferSize;
+    }
+
+    initAudioContext() {
+      log.log("init audio context", audioContext.state); // in chrome, audioContext maybe in suspended state after initialization
+
+      if (audioContext.state === "suspended") {
+        log.log("audio context suspended");
+        audioContext.resume().catch(e => {
+          log.warning("resume audiocontext failed! see: http://s.qnsdk.com/s/Txsdz", e);
+        });
       }
-      getAudioSourceCurrentTime() {
-          if (this.audioSourceElement) {
-              return this.audioSourceElement.currentTime;
-          }
-          else if (this.audioSource instanceof AudioBufferSourceNode) {
-              let baseTime = audioContext.currentTime;
-              const duration = this.getAudioSourceDuration();
-              if (this.bufferSourceDuration.lastPauseTime) {
-                  baseTime = this.bufferSourceDuration.lastPauseTime;
-              }
-              if (this.bufferSourceDuration.stopTime) {
-                  baseTime = this.bufferSourceDuration.stopTime;
-              }
-              const currentTime = this.bufferSourceDuration.offsetTime + baseTime - this.bufferSourceDuration.startTime - this.bufferSourceDuration.pauseTime;
-              return Math.max(0, currentTime % duration);
-          }
-          return 0;
+
+      log.log("init audio finish", audioContext.state);
+      this.analyserNode = audioContext.createAnalyser();
+      this.analyserNode.fftSize = FFT_SIZE;
+      this.gainNode = audioContext.createGain();
+      polyfillAudioNode(this.gainNode);
+
+      if (browserReport.mediaStreamDest) {
+        this.audioStream = audioContext.createMediaStreamDestination();
       }
-      setAudioSourceCurrentTime(val) {
-          if (this.audioSourceElement) {
-              this.audioSourceElement.currentTime = val;
-          }
-          else if (this.audioSource instanceof AudioBufferSourceNode) {
-              /**
-               * audioBufferSource 的 seek 分 2 步
-               * stop audioBuffer
-               * 在指定位置 start
-               */
-              this.stopAudioSource(true);
-              this.playAudioSource(val);
-          }
+
+      this.initScriptNode(BUFFER_SIZE);
+    }
+
+    setMediaStreamSource(originMediaStream) {
+      this.audioSource = audioContext.createMediaStreamSource(originMediaStream);
+      this.connect();
+    }
+
+    setAudioBufferSource() {
+      this.audioSource = audioContext.createBufferSource(); // 播放结束后清空节点
+
+      this.audioSource.onended = () => this.stopAudioSource();
+
+      this.connect();
+    }
+
+    setMediaElementSource(mediaElement) {
+      this.audioSource = audioContext.createMediaElementSource(mediaElement);
+      this.audioSourceElement = mediaElement;
+
+      for (const eventItem of MediaElementEventList) {
+        this.audioSourceElement.addEventListener(eventItem, this.handleMediaElementEvents);
       }
-      getAudioSourceDuration() {
-          if (this.audioSourceElement)
-              return this.audioSourceElement.duration;
-          if (this.audioSourceBuffer)
-              return this.audioSourceBuffer.duration;
-          return 0;
+
+      this.connect();
+    }
+
+    setAudioSourceLoop(isLoop) {
+      this.audioSourceLoop = isLoop;
+
+      if (this.audioSource instanceof AudioBufferSourceNode) {
+        this.audioSource.loop = !!isLoop;
+      } else if (this.audioSourceElement) {
+        this.audioSourceElement.loop = !!isLoop;
       }
-      release() {
-          if (this.audioSource instanceof MediaStreamAudioSourceNode) {
-              if (this.audioSource.mediaStream)
-                  this.audioSource.mediaStream.getTracks().map(t => t.stop());
-          }
-          if (this.audioSource) {
-              this.audioSource.disconnect();
-          }
-          this.gainNode.disconnect();
-          if (this.audioSourceElement) {
-              for (const eventItem of MediaElementEventList) {
-                  this.audioSourceElement.removeEventListener(eventItem, this.handleMediaElementEvents);
-              }
-              this.audioSourceElement.src = "";
-              this.audioSourceElement.load();
-              this.audioSourceElement.remove();
-              this.audioSourceElement = undefined;
-          }
-          if (this.scriptNode) {
-              this.scriptNode.disconnect();
-          }
+    }
+
+    setAudioBuffer(data) {
+      if (!(this.audioSource instanceof AudioBufferSourceNode)) {
+        return;
       }
-      connect() {
-          if (!this.audioSource) {
-              log.warning("no audio source, can not connect");
-              return;
-          }
-          this.audioSource.connect(this.analyserNode);
-          this.audioSource.connect(this.scriptNode);
-          this.audioSource.connect(this.gainNode);
-          if (this.audioStream) {
-              this.gainNode.connect(this.audioStream);
-          }
+
+      this.audioSource.buffer = data;
+      this.audioSourceBuffer = data;
+    }
+
+    playAudioSource(offset = 0) {
+      if (this.audioSource instanceof AudioBufferSourceNode) {
+        this.resetBufferSourceDuration();
+
+        try {
+          this.audioSource.start(0, offset);
+          this.bufferSourceDuration.startTime = audioContext.currentTime;
+          this.bufferSourceDuration.offsetTime = offset;
+          this.audioSourceState = exports.AudioSourceState.PLAY;
+        } catch (e) {
+          // 说明已经 start
+          this.stopAudioSource();
+          this.playAudioSource(offset);
+        }
+      } else if (this.audioSourceElement) {
+        this.audioSourceElement.currentTime = 0;
+        this.audioSourceElement.play().catch(showPlayWarn);
+      } else if (this.audioSource === null && this.audioSourceBuffer) {
+        this.resetBufferSourceDuration(); // 说明原来的 AudioBufferSourceNode 被删掉了，重新创建
+
+        this.setAudioBufferSource();
+        this.setAudioBuffer(this.audioSourceBuffer);
+        this.setAudioSourceLoop(!!this.audioSourceLoop); // fix ts error
+
+        this.audioSource.start(0, offset);
+        this.bufferSourceDuration.startTime = audioContext.currentTime;
+        this.bufferSourceDuration.offsetTime = offset;
+        this.audioSourceState = exports.AudioSourceState.PLAY;
       }
-      handleAudioBuffer(audioEvent) {
-          const input = audioEvent.inputBuffer;
-          if (this.audioBufferCallback) {
-              this.audioBufferCallback(input);
-          }
+    }
+
+    resumeAudioSource() {
+      if (this.audioSource instanceof AudioBufferSourceNode) {
+        if (this.audioSourceState !== exports.AudioSourceState.PAUSE) return;
+        this.audioSource.playbackRate.value = 1;
+        this.bufferSourceDuration.pauseTime += audioContext.currentTime - this.bufferSourceDuration.lastPauseTime;
+        this.bufferSourceDuration.lastPauseTime = 0;
+        this.audioSourceState = exports.AudioSourceState.PLAY;
+      } else if (this.audioSourceElement) {
+        this.audioSourceElement.play().catch(showPlayWarn);
       }
-      initScriptNode(bufferSize) {
-          this.scriptNode = audioContext.createScriptProcessor(bufferSize);
-          this.scriptNode.onaudioprocess = this.handleAudioBuffer.bind(this);
+    }
+
+    pauseAudioSource() {
+      if (this.audioSource instanceof AudioBufferSourceNode) {
+        // hack to pause, but firefox does not support MIN_VALUE
+        if (isFirefox) {
+          this.audioSource.playbackRate.value = 10e-8;
+        } else {
+          this.audioSource.playbackRate.value = Number.MIN_VALUE;
+        }
+
+        if (!this.bufferSourceDuration.lastPauseTime) {
+          this.bufferSourceDuration.lastPauseTime = audioContext.currentTime;
+        }
+
+        this.audioSourceState = exports.AudioSourceState.PAUSE;
+      } else if (this.audioSourceElement) {
+        this.audioSourceElement.pause();
       }
-      resetBufferSourceDuration() {
-          this.bufferSourceDuration = { offsetTime: 0, startTime: 0, lastPauseTime: 0, pauseTime: 0, stopTime: 0 };
+    }
+
+    stopAudioSource(useToSeek = false) {
+      if (this.audioSource instanceof AudioBufferSourceNode) {
+        /**
+         * 一个 AudioBufferSourceNode 节点在其生命周期只允许开始一次
+         * 所以这里停止了之后是无法再次开始的
+         * 我们就直接删掉这个 Node，等待下次开始的时候重新创建
+         */
+        this.audioSource.onended = null;
+        this.audioSource.stop();
+        this.audioSource.disconnect();
+        this.audioSource = null;
+        this.bufferSourceDuration.stopTime = audioContext.currentTime;
+
+        if (!useToSeek) {
+          this.audioSourceState = exports.AudioSourceState.END;
+        }
+      } else if (this.audioSourceElement) {
+        this.audioSourceState = exports.AudioSourceState.END;
+        this.audioSourceElement.pause();
+        this.audioSourceElement.currentTime = 0;
       }
+    }
+
+    getAudioSourceCurrentTime() {
+      if (this.audioSourceElement) {
+        return this.audioSourceElement.currentTime;
+      } else if (this.audioSource instanceof AudioBufferSourceNode) {
+        let baseTime = audioContext.currentTime;
+        const duration = this.getAudioSourceDuration();
+
+        if (this.bufferSourceDuration.lastPauseTime) {
+          baseTime = this.bufferSourceDuration.lastPauseTime;
+        }
+
+        if (this.bufferSourceDuration.stopTime) {
+          baseTime = this.bufferSourceDuration.stopTime;
+        }
+
+        const currentTime = this.bufferSourceDuration.offsetTime + baseTime - this.bufferSourceDuration.startTime - this.bufferSourceDuration.pauseTime;
+        return Math.max(0, currentTime % duration);
+      }
+
+      return 0;
+    }
+
+    setAudioSourceCurrentTime(val) {
+      if (this.audioSourceElement) {
+        this.audioSourceElement.currentTime = val;
+      } else if (this.audioSource instanceof AudioBufferSourceNode) {
+        /**
+         * audioBufferSource 的 seek 分 2 步
+         * stop audioBuffer
+         * 在指定位置 start
+         */
+        this.stopAudioSource(true);
+        this.playAudioSource(val);
+      }
+    }
+
+    getAudioSourceDuration() {
+      if (this.audioSourceElement) return this.audioSourceElement.duration;
+      if (this.audioSourceBuffer) return this.audioSourceBuffer.duration;
+      return 0;
+    }
+
+    release() {
+      if (this.audioSource instanceof MediaStreamAudioSourceNode) {
+        if (this.audioSource.mediaStream) this.audioSource.mediaStream.getTracks().map(t => t.stop());
+      }
+
+      if (this.audioSource) {
+        this.audioSource.disconnect();
+      }
+
+      this.gainNode.disconnect();
+
+      if (this.audioSourceElement) {
+        for (const eventItem of MediaElementEventList) {
+          this.audioSourceElement.removeEventListener(eventItem, this.handleMediaElementEvents);
+        }
+
+        this.audioSourceElement.src = "";
+        this.audioSourceElement.load();
+        this.audioSourceElement.remove();
+        this.audioSourceElement = undefined;
+      }
+
+      if (this.scriptNode) {
+        this.scriptNode.disconnect();
+      }
+    }
+
+    connect() {
+      if (!this.audioSource) {
+        log.warning("no audio source, can not connect");
+        return;
+      }
+
+      this.audioSource.connect(this.analyserNode);
+      this.audioSource.connect(this.scriptNode);
+      this.audioSource.connect(this.gainNode);
+
+      if (this.audioStream) {
+        this.gainNode.connect(this.audioStream);
+      }
+    }
+
+    handleAudioBuffer(audioEvent) {
+      const input = audioEvent.inputBuffer;
+
+      if (this.audioBufferCallback) {
+        this.audioBufferCallback(input);
+      }
+    }
+
+    initScriptNode(bufferSize) {
+      this.scriptNode = audioContext.createScriptProcessor(bufferSize);
+      this.scriptNode.onaudioprocess = this.handleAudioBuffer.bind(this);
+    }
+
+    resetBufferSourceDuration() {
+      this.bufferSourceDuration = {
+        offsetTime: 0,
+        startTime: 0,
+        lastPauseTime: 0,
+        pauseTime: 0,
+        stopTime: 0
+      };
+    }
+
   }
   /**
    * Safari 的 AudioNode.disconnect 不支持 disconnect 指定节点，只能操作全部节点
    * 这里的 polyfill 是通过 _inputNodes 保存全部已经 connect 的节点
    * 然后在 disconnect 后，将那些预期不应该被 disconnect 的节点重新 connect
    */
+
   function polyfillAudioNode(node) {
-      if (browserReport.disconnectAudioNode)
-          return;
-      const nativeConnect = node.connect;
-      const nativeDisconnect = node.disconnect;
-      node.connect = (destination, outputIndex, inputIndex) => {
-          if (!node._inputNodes) {
-              node._inputNodes = [];
-          }
-          if (destination instanceof AudioNode) {
-              node._inputNodes.push(destination);
-              node._inputNodes = lodash_uniqby(node._inputNodes, s => s);
-              nativeConnect.call(node, destination, outputIndex, inputIndex);
-          }
-          else {
-              nativeConnect.call(node, destination, outputIndex);
-          }
-          return node;
-      };
-      node.disconnect = (destination, output, input) => {
-          nativeDisconnect.call(node, destination, output, input);
-          if (!destination) {
-              node._inputNodes = [];
-          }
-          lodash_remove(node._inputNodes, (node) => {
-              return node === destination;
-          });
-          for (const n of node._inputNodes) {
-              node.connect(n);
-          }
-      };
+    if (browserReport.disconnectAudioNode) return;
+    const nativeConnect = node.connect;
+    const nativeDisconnect = node.disconnect;
+
+    node.connect = (destination, outputIndex, inputIndex) => {
+      if (!node._inputNodes) {
+        node._inputNodes = [];
+      }
+
+      if (destination instanceof AudioNode) {
+        node._inputNodes.push(destination);
+
+        node._inputNodes = lodash_uniqby(node._inputNodes, s => s);
+        nativeConnect.call(node, destination, outputIndex, inputIndex);
+      } else {
+        nativeConnect.call(node, destination, outputIndex);
+      }
+
+      return node;
+    };
+
+    node.disconnect = (destination, output, input) => {
+      nativeDisconnect.call(node, destination, output, input);
+
+      if (!destination) {
+        node._inputNodes = [];
+      }
+
+      lodash_remove(node._inputNodes, node => {
+        return node === destination;
+      });
+
+      for (const n of node._inputNodes) {
+        node.connect(n);
+      }
+    };
   }
 
   function aWeight(f) {
-      const f2 = f * f;
-      return 1.2588966 * 148840000 * f2 * f2 /
-          ((f2 + 424.36) * Math.sqrt((f2 + 11599.29) * (f2 + 544496.41)) * (f2 + 148840000));
+    const f2 = f * f;
+    return 1.2588966 * 148840000 * f2 * f2 / ((f2 + 424.36) * Math.sqrt((f2 + 11599.29) * (f2 + 544496.41)) * (f2 + 148840000));
   }
+
   const AUDIO_WEIGHT_LIMIT = 0;
   class AudioTrack extends Track {
-      constructor(track, userId, direction) {
-          if (track.kind !== "audio") {
-              throw new Error("audio track only!");
-          }
-          super(track, userId, direction);
-          this.mediaStream = new MediaStream();
-          this.mediaStream.addTrack(track);
+    constructor(track, userId, direction) {
+      if (track.kind !== "audio") {
+        throw new Error("audio track only!");
       }
-      /**
-       * @inernal
-       */
-      resume(track) {
-          this.mediaTrack = track;
-          this.removeEvent("@get-stats");
-          this.resetStats();
-          const stream = new MediaStream([track]);
-          this.mediaStream = stream;
-          if (this.mediaElement) {
-              this.mediaElement.dataset.localid = track.id;
-              this.mediaElement.srcObject = stream;
-          }
-          if (this.audioManager) {
-              this.audioManager.release();
-              this.initAudioManager();
-          }
+
+      super(track, userId, direction);
+      this.mediaStream = new MediaStream();
+      this.mediaStream.addTrack(track);
+    }
+    /**
+     * @inernal
+     */
+
+
+    resume(track) {
+      this.mediaTrack = track;
+      this.removeEvent("@get-stats");
+      this.resetStats();
+      const stream = new MediaStream([track]);
+      this.mediaStream = stream;
+
+      if (this.mediaElement) {
+        this.mediaElement.dataset.localid = track.id;
+        this.mediaElement.srcObject = stream;
       }
-      /**
-       * @internal
-       * @param replaceOriginStream 是否使用 WebAudio 替换原来的输入
-       * safari 不支持 webaudio 替换输入
-       */
-      initAudioManager(replaceOriginStream) {
-          this.audioManager = new AudioManager();
-          this.audioManager.initAudioContext();
-          this.audioManager.setMediaStreamSource(this.mediaStream);
-          if (replaceOriginStream && browserReport.mediaStreamDest) {
-              this.mediaStream = this.audioManager.audioStream.stream;
-              this.mediaTrack = this.mediaStream.getTracks()[0];
-          }
+
+      if (this.audioManager) {
+        this.audioManager.release();
+        this.initAudioManager();
       }
-      /**
-       * 传入回调函数接受音频的 PCM 数据回调
-       * @param cb 传入的回调函数，拥有一个参数 AudioBuffer 表示回调的音频数据
-       * @param bufferSize 设定一次回调音频 Buffer 的长度，默认为 4096 位。
-       * 注意 bufferSize 必须是 2 的 n 次幂且大于 256 小于 16394
-       */
-      onAudioBuffer(cb, bufferSize = BUFFER_SIZE) {
-          this.audioManager.onAudioBuffer(cb, bufferSize);
+    }
+    /**
+     * @internal
+     * @param replaceOriginStream 是否使用 WebAudio 替换原来的输入
+     * safari 不支持 webaudio 替换输入
+     */
+
+
+    initAudioManager(replaceOriginStream) {
+      this.audioManager = new AudioManager();
+      this.audioManager.initAudioContext();
+      this.audioManager.setMediaStreamSource(this.mediaStream);
+
+      if (replaceOriginStream && browserReport.mediaStreamDest) {
+        this.mediaStream = this.audioManager.audioStream.stream;
+        this.mediaTrack = this.mediaStream.getTracks()[0];
       }
-      /**
-       * 设置音量，目前仅对采集到的 Track 有效（订阅 Track 无效）
-       * @param value 增益值，0 静音，2，当前声音的 2 倍
-       */
-      setVolume(value) {
-          this.audioManager.gainNode.gain.setValueAtTime(value, audioContext.currentTime);
+    }
+    /**
+     * 传入回调函数接受音频的 PCM 数据回调
+     * @param cb 传入的回调函数，拥有一个参数 AudioBuffer 表示回调的音频数据
+     * @param bufferSize 设定一次回调音频 Buffer 的长度，默认为 4096 位。
+     * 注意 bufferSize 必须是 2 的 n 次幂且大于 256 小于 16394
+     */
+
+
+    onAudioBuffer(cb, bufferSize = BUFFER_SIZE) {
+      this.audioManager.onAudioBuffer(cb, bufferSize);
+    }
+    /**
+     * 设置音量，目前仅对采集到的 Track 有效（订阅 Track 无效）
+     * @param value 增益值，0 静音，2，当前声音的 2 倍
+     */
+
+
+    setVolume(value) {
+      this.audioManager.gainNode.gain.setValueAtTime(value, audioContext.currentTime);
+    }
+    /**
+     * 获取当前 2048 位的时域数据
+     */
+
+
+    getCurrentTimeDomainData() {
+      const data = new Uint8Array(FFT_SIZE);
+      this.audioManager.analyserNode.getByteTimeDomainData(data);
+      return data;
+    }
+    /**
+     * 获取当前 2048 位的频域数据
+     */
+
+
+    getCurrentFrequencyData() {
+      const data = new Uint8Array(this.audioManager.analyserNode.frequencyBinCount);
+      this.audioManager.analyserNode.getByteFrequencyData(data);
+      return data;
+    }
+    /**
+     * 获取这个 Track 的音量设置，默认为 1，也就是原始音量
+     */
+
+
+    getVolume() {
+      return this.audioManager.gainNode.gain.value;
+    }
+    /**
+     * 获取当前实时的音量等级，一般用来展示可视化音量数据
+     */
+
+
+    getCurrentVolumeLevel() {
+      const data = this.getCurrentFrequencyData();
+      let sum = 0;
+      let length = data.length;
+      data.forEach((d, i) => {
+        const frequency = i * (audioContext.sampleRate || 44100) / data.length;
+
+        if (frequency > 22050) {
+          length -= 1;
+          return;
+        }
+
+        const weight = aWeight(frequency) * d / 255.0;
+
+        if (weight <= AUDIO_WEIGHT_LIMIT) {
+          length -= 1;
+          return;
+        }
+
+        sum += weight * weight;
+      });
+      return Math.sqrt(sum / length);
+    }
+
+    release() {
+      this.emit("release");
+      this.removeEvent();
+
+      if (this.statsInterval) {
+        window.clearInterval(this.statsInterval);
       }
-      /**
-       * 获取当前 2048 位的时域数据
-       */
-      getCurrentTimeDomainData() {
-          const data = new Uint8Array(FFT_SIZE);
-          this.audioManager.analyserNode.getByteTimeDomainData(data);
-          return data;
+
+      this.mediaTrack.stop();
+      this.removeMediaElement();
+
+      if (this.audioManager) {
+        this.audioManager.release();
       }
-      /**
-       * 获取当前 2048 位的频域数据
-       */
-      getCurrentFrequencyData() {
-          const data = new Uint8Array(this.audioManager.analyserNode.frequencyBinCount);
-          this.audioManager.analyserNode.getByteFrequencyData(data);
-          return data;
-      }
-      /**
-       * 获取这个 Track 的音量设置，默认为 1，也就是原始音量
-       */
-      getVolume() {
-          return this.audioManager.gainNode.gain.value;
-      }
-      /**
-       * 获取当前实时的音量等级，一般用来展示可视化音量数据
-       */
-      getCurrentVolumeLevel() {
-          const data = this.getCurrentFrequencyData();
-          let sum = 0;
-          let length = data.length;
-          data.forEach((d, i) => {
-              const frequency = i * (audioContext.sampleRate || 44100) / data.length;
-              if (frequency > 22050) {
-                  length -= 1;
-                  return;
-              }
-              const weight = aWeight(frequency) * d / 255.0;
-              if (weight <= AUDIO_WEIGHT_LIMIT) {
-                  length -= 1;
-                  return;
-              }
-              sum += weight * weight;
-          });
-          return Math.sqrt(sum / length);
-      }
-      release() {
-          this.emit("release");
-          this.removeEvent();
-          if (this.statsInterval) {
-              window.clearInterval(this.statsInterval);
-          }
-          this.mediaTrack.stop();
-          this.removeMediaElement();
-          if (this.audioManager) {
-              this.audioManager.release();
-          }
-      }
+    }
+
   }
 
   /**
    * 如果音频来源不是麦克风，而是通过在线音频或者自定义 buffer，将会使用这个类
    */
+
   class AudioSourceTrack extends AudioTrack {
-      constructor(source, userId) {
-          if (!browserReport.mediaStreamDest) {
-              throw NOT_SUPPORT_ERROR("your browser does not support audio buffer input!");
-          }
-          const audioManager = new AudioManager();
-          audioManager.initAudioContext();
-          if (source instanceof AudioBuffer) {
-              audioManager.setAudioBufferSource();
-              audioManager.setAudioBuffer(source);
-          }
-          else if (source instanceof HTMLAudioElement) {
-              audioManager.setMediaElementSource(source);
-          }
-          const mediaStream = audioManager.audioStream.stream;
-          const audioMediaTrack = mediaStream.getTracks()[0];
-          super(audioMediaTrack, userId, "local");
-          this.sourceType = exports.TrackSourceType.EXTERNAL;
-          this.isLoop = false;
-          this.originSource = source;
-          this.audioManager = audioManager;
-          this.handleAudioManagerEvents();
+    constructor(source, userId) {
+      if (!browserReport.mediaStreamDest) {
+        throw NOT_SUPPORT_ERROR("your browser does not support audio buffer input!");
       }
-      /**
-       * 设置循环播放模式
-       */
-      setLoop(isLoop) {
-          this.isLoop = isLoop;
-          this.audioManager.setAudioSourceLoop(isLoop);
+
+      const audioManager = new AudioManager();
+      audioManager.initAudioContext();
+
+      if (source instanceof AudioBuffer) {
+        audioManager.setAudioBufferSource();
+        audioManager.setAudioBuffer(source);
+      } else if (source instanceof HTMLAudioElement) {
+        audioManager.setMediaElementSource(source);
       }
-      /**
-       * 播放自定义的 Source
-       */
-      startAudioSource() {
-          this.audioManager.playAudioSource();
-      }
-      /**
-       * 暂停播放自定义的 Source
-       */
-      pauseAudioSource() {
-          this.audioManager.pauseAudioSource();
-      }
-      /**
-       * 恢复播放自定义的 Source
-       */
-      resumeAudioSource() {
-          this.audioManager.resumeAudioSource();
-      }
-      /**
-       * 停止播放 AudioBuffer 数据
-       */
-      stopAudioSource() {
-          this.audioManager.stopAudioSource();
-      }
-      /**
-       * 获取当前的播放时间
-       */
-      getCurrentTime() {
-          return this.audioManager.getAudioSourceCurrentTime() || 0;
-      }
-      /**
-       * 设置当前的时间
-       */
-      setCurrentTime(val) {
-          this.audioManager.setAudioSourceCurrentTime(val);
-      }
-      /**
-       * 获取播放总时长，对于在线音乐
-       * 只有当 audio-state-change 第一次触发 PLAY 后才能获取到
-       */
-      getDuration() {
-          return this.audioManager.getAudioSourceDuration() || 0;
-      }
-      handleAudioManagerEvents() {
-          this.audioManager.on("@audio-source-state-change", (newState, lastState) => {
-              this.emit("audio-state-change", newState, lastState);
-          });
-      }
+
+      const mediaStream = audioManager.audioStream.stream;
+      const audioMediaTrack = mediaStream.getTracks()[0];
+      super(audioMediaTrack, userId, "local");
+      this.sourceType = exports.TrackSourceType.EXTERNAL;
+      this.isLoop = false;
+      this.originSource = source;
+      this.audioManager = audioManager;
+      this.handleAudioManagerEvents();
+    }
+    /**
+     * 设置循环播放模式
+     */
+
+
+    setLoop(isLoop) {
+      this.isLoop = isLoop;
+      this.audioManager.setAudioSourceLoop(isLoop);
+    }
+    /**
+     * 播放自定义的 Source
+     */
+
+
+    startAudioSource() {
+      this.audioManager.playAudioSource();
+    }
+    /**
+     * 暂停播放自定义的 Source
+     */
+
+
+    pauseAudioSource() {
+      this.audioManager.pauseAudioSource();
+    }
+    /**
+     * 恢复播放自定义的 Source
+     */
+
+
+    resumeAudioSource() {
+      this.audioManager.resumeAudioSource();
+    }
+    /**
+     * 停止播放 AudioBuffer 数据
+     */
+
+
+    stopAudioSource() {
+      this.audioManager.stopAudioSource();
+    }
+    /**
+     * 获取当前的播放时间
+     */
+
+
+    getCurrentTime() {
+      return this.audioManager.getAudioSourceCurrentTime() || 0;
+    }
+    /**
+     * 设置当前的时间
+     */
+
+
+    setCurrentTime(val) {
+      this.audioManager.setAudioSourceCurrentTime(val);
+    }
+    /**
+     * 获取播放总时长，对于在线音乐
+     * 只有当 audio-state-change 第一次触发 PLAY 后才能获取到
+     */
+
+
+    getDuration() {
+      return this.audioManager.getAudioSourceDuration() || 0;
+    }
+
+    handleAudioManagerEvents() {
+      this.audioManager.on("@audio-source-state-change", (newState, lastState) => {
+        this.emit("audio-state-change", newState, lastState);
+      });
+    }
+
   }
 
   /**
    * v1 版本的 Stream，只会拥有最多一个 videoTrack 以及一个 audioTrack
    */
+
   class Stream extends EventEmitter {
-      constructor(tracks, direction = "send", userId) {
-          super();
-          /**
-           * 表示这个流下所包含的所有 Track 的信息，用于精细控制每个 Track 的行为
-           * 详细结构可以查阅 TrackInfo
-           */
-          this.trackList = [];
-          /**
-           * 用于标记这个流是否调用了 release 方法，即表示这个流已经被释放
-           */
-          this.isDestroyed = false;
-          this.enableAudio = true;
-          this.enableVideo = true;
-          this.muteAudio = false;
-          this.muteVideo = false;
-          this.onAudioEnded = (event) => {
-              this.emit("audio-ended", event);
-          };
-          this.onVideoEnded = (event) => {
-              this.emit("video-ended", event);
-          };
-          this.onAudioSourceStateChange = (curr, last) => {
-              this.emit("audio-source-state-change", curr, last);
-          };
-          this.direction = direction;
-          this.userId = userId;
-          tracks.forEach(track => {
-              track.setMaster(true);
-              track.on("mute", () => {
-                  this.updateTrackState();
-              });
-              // 监听 track 的 release 事件，更新自己的状态
-              track.on("release", () => {
-                  lodash_remove(this.trackList, t => t === track);
-                  this.updateTrackState();
-                  // 如果自己所有的 track 都 release 了，自己也 release
-                  if (this.trackList.length === 0) {
-                      this.release();
-                  }
-              });
-              this.trackList.push(track);
-          });
+    constructor(tracks, direction = "send", userId) {
+      super();
+      /**
+       * 表示这个流下所包含的所有 Track 的信息，用于精细控制每个 Track 的行为
+       * 详细结构可以查阅 TrackInfo
+       */
+
+      this.trackList = [];
+      /**
+       * 用于标记这个流是否调用了 release 方法，即表示这个流已经被释放
+       */
+
+      this.isDestroyed = false;
+      this.enableAudio = true;
+      this.enableVideo = true;
+      this.muteAudio = false;
+      this.muteVideo = false;
+
+      this.onAudioEnded = event => {
+        this.emit("audio-ended", event);
+      };
+
+      this.onVideoEnded = event => {
+        this.emit("video-ended", event);
+      };
+
+      this.onAudioSourceStateChange = (curr, last) => {
+        this.emit("audio-source-state-change", curr, last);
+      };
+
+      this.direction = direction;
+      this.userId = userId;
+      tracks.forEach(track => {
+        track.setMaster(true);
+        track.on("mute", () => {
           this.updateTrackState();
-      }
-      get audioSourceIsLoop() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return false;
-          }
-          return this._audioTrack.isLoop;
-      }
-      /**
-       * 目前只对采集的流有效
-       */
-      setVolume(v) {
-          if (this._audioTrack) {
-              this._audioTrack.setVolume(v);
-          }
-      }
-      /**
-       * 将一个 Stream 对象置于页面上指定的元素下播放
-       * 会将将所有 track 都置于一个元素下播放
-       *
-       * 如果想单独控制每一个 track 的播放行为
-       * 通过 trackList 获取 Track 对象，调用它的 play 方法
-       * @param container 指定一个 HTML 元素用于放置媒体元素
-       * @param muted 是否使用静音模式，如果为 true 就不会播放音频，仅播放视频，默认为 false。
-       */
-      play(container, muted) {
-          this.trackList.forEach(track => track.play(container, muted));
-          if (this._audioTrack) {
-              this.audio = this._audioTrack.mediaElement;
-          }
-          if (this._videoTrack) {
-              this.video = this._videoTrack.mediaElement;
-          }
-      }
-      onAudioBuffer(cb, bufferSize) {
-          if (this._audioTrack) {
-              this._audioTrack.onAudioBuffer(cb, bufferSize);
-          }
-      }
-      getCurrentTimeDomainData() {
-          if (this._audioTrack) {
-              return this._audioTrack.getCurrentTimeDomainData();
-          }
-          return new Uint8Array(0);
-      }
-      getCurrentFrequencyData() {
-          if (this._audioTrack) {
-              return this._audioTrack.getCurrentFrequencyData();
-          }
-          return new Uint8Array(0);
-      }
-      getCurrentVolumeLevel() {
-          if (this._audioTrack) {
-              return this._audioTrack.getCurrentVolumeLevel();
-          }
-          return 0;
-      }
-      getStats() {
-          const audioReport = this._audioTrack ? this._audioTrack.getStats() : defaultTrackStatsReport();
-          const videoReport = this._videoTrack ? this._videoTrack.getStats() : defaultTrackStatsReport();
-          return {
-              timestamp: Date.now(),
-              videoBitrate: videoReport.bitrate,
-              audioBitrate: audioReport.bitrate,
-              videoPacketLoss: videoReport.packetLoss,
-              audioPacketLoss: audioReport.packetLoss,
-              videoPackets: videoReport.packets,
-              audioPackets: audioReport.packets,
-              videoPacketLossRate: videoReport.packetLossRate,
-              audioPacketLossRate: audioReport.packetLossRate,
-              videoBytes: videoReport.bytes,
-              audioBytes: audioReport.bytes,
-              pctype: this.direction,
-          };
-      }
-      getCurrentFrameDataURL() {
-          if (!this._videoTrack) {
-              return "data:,";
-          }
-          return this._videoTrack.getCurrentFrameDataURL();
-      }
-      setAudioSourceLoop(isLoop) {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          this._audioTrack.setLoop(isLoop);
-      }
-      startAudioSource() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          this._audioTrack.startAudioSource();
-      }
-      pauseAudioSource() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          this._audioTrack.pauseAudioSource();
-      }
-      resumeAudioSource() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          this._audioTrack.resumeAudioSource();
-      }
-      stopAudioSource() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          this._audioTrack.stopAudioSource();
-      }
-      getAudioSourceCurrentTime() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return 0;
-          }
-          return this._audioTrack.getCurrentTime();
-      }
-      getAudioSourceDuration() {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return 0;
-          }
-          return this._audioTrack.getDuration();
-      }
-      setAudioSourceCurrentTime(val) {
-          if (!(this._audioTrack instanceof AudioSourceTrack)) {
-              return;
-          }
-          return this._audioTrack.setCurrentTime(val);
-      }
-      /**
-       * @internal
-       */
-      setKbps(video, audio) {
-          if (video && this._videoTrack) {
-              this._videoTrack.setKbps(video);
-          }
-          if (audio && this._audioTrack) {
-              this._audioTrack.setKbps(audio);
-          }
-      }
-      /* @internal */
-      updateTrackState() {
-          this.trackList.forEach(track => {
-              if (track.info.kind === "audio") {
-                  if (this._audioTrack) {
-                      this._audioTrack.off("ended", this.onAudioEnded);
-                      this._audioTrack.off("audio-state-change", this.onAudioSourceStateChange);
-                  }
-                  this.audioTrack = track.mediaTrack;
-                  this._audioTrack = track;
-                  this._audioTrack.on("ended", this.onAudioEnded);
-                  if (this._audioTrack instanceof AudioSourceTrack) {
-                      this._audioTrack.on("audio-state-change", this.onAudioSourceStateChange);
-                  }
-              }
-              else {
-                  if (this._videoTrack) {
-                      this._videoTrack.off("ended", this.onVideoEnded);
-                  }
-                  this.videoTrack = track.mediaTrack;
-                  this._videoTrack = track;
-                  this._videoTrack.on("ended", this.onVideoEnded);
-              }
-          });
-          if (this.audioTrack) {
-              this.enableAudio = true;
-              this.muteAudio = !this.audioTrack.enabled;
-          }
-          else {
-              this.enableAudio = false;
-          }
-          if (this.videoTrack) {
-              this.enableVideo = true;
-              this.muteVideo = !this.videoTrack.enabled;
-          }
-          else {
-              this.enableVideo = false;
-          }
-      }
-      /**
-       * 释放这个流下的所有资源，包括流和用于播放流的媒体元素
-       */
-      release() {
-          if (this.isDestroyed) {
-              return;
-          }
-          for (let i = 0; i < this.trackList.length; i += 1) {
-              const track = this.trackList[i];
-              track.removeAllListeners("release");
-              track.release();
-          }
-          this.trackList = [];
-          this.isDestroyed = true;
-          this.emit("release");
-          this.removeEvent();
-      }
-      /**
-       * @internal
-       * 释放流下一个 track，包括媒体元素
-       * 如果 Track 被 Stream 包裹，不要直接调用 Track 的 release 方法
-       * @param track 标记要释放的 track
-       */
-      releaseTrack(track) {
-          const { removeElement, newArray } = removeElementFromArray(this.trackList, "mediaTrack", track.mediaTrack);
-          if (!removeElement) {
-              return;
-          }
-          track.release();
-          this.trackList = newArray;
+        }); // 监听 track 的 release 事件，更新自己的状态
+
+        track.on("release", () => {
+          lodash_remove(this.trackList, t => t === track);
+          this.updateTrackState(); // 如果自己所有的 track 都 release 了，自己也 release
+
           if (this.trackList.length === 0) {
-              this.isDestroyed = true;
+            this.release();
           }
+        });
+        this.trackList.push(track);
+      });
+      this.updateTrackState();
+    }
+
+    get audioSourceIsLoop() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return false;
       }
+
+      return this._audioTrack.isLoop;
+    }
+    /**
+     * 目前只对采集的流有效
+     */
+
+
+    setVolume(v) {
+      if (this._audioTrack) {
+        this._audioTrack.setVolume(v);
+      }
+    }
+    /**
+     * 将一个 Stream 对象置于页面上指定的元素下播放
+     * 会将将所有 track 都置于一个元素下播放
+     *
+     * 如果想单独控制每一个 track 的播放行为
+     * 通过 trackList 获取 Track 对象，调用它的 play 方法
+     * @param container 指定一个 HTML 元素用于放置媒体元素
+     * @param muted 是否使用静音模式，如果为 true 就不会播放音频，仅播放视频，默认为 false。
+     */
+
+
+    play(container, muted) {
+      this.trackList.forEach(track => track.play(container, muted));
+
+      if (this._audioTrack) {
+        this.audio = this._audioTrack.mediaElement;
+      }
+
+      if (this._videoTrack) {
+        this.video = this._videoTrack.mediaElement;
+      }
+    }
+
+    onAudioBuffer(cb, bufferSize) {
+      if (this._audioTrack) {
+        this._audioTrack.onAudioBuffer(cb, bufferSize);
+      }
+    }
+
+    getCurrentTimeDomainData() {
+      if (this._audioTrack) {
+        return this._audioTrack.getCurrentTimeDomainData();
+      }
+
+      return new Uint8Array(0);
+    }
+
+    getCurrentFrequencyData() {
+      if (this._audioTrack) {
+        return this._audioTrack.getCurrentFrequencyData();
+      }
+
+      return new Uint8Array(0);
+    }
+
+    getCurrentVolumeLevel() {
+      if (this._audioTrack) {
+        return this._audioTrack.getCurrentVolumeLevel();
+      }
+
+      return 0;
+    }
+
+    getStats() {
+      const audioReport = this._audioTrack ? this._audioTrack.getStats() : defaultTrackStatsReport();
+      const videoReport = this._videoTrack ? this._videoTrack.getStats() : defaultTrackStatsReport();
+      return {
+        timestamp: Date.now(),
+        videoBitrate: videoReport.bitrate,
+        audioBitrate: audioReport.bitrate,
+        videoPacketLoss: videoReport.packetLoss,
+        audioPacketLoss: audioReport.packetLoss,
+        videoPackets: videoReport.packets,
+        audioPackets: audioReport.packets,
+        videoPacketLossRate: videoReport.packetLossRate,
+        audioPacketLossRate: audioReport.packetLossRate,
+        videoBytes: videoReport.bytes,
+        audioBytes: audioReport.bytes,
+        pctype: this.direction
+      };
+    }
+
+    getCurrentFrameDataURL() {
+      if (!this._videoTrack) {
+        return "data:,";
+      }
+
+      return this._videoTrack.getCurrentFrameDataURL();
+    }
+
+    setAudioSourceLoop(isLoop) {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      this._audioTrack.setLoop(isLoop);
+    }
+
+    startAudioSource() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      this._audioTrack.startAudioSource();
+    }
+
+    pauseAudioSource() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      this._audioTrack.pauseAudioSource();
+    }
+
+    resumeAudioSource() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      this._audioTrack.resumeAudioSource();
+    }
+
+    stopAudioSource() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      this._audioTrack.stopAudioSource();
+    }
+
+    getAudioSourceCurrentTime() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return 0;
+      }
+
+      return this._audioTrack.getCurrentTime();
+    }
+
+    getAudioSourceDuration() {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return 0;
+      }
+
+      return this._audioTrack.getDuration();
+    }
+
+    setAudioSourceCurrentTime(val) {
+      if (!(this._audioTrack instanceof AudioSourceTrack)) {
+        return;
+      }
+
+      return this._audioTrack.setCurrentTime(val);
+    }
+    /**
+     * @internal
+     */
+
+
+    setKbps(video, audio) {
+      if (video && this._videoTrack) {
+        this._videoTrack.setKbps(video);
+      }
+
+      if (audio && this._audioTrack) {
+        this._audioTrack.setKbps(audio);
+      }
+    }
+    /* @internal */
+
+
+    updateTrackState() {
+      this.trackList.forEach(track => {
+        if (track.info.kind === "audio") {
+          if (this._audioTrack) {
+            this._audioTrack.off("ended", this.onAudioEnded);
+
+            this._audioTrack.off("audio-state-change", this.onAudioSourceStateChange);
+          }
+
+          this.audioTrack = track.mediaTrack;
+          this._audioTrack = track;
+
+          this._audioTrack.on("ended", this.onAudioEnded);
+
+          if (this._audioTrack instanceof AudioSourceTrack) {
+            this._audioTrack.on("audio-state-change", this.onAudioSourceStateChange);
+          }
+        } else {
+          if (this._videoTrack) {
+            this._videoTrack.off("ended", this.onVideoEnded);
+          }
+
+          this.videoTrack = track.mediaTrack;
+          this._videoTrack = track;
+
+          this._videoTrack.on("ended", this.onVideoEnded);
+        }
+      });
+
+      if (this.audioTrack) {
+        this.enableAudio = true;
+        this.muteAudio = !this.audioTrack.enabled;
+      } else {
+        this.enableAudio = false;
+      }
+
+      if (this.videoTrack) {
+        this.enableVideo = true;
+        this.muteVideo = !this.videoTrack.enabled;
+      } else {
+        this.enableVideo = false;
+      }
+    }
+    /**
+     * 释放这个流下的所有资源，包括流和用于播放流的媒体元素
+     */
+
+
+    release() {
+      if (this.isDestroyed) {
+        return;
+      }
+
+      for (let i = 0; i < this.trackList.length; i += 1) {
+        const track = this.trackList[i];
+        track.removeAllListeners("release");
+        track.release();
+      }
+
+      this.trackList = [];
+      this.isDestroyed = true;
+      this.emit("release");
+      this.removeEvent();
+    }
+    /**
+     * @internal
+     * 释放流下一个 track，包括媒体元素
+     * 如果 Track 被 Stream 包裹，不要直接调用 Track 的 release 方法
+     * @param track 标记要释放的 track
+     */
+
+
+    releaseTrack(track) {
+      const {
+        removeElement,
+        newArray
+      } = removeElementFromArray(this.trackList, "mediaTrack", track.mediaTrack);
+
+      if (!removeElement) {
+        return;
+      }
+
+      track.release();
+      this.trackList = newArray;
+
+      if (this.trackList.length === 0) {
+        this.isDestroyed = true;
+      }
+    }
+
   }
 
   /*
@@ -23255,183 +23720,214 @@
    * Distributed under terms of the MIT license.
   */
   function transferSignalingCustomMessageToCustomMessage(msg) {
-      return {
-          timestamp: msg.msgts,
-          data: msg.text,
-          userId: msg.playerid,
-          type: msg.type,
-      };
+    return {
+      timestamp: msg.msgts,
+      data: msg.text,
+      userId: msg.playerid,
+      type: msg.type
+    };
   }
   function transferSignalingTrackToTrackBaseInfo(track) {
-      return {
-          trackId: track.trackid,
-          tag: track.tag,
-          mid: track.mid || undefined,
-          kind: track.kind,
-          userId: track.playerid,
-          muted: track.muted,
-          versionid: track.versionid,
-      };
+    return {
+      trackId: track.trackid,
+      tag: track.tag,
+      mid: track.mid || undefined,
+      kind: track.kind,
+      userId: track.playerid,
+      muted: track.muted,
+      versionid: track.versionid
+    };
   }
   function transferTrackBaseInfoToSignalingTrack(track, isMaster) {
-      return {
-          trackid: track.trackId,
-          mid: track.mid || undefined,
-          kind: track.kind,
-          master: isMaster,
-          muted: !!track.muted,
-          playerid: track.userId,
-          tag: track.tag || "",
-          versionid: track.versionid,
-      };
+    return {
+      trackid: track.trackId,
+      mid: track.mid || undefined,
+      kind: track.kind,
+      master: isMaster,
+      muted: !!track.muted,
+      playerid: track.userId,
+      tag: track.tag || "",
+      versionid: track.versionid
+    };
   }
   function transferTrackToPublishTrack(track) {
-      if (!track.info.mid && browserReport.unifiedPlan) {
-          throw UNEXPECTED_ERROR("can not find track mid!");
-      }
-      return {
-          localid: track.mediaTrack.id,
-          localmid: track.info.mid || undefined,
-          master: track.master,
-          kind: track.info.kind,
-          kbps: track.info.kbps,
-          tag: track.info.tag,
-      };
+    if (!track.info.mid && browserReport.unifiedPlan) {
+      throw UNEXPECTED_ERROR("can not find track mid!");
+    }
+
+    return {
+      localid: track.mediaTrack.id,
+      localmid: track.info.mid || undefined,
+      master: track.master,
+      kind: track.info.kind,
+      kbps: track.info.kbps,
+      tag: track.info.tag
+    };
   }
   function transferSignalingUserToUser(sigUser) {
-      return new User(sigUser.playerid, sigUser.playerdata);
+    return new User(sigUser.playerid, sigUser.playerdata);
   }
   function createCustomTrack(mediaTrack, tag, kbps) {
-      let track;
-      if (mediaTrack.kind === "audio") {
-          track = new AudioTrack(mediaTrack);
-          track.initAudioManager(true);
-      }
-      else {
-          track = new Track(mediaTrack);
-      }
-      if (kbps) {
-          track.setKbps(kbps);
-      }
-      track.setInfo({ tag });
-      return track;
+    let track;
+
+    if (mediaTrack.kind === "audio") {
+      track = new AudioTrack(mediaTrack);
+      track.initAudioManager(true);
+    } else {
+      track = new Track(mediaTrack);
+    }
+
+    if (kbps) {
+      track.setKbps(kbps);
+    }
+
+    track.setInfo({
+      tag
+    });
+    return track;
   }
   async function transferRecordOptionToMediaConstraints(options) {
-      if (!options) {
-          return {
-              audio: true,
-              video: true,
-          };
-      }
-      if (REC_SCREEN_ENABLE(options)) {
-          if (REC_VIDEO_ENABLE(options)) {
-              throw UNEXPECTED_ERROR("can not get mediaStream with video and screen are all enabled");
-          }
-          if (!browserReport.screenSharing) {
-              throw NOT_SUPPORT_ERROR("your browser can not share screen");
-          }
-          const screenOptions = options.screen;
-          // 只有在 chrome 下，用户强制指定用插件或者用户不支持 plugin free 采集才会检查插件
-          if (isChrome && (screenOptions.forceChromePlugin || !browserReport.getDisplayMedia)) {
-              const plugin = await isChromeExtensionAvailable();
-              if (!plugin) {
-                  throw PLUGIN_NOT_AVALIABLE("");
-              }
-          }
-      }
-      const audio = !options.audio || !options.audio.enabled || !!options.audio.source ? false : {
-          deviceId: options.audio.deviceId,
-          sampleRate: options.audio.sampleRate,
-          sampleSize: options.audio.sampleSize,
-          channelCount: options.audio.channelCount,
-          autoGainControl: options.audio.autoGainControl,
-          echoCancellation: options.audio.echoCancellation,
-          noiseSuppression: options.audio.noiseSuppression,
+    if (!options) {
+      return {
+        audio: true,
+        video: true
       };
-      const video = !options.video || !options.video.enabled ? false : {
-          frameRate: options.video.frameRate,
-          height: options.video.height,
-          width: options.video.width,
-          deviceId: options.video.deviceId,
-      };
-      if (REC_SCREEN_ENABLE(options) && options.screen) {
-          if (browserReport.getDisplayMedia && !options.screen.forceChromePlugin) {
-              return createConstraints({
-                  audio,
-                  video: {
-                      displaySurface: getDisplaySurfaceFromSourceOption(options.screen.source),
-                      width: options.screen.width,
-                      height: options.screen.height,
-                      frameRate: options.screen.frameRate,
-                  },
-              });
-          }
-          const constraints = await getScreenConstraints(false, options.screen);
-          return createConstraints({
-              audio,
-              video: constraints,
-          });
+    }
+
+    if (REC_SCREEN_ENABLE(options)) {
+      if (REC_VIDEO_ENABLE(options)) {
+        throw UNEXPECTED_ERROR("can not get mediaStream with video and screen are all enabled");
       }
+
+      if (!browserReport.screenSharing) {
+        throw NOT_SUPPORT_ERROR("your browser can not share screen");
+      }
+
+      const screenOptions = options.screen; // 只有在 chrome 下，用户强制指定用插件或者用户不支持 plugin free 采集才会检查插件
+
+      if (isChrome && (screenOptions.forceChromePlugin || !browserReport.getDisplayMedia)) {
+        const plugin = await isChromeExtensionAvailable();
+
+        if (!plugin) {
+          throw PLUGIN_NOT_AVALIABLE("");
+        }
+      }
+    }
+
+    const audio = !options.audio || !options.audio.enabled || !!options.audio.source ? false : {
+      deviceId: options.audio.deviceId,
+      sampleRate: options.audio.sampleRate,
+      sampleSize: options.audio.sampleSize,
+      channelCount: options.audio.channelCount,
+      autoGainControl: options.audio.autoGainControl,
+      echoCancellation: options.audio.echoCancellation,
+      noiseSuppression: options.audio.noiseSuppression
+    };
+    const video = !options.video || !options.video.enabled ? false : {
+      frameRate: options.video.frameRate,
+      height: options.video.height,
+      width: options.video.width,
+      deviceId: options.video.deviceId
+    };
+
+    if (REC_SCREEN_ENABLE(options) && options.screen) {
+      if (browserReport.getDisplayMedia && !options.screen.forceChromePlugin) {
+        return createConstraints({
+          audio,
+          video: {
+            displaySurface: getDisplaySurfaceFromSourceOption(options.screen.source),
+            width: options.screen.width,
+            height: options.screen.height,
+            frameRate: options.screen.frameRate
+          }
+        });
+      }
+
+      const constraints = await getScreenConstraints(false, options.screen);
       return createConstraints({
-          audio, video,
+        audio,
+        video: constraints
       });
+    }
+
+    return createConstraints({
+      audio,
+      video
+    });
   }
+
   function getDisplaySurfaceFromSourceOption(opt) {
-      switch (opt) {
-          case "window":
-              return "application";
-          case "screen":
-              return ["window", "monitor"];
-          default:
-              return undefined;
-      }
+    switch (opt) {
+      case "window":
+        return "application";
+
+      case "screen":
+        return ["window", "monitor"];
+
+      default:
+        return undefined;
+    }
   }
-  const createConstraints = (constraints) => deleteConstraintsEmptyObject(processConstraints(removeUndefinedKey(constraints)));
+
+  const createConstraints = constraints => deleteConstraintsEmptyObject(processConstraints(removeUndefinedKey(constraints)));
+
   function processConstraints(constraints) {
-      if (browserReport.minMaxWithIdeal) {
-          return constraints;
-      }
-      const keys = ["video", "screen"];
-      keys.forEach(key => {
-          if (typeof constraints[key] === "object" && typeof constraints[key].width === "object" && constraints[key].width.ideal) {
-              delete constraints[key].width.ideal;
-          }
-          if (typeof constraints[key] === "object" && typeof constraints[key].height === "object" && constraints[key].height.ideal) {
-              delete constraints[key].height.ideal;
-          }
-      });
+    if (browserReport.minMaxWithIdeal) {
       return constraints;
-  }
-  // fix old chrome
+    }
+
+    const keys = ["video", "screen"];
+    keys.forEach(key => {
+      if (typeof constraints[key] === "object" && typeof constraints[key].width === "object" && constraints[key].width.ideal) {
+        delete constraints[key].width.ideal;
+      }
+
+      if (typeof constraints[key] === "object" && typeof constraints[key].height === "object" && constraints[key].height.ideal) {
+        delete constraints[key].height.ideal;
+      }
+    });
+    return constraints;
+  } // fix old chrome
+
+
   function deleteConstraintsEmptyObject(constraints) {
-      if (Object.keys(constraints.audio).length === 0 && typeof (constraints.audio) !== "boolean") {
-          constraints.audio = true;
-      }
-      if (Object.keys(constraints.video).length === 0 && typeof (constraints.video) !== "boolean") {
-          constraints.video = true;
-      }
-      return constraints;
+    if (Object.keys(constraints.audio).length === 0 && typeof constraints.audio !== "boolean") {
+      constraints.audio = true;
+    }
+
+    if (Object.keys(constraints.video).length === 0 && typeof constraints.video !== "boolean") {
+      constraints.video = true;
+    }
+
+    return constraints;
   }
+
   function getNumberRangeMax(range) {
-      if (!range) {
-          return undefined;
-      }
-      if (typeof range === "number") {
-          return range;
-      }
-      if (range.exact) {
-          return range.exact;
-      }
-      if (range.max) {
-          return range.max;
-      }
-      if (range.ideal) {
-          return range.ideal;
-      }
-      if (range.min) {
-          return range.min;
-      }
+    if (!range) {
       return undefined;
+    }
+
+    if (typeof range === "number") {
+      return range;
+    }
+
+    if (range.exact) {
+      return range.exact;
+    }
+
+    if (range.max) {
+      return range.max;
+    }
+
+    if (range.ideal) {
+      return range.ideal;
+    }
+
+    if (range.min) {
+      return range.min;
+    }
+
+    return undefined;
   }
 
   var grammar_1 = createCommonjsModule(function (module) {
@@ -24110,480 +24606,622 @@
   */
   const REMOTE_SERVER_NAME = "qiniu-rtc-client";
   class RemoteSdp {
-      constructor(direction, rtpcap) {
-          this.lastSubMids = [];
-          this.sessionVersion = 0;
-          this.direction = direction;
-          this.extendedRtpCapabilities = rtpcap;
+    constructor(direction, rtpcap) {
+      this.lastSubMids = [];
+      this.sessionVersion = 0;
+      this.direction = direction;
+      this.extendedRtpCapabilities = rtpcap;
+    }
+
+    get transportRemoteParameters() {
+      return this._transportRemoteParameters;
+    }
+
+    async setTransportRemoteParameters(remoteParameters) {
+      for (const candidate of remoteParameters.iceCandidates) {
+        candidate.ip = await resolveIceHost(candidate.ip);
       }
-      get transportRemoteParameters() {
-          return this._transportRemoteParameters;
+
+      this._transportRemoteParameters = remoteParameters;
+    }
+
+    createRemoteAnswer(offer) {
+      if (!this.transportRemoteParameters) throw UNEXPECTED_ERROR("no transportRemoteParameters!");
+
+      if (browserReport.unifiedPlan) {
+        return createUnifiedPlanAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
+      } else {
+        return createPlanBAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
       }
-      async setTransportRemoteParameters(remoteParameters) {
-          for (const candidate of remoteParameters.iceCandidates) {
-              candidate.ip = await resolveIceHost(candidate.ip);
-          }
-          this._transportRemoteParameters = remoteParameters;
+    }
+
+    createRemoteOffer(consumerInfos) {
+      if (!this.transportRemoteParameters) throw UNEXPECTED_ERROR("no transportRemoteParameters!");
+
+      if (browserReport.unifiedPlan) {
+        const sortedConsumerInfos = sortConsumerInfos(consumerInfos, this.lastSubMids);
+        this.lastSubMids = sortedConsumerInfos.map(c => c.mid);
+        this.sessionVersion += 1;
+        return createUnifiedPlanOfferSdp(sortedConsumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters, this.sessionVersion);
+      } else {
+        const kind = new Set();
+        consumerInfos.forEach(c => kind.add(c.kind)); //  如果没有传入 consumerInfos 代表是创建 sub pc
+
+        if (consumerInfos.length === 0) {
+          kind.add("audio");
+          kind.add("video");
+        }
+
+        return createPlanBOfferSdp(Array.from(kind), consumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters);
       }
-      createRemoteAnswer(offer) {
-          if (!this.transportRemoteParameters)
-              throw UNEXPECTED_ERROR("no transportRemoteParameters!");
-          if (browserReport.unifiedPlan) {
-              return createUnifiedPlanAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
-          }
-          else {
-              return createPlanBAnswerSdp(this.extendedRtpCapabilities, this.transportRemoteParameters, offer);
-          }
+    }
+
+    async updateICEData(iceParameters, iceCandidates) {
+      if (!this.transportRemoteParameters) return;
+
+      for (const candidate of iceCandidates) {
+        candidate.ip = await resolveIceHost(candidate.ip);
       }
-      createRemoteOffer(consumerInfos) {
-          if (!this.transportRemoteParameters)
-              throw UNEXPECTED_ERROR("no transportRemoteParameters!");
-          if (browserReport.unifiedPlan) {
-              const sortedConsumerInfos = sortConsumerInfos(consumerInfos, this.lastSubMids);
-              this.lastSubMids = sortedConsumerInfos.map(c => c.mid);
-              this.sessionVersion += 1;
-              return createUnifiedPlanOfferSdp(sortedConsumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters, this.sessionVersion);
-          }
-          else {
-              const kind = new Set();
-              consumerInfos.forEach(c => kind.add(c.kind));
-              //  如果没有传入 consumerInfos 代表是创建 sub pc
-              if (consumerInfos.length === 0) {
-                  kind.add("audio");
-                  kind.add("video");
-              }
-              return createPlanBOfferSdp(Array.from(kind), consumerInfos, this.extendedRtpCapabilities, this.transportRemoteParameters);
-          }
-      }
-      async updateICEData(iceParameters, iceCandidates) {
-          if (!this.transportRemoteParameters)
-              return;
-          for (const candidate of iceCandidates) {
-              candidate.ip = await resolveIceHost(candidate.ip);
-          }
-          this.transportRemoteParameters.iceCandidates = iceCandidates;
-          this.transportRemoteParameters.iceParameters = iceParameters;
-      }
+
+      this.transportRemoteParameters.iceCandidates = iceCandidates;
+      this.transportRemoteParameters.iceParameters = iceParameters;
+    }
+
   }
   async function getClientCapabilitiesSdp() {
-      const pc = createPC();
-      const offerOptions = { offerToReceiveAudio: true, offerToReceiveVideo: true };
-      const offer = await pc.createOffer(offerOptions);
-      if (browserReport.needH264FmtpLine) {
-          offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
-      }
-      const capsdp = {
-          capsdp: offer.sdp,
-          agent: navigator.userAgent,
-      };
-      pc.close();
-      return capsdp;
+    const pc = createPC();
+    const offerOptions = {
+      offerToReceiveAudio: true,
+      offerToReceiveVideo: true
+    };
+    const offer = await pc.createOffer(offerOptions);
+
+    if (browserReport.needH264FmtpLine) {
+      offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
+    }
+
+    const capsdp = {
+      capsdp: offer.sdp,
+      agent: navigator.userAgent
+    };
+    pc.close();
+    return capsdp;
   }
   function createPlanBAnswerSdp(rtpcaps, data, offer) {
-      const sdpObj = lib.parse(offer);
-      sdpObj.version = 0;
-      sdpObj.origin = {
-          address: "0.0.0.0",
-          ipVer: 4,
-          netType: "IN",
-          sessionId: "5975129998295344376",
-          sessionVersion: 2,
-          username: REMOTE_SERVER_NAME,
+    const sdpObj = lib.parse(offer);
+    sdpObj.version = 0;
+    sdpObj.origin = {
+      address: "0.0.0.0",
+      ipVer: 4,
+      netType: "IN",
+      sessionId: "5975129998295344376",
+      sessionVersion: 2,
+      username: REMOTE_SERVER_NAME
+    };
+    sdpObj.name = "-";
+    sdpObj.timing = {
+      start: 0,
+      stop: 0
+    };
+    sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+    sdpObj.msidSemantic = {
+      semantic: "WMS",
+      token: "*"
+    };
+    sdpObj.fingerprint = {
+      type: data.dtlsParameters.fingerprints[0].algorithm,
+      hash: data.dtlsParameters.fingerprints[0].value
+    };
+    const newMedia = [];
+
+    for (const _mSection of sdpObj.media) {
+      const kind = _mSection.type;
+      const codec = rtpcaps.codecs.find(c => c.kind === kind);
+      const headerExtensions = (rtpcaps.headerExtensions || []).filter(h => h.kind === kind);
+      if (!codec) throw UNEXPECTED_ERROR("can not find codec" + kind);
+      const mSection = {
+        type: kind,
+        mid: kind,
+        port: 7,
+        protocol: "RTP/SAVPF",
+        connection: {
+          ip: "127.0.0.1",
+          version: 4
+        },
+        iceUfrag: data.iceParameters.usernameFragment,
+        icePwd: data.iceParameters.password,
+        candidates: data.iceCandidates.map(iceCandidate => ({
+          component: 1,
+          foundation: iceCandidate.foundation,
+          ip: iceCandidate.ip,
+          port: iceCandidate.port,
+          priority: iceCandidate.priority,
+          transport: iceCandidate.protocol,
+          type: iceCandidate.type
+        })),
+        endOfCandidates: "end-of-candidates",
+        iceOptions: "renomination",
+        setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+        direction: "recvonly",
+        rtp: [{
+          payload: codec.sendPayloadType,
+          codec: codec.name,
+          rate: codec.clockRate,
+          encoding: codec.channels > 1 ? codec.channels : undefined
+        }],
+        rtcpFb: [],
+        fmtp: [{
+          payload: codec.sendPayloadType,
+          config: Object.keys(codec.parameters).map(k => `${k}=${codec.parameters[k]};`).join("")
+        }],
+        payloads: codec.sendPayloadType,
+        rtcpMux: "rtcp-mux",
+        rtcpRsize: "rtcp-rsize",
+        ext: headerExtensions.map(ext => ({
+          uri: ext.uri,
+          value: ext.sendId
+        }))
       };
-      sdpObj.name = "-";
-      sdpObj.timing = { start: 0, stop: 0 };
-      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
-      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
-      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
-      const newMedia = [];
-      for (const _mSection of sdpObj.media) {
-          const kind = _mSection.type;
-          const codec = rtpcaps.codecs.find(c => c.kind === kind);
-          const headerExtensions = (rtpcaps.headerExtensions || []).filter(h => h.kind === kind);
-          if (!codec)
-              throw UNEXPECTED_ERROR("can not find codec" + kind);
-          const mSection = {
-              type: kind,
-              mid: kind,
-              port: 7,
-              protocol: "RTP/SAVPF",
-              connection: { ip: "127.0.0.1", version: 4 },
-              iceUfrag: data.iceParameters.usernameFragment,
-              icePwd: data.iceParameters.password,
-              candidates: data.iceCandidates.map(iceCandidate => ({
-                  component: 1,
-                  foundation: iceCandidate.foundation,
-                  ip: iceCandidate.ip,
-                  port: iceCandidate.port,
-                  priority: iceCandidate.priority,
-                  transport: iceCandidate.protocol,
-                  type: iceCandidate.type,
-              })),
-              endOfCandidates: "end-of-candidates",
-              iceOptions: "renomination",
-              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
-              direction: "recvonly",
-              rtp: [{
-                      payload: codec.sendPayloadType,
-                      codec: codec.name,
-                      rate: codec.clockRate,
-                      encoding: codec.channels > 1 ? codec.channels : undefined,
-                  }],
-              rtcpFb: [],
-              fmtp: [{
-                      payload: codec.sendPayloadType,
-                      config: Object.keys(codec.parameters).map(k => `${k}=${codec.parameters[k]};`).join(""),
-                  }],
-              payloads: codec.sendPayloadType,
-              rtcpMux: "rtcp-mux",
-              rtcpRsize: "rtcp-rsize",
-              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.sendId })),
-          };
-          if (codec.rtcpFeedback && codec.rtcpFeedback.length > 0) {
-              codec.rtcpFeedback.forEach(rf => {
-                  mSection.rtcpFb.push({
-                      payload: codec.sendPayloadType,
-                      type: rf.type,
-                      subtype: rf.parameter,
-                  });
-              });
-          }
-          if (codec.sendRtxPayloadType) {
-              mSection.rtp.push({
-                  payload: codec.sendRtxPayloadType,
-                  codec: "rtx",
-                  rate: codec.clockRate,
-                  encoding: codec.channels > 1 ? codec.channels : undefined,
-              });
-              mSection.fmtp.push({
-                  payload: codec.sendRtxPayloadType,
-                  config: `apt=${codec.sendPayloadType};`,
-              });
-              mSection.payloads = `${codec.sendPayloadType} ${codec.sendRtxPayloadType}`;
-          }
-          newMedia.push(mSection);
+
+      if (codec.rtcpFeedback && codec.rtcpFeedback.length > 0) {
+        codec.rtcpFeedback.forEach(rf => {
+          mSection.rtcpFb.push({
+            payload: codec.sendPayloadType,
+            type: rf.type,
+            subtype: rf.parameter
+          });
+        });
       }
-      sdpObj.media = newMedia;
-      return lib.write(sdpObj);
+
+      if (codec.sendRtxPayloadType) {
+        mSection.rtp.push({
+          payload: codec.sendRtxPayloadType,
+          codec: "rtx",
+          rate: codec.clockRate,
+          encoding: codec.channels > 1 ? codec.channels : undefined
+        });
+        mSection.fmtp.push({
+          payload: codec.sendRtxPayloadType,
+          config: `apt=${codec.sendPayloadType};`
+        });
+        mSection.payloads = `${codec.sendPayloadType} ${codec.sendRtxPayloadType}`;
+      }
+
+      newMedia.push(mSection);
+    }
+
+    sdpObj.media = newMedia;
+    return lib.write(sdpObj);
   }
   /**
    * unified-plan 对 mid 顺序敏感，必须保证每次重协商顺序一致
    */
+
   function sortConsumerInfos(infos, lastSubMids) {
-      let newInfos = [];
-      for (const mid of lastSubMids) {
-          const info = lodash_remove(infos, i => i.mid === mid)[0];
-          if (!info)
-              continue;
-          newInfos.push(info);
-      }
-      newInfos = newInfos.concat(infos);
-      lastSubMids = newInfos.map(i => i.mid);
-      return newInfos;
+    let newInfos = [];
+
+    for (const mid of lastSubMids) {
+      const info = lodash_remove(infos, i => i.mid === mid)[0];
+      if (!info) continue;
+      newInfos.push(info);
+    }
+
+    newInfos = newInfos.concat(infos);
+    lastSubMids = newInfos.map(i => i.mid);
+    return newInfos;
   }
+
   function createUnifiedPlanOfferSdp(consumerInfos, rtpcaps, data, sessionVersion) {
-      log.debug("consumerInfos", consumerInfos);
-      const sdpObj = {};
-      const mids = consumerInfos.map(i => i.mid);
-      sdpObj.version = 0;
-      sdpObj.origin = {
-          address: "0.0.0.0",
-          ipVer: 4,
-          netType: "IN",
-          sessionId: "5975129998295344377",
-          sessionVersion,
-          username: REMOTE_SERVER_NAME,
+    log.debug("consumerInfos", consumerInfos);
+    const sdpObj = {};
+    const mids = consumerInfos.map(i => i.mid);
+    sdpObj.version = 0;
+    sdpObj.origin = {
+      address: "0.0.0.0",
+      ipVer: 4,
+      netType: "IN",
+      sessionId: "5975129998295344377",
+      sessionVersion,
+      username: REMOTE_SERVER_NAME
+    };
+    sdpObj.name = "-";
+    sdpObj.timing = {
+      start: 0,
+      stop: 0
+    };
+    sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+    sdpObj.msidSemantic = {
+      semantic: "WMS",
+      token: "*"
+    };
+
+    if (mids.length > 0) {
+      sdpObj.groups = [{
+        type: "BUNDLE",
+        mids: mids.join(" ")
+      }];
+    }
+
+    sdpObj.media = [];
+    sdpObj.fingerprint = {
+      type: data.dtlsParameters.fingerprints[0].algorithm,
+      hash: data.dtlsParameters.fingerprints[0].value
+    };
+
+    for (const info of consumerInfos) {
+      const codecs = info.kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
+      const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === info.kind);
+      const mediaObj = {
+        type: info.kind,
+        port: 7,
+        protocol: "RTP/SAVPF",
+        connection: {
+          ip: "127.0.0.1",
+          version: 4
+        },
+        mid: info.mid,
+        msid: `${info.streamId} ${info.trackId}`,
+        iceUfrag: data.iceParameters.usernameFragment,
+        icePwd: data.iceParameters.password,
+        candidates: data.iceCandidates.map(iceCandidate => ({
+          component: 1,
+          foundation: iceCandidate.foundation,
+          ip: iceCandidate.ip,
+          port: iceCandidate.port,
+          priority: iceCandidate.priority,
+          transport: iceCandidate.protocol,
+          type: iceCandidate.type
+        })),
+        endOfCandidates: "end-of-candidates",
+        iceOptions: "renomination",
+        setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+        direction: info.closed ? "inactive" : "sendonly",
+        rtp: [{
+          payload: codecs.recvPayloadType,
+          codec: codecs.name,
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        }],
+        rtcpFb: [],
+        fmtp: [{
+          payload: codecs.recvPayloadType,
+          config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join("")
+        }],
+        payloads: codecs.recvPayloadType,
+        rtcpMux: "rtcp-mux",
+        rtcpRsize: "rtcp-rsize",
+        ext: !info.closed ? headerExtensions.map(ext => ({
+          uri: ext.uri,
+          value: ext.recvId
+        })) : [],
+        ssrcs: !info.closed && info.ssrc ? [{
+          id: info.ssrc,
+          attribute: "cname",
+          value: info.cname
+        }] : [],
+        ssrcGroups: []
       };
-      sdpObj.name = "-";
-      sdpObj.timing = { start: 0, stop: 0 };
-      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
-      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
-      if (mids.length > 0) {
-          sdpObj.groups = [{ type: "BUNDLE", mids: mids.join(" ") }];
+
+      if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+        codecs.rtcpFeedback.forEach(rf => {
+          mediaObj.rtcpFb.push({
+            payload: codecs.recvPayloadType,
+            type: rf.type,
+            subtype: rf.parameter
+          });
+        });
       }
-      sdpObj.media = [];
-      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
-      for (const info of consumerInfos) {
-          const codecs = info.kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
-          const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === info.kind);
-          const mediaObj = {
-              type: info.kind,
-              port: 7,
-              protocol: "RTP/SAVPF",
-              connection: { ip: "127.0.0.1", version: 4 },
-              mid: info.mid,
-              msid: `${info.streamId} ${info.trackId}`,
-              iceUfrag: data.iceParameters.usernameFragment,
-              icePwd: data.iceParameters.password,
-              candidates: data.iceCandidates.map(iceCandidate => ({
-                  component: 1,
-                  foundation: iceCandidate.foundation,
-                  ip: iceCandidate.ip,
-                  port: iceCandidate.port,
-                  priority: iceCandidate.priority,
-                  transport: iceCandidate.protocol,
-                  type: iceCandidate.type,
-              })),
-              endOfCandidates: "end-of-candidates",
-              iceOptions: "renomination",
-              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
-              direction: info.closed ? "inactive" : "sendonly",
-              rtp: [{
-                      payload: codecs.recvPayloadType,
-                      codec: codecs.name,
-                      rate: codecs.clockRate,
-                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
-                  }],
-              rtcpFb: [],
-              fmtp: [{
-                      payload: codecs.recvPayloadType,
-                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
-                  }],
-              payloads: codecs.recvPayloadType,
-              rtcpMux: "rtcp-mux",
-              rtcpRsize: "rtcp-rsize",
-              ext: !info.closed ? headerExtensions.map(ext => ({ uri: ext.uri, value: ext.recvId })) : [],
-              ssrcs: !info.closed && info.ssrc ? [{
-                      id: info.ssrc,
-                      attribute: "cname",
-                      value: info.cname,
-                  },
-              ] : [],
-              ssrcGroups: [],
-          };
-          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
-              codecs.rtcpFeedback.forEach(rf => {
-                  mediaObj.rtcpFb.push({
-                      payload: codecs.recvPayloadType,
-                      type: rf.type,
-                      subtype: rf.parameter,
-                  });
-              });
-          }
-          if (codecs.recvRtxPayloadType) {
-              mediaObj.rtp.push({
-                  payload: codecs.recvRtxPayloadType,
-                  codec: "rtx",
-                  rate: codecs.clockRate,
-                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
-              });
-              mediaObj.fmtp.push({
-                  payload: codecs.recvRtxPayloadType,
-                  config: `apt=${codecs.recvPayloadType};`,
-              });
-              mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
-          }
-          if (info.rtxSsrc && !info.closed) {
-              mediaObj.ssrcs = mediaObj.ssrcs.concat([{
-                      id: info.rtxSsrc,
-                      attribute: "cname",
-                      value: info.cname,
-                  },
-              ]);
-              mediaObj.ssrcGroups.push({
-                  semantics: "FID",
-                  ssrcs: `${info.ssrc} ${info.rtxSsrc}`,
-              });
-          }
-          sdpObj.media.push(mediaObj);
+
+      if (codecs.recvRtxPayloadType) {
+        mediaObj.rtp.push({
+          payload: codecs.recvRtxPayloadType,
+          codec: "rtx",
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        });
+        mediaObj.fmtp.push({
+          payload: codecs.recvRtxPayloadType,
+          config: `apt=${codecs.recvPayloadType};`
+        });
+        mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
       }
-      return lib.write(sdpObj);
+
+      if (info.rtxSsrc && !info.closed) {
+        mediaObj.ssrcs = mediaObj.ssrcs.concat([{
+          id: info.rtxSsrc,
+          attribute: "cname",
+          value: info.cname
+        }]);
+        mediaObj.ssrcGroups.push({
+          semantics: "FID",
+          ssrcs: `${info.ssrc} ${info.rtxSsrc}`
+        });
+      }
+
+      sdpObj.media.push(mediaObj);
+    }
+
+    return lib.write(sdpObj);
   }
+
   function createUnifiedPlanAnswerSdp(rtpcaps, data, offer) {
-      const localSdpObj = lib.parse(offer);
-      const bundleMids = (localSdpObj.media || [])
-          .filter(m => m.hasOwnProperty("mid"))
-          .map(m => String(m.mid));
-      const sdpObj = {};
-      sdpObj.version = 0;
-      sdpObj.origin = {
-          address: "0.0.0.0",
-          ipVer: 4,
-          netType: "IN",
-          sessionId: "5975129998295344376",
-          sessionVersion: 2,
-          username: REMOTE_SERVER_NAME,
+    const localSdpObj = lib.parse(offer);
+    const bundleMids = (localSdpObj.media || []).filter(m => m.hasOwnProperty("mid")).map(m => String(m.mid));
+    const sdpObj = {};
+    sdpObj.version = 0;
+    sdpObj.origin = {
+      address: "0.0.0.0",
+      ipVer: 4,
+      netType: "IN",
+      sessionId: "5975129998295344376",
+      sessionVersion: 2,
+      username: REMOTE_SERVER_NAME
+    };
+    sdpObj.name = "-";
+    sdpObj.timing = {
+      start: 0,
+      stop: 0
+    };
+    sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+    sdpObj.msidSemantic = {
+      semantic: "WMS",
+      token: "*"
+    };
+
+    if (bundleMids.length > 0) {
+      sdpObj.groups = [{
+        type: "BUNDLE",
+        mids: bundleMids.join(" ")
+      }];
+    }
+
+    sdpObj.media = [];
+    sdpObj.fingerprint = {
+      type: data.dtlsParameters.fingerprints[0].algorithm,
+      hash: data.dtlsParameters.fingerprints[0].value
+    };
+
+    for (const localMediaObj of localSdpObj.media) {
+      const closed = localMediaObj.direction === "inactive";
+      const kind = localMediaObj.type;
+      const codecs = kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
+      const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === kind);
+      const remoteMediaObj = {
+        type: localMediaObj.type,
+        port: 7,
+        protocol: "RTP/SAVPF",
+        connection: {
+          ip: "127.0.0.1",
+          version: 4
+        },
+        mid: localMediaObj.mid,
+        iceUfrag: data.iceParameters.usernameFragment,
+        icePwd: data.iceParameters.password,
+        candidates: data.iceCandidates.map(iceCandidate => ({
+          component: 1,
+          foundation: iceCandidate.foundation,
+          ip: iceCandidate.ip,
+          port: iceCandidate.port,
+          priority: iceCandidate.priority,
+          transport: iceCandidate.protocol,
+          type: iceCandidate.type
+        })),
+        endOfCandidates: "end-of-candidates",
+        iceOptions: "renomination",
+        setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+        direction: localMediaObj.direction === "sendonly" || localMediaObj.direction === "sendrecv" ? "recvonly" : "inactive",
+        rtp: [{
+          payload: codecs.sendPayloadType,
+          codec: codecs.name,
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        }],
+        rtcpFb: [],
+        fmtp: [{
+          payload: codecs.sendPayloadType,
+          config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join("")
+        }],
+        payloads: codecs.sendPayloadType,
+        rtcpMux: "rtcp-mux",
+        rtcpRsize: "rtcp-rsize",
+        ext: headerExtensions.map(ext => ({
+          uri: ext.uri,
+          value: ext.sendId
+        }))
       };
-      sdpObj.name = "-";
-      sdpObj.timing = { start: 0, stop: 0 };
-      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
-      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
-      if (bundleMids.length > 0) {
-          sdpObj.groups = [{ type: "BUNDLE", mids: bundleMids.join(" ") }];
+
+      if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+        codecs.rtcpFeedback.forEach(rf => {
+          remoteMediaObj.rtcpFb.push({
+            payload: codecs.sendPayloadType,
+            type: rf.type,
+            subtype: rf.parameter
+          });
+        });
       }
-      sdpObj.media = [];
-      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
-      for (const localMediaObj of localSdpObj.media) {
-          const closed = localMediaObj.direction === "inactive";
-          const kind = localMediaObj.type;
-          const codecs = kind === "audio" ? rtpcaps.codecs[0] : rtpcaps.codecs[1];
-          const headerExtensions = rtpcaps.headerExtensions.filter(h => h.kind === kind);
-          const remoteMediaObj = {
-              type: localMediaObj.type,
-              port: 7,
-              protocol: "RTP/SAVPF",
-              connection: { ip: "127.0.0.1", version: 4 },
-              mid: localMediaObj.mid,
-              iceUfrag: data.iceParameters.usernameFragment,
-              icePwd: data.iceParameters.password,
-              candidates: data.iceCandidates.map(iceCandidate => ({
-                  component: 1,
-                  foundation: iceCandidate.foundation,
-                  ip: iceCandidate.ip,
-                  port: iceCandidate.port,
-                  priority: iceCandidate.priority,
-                  transport: iceCandidate.protocol,
-                  type: iceCandidate.type,
-              })),
-              endOfCandidates: "end-of-candidates",
-              iceOptions: "renomination",
-              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
-              direction: localMediaObj.direction === "sendonly" || localMediaObj.direction === "sendrecv" ? "recvonly" : "inactive",
-              rtp: [{
-                      payload: codecs.sendPayloadType,
-                      codec: codecs.name,
-                      rate: codecs.clockRate,
-                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
-                  }],
-              rtcpFb: [],
-              fmtp: [{
-                      payload: codecs.sendPayloadType,
-                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
-                  }],
-              payloads: codecs.sendPayloadType,
-              rtcpMux: "rtcp-mux",
-              rtcpRsize: "rtcp-rsize",
-              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.sendId })),
-          };
-          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
-              codecs.rtcpFeedback.forEach(rf => {
-                  remoteMediaObj.rtcpFb.push({
-                      payload: codecs.sendPayloadType,
-                      type: rf.type,
-                      subtype: rf.parameter,
-                  });
-              });
-          }
-          if (codecs.sendRtxPayloadType) {
-              remoteMediaObj.rtp.push({
-                  payload: codecs.sendRtxPayloadType,
-                  codec: "rtx",
-                  rate: codecs.clockRate,
-                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
-              });
-              remoteMediaObj.fmtp.push({
-                  payload: codecs.sendRtxPayloadType,
-                  config: `apt=${codecs.sendPayloadType};`,
-              });
-              remoteMediaObj.payloads = `${codecs.sendPayloadType} ${codecs.sendRtxPayloadType}`;
-          }
-          sdpObj.media.push(remoteMediaObj);
+
+      if (codecs.sendRtxPayloadType) {
+        remoteMediaObj.rtp.push({
+          payload: codecs.sendRtxPayloadType,
+          codec: "rtx",
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        });
+        remoteMediaObj.fmtp.push({
+          payload: codecs.sendRtxPayloadType,
+          config: `apt=${codecs.sendPayloadType};`
+        });
+        remoteMediaObj.payloads = `${codecs.sendPayloadType} ${codecs.sendRtxPayloadType}`;
       }
-      return lib.write(sdpObj);
+
+      sdpObj.media.push(remoteMediaObj);
+    }
+
+    return lib.write(sdpObj);
   }
+
   function createPlanBOfferSdp(kinds, consumerInfos, rtpcaps, data) {
-      // 保证 audio 在 video 前
-      kinds = ["audio", "video"];
-      const sdpObj = {};
-      sdpObj.version = 0;
-      sdpObj.origin = {
-          address: "0.0.0.0",
-          ipVer: 4,
-          netType: "IN",
-          sessionId: "5975129998295344377",
-          sessionVersion: 2,
-          username: REMOTE_SERVER_NAME,
+    // 保证 audio 在 video 前
+    kinds = ["audio", "video"];
+    const sdpObj = {};
+    sdpObj.version = 0;
+    sdpObj.origin = {
+      address: "0.0.0.0",
+      ipVer: 4,
+      netType: "IN",
+      sessionId: "5975129998295344377",
+      sessionVersion: 2,
+      username: REMOTE_SERVER_NAME
+    };
+    sdpObj.name = "-";
+    sdpObj.timing = {
+      start: 0,
+      stop: 0
+    };
+    sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
+    sdpObj.msidSemantic = {
+      semantic: "WMS",
+      token: "*"
+    };
+    sdpObj.groups = [{
+      type: "BUNDLE",
+      mids: kinds.join(" ")
+    }];
+    sdpObj.media = [];
+    sdpObj.fingerprint = {
+      type: data.dtlsParameters.fingerprints[0].algorithm,
+      hash: data.dtlsParameters.fingerprints[0].value
+    };
+
+    for (const kind of kinds) {
+      const kindConsumerInfos = consumerInfos.filter(i => i.kind === kind);
+      const codecs = rtpcaps.codecs.find(c => c.kind === kind);
+      const headerExtensions = (rtpcaps.headerExtensions || []).filter(e => e.kind === kind);
+      if (!codecs) throw UNEXPECTED_ERROR("no codec" + kind);
+      const mediaObj = {
+        type: kind,
+        port: 7,
+        protocol: "RTP/SAVPF",
+        connection: {
+          ip: "127.0.0.1",
+          version: 4
+        },
+        mid: kind,
+        iceUfrag: data.iceParameters.usernameFragment,
+        icePwd: data.iceParameters.password,
+        candidates: data.iceCandidates.map(iceCandidate => ({
+          component: 1,
+          foundation: iceCandidate.foundation,
+          ip: iceCandidate.ip,
+          port: iceCandidate.port,
+          priority: iceCandidate.priority,
+          transport: iceCandidate.protocol,
+          type: iceCandidate.type
+        })),
+        endOfCandidates: "end-of-candidates",
+        iceOptions: "renomination",
+        setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
+        direction: "sendonly",
+        rtp: [{
+          payload: codecs.recvPayloadType,
+          codec: codecs.name,
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        }],
+        rtcpFb: [],
+        fmtp: [{
+          payload: codecs.recvPayloadType,
+          config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join("")
+        }],
+        payloads: codecs.recvPayloadType,
+        rtcpMux: "rtcp-mux",
+        rtcpRsize: "rtcp-rsize",
+        ssrcs: [],
+        ssrcGroups: [],
+        ext: headerExtensions.map(ext => ({
+          uri: ext.uri,
+          value: ext.recvId
+        }))
       };
-      sdpObj.name = "-";
-      sdpObj.timing = { start: 0, stop: 0 };
-      sdpObj.icelite = data.iceParameters.iceLite ? "ice-lite" : undefined;
-      sdpObj.msidSemantic = { semantic: "WMS", token: "*" };
-      sdpObj.groups = [{ type: "BUNDLE", mids: kinds.join(" ") }];
-      sdpObj.media = [];
-      sdpObj.fingerprint = { type: data.dtlsParameters.fingerprints[0].algorithm, hash: data.dtlsParameters.fingerprints[0].value };
-      for (const kind of kinds) {
-          const kindConsumerInfos = consumerInfos.filter(i => i.kind === kind);
-          const codecs = rtpcaps.codecs.find(c => c.kind === kind);
-          const headerExtensions = (rtpcaps.headerExtensions || []).filter(e => e.kind === kind);
-          if (!codecs)
-              throw UNEXPECTED_ERROR("no codec" + kind);
-          const mediaObj = {
-              type: kind,
-              port: 7,
-              protocol: "RTP/SAVPF",
-              connection: { ip: "127.0.0.1", version: 4 },
-              mid: kind,
-              iceUfrag: data.iceParameters.usernameFragment,
-              icePwd: data.iceParameters.password,
-              candidates: data.iceCandidates.map(iceCandidate => ({
-                  component: 1,
-                  foundation: iceCandidate.foundation,
-                  ip: iceCandidate.ip,
-                  port: iceCandidate.port,
-                  priority: iceCandidate.priority,
-                  transport: iceCandidate.protocol,
-                  type: iceCandidate.type,
-              })),
-              endOfCandidates: "end-of-candidates",
-              iceOptions: "renomination",
-              setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
-              direction: "sendonly",
-              rtp: [{
-                      payload: codecs.recvPayloadType,
-                      codec: codecs.name,
-                      rate: codecs.clockRate,
-                      encoding: codecs.channels > 1 ? codecs.channels : undefined,
-                  }],
-              rtcpFb: [],
-              fmtp: [{
-                      payload: codecs.recvPayloadType,
-                      config: Object.keys(codecs.parameters).map(k => `${k}=${codecs.parameters[k]};`).join(""),
-                  }],
-              payloads: codecs.recvPayloadType,
-              rtcpMux: "rtcp-mux",
-              rtcpRsize: "rtcp-rsize",
-              ssrcs: [],
-              ssrcGroups: [],
-              ext: headerExtensions.map(ext => ({ uri: ext.uri, value: ext.recvId })),
-          };
-          if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
-              codecs.rtcpFeedback.forEach(rf => {
-                  mediaObj.rtcpFb.push({
-                      payload: codecs.recvPayloadType,
-                      type: rf.type,
-                      subtype: rf.parameter,
-                  });
-              });
-          }
-          if (codecs.recvRtxPayloadType) {
-              mediaObj.rtp.push({
-                  payload: codecs.recvRtxPayloadType,
-                  codec: "rtx",
-                  rate: codecs.clockRate,
-                  encoding: codecs.channels > 1 ? codecs.channels : undefined,
-              });
-              mediaObj.fmtp.push({
-                  payload: codecs.recvRtxPayloadType,
-                  config: `apt=${codecs.recvPayloadType};`,
-              });
-              mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
-          }
-          for (const info of kindConsumerInfos) {
-              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "msid", value: `${info.streamId} ${info.trackId}` });
-              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "mslabel", value: `${info.streamId}` });
-              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "label", value: `${info.trackId}` });
-              mediaObj.ssrcs.push({ id: info.ssrc, attribute: "cname", value: `${info.cname}` });
-              if (info.rtxSsrc) {
-                  mediaObj.ssrcGroups.push({ semantics: "FID", ssrcs: `${info.ssrc} ${info.rtxSsrc}` });
-                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "msid", value: `${info.streamId} ${info.trackId}` });
-                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "mslabel", value: `${info.streamId}` });
-                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "label", value: `${info.trackId}` });
-                  mediaObj.ssrcs.push({ id: info.rtxSsrc, attribute: "cname", value: `${info.cname}` });
-              }
-          }
-          sdpObj.media.push(mediaObj);
+
+      if (codecs.rtcpFeedback && codecs.rtcpFeedback.length > 0) {
+        codecs.rtcpFeedback.forEach(rf => {
+          mediaObj.rtcpFb.push({
+            payload: codecs.recvPayloadType,
+            type: rf.type,
+            subtype: rf.parameter
+          });
+        });
       }
-      return lib.write(sdpObj);
+
+      if (codecs.recvRtxPayloadType) {
+        mediaObj.rtp.push({
+          payload: codecs.recvRtxPayloadType,
+          codec: "rtx",
+          rate: codecs.clockRate,
+          encoding: codecs.channels > 1 ? codecs.channels : undefined
+        });
+        mediaObj.fmtp.push({
+          payload: codecs.recvRtxPayloadType,
+          config: `apt=${codecs.recvPayloadType};`
+        });
+        mediaObj.payloads = `${codecs.recvPayloadType} ${codecs.recvRtxPayloadType}`;
+      }
+
+      for (const info of kindConsumerInfos) {
+        mediaObj.ssrcs.push({
+          id: info.ssrc,
+          attribute: "msid",
+          value: `${info.streamId} ${info.trackId}`
+        });
+        mediaObj.ssrcs.push({
+          id: info.ssrc,
+          attribute: "mslabel",
+          value: `${info.streamId}`
+        });
+        mediaObj.ssrcs.push({
+          id: info.ssrc,
+          attribute: "label",
+          value: `${info.trackId}`
+        });
+        mediaObj.ssrcs.push({
+          id: info.ssrc,
+          attribute: "cname",
+          value: `${info.cname}`
+        });
+
+        if (info.rtxSsrc) {
+          mediaObj.ssrcGroups.push({
+            semantics: "FID",
+            ssrcs: `${info.ssrc} ${info.rtxSsrc}`
+          });
+          mediaObj.ssrcs.push({
+            id: info.rtxSsrc,
+            attribute: "msid",
+            value: `${info.streamId} ${info.trackId}`
+          });
+          mediaObj.ssrcs.push({
+            id: info.rtxSsrc,
+            attribute: "mslabel",
+            value: `${info.streamId}`
+          });
+          mediaObj.ssrcs.push({
+            id: info.rtxSsrc,
+            attribute: "label",
+            value: `${info.trackId}`
+          });
+          mediaObj.ssrcs.push({
+            id: info.rtxSsrc,
+            attribute: "cname",
+            value: `${info.cname}`
+          });
+        }
+      }
+
+      sdpObj.media.push(mediaObj);
+    }
+
+    return lib.write(sdpObj);
   }
 
   /*
@@ -24593,49 +25231,48 @@
    * Distributed under terms of the MIT license.
   */
 
-  /*
-   * auth.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
   const RTC_HOST = "https://rtc.qiniuapi.com";
   async function getAccessToken(roomAccess, roomToken) {
-      const { appId, roomName, userId } = roomAccess;
-      const url = `${RTC_HOST}/v3/apps/${appId}/rooms/${roomName}/auth?user=${userId}&token=${roomToken}`;
-      while (true) {
-          const qosItem = {
-              auth_start_time: Date.now(),
-              auth_dns_time: 0,
-              auth_server_ip: "",
-              room_token: roomToken,
-          };
-          try {
-              const res = await request(url);
-              qos.addEvent("MCSAuth", {
-                  ...qosItem,
-                  auth_take_time: Date.now() - qosItem.auth_start_time,
-                  auth_error_code: 0,
-                  auth_error_message: "",
-                  access_token: res.accessToken,
-              });
-              return res;
-          }
-          catch (e) {
-              qos.addEvent("MCSAuth", {
-                  ...qosItem,
-                  auth_take_time: Date.now() - qosItem.auth_start_time,
-                  auth_error_code: e.retry === undefined ? -1 : Number(e.message),
-                  auth_error_message: e.retry === undefined ? e.toString() : e.message,
-                  access_token: "",
-              });
-              if (e.retry === false) {
-                  throw AUTH_ENTER_ROOM_ERROR(e.message);
-              }
-              await timeout(1000);
-              log.warning("can not get accessToken, retry.", AUTH_ENTER_ROOM_ERROR(e));
-          }
+    const {
+      appId,
+      roomName,
+      userId
+    } = roomAccess;
+    const url = `${RTC_HOST}/v3/apps/${appId}/rooms/${roomName}/auth?user=${userId}&token=${roomToken}`;
+
+    while (true) {
+      const qosItem = {
+        auth_start_time: Date.now(),
+        auth_dns_time: 0,
+        auth_server_ip: "",
+        room_token: roomToken
+      };
+
+      try {
+        const res = await request(url);
+        qos.addEvent("MCSAuth", objectSpread({}, qosItem, {
+          auth_take_time: Date.now() - qosItem.auth_start_time,
+          auth_error_code: 0,
+          auth_error_message: "",
+          access_token: res.accessToken
+        }));
+        return res;
+      } catch (e) {
+        qos.addEvent("MCSAuth", objectSpread({}, qosItem, {
+          auth_take_time: Date.now() - qosItem.auth_start_time,
+          auth_error_code: e.retry === undefined ? -1 : Number(e.message),
+          auth_error_message: e.retry === undefined ? e.toString() : e.message,
+          access_token: ""
+        }));
+
+        if (e.retry === false) {
+          throw AUTH_ENTER_ROOM_ERROR(e.message);
+        }
+
+        await timeout(1000);
+        log.warning("can not get accessToken, retry.", AUTH_ENTER_ROOM_ERROR(e));
       }
+    }
   }
 
   /*
@@ -24644,425 +25281,511 @@
    *
    * Distributed under terms of the MIT license.
   */
-  const { JOIN_ROOM_ERROR: JOIN_ROOM_ERROR$1 } = error;
+  const {
+    JOIN_ROOM_ERROR: JOIN_ROOM_ERROR$1
+  } = error;
   var SignalingState;
+
   (function (SignalingState) {
-      SignalingState[SignalingState["CONNECTING"] = 0] = "CONNECTING";
-      SignalingState[SignalingState["OPEN"] = 1] = "OPEN";
-      SignalingState[SignalingState["CLOSING"] = 2] = "CLOSING";
-      SignalingState[SignalingState["CLOSED"] = 3] = "CLOSED";
+    SignalingState[SignalingState["CONNECTING"] = 0] = "CONNECTING";
+    SignalingState[SignalingState["OPEN"] = 1] = "OPEN";
+    SignalingState[SignalingState["CLOSING"] = 2] = "CLOSING";
+    SignalingState[SignalingState["CLOSED"] = 3] = "CLOSED";
   })(SignalingState || (SignalingState = {}));
+
   class SignalingWS extends EnhancedEventEmitter {
-      constructor(url, token, capsdp, playerdata) {
-          super();
-          /**
-           * 如果为 0 说明鉴权完成，或者还没有开始鉴权
-           */
-          this.startAuthTime = 0;
-          this.initWs = (isUserAction = false) => new Promise((resolve, reject) => {
-              if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-                  this.ws.close();
-                  this.ws.onclose = null;
-              }
-              this.startAuthTime = Date.now();
-              try {
-                  this.ws = new WebSocket(this.url);
-                  this._state = SignalingState.CONNECTING;
-              }
-              catch (e) {
-                  throw UNEXPECTED_ERROR(`init signaling websocket faild!\nError: ${e}`);
-              }
-              this.ws.onerror = this.onWsError;
-              this.ws.onclose = this.onWsClose.bind(this, resolve, reject);
-              this.ws.onopen = () => {
-                  this.emit("ws:onopen");
-                  log.log("signaling: websocket open", this.url);
-                  this.ws.onmessage = this.onWsMsg;
-                  const authData = {
-                      token: this.accessToken,
-                      reconntoken: this.reconnectToken,
-                      agent: `${browser.name}${browser.version}`,
-                      sdkversion: version,
-                      capsdp: this.capsdp,
-                      msgsn: this.customMsgNumber,
-                      supportdomain: true,
-                  };
-                  if (this.playerdata) {
-                      authData.playerdata = this.playerdata;
-                  }
-                  this.request("auth", authData)
-                      .then((msgData) => {
-                      if (msgData.code !== 0) {
-                          qos.addEvent("SignalAuth", {
-                              auth_start_time: this.startAuthTime,
-                              auth_dns_time: 0,
-                              auth_server_ip: "",
-                              auth_error_code: msgData.code,
-                              auth_error_message: msgData.error,
-                              auth_take_time: Date.now() - this.startAuthTime,
-                              access_token: this.accessToken,
-                          });
-                          this.startAuthTime = 0;
-                      }
-                      switch (msgData.code) {
-                          case 0: {
-                              this.ws.onclose = this.onWsClose.bind(this, null, null);
-                              this.reconnectToken = msgData.reconntoken;
-                              log.log("signaling: websocket authed");
-                              this.emit("@signalingauth", msgData);
-                              this._state = SignalingState.OPEN;
-                              qos.addEvent("SignalAuth", {
-                                  auth_start_time: this.startAuthTime,
-                                  auth_dns_time: 0,
-                                  auth_server_ip: "",
-                                  auth_error_code: 0,
-                                  auth_error_message: "",
-                                  auth_take_time: Date.now() - this.startAuthTime,
-                                  access_token: this.accessToken,
-                              });
-                              this.startAuthTime = 0;
-                              resolve(msgData);
-                              break;
-                          }
-                          case 10001:
-                          // 用户 token 错误
-                          case 10002:
-                          // 用户 token 过期
-                          case 10011:
-                          // 房间人数已满
-                          case 10022:
-                          // 已经在其他设备登陆
-                          case 10004: {
-                              // reconnect token error (重连超时)
-                              this.emit("@error", msgData);
-                              reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
-                              break;
-                          }
-                          case 10012: {
-                              // room not exist, 需要重新签 accessToken
-                              this.safeEmitAsPromise("@needupdateaccesstoken").then(() => {
-                                  this.reconnect().then(resolve).catch(reject);
-                              }).catch(e => {
-                                  // 如果获取 accesstoken 出错，因为有重试逻辑，只可能是 roomtoken 本身过期了
-                                  this.emit("@error", {
-                                      code: 10002,
-                                  });
-                                  reject(e);
-                              });
-                              return;
-                          }
-                          case 10052: {
-                              log.debug("10052 auth, retry", isUserAction);
-                              // 媒体服务器宕机或者重启
-                              this.reconnectToken = undefined;
-                              if (isUserAction) {
-                                  reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
-                                  break;
-                              }
-                              else {
-                                  this.emit("@error", msgData);
-                                  return;
-                              }
-                          }
-                          case 10054: {
-                              // 客户端与服务端编码能力不匹配
-                              reject(UNSUPPORT_FMT(msgData.error));
-                              break;
-                          }
-                          default:
-                              reject(UNEXPECTED_ERROR(msgData.error));
-                              break;
-                      }
-                      if (msgData.code !== 0) {
-                          this.reconnectToken = undefined;
-                          this._state = SignalingState.CLOSED;
-                          this.release();
-                      }
-                  });
-              };
-          });
-          this.onWsMsg = (e) => {
-              // data 格式为 'xxx={ "a": 1, "b": 2 }'
-              const data = e.data;
-              this.emit("ws:onmessage", data);
-              const index = data.indexOf("=");
-              if (index > 0) {
-                  const msgType = data.substring(0, index);
-                  const payload = JSON.parse(data.substring(index + 1));
-                  this.receiveWsMsg(msgType, payload);
-              }
-              else {
-                  throw UNEXPECTED_ERROR(`signaling model can not parse message: ${data}`);
-              }
-          };
-          this.onWsError = (e) => {
-              log.warning("signaling: websocket error", e);
-              this.emit("@ws:error", e);
-          };
-          this.sendWsMsg = (msgType, msgData) => {
-              if (this.ws.readyState !== WebSocket.OPEN) {
-                  throw WS_ABORT();
-              }
-              const jsonString = JSON.stringify(msgData);
-              try {
-                  this.ws.send(`${msgType}=${jsonString}`);
-                  this.emit("send", msgType, msgData);
-              }
-              catch (e) {
-                  log.warning("signaling: websocket send error", e);
-                  this.reconnect().catch(e => {
-                      log.warning("signaling: reconnect error", e);
-                  });
-                  throw WS_ABORT();
-              }
-          };
-          this.handlePing = () => {
-              this.sendWsMsg("pong", {});
-              if (this.reconnectTimeoutID) {
-                  clearTimeout(this.reconnectTimeoutID);
-              }
-              this.reconnectTimeoutID = setTimeout(() => {
-                  log.debug("signaling: websocket heartbeat timeout");
-                  this.reconnect().catch(e => {
-                      log.debug(e);
-                  });
-              }, 9000);
-          };
-          this.receiveWsMsg = (msgType, msgData) => {
-              this.emit("receive", msgType, msgData);
-              switch (msgType) {
-                  case "ping":
-                      this.handlePing();
-                      break;
-                  case "auth-res":
-                      this.emit("@auth-res", msgData);
-                  case "pubpc-res":
-                  case "subpc-res":
-                  case "pub-tracks":
-                  case "webrtc-candidate":
-                  case "on-player-in":
-                  case "on-player-out":
-                  case "disconnect":
-                  case "mute-tracks":
-                  case "on-add-tracks":
-                  case "on-remove-tracks":
-                      this.emit(msgType, msgData);
-                      break;
-                  case "sub-res":
-                  case "unsub-res":
-                      this.emit(msgType, msgData);
-                      this.emit(`${msgType}-${msgData.streamid}`, msgData);
-                      break;
-                  case "control-res":
-                      this.emit(msgType, msgData);
-                      this.emit(`${msgType}-${msgData.command}-${msgData.playerid}`, msgData);
-                      break;
-                  case "on-pubpc-connected":
-                  case "on-pubpc-disconnected":
-                      this.emit("on-pubpc-state", { pcid: msgData.pcid, connected: msgType === "on-pubpc-connected" });
-                      this.emit(`${msgType}-${msgData.pcid}`, msgData);
-                      break;
-                  case "on-subpc-disconnected":
-                  case "on-subpc-connected":
-                      this.emit("on-subpc-state", { pcid: msgData.pcid, connected: msgType === "on-subpc-connected" });
-                      this.emit(msgType, msgData);
-                      break;
-                  case "pub-tracks-res":
-                      this.emit(msgType, msgData);
-                      break;
-                  case "on-messages":
-                      // 按照 msgsn 从小到大排序
-                      msgData.messages = msgData.messages.sort((a, b) => a.msgsn - b.msgsn);
-                      this.customMsgNumber = msgData.messages[msgData.messages.length - 1].msgsn;
-                      this.emit(msgType, msgData);
-                      break;
-                  case "unpub-tracks-res":
-                  case "sub-tracks-res":
-                  case "unsub-tracks-res":
-                  case "on-pubpc-restart-notify":
-                  case "on-subpc-restart-notify":
-                  case "pubpc-restart-res":
-                  case "subpc-restart-res":
-                  case "create-merge-job-res":
-                      this.emit(msgType, msgData);
-                      break;
-                  default:
-                      break;
-              }
-          };
-          this.url = url;
-          this.accessToken = token;
-          this.capsdp = capsdp;
-          this.playerdata = playerdata;
-      }
-      set _state(state) {
-          this.emit("@ws-state-change", this.__state, state);
-          this.__state = state;
-      }
-      get state() {
-          return this.__state;
-      }
-      onWsClose(resolve, reject, e) {
-          this._state = SignalingState.CLOSED;
-          log.warning("signaling: websocket onclose", e);
-          if (this.startAuthTime) {
-              qos.addEvent("SignalAuth", {
-                  auth_start_time: this.startAuthTime,
-                  auth_dns_time: 0,
-                  auth_server_ip: "",
-                  auth_error_code: e.code,
-                  auth_error_message: e.toString(),
-                  auth_take_time: Date.now() - this.startAuthTime,
-                  access_token: this.accessToken,
-              });
-          }
-          let reconnectPromise = this.reconnectPromise;
-          // See http://tools.ietf.org/html/rfc6455#section-7.4.1
-          switch (e.code) {
-              case 1000: {
-                  // Normal closure, meaning that the purpose for which the connection was established has been fulfilled.
-                  this.emit("@closed");
-                  break;
-              }
-              case 1001: {
-                  // An endpoint is "going away", such as a server going down or a browser having navigated away from a page.
-                  reconnectPromise = this.reconnect();
-                  break;
-              }
-              case 1005: {
-                  // No status code was actually present.
-                  reconnectPromise = this.reconnect();
-                  break;
-              }
-              case 1006: {
-                  // The connection was closed abnormally, e.g., without sending or receiving a Close control frame
-                  reconnectPromise = this.reconnect();
-                  break;
-              }
-              case 1007: {
-                  // An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).
-                  break;
-              }
-              case 1008: {
-                  // An endpoint is terminating the connection because it has received a message that "violates its policy". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.
-                  break;
-              }
-              case 1009: {
-                  // An endpoint is terminating the connection because it has received a message that is too big for it to process.
-                  break;
-              }
-              case 1010: {
-                  // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
-                  // An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake.
-                  // Specifically, the extensions that are needed are: " + e.reason
-                  break;
-              }
-              case 1011: {
-                  // A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.
-                  reconnectPromise = this.reconnect();
-                  break;
-              }
-              // https://www.ietf.org/mail-archive/web/hybi/current/msg09670.html
-              case 1012: {
-                  // the service is restarted. a client may reconnect,
-                  // and if it choses to do, should reconnect using a randomized delay of 5 - 30s.
-                  reconnectPromise = this.reconnect(5000);
-                  break;
-              }
-              case 1013: {
-                  // The server is terminating the connection due to a temporary condition,
-                  // e.g. it is overloaded and is casting off some of its clients.
-                  reconnectPromise = this.reconnect();
-                  break;
-              }
-              case 1014: {
-                  // The server was acting as a gateway or proxy and received an invalid response from the upstream server.
-                  // This is similar to 502 HTTP Status Code.
-                  reconnectPromise = this.reconnect(5000);
-                  break;
-              }
-              case 1015: {
-                  // The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).
-                  break;
-              }
-              default: {
-                  // Others
-                  break;
-              }
-          }
-          if (resolve && reject) {
-              if (reconnectPromise) {
-                  resolve(reconnectPromise);
-              }
-              else {
-                  reject(e);
-              }
-          }
-      }
-      sendDisconnect() {
-          if (this.state !== SignalingState.OPEN) {
-              return;
-          }
-          try {
-              this.sendWsMsg("disconnect", {});
-          }
-          catch (error) {
-              // abort error
-          }
-      }
-      reconnect(time = 1000) {
-          // 每次连接已经确认断开后，本地 heartbeat 都需要删除
-          if (this.reconnectTimeoutID) {
-              clearTimeout(this.reconnectTimeoutID);
-          }
-          if (this.reconnectPromise && this._state === SignalingState.CONNECTING) {
-              return this.reconnectPromise;
-          }
-          this._state = SignalingState.CONNECTING;
-          log.debug("signaling: websocket reconnecting");
-          this.reconnectPromise = timeout(time)
-              .then(() => {
-              return this.initWs();
-          })
-              .then(res => {
-              this.reconnectPromise = undefined;
-              return res;
-          })
-              .catch(e => {
-              this._state = SignalingState.CLOSED;
-              this.emit("error", e);
-              return Promise.reject(e);
-          });
-          return this.reconnectPromise;
-      }
+    constructor(url, token, capsdp, playerdata) {
+      super();
       /**
-       * request
+       * 如果为 0 说明鉴权完成，或者还没有开始鉴权
        */
-      request(method, data) {
-          const rpcid = randomStringGen(8);
-          data.rpcid = rpcid;
-          log.log("ws request", rpcid, method, data);
-          this.sendWsMsg(method, data);
-          return new Promise(resolve => {
-              const onres = (data) => {
-                  if (data.rpcid === rpcid) {
-                      log.log("ws response", rpcid, method, data);
-                      this.off(`${method}-res`, onres);
-                      resolve(data);
-                  }
-              };
-              this.on(`${method}-res`, onres);
-          });
-      }
-      release() {
-          if (this.reconnectTimeoutID) {
-              clearTimeout(this.reconnectTimeoutID);
-          }
-          this.removeEvent();
-          this.ws.onclose = null;
-          this.ws.onerror = null;
+
+      this.startAuthTime = 0;
+
+      this.initWs = (isUserAction = false) => new Promise((resolve, reject) => {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
           this.ws.close();
+          this.ws.onclose = null;
+        }
+
+        this.startAuthTime = Date.now();
+
+        try {
+          this.ws = new WebSocket(this.url);
+          this._state = SignalingState.CONNECTING;
+        } catch (e) {
+          throw UNEXPECTED_ERROR(`init signaling websocket faild!\nError: ${e}`);
+        }
+
+        this.ws.onerror = this.onWsError;
+        this.ws.onclose = this.onWsClose.bind(this, resolve, reject);
+
+        this.ws.onopen = () => {
+          this.emit("ws:onopen");
+          log.log("signaling: websocket open", this.url);
+          this.ws.onmessage = this.onWsMsg;
+          const authData = {
+            token: this.accessToken,
+            reconntoken: this.reconnectToken,
+            agent: `${browser.name}${browser.version}`,
+            sdkversion: version,
+            capsdp: this.capsdp,
+            msgsn: this.customMsgNumber,
+            supportdomain: true
+          };
+
+          if (this.playerdata) {
+            authData.playerdata = this.playerdata;
+          }
+
+          this.request("auth", authData).then(msgData => {
+            if (msgData.code !== 0) {
+              qos.addEvent("SignalAuth", {
+                auth_start_time: this.startAuthTime,
+                auth_dns_time: 0,
+                auth_server_ip: "",
+                auth_error_code: msgData.code,
+                auth_error_message: msgData.error,
+                auth_take_time: Date.now() - this.startAuthTime,
+                access_token: this.accessToken
+              });
+              this.startAuthTime = 0;
+            }
+
+            switch (msgData.code) {
+              case 0:
+                {
+                  this.ws.onclose = this.onWsClose.bind(this, null, null);
+                  this.reconnectToken = msgData.reconntoken;
+                  log.log("signaling: websocket authed");
+                  this.emit("@signalingauth", msgData);
+                  this._state = SignalingState.OPEN;
+                  qos.addEvent("SignalAuth", {
+                    auth_start_time: this.startAuthTime,
+                    auth_dns_time: 0,
+                    auth_server_ip: "",
+                    auth_error_code: 0,
+                    auth_error_message: "",
+                    auth_take_time: Date.now() - this.startAuthTime,
+                    access_token: this.accessToken
+                  });
+                  this.startAuthTime = 0;
+                  resolve(msgData);
+                  break;
+                }
+
+              case 10001: // 用户 token 错误
+
+              case 10002: // 用户 token 过期
+
+              case 10011: // 房间人数已满
+
+              case 10022: // 已经在其他设备登陆
+
+              case 10004:
+                {
+                  // reconnect token error (重连超时)
+                  this.emit("@error", msgData);
+                  reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
+                  break;
+                }
+
+              case 10012:
+                {
+                  // room not exist, 需要重新签 accessToken
+                  this.safeEmitAsPromise("@needupdateaccesstoken").then(() => {
+                    this.reconnect().then(resolve).catch(reject);
+                  }).catch(e => {
+                    // 如果获取 accesstoken 出错，因为有重试逻辑，只可能是 roomtoken 本身过期了
+                    this.emit("@error", {
+                      code: 10002
+                    });
+                    reject(e);
+                  });
+                  return;
+                }
+
+              case 10052:
+                {
+                  log.debug("10052 auth, retry", isUserAction); // 媒体服务器宕机或者重启
+
+                  this.reconnectToken = undefined;
+
+                  if (isUserAction) {
+                    reject(JOIN_ROOM_ERROR$1(msgData.code, msgData.error));
+                    break;
+                  } else {
+                    this.emit("@error", msgData);
+                    return;
+                  }
+                }
+
+              case 10054:
+                {
+                  // 客户端与服务端编码能力不匹配
+                  reject(UNSUPPORT_FMT(msgData.error));
+                  break;
+                }
+
+              default:
+                reject(UNEXPECTED_ERROR(msgData.error));
+                break;
+            }
+
+            if (msgData.code !== 0) {
+              this.reconnectToken = undefined;
+              this._state = SignalingState.CLOSED;
+              this.release();
+            }
+          });
+        };
+      });
+
+      this.onWsMsg = e => {
+        // data 格式为 'xxx={ "a": 1, "b": 2 }'
+        const data = e.data;
+        this.emit("ws:onmessage", data);
+        const index = data.indexOf("=");
+
+        if (index > 0) {
+          const msgType = data.substring(0, index);
+          const payload = JSON.parse(data.substring(index + 1));
+          this.receiveWsMsg(msgType, payload);
+        } else {
+          throw UNEXPECTED_ERROR(`signaling model can not parse message: ${data}`);
+        }
+      };
+
+      this.onWsError = e => {
+        log.warning("signaling: websocket error", e);
+        this.emit("@ws:error", e);
+      };
+
+      this.sendWsMsg = (msgType, msgData) => {
+        if (this.ws.readyState !== WebSocket.OPEN) {
+          throw WS_ABORT();
+        }
+
+        const jsonString = JSON.stringify(msgData);
+
+        try {
+          this.ws.send(`${msgType}=${jsonString}`);
+          this.emit("send", msgType, msgData);
+        } catch (e) {
+          log.warning("signaling: websocket send error", e);
+          this.reconnect().catch(e => {
+            log.warning("signaling: reconnect error", e);
+          });
+          throw WS_ABORT();
+        }
+      };
+
+      this.handlePing = () => {
+        this.sendWsMsg("pong", {});
+
+        if (this.reconnectTimeoutID) {
+          clearTimeout(this.reconnectTimeoutID);
+        }
+
+        this.reconnectTimeoutID = setTimeout(() => {
+          log.debug("signaling: websocket heartbeat timeout");
+          this.reconnect().catch(e => {
+            log.debug(e);
+          });
+        }, 9000);
+      };
+
+      this.receiveWsMsg = (msgType, msgData) => {
+        this.emit("receive", msgType, msgData);
+
+        switch (msgType) {
+          case "ping":
+            this.handlePing();
+            break;
+
+          case "auth-res":
+            this.emit("@auth-res", msgData);
+
+          case "pubpc-res":
+          case "subpc-res":
+          case "pub-tracks":
+          case "webrtc-candidate":
+          case "on-player-in":
+          case "on-player-out":
+          case "disconnect":
+          case "mute-tracks":
+          case "on-add-tracks":
+          case "on-remove-tracks":
+            this.emit(msgType, msgData);
+            break;
+
+          case "sub-res":
+          case "unsub-res":
+            this.emit(msgType, msgData);
+            this.emit(`${msgType}-${msgData.streamid}`, msgData);
+            break;
+
+          case "control-res":
+            this.emit(msgType, msgData);
+            this.emit(`${msgType}-${msgData.command}-${msgData.playerid}`, msgData);
+            break;
+
+          case "on-pubpc-connected":
+          case "on-pubpc-disconnected":
+            this.emit("on-pubpc-state", {
+              pcid: msgData.pcid,
+              connected: msgType === "on-pubpc-connected"
+            });
+            this.emit(`${msgType}-${msgData.pcid}`, msgData);
+            break;
+
+          case "on-subpc-disconnected":
+          case "on-subpc-connected":
+            this.emit("on-subpc-state", {
+              pcid: msgData.pcid,
+              connected: msgType === "on-subpc-connected"
+            });
+            this.emit(msgType, msgData);
+            break;
+
+          case "pub-tracks-res":
+            this.emit(msgType, msgData);
+            break;
+
+          case "on-messages":
+            // 按照 msgsn 从小到大排序
+            msgData.messages = msgData.messages.sort((a, b) => a.msgsn - b.msgsn);
+            this.customMsgNumber = msgData.messages[msgData.messages.length - 1].msgsn;
+            this.emit(msgType, msgData);
+            break;
+
+          case "unpub-tracks-res":
+          case "sub-tracks-res":
+          case "unsub-tracks-res":
+          case "on-pubpc-restart-notify":
+          case "on-subpc-restart-notify":
+          case "pubpc-restart-res":
+          case "subpc-restart-res":
+          case "create-merge-job-res":
+            this.emit(msgType, msgData);
+            break;
+
+          default:
+            break;
+        }
+      };
+
+      this.url = url;
+      this.accessToken = token;
+      this.capsdp = capsdp;
+      this.playerdata = playerdata;
+    }
+
+    set _state(state) {
+      this.emit("@ws-state-change", this.__state, state);
+      this.__state = state;
+    }
+
+    get state() {
+      return this.__state;
+    }
+
+    onWsClose(resolve, reject, e) {
+      this._state = SignalingState.CLOSED;
+      log.warning("signaling: websocket onclose", e);
+
+      if (this.startAuthTime) {
+        qos.addEvent("SignalAuth", {
+          auth_start_time: this.startAuthTime,
+          auth_dns_time: 0,
+          auth_server_ip: "",
+          auth_error_code: e.code,
+          auth_error_message: e.toString(),
+          auth_take_time: Date.now() - this.startAuthTime,
+          access_token: this.accessToken
+        });
       }
+
+      let reconnectPromise = this.reconnectPromise; // See http://tools.ietf.org/html/rfc6455#section-7.4.1
+
+      switch (e.code) {
+        case 1000:
+          {
+            // Normal closure, meaning that the purpose for which the connection was established has been fulfilled.
+            this.emit("@closed");
+            break;
+          }
+
+        case 1001:
+          {
+            // An endpoint is "going away", such as a server going down or a browser having navigated away from a page.
+            reconnectPromise = this.reconnect();
+            break;
+          }
+
+        case 1005:
+          {
+            // No status code was actually present.
+            reconnectPromise = this.reconnect();
+            break;
+          }
+
+        case 1006:
+          {
+            // The connection was closed abnormally, e.g., without sending or receiving a Close control frame
+            reconnectPromise = this.reconnect();
+            break;
+          }
+
+        case 1007:
+          {
+            // An endpoint is terminating the connection because it has received data within a message that was not consistent with the type of the message (e.g., non-UTF-8 [http://tools.ietf.org/html/rfc3629] data within a text message).
+            break;
+          }
+
+        case 1008:
+          {
+            // An endpoint is terminating the connection because it has received a message that "violates its policy". This reason is given either if there is no other sutible reason, or if there is a need to hide specific details about the policy.
+            break;
+          }
+
+        case 1009:
+          {
+            // An endpoint is terminating the connection because it has received a message that is too big for it to process.
+            break;
+          }
+
+        case 1010:
+          {
+            // Note that this status code is not used by the server, because it can fail the WebSocket handshake instead.
+            // An endpoint (client) is terminating the connection because it has expected the server to negotiate one or more extension, but the server didn't return them in the response message of the WebSocket handshake.
+            // Specifically, the extensions that are needed are: " + e.reason
+            break;
+          }
+
+        case 1011:
+          {
+            // A server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.
+            reconnectPromise = this.reconnect();
+            break;
+          }
+        // https://www.ietf.org/mail-archive/web/hybi/current/msg09670.html
+
+        case 1012:
+          {
+            // the service is restarted. a client may reconnect,
+            // and if it choses to do, should reconnect using a randomized delay of 5 - 30s.
+            reconnectPromise = this.reconnect(5000);
+            break;
+          }
+
+        case 1013:
+          {
+            // The server is terminating the connection due to a temporary condition,
+            // e.g. it is overloaded and is casting off some of its clients.
+            reconnectPromise = this.reconnect();
+            break;
+          }
+
+        case 1014:
+          {
+            // The server was acting as a gateway or proxy and received an invalid response from the upstream server.
+            // This is similar to 502 HTTP Status Code.
+            reconnectPromise = this.reconnect(5000);
+            break;
+          }
+
+        case 1015:
+          {
+            // The connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).
+            break;
+          }
+
+        default:
+          {
+            // Others
+            break;
+          }
+      }
+
+      if (resolve && reject) {
+        if (reconnectPromise) {
+          resolve(reconnectPromise);
+        } else {
+          reject(e);
+        }
+      }
+    }
+
+    sendDisconnect() {
+      if (this.state !== SignalingState.OPEN) {
+        return;
+      }
+
+      try {
+        this.sendWsMsg("disconnect", {});
+      } catch (error) {// abort error
+      }
+    }
+
+    reconnect(time = 1000) {
+      // 每次连接已经确认断开后，本地 heartbeat 都需要删除
+      if (this.reconnectTimeoutID) {
+        clearTimeout(this.reconnectTimeoutID);
+      }
+
+      if (this.reconnectPromise && this._state === SignalingState.CONNECTING) {
+        return this.reconnectPromise;
+      }
+
+      this._state = SignalingState.CONNECTING;
+      log.debug("signaling: websocket reconnecting");
+      this.reconnectPromise = timeout(time).then(() => {
+        return this.initWs();
+      }).then(res => {
+        this.reconnectPromise = undefined;
+        return res;
+      }).catch(e => {
+        this._state = SignalingState.CLOSED;
+        this.emit("error", e);
+        return Promise.reject(e);
+      });
+      return this.reconnectPromise;
+    }
+    /**
+     * request
+     */
+
+
+    request(method, data) {
+      const rpcid = randomStringGen(8);
+      data.rpcid = rpcid;
+      log.log("ws request", rpcid, method, data);
+      this.sendWsMsg(method, data);
+      return new Promise(resolve => {
+        const onres = data => {
+          if (data.rpcid === rpcid) {
+            log.log("ws response", rpcid, method, data);
+            this.off(`${method}-res`, onres);
+            resolve(data);
+          }
+        };
+
+        this.on(`${method}-res`, onres);
+      });
+    }
+
+    release() {
+      if (this.reconnectTimeoutID) {
+        clearTimeout(this.reconnectTimeoutID);
+      }
+
+      this.removeEvent();
+      this.ws.onclose = null;
+      this.ws.onerror = null;
+      this.ws.close();
+    }
+
   }
 
   /*
@@ -25071,3083 +25794,3705 @@
    *
    * Distributed under terms of the MIT license.
   */
-  class MergerSessionController {
-  }
+  class MergerSessionController {}
   class Merger {
-      constructor(width, height, controller, jobId) {
-          this.videoTrackInfo = [];
-          this.audioTrackInfo = [];
-          this.layoutLevel = 0;
-          this.width = width;
-          this.height = height;
-          this.jobId = jobId;
-          this.controller = controller;
-          this.controller.getCurrentTracks().forEach(track => {
-              if (track.kind === "audio") {
-                  this.audioTrackInfo.push(track);
-              }
-              else {
-                  this.videoTrackInfo.push(track);
-              }
-          });
-          this.controller.addMergeTrack(this.audioTrackInfo.map(t => ({ trackId: t.trackId })), this.jobId);
-          this.initLayout();
-          this.controller.onAddTracks = (tracks => {
-              const audioTracks = tracks.filter(t => t.kind === "audio");
-              const videoTracks = tracks.filter(t => t.kind === "video");
-              this.controller.addMergeTrack(audioTracks.map(t => ({ trackId: t.trackId })), this.jobId);
-              videoTracks.forEach(this.handleAddVideoTrack.bind(this));
-          });
-          this.controller.onRemoveTracks = (tracks => {
-              const videoTracks = tracks.filter(t => t.kind === "video");
-              videoTracks.forEach(this.handleRemoveVideoTrack.bind(this));
-          });
-          log.log("init default merger, init layout: ", this.layout);
-      }
-      initLayout() {
-          const streamCount = this.videoTrackInfo.length;
-          this.layoutLevel = 0;
-          this.layout = {
-              "level-0": {
-                  items: { "item-0": { x: 0, y: 0, isExpand: false, isExpanded: false, index: 0 } },
-                  itemWidth: this.width,
-                  itemHeight: this.height,
-                  maxItems: 1, currentItems: 0,
-                  splitWidthFlag: this.width < this.height,
-              },
-          };
-          let splitWidthFlag = this.width >= this.height;
-          if (streamCount === 0) {
-              return;
-          }
-          while (Math.pow(2, this.layoutLevel) < streamCount) {
-              this.updateLayoutLevel(splitWidthFlag);
-              splitWidthFlag = !splitWidthFlag;
-          }
-          this.setLevelLayoutStream();
-      }
-      updateLayoutLevel(splitWidthFlag) {
-          const currentLayout = this.layout[`level-${this.layoutLevel}`];
-          const currentWidth = currentLayout.itemWidth;
-          const currentHeight = currentLayout.itemHeight;
-          this.layoutLevel += 1;
-          const maxItems = Math.pow(2, this.layoutLevel);
-          const itemWidth = splitWidthFlag ? currentWidth / 2.0 : currentWidth;
-          const itemHeight = splitWidthFlag ? currentHeight : currentHeight / 2.0;
-          if (this.layoutLevel === 1) {
-              this.layout[`level-${this.layoutLevel}`] = {
-                  items: {
-                      "item-0": { x: 0, y: 0, isExpand: false, isExpanded: false, index: 0 },
-                      "item-1": {
-                          x: this.width >= this.height ? itemWidth : 0,
-                          y: this.width < this.height ? itemHeight : 0,
-                          isExpand: false, isExpanded: false, index: 1,
-                      },
-                  },
-                  maxItems, currentItems: 0, itemWidth, itemHeight, splitWidthFlag,
-              };
-          }
-          else {
-              this.layout[`level-${this.layoutLevel}`] = {
-                  items: {}, maxItems, currentItems: 0, itemWidth, itemHeight, splitWidthFlag,
-              };
-              const levelItems = this.layout[`level-${this.layoutLevel}`].items;
-              Object.keys(this.layout[`level-${this.layoutLevel - 1}`].items).forEach(itemIndex => {
-                  const item = this.layout[`level-${this.layoutLevel - 1}`].items[itemIndex];
-                  const newIndex = 2 * item.index;
-                  levelItems[`item-${newIndex}`] = {
-                      x: item.x, y: item.y, isExpand: false, isExpanded: false, index: newIndex,
-                  };
-                  if (splitWidthFlag) {
-                      levelItems[`item-${newIndex + 1}`] = {
-                          x: item.x + itemWidth, y: item.y,
-                          isExpand: false, isExpanded: false, index: newIndex + 1,
-                      };
-                  }
-                  else {
-                      levelItems[`item-${newIndex + 1}`] = {
-                          x: item.x, y: item.y + itemHeight,
-                          isExpand: false, isExpanded: false, index: newIndex + 1,
-                      };
-                  }
-              });
-          }
-          log.log(`merger: increase layout level, current level: ${this.layoutLevel}`, this.layout);
-      }
-      setLevelLayoutStream() {
-          const streamCount = this.videoTrackInfo.length;
-          const currentLevelLayout = this.layout[`level-${this.layoutLevel}`];
-          let expandCount = currentLevelLayout.maxItems - streamCount;
-          let streamIndex = 0;
-          for (let i = 0; i < currentLevelLayout.maxItems; i += 1) {
-              if (expandCount > 0) {
-                  if (i % 2 === 0) {
-                      currentLevelLayout.items[`item-${i}`].isExpand = true;
-                      currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
-                      this.sendMergeOpt(this.layoutLevel, i);
-                      streamIndex += 1;
-                  }
-                  else {
-                      currentLevelLayout.items[`item-${i}`].isExpanded = true;
-                      expandCount -= 1;
-                  }
-              }
-              else {
-                  currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
-                  this.sendMergeOpt(this.layoutLevel, i);
-                  streamIndex += 1;
-              }
-          }
-          currentLevelLayout.currentItems = streamCount;
-      }
-      sendMergeOpt(level, index) {
-          const levelLayout = this.layout[`level-${level}`];
-          const item = levelLayout.items[`item-${index}`];
-          if (!item.trackId || item.isExpanded) {
-              return;
-          }
-          let width = levelLayout.itemWidth;
-          let height = levelLayout.itemHeight;
-          if (item.isExpand) {
-              if (levelLayout.splitWidthFlag) {
-                  width = width * 2;
-              }
-              else {
-                  height = height * 2;
-              }
-          }
-          const option = {
-              x: item.x, y: item.y,
-              w: width, h: height, z: 0,
-              trackId: item.trackId,
-          };
-          this.controller.addMergeTrack([option], this.jobId);
-      }
-      handleRemoveVideoTrack(track) {
-          lodash_remove(this.videoTrackInfo, t => t.trackId === track.trackId);
-          const levelLayout = this.layout[`level-${this.layoutLevel}`];
-          if (this.layoutLevel > 0 &&
-              this.videoTrackInfo.length <= this.layout[`level-${this.layoutLevel - 1}`].maxItems) {
-              this.layoutLevel -= 1;
-              log.log(`merger: reduce layout level, current level: ${this.layoutLevel}`, this.layout);
-              this.setLevelLayoutStream();
-          }
-          else {
-              for (const itemKey in levelLayout.items) {
-                  const item = levelLayout.items[itemKey];
-                  if (item.trackId === track.trackId) {
-                      if (item.index % 2 === 0) {
-                          if (levelLayout.items[`item-${item.index + 1}`]) {
-                              item.isExpand = true;
-                              item.trackId = levelLayout.items[`item-${item.index + 1}`].trackId;
-                              levelLayout.items[`item-${item.index + 1}`].isExpanded = true;
-                              levelLayout.items[`item-${item.index + 1}`].trackId = undefined;
-                          }
-                          else {
-                              item.trackId = undefined;
-                          }
-                          this.sendMergeOpt(this.layoutLevel, item.index);
-                      }
-                      else {
-                          item.isExpanded = true;
-                          item.trackId = undefined;
-                          levelLayout.items[`item-${item.index - 1}`].isExpand = true;
-                          this.sendMergeOpt(this.layoutLevel, item.index - 1);
-                      }
-                      break;
-                  }
-              }
-          }
-      }
-      handleAddVideoTrack(track) {
-          const lastLength = this.videoTrackInfo.length;
+    constructor(width, height, controller, jobId) {
+      this.videoTrackInfo = [];
+      this.audioTrackInfo = [];
+      this.layoutLevel = 0;
+      this.width = width;
+      this.height = height;
+      this.jobId = jobId;
+      this.controller = controller;
+      this.controller.getCurrentTracks().forEach(track => {
+        if (track.kind === "audio") {
+          this.audioTrackInfo.push(track);
+        } else {
           this.videoTrackInfo.push(track);
-          this.videoTrackInfo = lodash_uniqby(this.videoTrackInfo, "trackId");
-          // 如果重复添加了 trackId 就忽略
-          if (this.videoTrackInfo.length === lastLength) {
-              log.log("handle add video track ignore", track);
-              return;
+        }
+      });
+      this.controller.addMergeTrack(this.audioTrackInfo.map(t => ({
+        trackId: t.trackId
+      })), this.jobId);
+      this.initLayout();
+
+      this.controller.onAddTracks = tracks => {
+        const audioTracks = tracks.filter(t => t.kind === "audio");
+        const videoTracks = tracks.filter(t => t.kind === "video");
+        this.controller.addMergeTrack(audioTracks.map(t => ({
+          trackId: t.trackId
+        })), this.jobId);
+        videoTracks.forEach(this.handleAddVideoTrack.bind(this));
+      };
+
+      this.controller.onRemoveTracks = tracks => {
+        const videoTracks = tracks.filter(t => t.kind === "video");
+        videoTracks.forEach(this.handleRemoveVideoTrack.bind(this));
+      };
+
+      log.log("init default merger, init layout: ", this.layout);
+    }
+
+    initLayout() {
+      const streamCount = this.videoTrackInfo.length;
+      this.layoutLevel = 0;
+      this.layout = {
+        "level-0": {
+          items: {
+            "item-0": {
+              x: 0,
+              y: 0,
+              isExpand: false,
+              isExpanded: false,
+              index: 0
+            }
+          },
+          itemWidth: this.width,
+          itemHeight: this.height,
+          maxItems: 1,
+          currentItems: 0,
+          splitWidthFlag: this.width < this.height
+        }
+      };
+      let splitWidthFlag = this.width >= this.height;
+
+      if (streamCount === 0) {
+        return;
+      }
+
+      while (Math.pow(2, this.layoutLevel) < streamCount) {
+        this.updateLayoutLevel(splitWidthFlag);
+        splitWidthFlag = !splitWidthFlag;
+      }
+
+      this.setLevelLayoutStream();
+    }
+
+    updateLayoutLevel(splitWidthFlag) {
+      const currentLayout = this.layout[`level-${this.layoutLevel}`];
+      const currentWidth = currentLayout.itemWidth;
+      const currentHeight = currentLayout.itemHeight;
+      this.layoutLevel += 1;
+      const maxItems = Math.pow(2, this.layoutLevel);
+      const itemWidth = splitWidthFlag ? currentWidth / 2.0 : currentWidth;
+      const itemHeight = splitWidthFlag ? currentHeight : currentHeight / 2.0;
+
+      if (this.layoutLevel === 1) {
+        this.layout[`level-${this.layoutLevel}`] = {
+          items: {
+            "item-0": {
+              x: 0,
+              y: 0,
+              isExpand: false,
+              isExpanded: false,
+              index: 0
+            },
+            "item-1": {
+              x: this.width >= this.height ? itemWidth : 0,
+              y: this.width < this.height ? itemHeight : 0,
+              isExpand: false,
+              isExpanded: false,
+              index: 1
+            }
+          },
+          maxItems,
+          currentItems: 0,
+          itemWidth,
+          itemHeight,
+          splitWidthFlag
+        };
+      } else {
+        this.layout[`level-${this.layoutLevel}`] = {
+          items: {},
+          maxItems,
+          currentItems: 0,
+          itemWidth,
+          itemHeight,
+          splitWidthFlag
+        };
+        const levelItems = this.layout[`level-${this.layoutLevel}`].items;
+        Object.keys(this.layout[`level-${this.layoutLevel - 1}`].items).forEach(itemIndex => {
+          const item = this.layout[`level-${this.layoutLevel - 1}`].items[itemIndex];
+          const newIndex = 2 * item.index;
+          levelItems[`item-${newIndex}`] = {
+            x: item.x,
+            y: item.y,
+            isExpand: false,
+            isExpanded: false,
+            index: newIndex
+          };
+
+          if (splitWidthFlag) {
+            levelItems[`item-${newIndex + 1}`] = {
+              x: item.x + itemWidth,
+              y: item.y,
+              isExpand: false,
+              isExpanded: false,
+              index: newIndex + 1
+            };
+          } else {
+            levelItems[`item-${newIndex + 1}`] = {
+              x: item.x,
+              y: item.y + itemHeight,
+              isExpand: false,
+              isExpanded: false,
+              index: newIndex + 1
+            };
           }
-          const levelLayout = this.layout[`level-${this.layoutLevel}`];
-          if (this.videoTrackInfo.length <= levelLayout.maxItems) {
-              for (const itemKey in levelLayout.items) {
-                  const item = levelLayout.items[itemKey];
-                  if (!item.trackId) {
-                      item.trackId = track.trackId;
-                      if (item.isExpanded) {
-                          item.isExpanded = false;
-                          levelLayout.items[`item-${item.index - 1}`].isExpand = false;
-                          this.sendMergeOpt(this.layoutLevel, item.index - 1);
-                      }
-                      this.sendMergeOpt(this.layoutLevel, item.index);
-                      break;
-                  }
+        });
+      }
+
+      log.log(`merger: increase layout level, current level: ${this.layoutLevel}`, this.layout);
+    }
+
+    setLevelLayoutStream() {
+      const streamCount = this.videoTrackInfo.length;
+      const currentLevelLayout = this.layout[`level-${this.layoutLevel}`];
+      let expandCount = currentLevelLayout.maxItems - streamCount;
+      let streamIndex = 0;
+
+      for (let i = 0; i < currentLevelLayout.maxItems; i += 1) {
+        if (expandCount > 0) {
+          if (i % 2 === 0) {
+            currentLevelLayout.items[`item-${i}`].isExpand = true;
+            currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
+            this.sendMergeOpt(this.layoutLevel, i);
+            streamIndex += 1;
+          } else {
+            currentLevelLayout.items[`item-${i}`].isExpanded = true;
+            expandCount -= 1;
+          }
+        } else {
+          currentLevelLayout.items[`item-${i}`].trackId = this.videoTrackInfo[streamIndex].trackId;
+          this.sendMergeOpt(this.layoutLevel, i);
+          streamIndex += 1;
+        }
+      }
+
+      currentLevelLayout.currentItems = streamCount;
+    }
+
+    sendMergeOpt(level, index) {
+      const levelLayout = this.layout[`level-${level}`];
+      const item = levelLayout.items[`item-${index}`];
+
+      if (!item.trackId || item.isExpanded) {
+        return;
+      }
+
+      let width = levelLayout.itemWidth;
+      let height = levelLayout.itemHeight;
+
+      if (item.isExpand) {
+        if (levelLayout.splitWidthFlag) {
+          width = width * 2;
+        } else {
+          height = height * 2;
+        }
+      }
+
+      const option = {
+        x: item.x,
+        y: item.y,
+        w: width,
+        h: height,
+        z: 0,
+        trackId: item.trackId
+      };
+      this.controller.addMergeTrack([option], this.jobId);
+    }
+
+    handleRemoveVideoTrack(track) {
+      lodash_remove(this.videoTrackInfo, t => t.trackId === track.trackId);
+      const levelLayout = this.layout[`level-${this.layoutLevel}`];
+
+      if (this.layoutLevel > 0 && this.videoTrackInfo.length <= this.layout[`level-${this.layoutLevel - 1}`].maxItems) {
+        this.layoutLevel -= 1;
+        log.log(`merger: reduce layout level, current level: ${this.layoutLevel}`, this.layout);
+        this.setLevelLayoutStream();
+      } else {
+        for (const itemKey in levelLayout.items) {
+          const item = levelLayout.items[itemKey];
+
+          if (item.trackId === track.trackId) {
+            if (item.index % 2 === 0) {
+              if (levelLayout.items[`item-${item.index + 1}`]) {
+                item.isExpand = true;
+                item.trackId = levelLayout.items[`item-${item.index + 1}`].trackId;
+                levelLayout.items[`item-${item.index + 1}`].isExpanded = true;
+                levelLayout.items[`item-${item.index + 1}`].trackId = undefined;
+              } else {
+                item.trackId = undefined;
               }
-              levelLayout.currentItems = this.videoTrackInfo.length;
+
+              this.sendMergeOpt(this.layoutLevel, item.index);
+            } else {
+              item.isExpanded = true;
+              item.trackId = undefined;
+              levelLayout.items[`item-${item.index - 1}`].isExpand = true;
+              this.sendMergeOpt(this.layoutLevel, item.index - 1);
+            }
+
+            break;
           }
-          else { // 需要提升 level
-              this.updateLayoutLevel(!levelLayout.splitWidthFlag);
-              this.setLevelLayoutStream();
+        }
+      }
+    }
+
+    handleAddVideoTrack(track) {
+      const lastLength = this.videoTrackInfo.length;
+      this.videoTrackInfo.push(track);
+      this.videoTrackInfo = lodash_uniqby(this.videoTrackInfo, "trackId"); // 如果重复添加了 trackId 就忽略
+
+      if (this.videoTrackInfo.length === lastLength) {
+        log.log("handle add video track ignore", track);
+        return;
+      }
+
+      const levelLayout = this.layout[`level-${this.layoutLevel}`];
+
+      if (this.videoTrackInfo.length <= levelLayout.maxItems) {
+        for (const itemKey in levelLayout.items) {
+          const item = levelLayout.items[itemKey];
+
+          if (!item.trackId) {
+            item.trackId = track.trackId;
+
+            if (item.isExpanded) {
+              item.isExpanded = false;
+              levelLayout.items[`item-${item.index - 1}`].isExpand = false;
+              this.sendMergeOpt(this.layoutLevel, item.index - 1);
+            }
+
+            this.sendMergeOpt(this.layoutLevel, item.index);
+            break;
           }
+        }
+
+        levelLayout.currentItems = this.videoTrackInfo.length;
+      } else {
+        // 需要提升 level
+        this.updateLayoutLevel(!levelLayout.splitWidthFlag);
+        this.setLevelLayoutStream();
       }
-      release() {
-          this.controller.release();
-      }
+    }
+
+    release() {
+      this.controller.release();
+    }
+
   }
 
   class Consumer {
-      constructor(id, mid, kind, rtpParameters) {
-          this.id = id;
-          this.mid = mid;
-          // this._closed = false;
-          this.kind = kind;
-          this.rtpParameters = rtpParameters;
-          // this._peer = peer;
-          // this._supported = false;
-          this.track = null;
-      }
+    constructor(id, mid, kind, rtpParameters) {
+      this.id = id;
+      this.mid = mid; // this._closed = false;
+
+      this.kind = kind;
+      this.rtpParameters = rtpParameters; // this._peer = peer;
+      // this._supported = false;
+
+      this.track = null;
+    }
+
   }
 
   class PCTrack {
-      constructor(transport, direction, track, trackId, mid) {
-          this._connectStatus = exports.TrackConnectStatus.Idle;
-          this.track = track;
-          this.trackId = trackId;
-          this.mid = mid;
-          this.transport = transport;
-          this.direction = direction;
-      }
-      get connectStatus() {
-          return this._connectStatus;
-      }
-      set connectStatus(v) {
-          if (v !== this._connectStatus) {
-              const prev = this._connectStatus;
-              this._connectStatus = v;
-              nextTick(() => {
-                  if (this.onConnectStatusChange) {
-                      this.onConnectStatusChange(prev, this._connectStatus);
-                  }
-              });
+    constructor(transport, direction, track, trackId, mid) {
+      this._connectStatus = exports.TrackConnectStatus.Idle;
+      this.track = track;
+      this.trackId = trackId;
+      this.mid = mid;
+      this.transport = transport;
+      this.direction = direction;
+    }
+
+    get connectStatus() {
+      return this._connectStatus;
+    }
+
+    set connectStatus(v) {
+      if (v !== this._connectStatus) {
+        const prev = this._connectStatus;
+        this._connectStatus = v;
+        nextTick(() => {
+          if (this.onConnectStatusChange) {
+            this.onConnectStatusChange(prev, this._connectStatus);
           }
+        });
       }
-      startConnect() {
-          this.connectStatus = exports.TrackConnectStatus.Connecting;
-          return new Promise((resolve, reject) => {
-              this.onConnectStatusChange = (_, curr) => {
-                  if (curr === exports.TrackConnectStatus.Connect) {
-                      resolve();
-                  }
-                  if (curr === exports.TrackConnectStatus.Idle) {
-                      reject();
-                  }
-              };
-          });
-      }
-      appendConsumner(rtpparms, kind) {
-          this.consumer = new Consumer(this.trackId, this.mid, kind, rtpparms);
-          this.transport.appendConsumer(this.consumer);
-      }
-      setMute(muted) {
-          if (!this.track)
-              return;
-          this.track.setMute(muted);
-      }
-      addTrackId(trackid) {
-          if (!this.track)
-              return;
-          this.trackId = trackid;
-          this.track.setInfo({
-              trackId: trackid,
-          });
-      }
-      release() {
-          if (this.consumer && this.transport) {
-              // 如果释放这个 Track 时发现 pc 已经断开，就跳过
-              if (this.transport.recvHandler.isPcReady) {
-                  this.transport.removeConsumers([this.consumer]);
-              }
-              // 只有订阅的 Track 才会自动释放
-              if (this.track) {
-                  this.track.release();
-              }
+    }
+
+    startConnect() {
+      this.connectStatus = exports.TrackConnectStatus.Connecting;
+      return new Promise((resolve, reject) => {
+        this.onConnectStatusChange = (_, curr) => {
+          if (curr === exports.TrackConnectStatus.Connect) {
+            resolve();
           }
-          else {
-              if (this.track) {
-                  this.track.reset();
-              }
+
+          if (curr === exports.TrackConnectStatus.Idle) {
+            reject();
           }
+        };
+      });
+    }
+
+    appendConsumner(rtpparms, kind) {
+      this.consumer = new Consumer(this.trackId, this.mid, kind, rtpparms);
+      this.transport.appendConsumer(this.consumer);
+    }
+
+    setMute(muted) {
+      if (!this.track) return;
+      this.track.setMute(muted);
+    }
+
+    addTrackId(trackid) {
+      if (!this.track) return;
+      this.trackId = trackid;
+      this.track.setInfo({
+        trackId: trackid
+      });
+    }
+
+    release() {
+      if (this.consumer && this.transport) {
+        // 如果释放这个 Track 时发现 pc 已经断开，就跳过
+        if (this.transport.recvHandler.isPcReady) {
+          this.transport.removeConsumers([this.consumer]);
+        } // 只有订阅的 Track 才会自动释放
+
+
+        if (this.track) {
+          this.track.release();
+        }
+      } else {
+        if (this.track) {
+          this.track.reset();
+        }
       }
+    }
+
   }
 
   class Handler extends EnhancedEventEmitter {
-      constructor(direction, extendedRtpCapabilities, settings) {
-          super();
-          this._isRestartingICE = false;
-          this.isPcReady = false;
-          this._direction = direction;
-          // RTCPeerConnection instance.
-          this._pc = createPC();
-          // Generic sending RTP parameters for audio and video.
-          this._extendedRtpCapabilities = extendedRtpCapabilities;
-          this._remoteSdp = new RemoteSdp(direction, extendedRtpCapabilities);
-          // Handle RTCPeerConnection connection status.
-          this._pc.addEventListener("iceconnectionstatechange", () => {
-              switch (this._pc.iceConnectionState) {
-                  case "checking":
-                      this.emit("@connectionstatechange", "connecting");
-                      break;
-                  case "connected":
-                  case "completed":
-                      this.emit("@connectionstatechange", "connected");
-                      break;
-                  case "failed":
-                      this.emit("@connectionstatechange", "failed");
-                      break;
-                  case "disconnected":
-                      this.emit("@connectionstatechange", "disconnected");
-                      break;
-                  case "closed":
-                      this.emit("@connectionstatechange", "closed");
-                      break;
-              }
-          });
-      }
-      async getStats(track, lastReport) {
-          return await getPCStats(this._pc, track, this._direction, lastReport);
-      }
-      getCurrentIceConnectionState() {
-          return this._pc.iceConnectionState;
-      }
-      close() {
-          log.log("handle", this._direction, "close");
-          this.removeEvent();
-          this._pc.close();
-          this.isPcReady = false;
-      }
+    constructor(direction, extendedRtpCapabilities, settings) {
+      super();
+      this._isRestartingICE = false;
+      this.isPcReady = false;
+      this._direction = direction; // RTCPeerConnection instance.
+
+      this._pc = createPC(); // Generic sending RTP parameters for audio and video.
+
+      this._extendedRtpCapabilities = extendedRtpCapabilities;
+      this._remoteSdp = new RemoteSdp(direction, extendedRtpCapabilities); // Handle RTCPeerConnection connection status.
+
+      this._pc.addEventListener("iceconnectionstatechange", () => {
+        switch (this._pc.iceConnectionState) {
+          case "checking":
+            this.emit("@connectionstatechange", "connecting");
+            break;
+
+          case "connected":
+          case "completed":
+            this.emit("@connectionstatechange", "connected");
+            break;
+
+          case "failed":
+            this.emit("@connectionstatechange", "failed");
+            break;
+
+          case "disconnected":
+            this.emit("@connectionstatechange", "disconnected");
+            break;
+
+          case "closed":
+            this.emit("@connectionstatechange", "closed");
+            break;
+        }
+      });
+    }
+
+    async getStats(track, lastReport) {
+      return await getPCStats(this._pc, track, this._direction, lastReport);
+    }
+
+    getCurrentIceConnectionState() {
+      return this._pc.iceConnectionState;
+    }
+
+    close() {
+      log.log("handle", this._direction, "close");
+      this.removeEvent();
+
+      this._pc.close();
+
+      this.isPcReady = false;
+    }
+
   }
   class SendHandler extends Handler {
-      constructor(extendedRtpCapabilities, signaling, settings) {
-          super("send", extendedRtpCapabilities, settings);
-          log.log("init send handler");
-          // Got transport local and remote parameters.
-          this._transportReady = false;
-          // Local stream.
-          this._stream = new MediaStream();
-          this._signaling = signaling;
-          signaling.on("on-pubpc-state", (res) => {
-              if (this._remoteSdp.transportRemoteParameters &&
-                  res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
-                  if (!res.connected) {
-                      this.emit("@connectionstatechange", "remote-disconnected");
-                  }
-              }
-          });
-      }
-      getReady(transportRemoteParameters) {
-          return new Promise((resolve, reject) => {
-              const callback = (res) => {
-                  if (res.pcid === transportRemoteParameters.pcid) {
-                      this._signaling.off("on-pubpc-state", callback);
-                      if (res.connected) {
-                          this.isPcReady = true;
-                          resolve();
-                      }
-                      else {
-                          // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
-                          return;
-                      }
-                  }
-              };
-              this._signaling.on("on-pubpc-state", callback);
-          });
-      }
-      addProducerTracks(producerTracks) {
-          log.debug("add producer", producerTracks);
-          const tracks = producerTracks.map(v => v.mediaTrack)
-              .filter(track => !this._stream.getTrackById(track.id));
-          if (tracks.length === 0) {
-              return Promise.reject(new Error("track already added"));
+    constructor(extendedRtpCapabilities, signaling, settings) {
+      super("send", extendedRtpCapabilities, settings);
+      log.log("init send handler"); // Got transport local and remote parameters.
+
+      this._transportReady = false; // Local stream.
+
+      this._stream = new MediaStream();
+      this._signaling = signaling;
+      signaling.on("on-pubpc-state", res => {
+        if (this._remoteSdp.transportRemoteParameters && res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
+          if (!res.connected) {
+            this.emit("@connectionstatechange", "remote-disconnected");
           }
-          let rtpSenders;
-          const transceivers = [];
-          let localSdp;
-          let shouldSendPubTracks = true;
-          return Promise.resolve()
-              .then(async () => {
-              tracks.forEach(this._stream.addTrack, this._stream);
-              if (browserReport.unifiedPlan && browserReport.supportTransceivers) {
-                  for (const track of tracks) {
-                      const transceiver = await addTransceiver(track, this._pc);
-                      log.debug("add transceiver", transceiver, transceiver.mid);
-                      transceivers.push(transceiver);
-                  }
-              }
-              else {
-                  log.debug("add tracks", tracks);
-                  rtpSenders = tracks.map((track) => this._pc.addTrack(track, this._stream));
-              }
-              return this._pc.createOffer();
-          })
-              .then((offer) => {
-              let _offer;
-              if (browserReport.unifiedPlan) {
-                  _offer = { type: "offer", sdp: offer.sdp };
-              }
-              else {
-                  if (browserReport.needH264FmtpLine) {
-                      offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
-                  }
-                  _offer = offer;
-              }
-              localSdp = _offer.sdp;
-              log.log("publish: set local offer", _offer);
-              return this._pc.setLocalDescription(_offer);
-          })
-              .then(() => {
-              for (const transceiver of transceivers) {
-                  if (!transceiver.sender.track)
-                      continue;
-                  const targetProducerTrack = producerTracks.find(t => t.mediaTrack === transceiver.sender.track);
-                  if (!targetProducerTrack || !transceiver.mid) {
-                      throw UNEXPECTED_ERROR("can not get transceiver mid!");
-                  }
-                  targetProducerTrack.setInfo({ mid: transceiver.mid });
-              }
-              if (!this._transportReady) {
-                  shouldSendPubTracks = false;
-                  return this._setupTransport(producerTracks);
-              }
-          })
-              .then(() => {
-              // localSdpObj = sdpTransform.parse((this._pc.localDescription as RTCSessionDescription).sdp);
-              // genPubAnswer
-              return this._remoteSdp.createRemoteAnswer(localSdp);
-          })
-              .then((remoteSdp) => {
-              const answer = { type: "answer", sdp: remoteSdp };
-              log.debug("addProducer answer", answer);
-              // logger.debug(
-              //   'addProducer() | calling pc.setRemoteDescription() [answer:%o]',
-              //   answer);
-              return this._pc.setRemoteDescription(answer);
-          })
-              .then(() => this._pcReady)
-              .then(() => {
-              if (shouldSendPubTracks) {
-                  return this.safeEmitAsPromise("@needpubtracks", producerTracks, localSdp);
-              }
-              else {
-                  return Promise.resolve(this._remoteSdp.transportRemoteParameters);
-              }
-          })
-              .catch((error) => {
-              // Panic here. Try to undo things.
-              log.log("add producer error", error);
-              try {
-                  for (const rtpSender of rtpSenders) {
-                      this._pc.removeTrack(rtpSender);
-                  }
-                  for (const transceiver of transceivers) {
-                      transceiver.direction = "inactive";
-                  }
-              }
-              catch (error2) { }
-              for (const track of tracks) {
-                  this._stream.removeTrack(track);
-              }
-              if (error instanceof QNRTCError) {
-                  throw error;
-              }
-              else {
-                  throw UNEXPECTED_ERROR(error);
-              }
-          });
+        }
+      });
+    }
+
+    getReady(transportRemoteParameters) {
+      return new Promise((resolve, reject) => {
+        const callback = res => {
+          if (res.pcid === transportRemoteParameters.pcid) {
+            this._signaling.off("on-pubpc-state", callback);
+
+            if (res.connected) {
+              this.isPcReady = true;
+              resolve();
+            } else {
+              // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
+              return;
+            }
+          }
+        };
+
+        this._signaling.on("on-pubpc-state", callback);
+      });
+    }
+
+    addProducerTracks(producerTracks) {
+      log.debug("add producer", producerTracks);
+      const tracks = producerTracks.map(v => v.mediaTrack).filter(track => !this._stream.getTrackById(track.id));
+
+      if (tracks.length === 0) {
+        return Promise.reject(new Error("track already added"));
       }
-      removeProducerTracks(producerTracks) {
-          log.debug("removeProducerTracks", producerTracks);
-          const tracks = producerTracks.filter(v => !!v.track)
-              .map(v => v.track.mediaTrack)
-              .filter(track => this._stream.getTrackById(track.id));
-          let localSdp;
-          return Promise.resolve()
-              .then(() => {
-              // Get the associated RTCRtpSender.
-              const rtpSenders = this._pc.getSenders()
-                  .filter(s => s.track && tracks.includes(s.track));
-              if (rtpSenders.length === 0) {
-                  log.warning("removeProducerTracks [nothing to remove]");
-                  return Promise.reject("removeProducerTracks: nothing to remote");
-              }
-              // Remove the associated RtpSender.
-              for (const rtpSender of rtpSenders) {
-                  this._pc.removeTrack(rtpSender);
-              }
-              // Remove the track from the local stream.
-              for (const track of tracks) {
-                  this._stream.removeTrack(track);
-              }
-              return this._pc.createOffer();
-          })
-              .then((offer) => {
-              const description = new RTCSessionDescription(offer);
-              localSdp = description.sdp;
-              log.log("unpublish: set local offer", description);
-              return this._pc.setLocalDescription(description);
-          })
-              .then(() => {
-              const remoteSdp = this._remoteSdp.createRemoteAnswer(localSdp);
-              const answer = { type: "answer", sdp: remoteSdp };
-              log.log("unpublish: set remote answer", answer);
-              return this._pc.setRemoteDescription(answer);
-          })
-              .catch((error) => {
-              // NOTE: If there are no sending tracks, setLocalDescription() will fail with
-              // "Failed to create channels". If so, ignore it.
-              if (this._stream.getTracks().length === 0) {
-                  log.debug("removeProducer() | ignoring expected error due no sending tracks: %s", error.toString());
-                  return;
-              }
-              if (error instanceof QNRTCError) {
-                  throw error;
-              }
-              else {
-                  throw UNEXPECTED_ERROR(error);
-              }
-          })
-              .then(() => {
-              // no need to wait response
-              this.safeEmitAsPromise("@needunpubtracks", producerTracks);
+
+      let rtpSenders;
+      const transceivers = [];
+      let localSdp;
+      let shouldSendPubTracks = true;
+      return Promise.resolve().then(async () => {
+        tracks.forEach(this._stream.addTrack, this._stream);
+
+        if (browserReport.unifiedPlan && browserReport.supportTransceivers) {
+          for (const track of tracks) {
+            const transceiver = await addTransceiver(track, this._pc);
+            log.debug("add transceiver", transceiver, transceiver.mid);
+            transceivers.push(transceiver);
+          }
+        } else {
+          log.debug("add tracks", tracks);
+          rtpSenders = tracks.map(track => this._pc.addTrack(track, this._stream));
+        }
+
+        return this._pc.createOffer();
+      }).then(offer => {
+        let _offer;
+
+        if (browserReport.unifiedPlan) {
+          _offer = {
+            type: "offer",
+            sdp: offer.sdp
+          };
+        } else {
+          if (browserReport.needH264FmtpLine) {
+            offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
+          }
+
+          _offer = offer;
+        }
+
+        localSdp = _offer.sdp;
+        log.log("publish: set local offer", _offer);
+        return this._pc.setLocalDescription(_offer);
+      }).then(() => {
+        for (const transceiver of transceivers) {
+          if (!transceiver.sender.track) continue;
+          const targetProducerTrack = producerTracks.find(t => t.mediaTrack === transceiver.sender.track);
+
+          if (!targetProducerTrack || !transceiver.mid) {
+            throw UNEXPECTED_ERROR("can not get transceiver mid!");
+          }
+
+          targetProducerTrack.setInfo({
+            mid: transceiver.mid
           });
-      }
-      restartICE(iceParameters, iceCandidates) {
-          log.log("restart send ice");
-          this._isRestartingICE = true;
-          return Promise.resolve()
-              .then(() => {
-              return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
-          })
-              .then(() => {
-              return this._pc.createOffer({ iceRestart: true });
-          })
-              .then(offer => {
-              return this._pc.setLocalDescription(offer);
-          })
-              .then(() => {
-              const remoteSdp = this._remoteSdp.createRemoteAnswer(this._pc.localDescription.sdp);
-              const answer = { type: "answer", sdp: remoteSdp };
-              return this._pc.setRemoteDescription(answer);
-          });
-      }
-      // needpubpc
-      _setupTransport(tracks) {
-          const startTime = Date.now();
-          return Promise.resolve()
-              .then(() => {
-              if (!this._pc.localDescription) {
-                  return this._pc.createOffer();
-              }
-              return this._pc.localDescription;
-          })
-              .then((localDescription) => {
-              // We need transport remote parameters.
-              return this.safeEmitAsPromise("@needpubpc", localDescription.sdp, tracks);
-          })
-              .then((transportRemoteParameters) => {
-              qos.addEvent("PublisherPC", {
-                  signal_take_time: Date.now() - startTime,
-                  result_code: transportRemoteParameters.code,
-                  tracks: transportRemoteParameters.tracks.map(t => {
-                      const targetTrack = tracks.find(track => track.mediaTrack.id === t.localid);
-                      if (!targetTrack)
-                          return undefined;
-                      return {
-                          local_id: t.localid,
-                          track_id: t.trackid,
-                          source_type: targetTrack.sourceType,
-                          kind: targetTrack.info.kind,
-                          tag: targetTrack.info.tag || "",
-                          muted: !!targetTrack.info.muted,
-                          master: !!targetTrack.master,
-                          kbps: targetTrack.info.kbps || -1,
-                          encode_video_width: 0,
-                          encode_video_height: 0,
-                      };
-                  }).filter(t => t !== undefined),
-              });
-              this.pcid = transportRemoteParameters.pcid;
-              this._transportReady = true;
-              this._pcReady = this.getReady(transportRemoteParameters);
-              // Provide the remote SDP handler with transport remote parameters.
-              return this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
-          });
-      }
+        }
+
+        if (!this._transportReady) {
+          shouldSendPubTracks = false;
+          return this._setupTransport(producerTracks);
+        }
+      }).then(() => {
+        // localSdpObj = sdpTransform.parse((this._pc.localDescription as RTCSessionDescription).sdp);
+        // genPubAnswer
+        return this._remoteSdp.createRemoteAnswer(localSdp);
+      }).then(remoteSdp => {
+        const answer = {
+          type: "answer",
+          sdp: remoteSdp
+        };
+        log.debug("addProducer answer", answer); // logger.debug(
+        //   'addProducer() | calling pc.setRemoteDescription() [answer:%o]',
+        //   answer);
+
+        return this._pc.setRemoteDescription(answer);
+      }).then(() => this._pcReady).then(() => {
+        if (shouldSendPubTracks) {
+          return this.safeEmitAsPromise("@needpubtracks", producerTracks, localSdp);
+        } else {
+          return Promise.resolve(this._remoteSdp.transportRemoteParameters);
+        }
+      }).catch(error => {
+        // Panic here. Try to undo things.
+        log.log("add producer error", error);
+
+        try {
+          for (const rtpSender of rtpSenders) {
+            this._pc.removeTrack(rtpSender);
+          }
+
+          for (const transceiver of transceivers) {
+            transceiver.direction = "inactive";
+          }
+        } catch (error2) {}
+
+        for (const track of tracks) {
+          this._stream.removeTrack(track);
+        }
+
+        if (error instanceof QNRTCError) {
+          throw error;
+        } else {
+          throw UNEXPECTED_ERROR(error);
+        }
+      });
+    }
+
+    removeProducerTracks(producerTracks) {
+      log.debug("removeProducerTracks", producerTracks);
+      const tracks = producerTracks.filter(v => !!v.track).map(v => v.track.mediaTrack).filter(track => this._stream.getTrackById(track.id));
+      let localSdp;
+      return Promise.resolve().then(() => {
+        // Get the associated RTCRtpSender.
+        const rtpSenders = this._pc.getSenders().filter(s => s.track && tracks.includes(s.track));
+
+        if (rtpSenders.length === 0) {
+          log.warning("removeProducerTracks [nothing to remove]");
+          return Promise.reject("removeProducerTracks: nothing to remote");
+        } // Remove the associated RtpSender.
+
+
+        for (const rtpSender of rtpSenders) {
+          this._pc.removeTrack(rtpSender);
+        } // Remove the track from the local stream.
+
+
+        for (const track of tracks) {
+          this._stream.removeTrack(track);
+        }
+
+        return this._pc.createOffer();
+      }).then(offer => {
+        const description = new RTCSessionDescription(offer);
+        localSdp = description.sdp;
+        log.log("unpublish: set local offer", description);
+        return this._pc.setLocalDescription(description);
+      }).then(() => {
+        const remoteSdp = this._remoteSdp.createRemoteAnswer(localSdp);
+
+        const answer = {
+          type: "answer",
+          sdp: remoteSdp
+        };
+        log.log("unpublish: set remote answer", answer);
+        return this._pc.setRemoteDescription(answer);
+      }).catch(error => {
+        // NOTE: If there are no sending tracks, setLocalDescription() will fail with
+        // "Failed to create channels". If so, ignore it.
+        if (this._stream.getTracks().length === 0) {
+          log.debug("removeProducer() | ignoring expected error due no sending tracks: %s", error.toString());
+          return;
+        }
+
+        if (error instanceof QNRTCError) {
+          throw error;
+        } else {
+          throw UNEXPECTED_ERROR(error);
+        }
+      }).then(() => {
+        // no need to wait response
+        this.safeEmitAsPromise("@needunpubtracks", producerTracks);
+      });
+    }
+
+    restartICE(iceParameters, iceCandidates) {
+      log.log("restart send ice");
+      this._isRestartingICE = true;
+      return Promise.resolve().then(() => {
+        return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
+      }).then(() => {
+        return this._pc.createOffer({
+          iceRestart: true
+        });
+      }).then(offer => {
+        return this._pc.setLocalDescription(offer);
+      }).then(() => {
+        const remoteSdp = this._remoteSdp.createRemoteAnswer(this._pc.localDescription.sdp);
+
+        const answer = {
+          type: "answer",
+          sdp: remoteSdp
+        };
+        return this._pc.setRemoteDescription(answer);
+      });
+    } // needpubpc
+
+
+    _setupTransport(tracks) {
+      const startTime = Date.now();
+      return Promise.resolve().then(() => {
+        if (!this._pc.localDescription) {
+          return this._pc.createOffer();
+        }
+
+        return this._pc.localDescription;
+      }).then(localDescription => {
+        // We need transport remote parameters.
+        return this.safeEmitAsPromise("@needpubpc", localDescription.sdp, tracks);
+      }).then(transportRemoteParameters => {
+        qos.addEvent("PublisherPC", {
+          signal_take_time: Date.now() - startTime,
+          result_code: transportRemoteParameters.code,
+          tracks: transportRemoteParameters.tracks.map(t => {
+            const targetTrack = tracks.find(track => track.mediaTrack.id === t.localid);
+            if (!targetTrack) return undefined;
+            return {
+              local_id: t.localid,
+              track_id: t.trackid,
+              source_type: targetTrack.sourceType,
+              kind: targetTrack.info.kind,
+              tag: targetTrack.info.tag || "",
+              muted: !!targetTrack.info.muted,
+              master: !!targetTrack.master,
+              kbps: targetTrack.info.kbps || -1,
+              encode_video_width: 0,
+              encode_video_height: 0
+            };
+          }).filter(t => t !== undefined)
+        });
+        this.pcid = transportRemoteParameters.pcid;
+        this._transportReady = true;
+        this._pcReady = this.getReady(transportRemoteParameters); // Provide the remote SDP handler with transport remote parameters.
+
+        return this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
+      });
+    }
+
   }
   class RecvHandler extends Handler {
-      constructor(extendedRtpCapabilities, signaling, settings) {
-          super("recv", extendedRtpCapabilities, settings);
-          this._transportCreated = false;
-          this._consumerInfos = new Map();
-          this._signaling = signaling;
-          signaling.on("on-subpc-state", (res) => {
-              if (this._remoteSdp.transportRemoteParameters &&
-                  res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
-                  if (!res.connected) {
-                      this.emit("@connectionstatechange", "remote-disconnected");
-                  }
-              }
-          });
-          log.log("init recvhandler", this);
-      }
-      getReady(transportRemoteParameters) {
-          return new Promise((resolve, reject) => {
-              const callback = (res) => {
-                  if (res.pcid === transportRemoteParameters.pcid) {
-                      this._signaling.off("on-subpc-state", callback);
-                      if (res.connected) {
-                          this.isPcReady = true;
-                          resolve();
-                      }
-                      else {
-                          // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
-                          return;
-                      }
-                  }
-              };
-              this._signaling.on("on-subpc-state", callback);
-          });
-      }
-      /**
-       * 如果发生了重复订阅的情况，策略是直接返回已经保存的 track 信息
-       * 也就是无论传入的 consumer 是否重复，都返回和传入数量一致的 MediaStreamTrack
-       */
-      async addConsumerTracks(consumers) {
-          // 如果是 unified-plan 就一个一个重协商，否则在火狐下会有鬼
-          if (browserReport.unifiedPlan && isFirefox) {
-              const tracks = [];
-              for (const consumer of consumers) {
-                  const track = await this.addConsumerTrack(consumer);
-                  tracks.push(track);
-              }
-              return tracks;
+    constructor(extendedRtpCapabilities, signaling, settings) {
+      super("recv", extendedRtpCapabilities, settings);
+      this._transportCreated = false;
+      this._consumerInfos = new Map();
+      this._signaling = signaling;
+      signaling.on("on-subpc-state", res => {
+        if (this._remoteSdp.transportRemoteParameters && res.pcid === this._remoteSdp.transportRemoteParameters.pcid) {
+          if (!res.connected) {
+            this.emit("@connectionstatechange", "remote-disconnected");
           }
-          log.log("add consumers", consumers);
-          const consumerInfoList = [];
-          const _consumerInfoArray = Array.from(this._consumerInfos.values());
-          for (const consumer of consumers) {
-              const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
-              if (info && !info.closed) {
-                  consumerInfoList.push(info);
-              }
-              else {
-                  const newInfo = this.genNewConsumerInfo(consumer);
-                  if (browserReport.unifiedPlan) {
-                      // 递增 mid, plan-b 模式下不会使用到这个参数
-                      const mid = consumer.mid;
-                      newInfo.mid = mid;
-                      this._consumerInfos.set(mid, newInfo);
-                  }
-                  else {
-                      this._consumerInfos.set(consumer.id, newInfo);
-                  }
-                  consumerInfoList.push(newInfo);
-              }
+        }
+      });
+      log.log("init recvhandler", this);
+    }
+
+    getReady(transportRemoteParameters) {
+      return new Promise((resolve, reject) => {
+        const callback = res => {
+          if (res.pcid === transportRemoteParameters.pcid) {
+            this._signaling.off("on-subpc-state", callback);
+
+            if (res.connected) {
+              this.isPcReady = true;
+              resolve();
+            } else {
+              // 此时会被 constructor 中的时间监听捕获，触发重连，所以这里既不 reject 也不 resolve
+              return;
+            }
           }
-          return Promise.resolve()
-              .then(() => {
-              // createremoteSdp
-              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
-              const offer = { type: "offer", sdp: remoteSdp };
-              log.debug("subscribe: set remote offer", offer);
-              return this._pc.setRemoteDescription(offer);
-          })
-              .then(() => {
-              if (browserReport.unifiedPlan) {
-                  return this._pc.createAnswer();
-              }
-              return this._pc.createAnswer();
-          })
-              .then(answer => {
-              log.debug("subscribe, set local answer", answer);
-              return this._pc.setLocalDescription(answer);
-          })
-              // .then(() => {
-              //   if (!this._transportUpdated) { return this._updateTransport(); }
-              // })
-              .then(() => this._pcReady)
-              .then(() => {
-              for (let i = 0; i < consumerInfoList.length; i += 1) {
-                  const consumerInfo = consumerInfoList[i];
-                  const consumer = consumers[i];
-                  if (consumer.track)
-                      continue;
-                  if (browserReport.unifiedPlan) {
-                      const transceiver = this._pc.getTransceivers().find(transceiver => {
-                          if (!transceiver.receiver.track) {
-                              return false;
-                          }
-                          if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
-                              return true;
-                          }
-                          return false;
-                      });
-                      if (transceiver) {
-                          consumer.track = transceiver.receiver.track;
-                      }
-                  }
-                  else {
-                      // chrome 55 以下不支持 getReceivers，使用 getRemoteStreams
-                      if (browserReport.getReceivers) {
-                          const receiver = this._pc.getReceivers()
-                              .find(rtpReceiver => {
-                              const { track } = rtpReceiver;
-                              if (!track) {
-                                  return false;
-                              }
-                              if (consumerInfo.trackId === track.id) {
-                                  return true;
-                              }
-                              return false;
-                          });
-                          if (receiver) {
-                              consumer.track = receiver.track;
-                          }
-                      }
-                      else {
-                          const stream = this._pc.getRemoteStreams().find((s) => s.id === consumerInfo.streamId);
-                          if (stream) {
-                              consumer.track = stream.getTrackById(consumerInfo.trackId);
-                          }
-                      }
-                  }
-                  if (!consumer.track) {
-                      throw UNEXPECTED_ERROR("remote track not found");
-                  }
-                  log.log("subscribe: get new track", consumer.track);
-              }
-              return consumers.map(c => c.track);
-          });
+        };
+
+        this._signaling.on("on-subpc-state", callback);
+      });
+    }
+    /**
+     * 如果发生了重复订阅的情况，策略是直接返回已经保存的 track 信息
+     * 也就是无论传入的 consumer 是否重复，都返回和传入数量一致的 MediaStreamTrack
+     */
+
+
+    async addConsumerTracks(consumers) {
+      // 如果是 unified-plan 就一个一个重协商，否则在火狐下会有鬼
+      if (browserReport.unifiedPlan && isFirefox) {
+        const tracks = [];
+
+        for (const consumer of consumers) {
+          const track = await this.addConsumerTrack(consumer);
+          tracks.push(track);
+        }
+
+        return tracks;
       }
-      genNewConsumerInfo(consumer) {
-          const encoding = consumer.rtpParameters.encodings[0];
-          const cname = consumer.rtpParameters.rtcp.cname;
+
+      log.log("add consumers", consumers);
+      const consumerInfoList = [];
+
+      const _consumerInfoArray = Array.from(this._consumerInfos.values());
+
+      for (const consumer of consumers) {
+        const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
+
+        if (info && !info.closed) {
+          consumerInfoList.push(info);
+        } else {
+          const newInfo = this.genNewConsumerInfo(consumer);
+
+          if (browserReport.unifiedPlan) {
+            // 递增 mid, plan-b 模式下不会使用到这个参数
+            const mid = consumer.mid;
+            newInfo.mid = mid;
+
+            this._consumerInfos.set(mid, newInfo);
+          } else {
+            this._consumerInfos.set(consumer.id, newInfo);
+          }
+
+          consumerInfoList.push(newInfo);
+        }
+      }
+
+      return Promise.resolve().then(() => {
+        // createremoteSdp
+        const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+
+        const offer = {
+          type: "offer",
+          sdp: remoteSdp
+        };
+        log.debug("subscribe: set remote offer", offer);
+        return this._pc.setRemoteDescription(offer);
+      }).then(() => {
+        if (browserReport.unifiedPlan) {
+          return this._pc.createAnswer();
+        }
+
+        return this._pc.createAnswer();
+      }).then(answer => {
+        log.debug("subscribe, set local answer", answer);
+        return this._pc.setLocalDescription(answer);
+      }) // .then(() => {
+      //   if (!this._transportUpdated) { return this._updateTransport(); }
+      // })
+      .then(() => this._pcReady).then(() => {
+        for (let i = 0; i < consumerInfoList.length; i += 1) {
+          const consumerInfo = consumerInfoList[i];
+          const consumer = consumers[i];
+          if (consumer.track) continue;
+
+          if (browserReport.unifiedPlan) {
+            const transceiver = this._pc.getTransceivers().find(transceiver => {
+              if (!transceiver.receiver.track) {
+                return false;
+              }
+
+              if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
+                return true;
+              }
+
+              return false;
+            });
+
+            if (transceiver) {
+              consumer.track = transceiver.receiver.track;
+            }
+          } else {
+            // chrome 55 以下不支持 getReceivers，使用 getRemoteStreams
+            if (browserReport.getReceivers) {
+              const receiver = this._pc.getReceivers().find(rtpReceiver => {
+                const {
+                  track
+                } = rtpReceiver;
+
+                if (!track) {
+                  return false;
+                }
+
+                if (consumerInfo.trackId === track.id) {
+                  return true;
+                }
+
+                return false;
+              });
+
+              if (receiver) {
+                consumer.track = receiver.track;
+              }
+            } else {
+              const stream = this._pc.getRemoteStreams().find(s => s.id === consumerInfo.streamId);
+
+              if (stream) {
+                consumer.track = stream.getTrackById(consumerInfo.trackId);
+              }
+            }
+          }
+
+          if (!consumer.track) {
+            throw UNEXPECTED_ERROR("remote track not found");
+          }
+
+          log.log("subscribe: get new track", consumer.track);
+        }
+
+        return consumers.map(c => c.track);
+      });
+    }
+
+    genNewConsumerInfo(consumer) {
+      const encoding = consumer.rtpParameters.encodings[0];
+      const cname = consumer.rtpParameters.rtcp.cname;
+      const mid = consumer.mid;
+      const newInfo = {
+        kind: consumer.kind,
+        streamId: browserReport.unifiedPlan ? `recv-stream-${mid}` : `recv-stream-${encoding.ssrc}`,
+        trackId: browserReport.unifiedPlan ? `consumer-${consumer.kind}-${mid}` : `consumer-${consumer.kind}-${encoding.ssrc}`,
+        ssrc: encoding.ssrc,
+        rtxSsrc: encoding.rtx ? encoding.rtx.ssrc : undefined,
+        cname: cname,
+        consumerId: consumer.id,
+        closed: false
+      };
+      return newInfo;
+    }
+
+    async addConsumerTrack(consumer) {
+      log.log("add consumer", consumer);
+      let consumerInfo = null;
+
+      const _consumerInfoArray = Array.from(this._consumerInfos.values());
+
+      const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
+
+      if (info && !info.closed) {
+        consumerInfo = info;
+      } else {
+        const newInfo = this.genNewConsumerInfo(consumer);
+
+        if (browserReport.unifiedPlan) {
+          // plan-b 模式下不会使用到这个参数
           const mid = consumer.mid;
-          const newInfo = {
-              kind: consumer.kind,
-              streamId: browserReport.unifiedPlan ? `recv-stream-${mid}` : `recv-stream-${encoding.ssrc}`,
-              trackId: browserReport.unifiedPlan ? `consumer-${consumer.kind}-${mid}` : `consumer-${consumer.kind}-${encoding.ssrc}`,
-              ssrc: encoding.ssrc,
-              rtxSsrc: encoding.rtx ? encoding.rtx.ssrc : undefined,
-              cname: cname,
-              consumerId: consumer.id,
-              closed: false,
-          };
-          return newInfo;
+          newInfo.mid = mid;
+
+          this._consumerInfos.set(mid, newInfo);
+        } else {
+          this._consumerInfos.set(consumer.id, newInfo);
+        }
+
+        consumerInfo = newInfo;
       }
-      async addConsumerTrack(consumer) {
-          log.log("add consumer", consumer);
-          let consumerInfo = null;
-          const _consumerInfoArray = Array.from(this._consumerInfos.values());
-          const info = _consumerInfoArray.find(i => i.consumerId === consumer.id);
-          if (info && !info.closed) {
-              consumerInfo = info;
+
+      return Promise.resolve().then(() => {
+        // createremoteSdp
+        const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+
+        const offer = {
+          type: "offer",
+          sdp: remoteSdp
+        };
+        console.log("set ontrack");
+
+        this._pc.ontrack = e => {
+          console.log("ontrack", e.receiver.track);
+        };
+
+        log.debug("subscribe: set remote offer", offer);
+        return this._pc.setRemoteDescription(offer);
+      }).then(() => {
+        return this._pc.createAnswer();
+      }).then(answer => {
+        log.debug("subscribe, set local answer", answer);
+        return this._pc.setLocalDescription(answer);
+      }) // .then(() => {
+      //   if (!this._transportUpdated) { return this._updateTransport(); }
+      // })
+      .then(() => this._pcReady).then(() => {
+        let newTrack = null;
+
+        if (browserReport.unifiedPlan && browserReport.supportTransceivers && !!consumer && !!consumerInfo) {
+          const transceiver = this._pc.getTransceivers().find(transceiver => {
+            if (!transceiver.receiver.track) {
+              return false;
+            }
+
+            if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
+              consumer.track = transceiver.receiver.track;
+              return true;
+            }
+
+            return false;
+          });
+
+          if (transceiver) {
+            newTrack = transceiver.receiver.track;
           }
-          else {
-              const newInfo = this.genNewConsumerInfo(consumer);
-              if (browserReport.unifiedPlan) {
-                  // plan-b 模式下不会使用到这个参数
-                  const mid = consumer.mid;
-                  newInfo.mid = mid;
-                  this._consumerInfos.set(mid, newInfo);
-              }
-              else {
-                  this._consumerInfos.set(consumer.id, newInfo);
-              }
-              consumerInfo = newInfo;
+        } else if (!!consumer && !!consumerInfo) {
+          const receiver = this._pc.getReceivers().find(rtpReceiver => {
+            const {
+              track
+            } = rtpReceiver;
+
+            if (!track) {
+              return false;
+            }
+
+            if (consumerInfo.trackId === track.id) {
+              consumer.track = track;
+              return true;
+            }
+
+            return false;
+          });
+
+          if (receiver) {
+            newTrack = receiver.track;
           }
-          return Promise.resolve()
-              .then(() => {
-              // createremoteSdp
-              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
-              const offer = { type: "offer", sdp: remoteSdp };
-              console.log("set ontrack");
-              this._pc.ontrack = (e) => {
-                  console.log("ontrack", e.receiver.track);
-              };
-              log.debug("subscribe: set remote offer", offer);
-              return this._pc.setRemoteDescription(offer);
-          })
-              .then(() => {
-              return this._pc.createAnswer();
-          })
-              .then(answer => {
-              log.debug("subscribe, set local answer", answer);
-              return this._pc.setLocalDescription(answer);
-          })
-              // .then(() => {
-              //   if (!this._transportUpdated) { return this._updateTransport(); }
-              // })
-              .then(() => this._pcReady)
-              .then(() => {
-              let newTrack = null;
-              if (browserReport.unifiedPlan && browserReport.supportTransceivers && !!consumer && !!consumerInfo) {
-                  const transceiver = this._pc.getTransceivers().find(transceiver => {
-                      if (!transceiver.receiver.track) {
-                          return false;
-                      }
-                      if (transceiver.receiver.track.id === consumerInfo.trackId || transceiver.mid === consumerInfo.mid) {
-                          consumer.track = transceiver.receiver.track;
-                          return true;
-                      }
-                      return false;
-                  });
-                  if (transceiver) {
-                      newTrack = transceiver.receiver.track;
-                  }
-              }
-              else if (!!consumer && !!consumerInfo) {
-                  const receiver = this._pc.getReceivers()
-                      .find(rtpReceiver => {
-                      const { track } = rtpReceiver;
-                      if (!track) {
-                          return false;
-                      }
-                      if (consumerInfo.trackId === track.id) {
-                          consumer.track = track;
-                          return true;
-                      }
-                      return false;
-                  });
-                  if (receiver) {
-                      newTrack = receiver.track;
-                  }
-              }
-              if (!newTrack && !!consumer) {
-                  throw UNEXPECTED_ERROR("remote track not found");
-              }
-              log.log("subscribe: get new track", newTrack, newTrack.readyState);
-              return newTrack;
-          });
+        }
+
+        if (!newTrack && !!consumer) {
+          throw UNEXPECTED_ERROR("remote track not found");
+        }
+
+        log.log("subscribe: get new track", newTrack, newTrack.readyState);
+        return newTrack;
+      });
+    }
+
+    removeConsumerTracks(consumers) {
+      log.log("remove consumer", consumers);
+      let needToUpdateOffer = false;
+
+      for (const consumer of consumers) {
+        const info = Array.from(this._consumerInfos.values()).find(i => i.consumerId === consumer.id && !i.closed);
+
+        if (!info) {
+          log.log(`can not find unpublish track target, ignore`);
+          continue;
+        }
+
+        needToUpdateOffer = true;
+        /**
+         * 对于 unified-plan 不能直接删除 consumer
+         * 因为重协商必须保证前后 mid 只增不减，这里将 consumer 置为 closed
+         * 使得生成 sdp 的时候改 mid 不会带上 ssrc 和 ext，也就不会产生订阅
+         */
+
+        if (browserReport.unifiedPlan) {
+          consumer.track = null;
+          info.closed = true;
+        } else {
+          this._consumerInfos.delete(consumer.id);
+        }
       }
-      removeConsumerTracks(consumers) {
-          log.log("remove consumer", consumers);
-          let needToUpdateOffer = false;
-          for (const consumer of consumers) {
-              const info = Array.from(this._consumerInfos.values()).find(i => i.consumerId === consumer.id && !i.closed);
-              if (!info) {
-                  log.log(`can not find unpublish track target, ignore`);
-                  continue;
-              }
-              needToUpdateOffer = true;
-              /**
-               * 对于 unified-plan 不能直接删除 consumer
-               * 因为重协商必须保证前后 mid 只增不减，这里将 consumer 置为 closed
-               * 使得生成 sdp 的时候改 mid 不会带上 ssrc 和 ext，也就不会产生订阅
-               */
-              if (browserReport.unifiedPlan) {
-                  consumer.track = null;
-                  info.closed = true;
-              }
-              else {
-                  this._consumerInfos.delete(consumer.id);
-              }
-          }
-          if (!needToUpdateOffer)
-              return Promise.resolve();
-          return Promise.resolve()
-              .then(() => {
-              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
-              const offer = { type: "offer", sdp: remoteSdp };
-              log.log("unsubscribe set remote offer", offer);
-              return this._pc.setRemoteDescription(offer);
-          })
-              .then(() => {
-              return this._pc.createAnswer();
-          })
-              .then(answer => {
-              log.log("unsubscribe set local answer", answer);
-              return this._pc.setLocalDescription(answer);
-          });
-      }
-      restartICE(iceParameters, iceCandidates) {
-          log.log("recv restart ice");
-          this._isRestartingICE = true;
-          return Promise.resolve()
-              .then(() => {
-              return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
-          })
-              .then(() => {
-              const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
-              const offer = { type: "offer", sdp: remoteSdp };
-              return this._pc.setRemoteDescription(offer);
-          })
-              .then(() => {
-              return this._pc.createAnswer();
-          })
-              .then(answer => {
-              this._pc.setLocalDescription(answer);
-          });
-      }
-      async setupTransport(trackIds) {
-          if (this._transportCreated)
-              return await this._pcReady;
-          const startTime = Date.now();
-          const transportRemoteParameters = await this.safeEmitAsPromise("@needsubpc", trackIds);
-          qos.addEvent("SubscriberPC", {
-              signal_take_time: Date.now() - startTime,
-              result_code: transportRemoteParameters.code,
-              tracks: transportRemoteParameters.tracks.map(t => ({
-                  track_id: t.trackid,
-                  status: t.status,
-              })),
-          });
-          this.pcid = transportRemoteParameters.pcid;
-          this._transportCreated = true;
-          this._pcReady = this.getReady(transportRemoteParameters);
-          log.log("init subscribe, get transport remote", transportRemoteParameters);
-          await this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
-          return transportRemoteParameters;
-      }
+
+      if (!needToUpdateOffer) return Promise.resolve();
+      return Promise.resolve().then(() => {
+        const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+
+        const offer = {
+          type: "offer",
+          sdp: remoteSdp
+        };
+        log.log("unsubscribe set remote offer", offer);
+        return this._pc.setRemoteDescription(offer);
+      }).then(() => {
+        return this._pc.createAnswer();
+      }).then(answer => {
+        log.log("unsubscribe set local answer", answer);
+        return this._pc.setLocalDescription(answer);
+      });
+    }
+
+    restartICE(iceParameters, iceCandidates) {
+      log.log("recv restart ice");
+      this._isRestartingICE = true;
+      return Promise.resolve().then(() => {
+        return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
+      }).then(() => {
+        const remoteSdp = this._remoteSdp.createRemoteOffer(Array.from(this._consumerInfos.values()));
+
+        const offer = {
+          type: "offer",
+          sdp: remoteSdp
+        };
+        return this._pc.setRemoteDescription(offer);
+      }).then(() => {
+        return this._pc.createAnswer();
+      }).then(answer => {
+        this._pc.setLocalDescription(answer);
+      });
+    }
+
+    async setupTransport(trackIds) {
+      if (this._transportCreated) return await this._pcReady;
+      const startTime = Date.now();
+      const transportRemoteParameters = await this.safeEmitAsPromise("@needsubpc", trackIds);
+      qos.addEvent("SubscriberPC", {
+        signal_take_time: Date.now() - startTime,
+        result_code: transportRemoteParameters.code,
+        tracks: transportRemoteParameters.tracks.map(t => ({
+          track_id: t.trackid,
+          status: t.status
+        }))
+      });
+      this.pcid = transportRemoteParameters.pcid;
+      this._transportCreated = true;
+      this._pcReady = this.getReady(transportRemoteParameters);
+      log.log("init subscribe, get transport remote", transportRemoteParameters);
+      await this._remoteSdp.setTransportRemoteParameters(transportRemoteParameters);
+      return transportRemoteParameters;
+    }
+
   }
   function getHandler(direction, extendedRtpCapabilities, signaling, settings) {
-      // let rtpParametersByKind;
-      switch (direction) {
-          case "send":
-              {
-                  return new SendHandler(extendedRtpCapabilities, signaling, settings);
-              }
-          case "recv": {
-              return new RecvHandler(extendedRtpCapabilities, signaling, settings);
-          }
-      }
+    // let rtpParametersByKind;
+    switch (direction) {
+      case "send":
+        {
+          return new SendHandler(extendedRtpCapabilities, signaling, settings);
+        }
+
+      case "recv":
+        {
+          return new RecvHandler(extendedRtpCapabilities, signaling, settings);
+        }
+    }
   }
 
   var TaskCommandEnum;
+
   (function (TaskCommandEnum) {
-      TaskCommandEnum["SEND_TRACKS"] = "@transport:send-tracks";
-      TaskCommandEnum["RESTART_SEND_ICE"] = "@transport:send-restart-ice";
-      TaskCommandEnum["REMOVE_TRACKS"] = "@transport:remove-tracks";
-      TaskCommandEnum["INIT_RECV"] = "@transport:init-recv";
-      TaskCommandEnum["RESTART_RECV_ICE"] = "@transport:recv-restart-ice";
-      TaskCommandEnum["ADD_CONUMERS"] = "@transport:add-consumers";
-      TaskCommandEnum["REMOVE_CONSUMERS"] = "@transport:remove-consumers";
+    TaskCommandEnum["SEND_TRACKS"] = "@transport:send-tracks";
+    TaskCommandEnum["RESTART_SEND_ICE"] = "@transport:send-restart-ice";
+    TaskCommandEnum["REMOVE_TRACKS"] = "@transport:remove-tracks";
+    TaskCommandEnum["INIT_RECV"] = "@transport:init-recv";
+    TaskCommandEnum["RESTART_RECV_ICE"] = "@transport:recv-restart-ice";
+    TaskCommandEnum["ADD_CONUMERS"] = "@transport:add-consumers";
+    TaskCommandEnum["REMOVE_CONSUMERS"] = "@transport:remove-consumers";
   })(TaskCommandEnum || (TaskCommandEnum = {}));
+
   class ConnectionTransport extends EnhancedEventEmitter {
-      constructor(rtpcap, signaling) {
-          super();
-          this.sendCommandQueue = new TaskQueue("SendQueue");
-          this.recvCommandQueue = new TaskQueue("RecvQueue");
-          /**
-           * sub-pc 创建单独走一个 queue
-           */
-          this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
-          this.sendTrackQueue = [];
-          this.consumerQueue = [];
-          this._publishTracks = new Map();
-          this.extendedRtpCapabilities = rtpcap;
-          this.signaling = signaling;
-          this.sendHandler = getHandler("send", rtpcap, signaling, {});
-          this.recvHandler = getHandler("recv", rtpcap, signaling, {});
-          this.handleSendHandler();
-          this.handleRecvHandler();
-          this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
-          this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
-          this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
-          this.initSubPcPromise = new Promise(resolve => {
-              this.initSubPcPromiseResolve = resolve;
-          });
-      }
-      get publishTracks() {
-          return Array.from(this._publishTracks.values());
-      }
-      resolveInitSubPcPromise() {
-          if (!this.initSubPcPromiseResolve)
-              return;
-          this.initSubPcPromiseResolve();
-          this.initSubPcPromiseResolve = undefined;
-      }
-      handleSendHandler() {
-          this.sendHandler.on("@needpubpc", (sdp, tracks, cb, errcb) => {
-              this.safeEmitAsPromise("@needpubpc", sdp, tracks).then(cb).catch(errcb);
-          })
-              .on("@connectionstatechange", (state) => {
-              log.log("pubpc connectionstatechange", state);
-              qos.addEvent("ICEConnectionState", {
-                  pc_type: 0,
-                  state: state,
-                  id: this.sendHandler.pcid,
-              });
-              switch (state) {
-                  case "remote-disconnected":
-                  case "closed":
-                  case "failed": {
-                      if (this.signaling.state === SignalingState.OPEN) {
-                          this.reconnectProducer();
-                      }
-                      else {
-                          this.sendHandler.close();
-                      }
-                      break;
-                  }
-                  case "disconnected": {
-                      if (this.sendHandler._isRestartingICE || !this.sendHandler.pcid)
-                          return;
-                      if (this.signaling.state === SignalingState.OPEN) {
-                          this.restartSendICE(this.sendHandler.pcid);
-                      }
-                      else {
-                          this.signaling.once("@signalingauth", (data) => {
-                              if (this.sendHandler.getCurrentIceConnectionState() !== "disconnected")
-                                  return;
-                              this.extendedRtpCapabilities = data.rtpcaps;
-                              this.restartSendICE(this.sendHandler.pcid);
-                          });
-                      }
-                      break;
-                  }
-                  default:
-                      break;
-              }
-          })
-              .on("@needpubtracks", (targetTracks, sdp, cb, errcb) => {
-              const publishTrackData = targetTracks.map(transferTrackToPublishTrack);
-              const startTime = Date.now();
-              this.signaling.request("pub-tracks", { tracks: publishTrackData, sdp })
-                  .then((data) => {
-                  qos.addEvent("PublishTracks", {
-                      signal_take_time: Date.now() - startTime,
-                      result_code: data.code,
-                      tracks: data.tracks.map(t => {
-                          const targetTrack = targetTracks.find(track => track.mediaTrack.id === t.localid);
-                          if (!targetTrack)
-                              return undefined;
-                          return {
-                              local_id: t.localid,
-                              track_id: t.trackid,
-                              source_type: targetTrack.sourceType,
-                              kind: targetTrack.info.kind,
-                              tag: targetTrack.info.tag || "",
-                              muted: !!targetTrack.info.muted,
-                              master: !!targetTrack.master,
-                              kbps: targetTrack.info.kbps || -1,
-                              encode_video_width: 0,
-                              encode_video_height: 0,
-                          };
-                      }).filter(t => t !== undefined),
-                  });
-                  switch (data.code) {
-                      case 0:
-                          break;
-                      case 10052:
-                          return errcb(SERVER_UNAVAILABLE());
-                      // pc 断开，重新走 pub-pc 的过程
-                      case 10061:
-                          this.reconnectProducer();
-                          return errcb(PUBLISH_ERROR(10061, data.error));
-                      default:
-                          return errcb(PUBLISH_ERROR(data.code, data.error));
-                  }
-                  for (const track of data.tracks) {
-                      if (!track.status) {
-                          errcb(PUBLISH_ERROR(data.code, data.error));
-                          return;
-                      }
-                  }
-                  cb(data);
-              }, errcb);
-          })
-              .on("@needunpubtracks", (targetPCTracks, cb, errcb) => {
-              qos.addEvent("UnPublishTracks", {
-                  tracks: targetPCTracks.map(p => ({ track_id: p.trackId })),
-              });
-              this.signaling.request("unpub-tracks", {
-                  tracks: targetPCTracks.map(t => ({ trackid: t.trackId })),
-              })
-                  .then((data) => {
-                  cb(data);
-              });
-          });
-      }
-      async sendTracks(tracks) {
-          if (tracks.length === 0)
-              return Promise.resolve();
-          return this.sendCommandQueue.push(TaskCommandEnum.SEND_TRACKS, tracks);
-      }
-      removeTracks(tracks) {
-          if (tracks.length === 0)
-              return Promise.resolve();
-          return this.sendCommandQueue.push(TaskCommandEnum.REMOVE_TRACKS, tracks);
-      }
-      async restartSendICE(pcid) {
-          if (!browserReport.supportRestartICE)
-              return Promise.resolve(this.reconnectProducer());
-          return this.sendCommandQueue.push(TaskCommandEnum.RESTART_SEND_ICE, pcid);
-      }
-      handleSendCommandTask(command, ph) {
-          switch (command.method) {
-              case TaskCommandEnum.SEND_TRACKS: {
-                  ph.promise = this._execAddProducerTracks(command.data);
-                  return;
-              }
-              case TaskCommandEnum.REMOVE_TRACKS: {
-                  ph.promise = this._execRemoveTracks(command.data);
-                  return;
-              }
-              case TaskCommandEnum.RESTART_SEND_ICE: {
-                  ph.promise = this._execRestartSendICE(command.data);
-                  return;
-              }
-          }
-      }
+    constructor(rtpcap, signaling) {
+      super();
+      this.sendCommandQueue = new TaskQueue("SendQueue");
+      this.recvCommandQueue = new TaskQueue("RecvQueue");
       /**
-       * 将 Track 添加到 transport 的 PCTrack 列表中
-       * 将这一步抽成同步方法是为了保证多个 publish 操作同时触发时
-       * 上层能够正确监测到非法订阅操作并及时抛出错误
+       * sub-pc 创建单独走一个 queue
        */
-      addTrackToPublishTracks(tracks) {
-          const pcTracks = tracks.map(t => new PCTrack(this, "send", t));
-          for (const pcTrack of pcTracks) {
-              this._publishTracks.set(pcTrack.track.mediaTrack.id, pcTrack);
-          }
-          return pcTracks;
-      }
-      /**
-       * 当发布任务遇到无法重试的失败时清理添加的 Tracks
-       */
-      removeTrackFromPublishTracks(tracks) {
-          for (const track of tracks) {
-              this._publishTracks.delete(track.mediaTrack.id);
-          }
-      }
-      async _execAddProducerTracks(pcTracks) {
-          const data = await this.sendHandler.addProducerTracks(pcTracks.map(t => t.track));
-          for (const pcTrack of pcTracks) {
-              const trackData = getElementFromArray(data.tracks, "localid", pcTrack.track.mediaTrack.id);
-              if (trackData) {
-                  pcTrack.addTrackId(trackData.trackid);
-                  pcTrack.track.setInfo({ versionid: trackData.versionid });
-                  pcTrack.track.resetStats();
+
+      this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
+      this.sendTrackQueue = [];
+      this.consumerQueue = [];
+      this._publishTracks = new Map();
+      this.extendedRtpCapabilities = rtpcap;
+      this.signaling = signaling;
+      this.sendHandler = getHandler("send", rtpcap, signaling, {});
+      this.recvHandler = getHandler("recv", rtpcap, signaling, {});
+      this.handleSendHandler();
+      this.handleRecvHandler();
+      this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
+      this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
+      this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
+      this.initSubPcPromise = new Promise(resolve => {
+        this.initSubPcPromiseResolve = resolve;
+      });
+    }
+
+    get publishTracks() {
+      return Array.from(this._publishTracks.values());
+    }
+
+    resolveInitSubPcPromise() {
+      if (!this.initSubPcPromiseResolve) return;
+      this.initSubPcPromiseResolve();
+      this.initSubPcPromiseResolve = undefined;
+    }
+
+    handleSendHandler() {
+      this.sendHandler.on("@needpubpc", (sdp, tracks, cb, errcb) => {
+        this.safeEmitAsPromise("@needpubpc", sdp, tracks).then(cb).catch(errcb);
+      }).on("@connectionstatechange", state => {
+        log.log("pubpc connectionstatechange", state);
+        qos.addEvent("ICEConnectionState", {
+          pc_type: 0,
+          state: state,
+          id: this.sendHandler.pcid
+        });
+
+        switch (state) {
+          case "remote-disconnected":
+          case "closed":
+          case "failed":
+            {
+              if (this.signaling.state === SignalingState.OPEN) {
+                this.reconnectProducer();
+              } else {
+                this.sendHandler.close();
               }
-          }
-          pcTracks.map(p => p.connectStatus = exports.TrackConnectStatus.Connect);
-          return data;
-      }
-      _execRemoveTracks(pcTracks) {
-          this.removeTrackFromPublishTracks(pcTracks.map(p => p.track));
-          pcTracks.map(p => p.release());
-          return this.sendHandler.removeProducerTracks(pcTracks);
-      }
-      async _execRestartSendICE(pcid) {
-          this.sendHandler._isRestartingICE = true;
-          const res = await this.signaling.request("pubpc-restart", { pcid });
-          if (res.code !== 0) {
-              this.sendHandler._isRestartingICE = false;
-              log.debug("restart ice faild", res.code, res.error);
+
+              break;
+            }
+
+          case "disconnected":
+            {
+              if (this.sendHandler._isRestartingICE || !this.sendHandler.pcid) return;
+
+              if (this.signaling.state === SignalingState.OPEN) {
+                this.restartSendICE(this.sendHandler.pcid);
+              } else {
+                this.signaling.once("@signalingauth", data => {
+                  if (this.sendHandler.getCurrentIceConnectionState() !== "disconnected") return;
+                  this.extendedRtpCapabilities = data.rtpcaps;
+                  this.restartSendICE(this.sendHandler.pcid);
+                });
+              }
+
+              break;
+            }
+
+          default:
+            break;
+        }
+      }).on("@needpubtracks", (targetTracks, sdp, cb, errcb) => {
+        const publishTrackData = targetTracks.map(transferTrackToPublishTrack);
+        const startTime = Date.now();
+        this.signaling.request("pub-tracks", {
+          tracks: publishTrackData,
+          sdp
+        }).then(data => {
+          qos.addEvent("PublishTracks", {
+            signal_take_time: Date.now() - startTime,
+            result_code: data.code,
+            tracks: data.tracks.map(t => {
+              const targetTrack = targetTracks.find(track => track.mediaTrack.id === t.localid);
+              if (!targetTrack) return undefined;
+              return {
+                local_id: t.localid,
+                track_id: t.trackid,
+                source_type: targetTrack.sourceType,
+                kind: targetTrack.info.kind,
+                tag: targetTrack.info.tag || "",
+                muted: !!targetTrack.info.muted,
+                master: !!targetTrack.master,
+                kbps: targetTrack.info.kbps || -1,
+                encode_video_width: 0,
+                encode_video_height: 0
+              };
+            }).filter(t => t !== undefined)
+          });
+
+          switch (data.code) {
+            case 0:
+              break;
+
+            case 10052:
+              return errcb(SERVER_UNAVAILABLE());
+            // pc 断开，重新走 pub-pc 的过程
+
+            case 10061:
               this.reconnectProducer();
+              return errcb(PUBLISH_ERROR(10061, data.error));
+
+            default:
+              return errcb(PUBLISH_ERROR(data.code, data.error));
+          }
+
+          for (const track of data.tracks) {
+            if (!track.status) {
+              errcb(PUBLISH_ERROR(data.code, data.error));
               return;
+            }
           }
-          try {
-              await this.sendHandler.restartICE(res.iceParameters, res.iceCandidates);
-              this.sendHandler._isRestartingICE = false;
+
+          cb(data);
+        }, errcb);
+      }).on("@needunpubtracks", (targetPCTracks, cb, errcb) => {
+        qos.addEvent("UnPublishTracks", {
+          tracks: targetPCTracks.map(p => ({
+            track_id: p.trackId
+          }))
+        });
+        this.signaling.request("unpub-tracks", {
+          tracks: targetPCTracks.map(t => ({
+            trackid: t.trackId
+          }))
+        }).then(data => {
+          cb(data);
+        });
+      });
+    }
+
+    async sendTracks(tracks) {
+      if (tracks.length === 0) return Promise.resolve();
+      return this.sendCommandQueue.push(TaskCommandEnum.SEND_TRACKS, tracks);
+    }
+
+    removeTracks(tracks) {
+      if (tracks.length === 0) return Promise.resolve();
+      return this.sendCommandQueue.push(TaskCommandEnum.REMOVE_TRACKS, tracks);
+    }
+
+    async restartSendICE(pcid) {
+      if (!browserReport.supportRestartICE) return Promise.resolve(this.reconnectProducer());
+      return this.sendCommandQueue.push(TaskCommandEnum.RESTART_SEND_ICE, pcid);
+    }
+
+    handleSendCommandTask(command, ph) {
+      switch (command.method) {
+        case TaskCommandEnum.SEND_TRACKS:
+          {
+            ph.promise = this._execAddProducerTracks(command.data);
+            return;
           }
-          catch (e) {
-              log.debug("restart ice faild", res.code, res.error);
-              this.sendHandler._isRestartingICE = false;
-              this.reconnectProducer();
+
+        case TaskCommandEnum.REMOVE_TRACKS:
+          {
+            ph.promise = this._execRemoveTracks(command.data);
+            return;
+          }
+
+        case TaskCommandEnum.RESTART_SEND_ICE:
+          {
+            ph.promise = this._execRestartSendICE(command.data);
+            return;
           }
       }
-      reconnectProducer() {
-          this.resetSendCommandQueue();
-          this.sendHandler.close();
-          const targetPCTracks = this.publishTracks;
-          this.sendHandler = getHandler("send", this.extendedRtpCapabilities, this.signaling, {});
-          this.handleSendHandler();
-          targetPCTracks.forEach(t => {
-              t.connectStatus = exports.TrackConnectStatus.Connecting;
+    }
+    /**
+     * 将 Track 添加到 transport 的 PCTrack 列表中
+     * 将这一步抽成同步方法是为了保证多个 publish 操作同时触发时
+     * 上层能够正确监测到非法订阅操作并及时抛出错误
+     */
+
+
+    addTrackToPublishTracks(tracks) {
+      const pcTracks = tracks.map(t => new PCTrack(this, "send", t));
+
+      for (const pcTrack of pcTracks) {
+        this._publishTracks.set(pcTrack.track.mediaTrack.id, pcTrack);
+      }
+
+      return pcTracks;
+    }
+    /**
+     * 当发布任务遇到无法重试的失败时清理添加的 Tracks
+     */
+
+
+    removeTrackFromPublishTracks(tracks) {
+      for (const track of tracks) {
+        this._publishTracks.delete(track.mediaTrack.id);
+      }
+    }
+
+    async _execAddProducerTracks(pcTracks) {
+      const data = await this.sendHandler.addProducerTracks(pcTracks.map(t => t.track));
+
+      for (const pcTrack of pcTracks) {
+        const trackData = getElementFromArray(data.tracks, "localid", pcTrack.track.mediaTrack.id);
+
+        if (trackData) {
+          pcTrack.addTrackId(trackData.trackid);
+          pcTrack.track.setInfo({
+            versionid: trackData.versionid
           });
-          this.emit("@needrepub", targetPCTracks);
+          pcTrack.track.resetStats();
+        }
       }
-      handleRecvHandler() {
-          this.recvHandler.on("@needsubpc", (d, cb, errcb) => {
-              this.safeEmitAsPromise("@needsubpc", d).then(cb, errcb);
-          })
-              .on("@connectionstatechange", (state) => {
-              log.log("sub pc connection state change", state);
-              qos.addEvent("ICEConnectionState", {
-                  pc_type: 1,
-                  state: state,
-                  id: this.recvHandler.pcid,
-              });
-              switch (state) {
-                  case "remote-disconnected":
-                  case "closed":
-                  case "failed": {
-                      if (this.signaling.state === SignalingState.OPEN) {
-                          this.resetRecvHandler();
-                      }
-                      else {
-                          // 置为 close，等待信令重连完成后统一重新创建
-                          this.recvHandler.close();
-                      }
-                      break;
-                  }
-                  case "disconnected": {
-                      if (this.recvHandler._isRestartingICE || !this.recvHandler.pcid)
-                          return;
-                      if (this.signaling.state === SignalingState.OPEN) {
-                          this.restartRecvICE(this.recvHandler.pcid);
-                      }
-                      else {
-                          this.signaling.once("@signalingauth", (data) => {
-                              if (this.recvHandler.getCurrentIceConnectionState() !== "disconnected")
-                                  return;
-                              this.extendedRtpCapabilities = data.rtpcaps;
-                              this.restartRecvICE(this.recvHandler.pcid);
-                          });
-                      }
-                      break;
-                  }
-                  default: {
-                      break;
-                  }
+
+      pcTracks.map(p => p.connectStatus = exports.TrackConnectStatus.Connect);
+      return data;
+    }
+
+    _execRemoveTracks(pcTracks) {
+      this.removeTrackFromPublishTracks(pcTracks.map(p => p.track));
+      pcTracks.map(p => p.release());
+      return this.sendHandler.removeProducerTracks(pcTracks);
+    }
+
+    async _execRestartSendICE(pcid) {
+      this.sendHandler._isRestartingICE = true;
+      const res = await this.signaling.request("pubpc-restart", {
+        pcid
+      });
+
+      if (res.code !== 0) {
+        this.sendHandler._isRestartingICE = false;
+        log.debug("restart ice faild", res.code, res.error);
+        this.reconnectProducer();
+        return;
+      }
+
+      try {
+        await this.sendHandler.restartICE(res.iceParameters, res.iceCandidates);
+        this.sendHandler._isRestartingICE = false;
+      } catch (e) {
+        log.debug("restart ice faild", res.code, res.error);
+        this.sendHandler._isRestartingICE = false;
+        this.reconnectProducer();
+      }
+    }
+
+    reconnectProducer() {
+      this.resetSendCommandQueue();
+      this.sendHandler.close();
+      const targetPCTracks = this.publishTracks;
+      this.sendHandler = getHandler("send", this.extendedRtpCapabilities, this.signaling, {});
+      this.handleSendHandler();
+      targetPCTracks.forEach(t => {
+        t.connectStatus = exports.TrackConnectStatus.Connecting;
+      });
+      this.emit("@needrepub", targetPCTracks);
+    }
+
+    handleRecvHandler() {
+      this.recvHandler.on("@needsubpc", (d, cb, errcb) => {
+        this.safeEmitAsPromise("@needsubpc", d).then(cb, errcb);
+      }).on("@connectionstatechange", state => {
+        log.log("sub pc connection state change", state);
+        qos.addEvent("ICEConnectionState", {
+          pc_type: 1,
+          state: state,
+          id: this.recvHandler.pcid
+        });
+
+        switch (state) {
+          case "remote-disconnected":
+          case "closed":
+          case "failed":
+            {
+              if (this.signaling.state === SignalingState.OPEN) {
+                this.resetRecvHandler();
+              } else {
+                // 置为 close，等待信令重连完成后统一重新创建
+                this.recvHandler.close();
               }
-          });
-      }
-      appendConsumer(consumer) {
-          this.consumerQueue.push(consumer);
-      }
-      async addConsumers() {
-          const consumers = this.consumerQueue;
-          this.consumerQueue = [];
-          return this.recvCommandQueue.push(TaskCommandEnum.ADD_CONUMERS, consumers);
-      }
-      initRecvHandler(trackIds) {
-          return this.recvInitCommandQueue.push(TaskCommandEnum.INIT_RECV, trackIds);
-      }
-      async removeConsumers(consumers) {
-          await this.recvCommandQueue.push(TaskCommandEnum.REMOVE_CONSUMERS, consumers);
-      }
-      async restartRecvICE(pcid) {
-          if (!browserReport.supportRestartICE)
-              return this.resetRecvHandler();
-          return this.recvCommandQueue.push(TaskCommandEnum.RESTART_RECV_ICE, pcid);
-      }
-      async _removeConsumers(consumers) {
-          await this.recvHandler.removeConsumerTracks(consumers);
-      }
-      async _initRecvHandler(trackIds) {
-          if (!this.recvHandler.isPcReady) {
-              return await this.recvHandler.setupTransport(trackIds);
-          }
-          await this.initSubPcPromise;
-          return null;
-      }
-      async _addConsumers(consumers) {
-          if (consumers.length === 0) {
-              return Promise.resolve([]);
-          }
-          const tracks = await this.recvHandler.addConsumerTracks(consumers);
-          return tracks;
-      }
-      async _execRestartRecvICE(pcid) {
-          this.recvHandler._isRestartingICE = true;
-          const res = await this.signaling.request("subpc-restart", { pcid });
-          if (res.code !== 0) {
-              this.recvHandler._isRestartingICE = false;
-              log.debug("restart ice faild", res.code, res.error);
-              this.resetRecvHandler();
-              return;
-          }
-          try {
-              await this.recvHandler.restartICE(res.iceParameters, res.iceCandidates);
-              this.recvHandler._isRestartingICE = false;
-          }
-          catch (e) {
-              this.recvHandler._isRestartingICE = false;
-              log.debug("restart ice faild", res.code, res.error);
-              this.resetRecvHandler();
-          }
-      }
-      handleRecvCommandTask(command, ph) {
-          switch (command.method) {
-              case TaskCommandEnum.ADD_CONUMERS: {
-                  ph.promise = this._addConsumers(command.data);
-                  return;
+
+              break;
+            }
+
+          case "disconnected":
+            {
+              if (this.recvHandler._isRestartingICE || !this.recvHandler.pcid) return;
+
+              if (this.signaling.state === SignalingState.OPEN) {
+                this.restartRecvICE(this.recvHandler.pcid);
+              } else {
+                this.signaling.once("@signalingauth", data => {
+                  if (this.recvHandler.getCurrentIceConnectionState() !== "disconnected") return;
+                  this.extendedRtpCapabilities = data.rtpcaps;
+                  this.restartRecvICE(this.recvHandler.pcid);
+                });
               }
-              case TaskCommandEnum.REMOVE_CONSUMERS: {
-                  ph.promise = this._removeConsumers(command.data);
-                  return;
-              }
-              case TaskCommandEnum.RESTART_RECV_ICE: {
-                  ph.promise = this._execRestartRecvICE(command.data);
-                  return;
-              }
+
+              break;
+            }
+
+          default:
+            {
+              break;
+            }
+        }
+      });
+    }
+
+    appendConsumer(consumer) {
+      this.consumerQueue.push(consumer);
+    }
+
+    async addConsumers() {
+      const consumers = this.consumerQueue;
+      this.consumerQueue = [];
+      return this.recvCommandQueue.push(TaskCommandEnum.ADD_CONUMERS, consumers);
+    }
+
+    initRecvHandler(trackIds) {
+      return this.recvInitCommandQueue.push(TaskCommandEnum.INIT_RECV, trackIds);
+    }
+
+    async removeConsumers(consumers) {
+      await this.recvCommandQueue.push(TaskCommandEnum.REMOVE_CONSUMERS, consumers);
+    }
+
+    async restartRecvICE(pcid) {
+      if (!browserReport.supportRestartICE) return this.resetRecvHandler();
+      return this.recvCommandQueue.push(TaskCommandEnum.RESTART_RECV_ICE, pcid);
+    }
+
+    async _removeConsumers(consumers) {
+      await this.recvHandler.removeConsumerTracks(consumers);
+    }
+
+    async _initRecvHandler(trackIds) {
+      if (!this.recvHandler.isPcReady) {
+        return await this.recvHandler.setupTransport(trackIds);
+      }
+
+      await this.initSubPcPromise;
+      return null;
+    }
+
+    async _addConsumers(consumers) {
+      if (consumers.length === 0) {
+        return Promise.resolve([]);
+      }
+
+      const tracks = await this.recvHandler.addConsumerTracks(consumers);
+      return tracks;
+    }
+
+    async _execRestartRecvICE(pcid) {
+      this.recvHandler._isRestartingICE = true;
+      const res = await this.signaling.request("subpc-restart", {
+        pcid
+      });
+
+      if (res.code !== 0) {
+        this.recvHandler._isRestartingICE = false;
+        log.debug("restart ice faild", res.code, res.error);
+        this.resetRecvHandler();
+        return;
+      }
+
+      try {
+        await this.recvHandler.restartICE(res.iceParameters, res.iceCandidates);
+        this.recvHandler._isRestartingICE = false;
+      } catch (e) {
+        this.recvHandler._isRestartingICE = false;
+        log.debug("restart ice faild", res.code, res.error);
+        this.resetRecvHandler();
+      }
+    }
+
+    handleRecvCommandTask(command, ph) {
+      switch (command.method) {
+        case TaskCommandEnum.ADD_CONUMERS:
+          {
+            ph.promise = this._addConsumers(command.data);
+            return;
+          }
+
+        case TaskCommandEnum.REMOVE_CONSUMERS:
+          {
+            ph.promise = this._removeConsumers(command.data);
+            return;
+          }
+
+        case TaskCommandEnum.RESTART_RECV_ICE:
+          {
+            ph.promise = this._execRestartRecvICE(command.data);
+            return;
           }
       }
-      handleRecvInitCommandTask(command, ph) {
-          switch (command.method) {
-              case TaskCommandEnum.INIT_RECV: {
-                  ph.promise = this._initRecvHandler(command.data);
-                  return;
-              }
+    }
+
+    handleRecvInitCommandTask(command, ph) {
+      switch (command.method) {
+        case TaskCommandEnum.INIT_RECV:
+          {
+            ph.promise = this._initRecvHandler(command.data);
+            return;
           }
       }
-      resetSendCommandQueue() {
-          log.log("reset send queue");
-          this.sendCommandQueue = new TaskQueue("SendQueue");
-          this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
-      }
-      resetRecvCommandQueue() {
-          log.log("reset recv queue");
-          this.recvCommandQueue = new TaskQueue("RecvQueue");
-          this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
-          this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
-          this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
-      }
-      resetRecvHandler() {
-          this.resetRecvCommandQueue();
-          // 重置 RecvHandler 时外层 track 需要做一些操作
-          this.emit("@needresetrecv");
-          this.recvHandler.close();
-          this.recvHandler = getHandler("recv", this.extendedRtpCapabilities, this.signaling, {});
-          this.initSubPcPromise = new Promise(resolve => {
-              this.initSubPcPromiseResolve = resolve;
-          });
-          this.handleRecvHandler();
-          // 重连Consumer需要对比服务端的变化，抛出事件
-          this.emit("@needresub");
-      }
-      release() {
-          this.recvHandler.close();
-          this.sendHandler.close();
-          this.publishTracks.forEach(t => t.release());
-      }
+    }
+
+    resetSendCommandQueue() {
+      log.log("reset send queue");
+      this.sendCommandQueue = new TaskQueue("SendQueue");
+      this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
+    }
+
+    resetRecvCommandQueue() {
+      log.log("reset recv queue");
+      this.recvCommandQueue = new TaskQueue("RecvQueue");
+      this.recvInitCommandQueue = new TaskQueue("RecvInitQueue");
+      this.recvCommandQueue.on("exec", this.handleRecvCommandTask.bind(this));
+      this.recvInitCommandQueue.on("exec", this.handleRecvInitCommandTask.bind(this));
+    }
+
+    resetRecvHandler() {
+      this.resetRecvCommandQueue(); // 重置 RecvHandler 时外层 track 需要做一些操作
+
+      this.emit("@needresetrecv");
+      this.recvHandler.close();
+      this.recvHandler = getHandler("recv", this.extendedRtpCapabilities, this.signaling, {});
+      this.initSubPcPromise = new Promise(resolve => {
+        this.initSubPcPromiseResolve = resolve;
+      });
+      this.handleRecvHandler(); // 重连Consumer需要对比服务端的变化，抛出事件
+
+      this.emit("@needresub");
+    }
+
+    release() {
+      this.recvHandler.close();
+      this.sendHandler.close();
+      this.publishTracks.forEach(t => t.release());
+    }
+
   }
 
   (function (RoomState) {
-      RoomState[RoomState["Idle"] = 0] = "Idle";
-      RoomState[RoomState["Connecting"] = 1] = "Connecting";
-      RoomState[RoomState["Connected"] = 2] = "Connected";
-      RoomState[RoomState["Reconnecting"] = 3] = "Reconnecting";
+    RoomState[RoomState["Idle"] = 0] = "Idle";
+    RoomState[RoomState["Connecting"] = 1] = "Connecting";
+    RoomState[RoomState["Connected"] = 2] = "Connected";
+    RoomState[RoomState["Reconnecting"] = 3] = "Reconnecting";
   })(exports.RoomState || (exports.RoomState = {}));
+
   const DEFAULT_CONFIG = {
-      transportPolicy: "forceUdp",
+    transportPolicy: "forceUdp"
   };
   class QNRTCCore extends EventEmitter {
-      constructor(config = DEFAULT_CONFIG) {
-          super();
-          this._trackInfo = [];
-          /**
-           * 所有订阅的 PCTrack，需要注意的是这些 PCTrack 可能有 2 种状态
-           * 1. Connecting 表示正在进行连接过程
-           * 2. Conncted 表示连接已经建立（subscribe 已经 resolve）
-           */
-          this.subscribeTracks = [];
-          // userid -> User
-          this._users = new Map();
-          this._roomState = exports.RoomState.Idle;
-          this.mergeJobMerger = {};
-          this.defaultMergeJobTracks = [];
-          this.mergeJobTracks = {};
-          this._publish = (tracks, isReconnect) => new Promise(async (resolve, reject) => {
-              if (this.roomState !== exports.RoomState.Connected) {
-                  reject(UNEXPECTED_ERROR("not connected to the room, please run joinRoom first"));
-                  return;
-              }
-              if (tracks.length === 0) {
-                  resolve();
-              }
-              tracks.forEach(t => t.userId = this.userId);
-              const transport = this.connectionTransport;
-              const signaling = this.signaling;
-              let pcTracks;
-              if (isReconnect) {
-                  const localIds = tracks.map(t => t.mediaTrack.id);
-                  pcTracks = transport.publishTracks.filter(t => localIds.indexOf(t.track.mediaTrack.id) !== -1);
-              }
-              else {
-                  const currentLocalIds = transport.publishTracks.map(t => t.track.mediaTrack.id);
-                  const targetTracks = tracks.filter(t => currentLocalIds.indexOf(t.mediaTrack.id) === -1);
-                  // 这里表示传入的 track 包含已经发布过的 track，直接抛出错误，简化逻辑
-                  if (targetTracks.length !== tracks.length) {
-                      reject(UNEXPECTED_ERROR("there are already published tracks in the provided tracks"));
-                      return;
-                  }
-                  pcTracks = transport.addTrackToPublishTracks(tracks);
-              }
-              log.debug("start publish", pcTracks, isReconnect);
-              if (!isReconnect) {
-                  const connectPromise = pcTracks.map(p => p.startConnect());
-                  Promise.all(connectPromise).then(() => resolve()).catch(() => {
-                      // 表示调用了 unpublish 中止了发布
-                      reject(SUB_PUB_ABORT());
-                  });
-              }
-              try {
-                  await transport.sendTracks(pcTracks);
-                  signaling.sendWsMsg("mute-tracks", {
-                      tracks: pcTracks.map(track => ({ trackid: track.trackId, muted: !!track.track.info.muted })),
-                  });
-                  const user = getElementFromArray(this.users, "userId", this.userId);
-                  if (user) {
-                      user.addTracks(pcTracks.map(p => p.track));
-                      user.addPublishedTrackInfo(pcTracks.map(t => ({
-                          trackId: t.trackId,
-                          muted: !!t.track.info.muted,
-                          kind: t.track.info.kind,
-                          tag: t.track.info.tag,
-                          userId: this.userId,
-                          versionid: t.track.info.versionid,
-                      })));
-                  }
-                  tracks.forEach(t => {
-                      t.on("@get-stats", (lastReport, cb, errorcb) => {
-                          if (!this.connectionTransport)
-                              return cb(defaultTrackStatsReport());
-                          this.connectionTransport.sendHandler.getStats(t.mediaTrack, lastReport)
-                              .then(cb, errorcb);
-                      });
-                  });
-                  this.getAllMerger().forEach(m => m.controller.onAddTracks(tracks.map(t => t.info)));
-              }
-              catch (e) {
-                  if (e instanceof QNRTCError) {
-                      switch (e.code) {
-                          case 10061:
-                          case 30001: {
-                              return;
-                          }
-                          case 10052: {
-                              log.warning(e, "republish");
-                              setTimeout(() => this._publish(tracks, true), 1000);
-                              return;
-                          }
-                          default: {
-                              transport.removeTrackFromPublishTracks(tracks);
-                              reject(e);
-                          }
-                      }
-                  }
-                  else {
-                      log.warning(e, "republish");
-                      setTimeout(() => this._publish(tracks, true), 1000);
-                  }
-              }
-          });
-          this._subscribe = (trackIds, isReconnect, strictMode = false) => new Promise(async (resolve, reject) => {
-              if (this.roomState !== exports.RoomState.Connected) {
-                  reject(UNEXPECTED_ERROR("can not connected to the room, please joinRoom first"));
-                  return;
-              }
-              if (trackIds.length === 0) {
-                  resolve([]);
-                  return;
-              }
-              log.debug("subscribe", trackIds, isReconnect);
-              const availableTrackInfo = this._trackInfo.filter(info => trackIds.includes(info.trackid));
-              if (availableTrackInfo.length !== trackIds.length) {
-                  reject(SUB_ERROR(10041, `can not find track in room ${trackIds}`));
-                  return;
-              }
-              let pcTracks;
-              const transport = this.connectionTransport;
-              const signaling = this.signaling;
-              if (isReconnect) {
-                  pcTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
-              }
-              else {
-                  const currentTrackIds = this.subscribeTracks.map(t => t.trackId);
-                  const targetTrackInfo = availableTrackInfo.filter(t => !currentTrackIds.includes(t.trackid));
-                  pcTracks = targetTrackInfo.map(t => new PCTrack(transport, "recv", undefined, t.trackid, t.mid));
-                  this.subscribeTracks = this.subscribeTracks.concat(pcTracks);
-              }
-              log.log("sub tracks", pcTracks);
-              try {
-                  if (!isReconnect) {
-                      const connectPromise = pcTracks.map(t => t.startConnect());
-                      Promise.all(connectPromise).then(() => resolve(pcTracks.map(p => p.track))).catch(() => {
-                          // 表示调用 unsubscribe 中止了订阅
-                          reject(SUB_PUB_ABORT());
-                      });
-                  }
-                  let data = await transport.initRecvHandler(pcTracks.map(t => t.trackId));
-                  if (!data) {
-                      const startTime = Date.now();
-                      data = await signaling.request("sub-tracks", { tracks: pcTracks.map(track => ({ trackid: track.trackId })) });
-                      qos.addEvent("SubscribeTracks", {
-                          result_code: data.code,
-                          signal_take_time: Date.now() - startTime,
-                          tracks: data.tracks.map((t) => ({
-                              track_id: t.trackid,
-                              status: t.status,
-                          })),
-                      });
-                  }
-                  log.log("get sub res data", data);
-                  switch (data.code) {
-                      case 0:
-                          break;
-                      case 10052:
-                          throw SERVER_UNAVAILABLE();
-                      case 10062:
-                          transport.resetRecvHandler();
-                          throw SUB_ERROR(10062, data.error);
-                      default:
-                          throw SUB_ERROR(data.code, data.error);
-                  }
-                  const successTracks = data.tracks.filter((t) => !!t.status);
-                  const faildTrackIds = data.tracks.filter((t) => !t.status).map((t) => t.trackid);
-                  // 在严格模式下，直接抛出错误，取消之后的订阅流程
-                  if (successTracks.length < data.tracks.length && strictMode) {
-                      throw SUB_ERROR(10041, `can not find target track id: ${faildTrackIds.join(" ")}`);
-                  }
-                  if (successTracks && !strictMode) {
-                      log.debug(`can not find target track id: ${faildTrackIds.join("")}, continue`);
-                      const removedPcTracks = lodash_remove(pcTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
-                      lodash_remove(this.subscribeTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
-                      removedPcTracks.map(t => t.release());
-                  }
-                  data.tracks = successTracks;
-                  // 先检查后设置
-                  for (const track of data.tracks || []) {
-                      const pcTrack = pcTracks.find(t => t.trackId === track.trackid);
-                      const info = availableTrackInfo.find(t => t.trackid === track.trackid);
-                      if (!pcTrack || !info)
-                          continue;
-                      const rtpparams = track.rtpparams;
-                      pcTrack.appendConsumner(rtpparams, info.kind);
-                  }
-                  await transport.addConsumers();
-                  transport.resolveInitSubPcPromise();
-                  for (const pcTrack of pcTracks) {
-                      const { consumer } = pcTrack;
-                      if (!consumer || !consumer.track)
-                          continue;
-                      const t = consumer.track;
-                      let track = pcTrack.track;
-                      const info = availableTrackInfo.find(t => t.trackid === consumer.id);
-                      if (!info)
-                          continue;
-                      if (!track) {
-                          if (t.kind === "audio") {
-                              track = new AudioTrack(t, info.playerid, "remote");
-                              track.initAudioManager();
-                          }
-                          else {
-                              track = new Track(t, info.playerid, "remote");
-                          }
-                      }
-                      else {
-                          track.resume(t);
-                      }
-                      track.setInfo({
-                          trackId: info.trackid, userId: info.playerid, tag: info.tag,
-                          kind: info.kind, muted: info.muted, versionid: info.versionid,
-                      });
-                      track.setMaster(info.master);
-                      track.removeAllListeners("@get-stats");
-                      track.removeAllListeners("@ended");
-                      track.on("@get-stats", (lastReport, cb, errcb) => {
-                          if (!this.connectionTransport)
-                              return cb(defaultTrackStatsReport());
-                          this.connectionTransport.recvHandler.getStats(track.mediaTrack, lastReport)
-                              .then(cb, errcb);
-                      });
-                      // 如果远端 track ended，重新订阅
-                      track.once("@ended", async () => {
-                          if (!track || !track.info.trackId)
-                              return;
-                          log.warning("remote track ended, try to resubscribe");
-                          try {
-                              await this._unsubscribe([track.info.trackId], true);
-                          }
-                          catch (e) { }
-                          await this._subscribe([track.info.trackId], true);
-                      });
-                      pcTrack.track = track;
-                      const user = this.users.find(u => u.userId === info.playerid);
-                      if (user) {
-                          user.addTracks([track]);
-                      }
-                  }
-                  pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect);
-                  this.handleMute({ tracks: data.tracks });
-              }
-              catch (e) {
-                  log.log(e);
-                  const consumers = [];
-                  pcTracks.forEach(t => {
-                      if (t.consumer) {
-                          consumers.push(t.consumer);
-                      }
-                  });
-                  await transport.removeConsumers(consumers);
-                  if (e instanceof QNRTCError) {
-                      switch (e.code) {
-                          case 10062:
-                          case 30001: {
-                              return;
-                          }
-                          case 10052: {
-                              log.warning(e, "resubscribe");
-                              setTimeout(() => this._subscribe(trackIds, true), 1000);
-                              return;
-                          }
-                          default: {
-                              lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
-                              reject(e);
-                          }
-                      }
-                  }
-                  else {
-                      log.warning(e, "resubscribe");
-                      setTimeout(() => this._subscribe(trackIds, true), 1000);
-                      return;
-                  }
-              }
-              resolve(pcTracks.map(p => p.track));
-          });
-          this.config = config;
-          log.log("version", version);
-          log.log("browser report", browserReport, browser);
-      }
-      get users() {
-          return Array.from(this._users.values());
-      }
+    constructor(config = DEFAULT_CONFIG) {
+      super();
+      this._trackInfo = [];
       /**
-       * 房间内所有 Track 的信息列表，包括未订阅的，用 TrackBaseInfo 表示
+       * 所有订阅的 PCTrack，需要注意的是这些 PCTrack 可能有 2 种状态
+       * 1. Connecting 表示正在进行连接过程
+       * 2. Conncted 表示连接已经建立（subscribe 已经 resolve）
        */
-      get trackInfoList() {
-          return this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
-      }
-      get roomState() {
-          return this._roomState;
-      }
-      set roomState(state) {
-          if (this._roomState !== state) {
-              this._roomState = state;
-              log.debug("roomState change", this._roomState);
-              this.emit("room-state-change", this._roomState);
-              qos.addEvent("RoomStateChanged", {
-                  room_state: state,
-              });
+
+      this.subscribeTracks = []; // userid -> User
+
+      this._users = new Map();
+      this._roomState = exports.RoomState.Idle;
+      this.mergeJobMerger = {};
+      this.defaultMergeJobTracks = [];
+      this.mergeJobTracks = {};
+
+      this._publish = (tracks, isReconnect) => new Promise(async (resolve, reject) => {
+        if (this.roomState !== exports.RoomState.Connected) {
+          reject(UNEXPECTED_ERROR("not connected to the room, please run joinRoom first"));
+          return;
+        }
+
+        if (tracks.length === 0) {
+          resolve();
+        }
+
+        tracks.forEach(t => t.userId = this.userId);
+        const transport = this.connectionTransport;
+        const signaling = this.signaling;
+        let pcTracks;
+
+        if (isReconnect) {
+          const localIds = tracks.map(t => t.mediaTrack.id);
+          pcTracks = transport.publishTracks.filter(t => localIds.indexOf(t.track.mediaTrack.id) !== -1);
+        } else {
+          const currentLocalIds = transport.publishTracks.map(t => t.track.mediaTrack.id);
+          const targetTracks = tracks.filter(t => currentLocalIds.indexOf(t.mediaTrack.id) === -1); // 这里表示传入的 track 包含已经发布过的 track，直接抛出错误，简化逻辑
+
+          if (targetTracks.length !== tracks.length) {
+            reject(UNEXPECTED_ERROR("there are already published tracks in the provided tracks"));
+            return;
           }
-      }
-      async joinRoomWithToken(roomToken, userData) {
-          if (this.roomState !== exports.RoomState.Reconnecting) {
-              if (this.roomState !== exports.RoomState.Idle) {
-                  throw UNEXPECTED_ERROR("roomState is not idle! Do not repeat join room, please run leaveRoom first");
-              }
-              this.roomState = exports.RoomState.Connecting;
-          }
-          qos.addEvent("JoinRoom", {
-              room_token: roomToken,
-              user_data: userData,
+
+          pcTracks = transport.addTrackToPublishTracks(tracks);
+        }
+
+        log.debug("start publish", pcTracks, isReconnect);
+
+        if (!isReconnect) {
+          const connectPromise = pcTracks.map(p => p.startConnect());
+          Promise.all(connectPromise).then(() => resolve()).catch(() => {
+            // 表示调用了 unpublish 中止了发布
+            reject(SUB_PUB_ABORT());
           });
-          try {
-              this.roomToken = roomToken;
-              this.userData = userData;
-              const roomAccess = getRoomAccessFromToken(roomToken);
-              this.userId = roomAccess.userId;
-              this.roomName = roomAccess.roomName;
-              this.appId = roomAccess.appId;
-              log.log("join room, token:", roomToken);
-              log.debug(`join room, roomName: ${this.roomName}, userId: ${this.userId}`);
-              if (!this.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
-                  this.roomState = exports.RoomState.Idle;
-                  throw UNEXPECTED_ERROR("invalid roomname. roomname must match /^[a-zA-Z0-9_-]{3,64}$/");
-              }
-              if (!this.userId.match(/^[a-zA-Z0-9_-]{3,50}$/)) {
-                  this.roomState = exports.RoomState.Idle;
-                  throw UNEXPECTED_ERROR("invalid userId. userId must match /^[a-zA-Z0-9_-]{3,50}$/");
-              }
-              try {
-                  const authRes = await getAccessToken(roomAccess, roomToken);
-                  this.accessToken = authRes.accessToken;
-                  qos.setSessionId(authRes.sessionId);
-                  qos.setUserBase(this.userId, this.roomName);
-              }
-              catch (e) {
-                  throw e;
-              }
-              return await this.joinRoomWithAccess(this.accessToken);
-          }
-          catch (e) {
-              this.roomState = exports.RoomState.Idle;
-              throw e;
-          }
-      }
-      async joinRoomWithAccess(accessToken) {
-          const accessPayload = getPayloadFromJwt(accessToken);
-          const { capsdp } = await getClientCapabilitiesSdp();
-          if (this._roomState === exports.RoomState.Idle) {
-              throw UNEXPECTED_ERROR("roomState is idle, maybe because you left the room.");
-          }
-          const signaling = new SignalingWS(accessPayload.signalingurl2, accessToken, capsdp, this.userData);
-          signaling
-              .on("@error", this.handleDisconnect.bind(this))
-              .on("@ws-state-change", (prev, curr) => {
-              switch (curr) {
-                  case SignalingState.CONNECTING:
-                      if (this.roomState === exports.RoomState.Connected) {
-                          this.roomState = exports.RoomState.Reconnecting;
-                      }
-                      else if (this.roomState !== exports.RoomState.Reconnecting) {
-                          this.roomState = exports.RoomState.Connecting;
-                      }
-                      break;
-                  default:
-                      break;
-              }
-          })
-              .on("@needupdateaccesstoken", (cb, errcb) => {
-              this.updateAccessToken().then(cb).catch(errcb);
-          })
-              /*
-              .on("send", (msgType: string, data: string) => {
-                if (msgType === "pong") return;
-                console.log("send", msgType, data);
-              })
-              .on("receive", (msgType: string, data: string) => {
-                if (msgType === "ping") return;
-                console.log("receive", msgType, data);
-              })
-              */
-              .on("on-player-in", this.handlePlayerIn.bind(this))
-              .on("on-player-out", this.handlePlayerOut.bind(this))
-              .on("on-add-tracks", (d) => {
-              this.filterSignalTracks(d);
-              this.handleAddTracks(d);
-          })
-              .on("on-remove-tracks", (d) => {
-              this.filterSignalTracks(d);
-              this.handleRemoveTracks(d);
-          })
-              .on("mute-tracks", (d) => {
-              this.filterSignalTracks(d);
-              this.handleMute(d);
-          })
-              .on("on-messages", this.handleCustomMessages.bind(this))
-              .on("on-pubpc-restart-notify", (d) => {
-              const transport = this.connectionTransport;
-              if (!transport || !browserReport.supportRestartICE)
-                  return;
-              transport.restartSendICE(d.pcid).catch(log.debug);
-          })
-              .on("on-subpc-restart-notify", (d) => {
-              const transport = this.connectionTransport;
-              if (!transport || !browserReport.supportRestartICE)
-                  return;
-              transport.restartRecvICE(d.pcid).catch(log.debug);
-          })
-              .on("disconnect", this.handleDisconnect.bind(this));
-          log.log("init signaling websocket");
-          this.signaling = signaling;
-          try {
-              const authResData = await signaling.initWs(true);
-              signaling.on("@signalingauth", this.handleAuth.bind(this));
-              await this.handleAuth(authResData);
-          }
-          catch (e) {
-              if (this.signaling) {
-                  this.signaling.release();
-                  this.signaling = undefined;
-              }
-              if (e.code === 10052) {
-                  await timeout(1000);
-                  return this.joinRoomWithToken(this.roomToken, this.userData);
-              }
-              throw e;
-          }
-          return this.users;
-      }
-      async _unpublish(trackIds) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("not connected to the room");
-          }
-          if (trackIds.length === 0)
-              return;
-          log.debug("unpublish", trackIds);
-          const transport = this.connectionTransport;
-          const targetTracks = transport.publishTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
-          if (targetTracks.length !== trackIds.length) {
-              throw UNEXPECTED_ERROR("can not find target trackid to unpublish");
-          }
-          await transport.removeTracks(targetTracks);
-          this.getAllMerger().forEach(m => m.controller.onRemoveTracks(targetTracks.map(t => t.track.info)));
+        }
+
+        try {
+          await transport.sendTracks(pcTracks);
+          signaling.sendWsMsg("mute-tracks", {
+            tracks: pcTracks.map(track => ({
+              trackid: track.trackId,
+              muted: !!track.track.info.muted
+            }))
+          });
           const user = getElementFromArray(this.users, "userId", this.userId);
+
           if (user) {
-              user.removeTracksByTrackId(trackIds);
-              user.removePublishedTrackInfo(trackIds);
+            user.addTracks(pcTracks.map(p => p.track));
+            user.addPublishedTrackInfo(pcTracks.map(t => ({
+              trackId: t.trackId,
+              muted: !!t.track.info.muted,
+              kind: t.track.info.kind,
+              tag: t.track.info.tag,
+              userId: this.userId,
+              versionid: t.track.info.versionid
+            })));
           }
-          this.cleanTrackIdsFromMergeJobs(trackIds);
-      }
-      async createMergeJob(id, option) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("can not createMergeJob, room state is not connected");
-          }
-          const mergeJob = {
-              ...defaultMergeJob,
-              ...option,
-              id,
-          };
-          log.debug("send create merge job", mergeJob, id);
-          const startTime = Date.now();
-          const data = await this.signaling.request("create-merge-job", mergeJob);
-          qos.addEvent("CreateMergeJob", {
-              signal_take_time: Date.now() - startTime,
-              id: id, result_code: data.code,
-          });
-          if (data.code !== 0) {
-              throw CREATE_MERGE_JOB_ERROR(data.code, data.error);
-          }
-          if (this.mergeJobTracks[id]) {
-              log.warning("merge job id already exist", id);
-          }
-          else {
-              this.mergeJobTracks[id] = [];
-          }
-      }
-      setDefaultMergeStream(width, height, jobId) {
-          if (jobId && !this.mergeJobTracks[jobId]) {
-              throw NO_MERGE_JOB(jobId);
-          }
-          if (this.merger && !jobId) {
-              this.merger.release();
-              this.merger = undefined;
-          }
-          if (jobId && this.mergeJobMerger[jobId]) {
-              this.mergeJobMerger[jobId].release();
-              delete this.mergeJobMerger[jobId];
-          }
-          const controller = this.CreateMergerSessionController();
-          if (!jobId) {
-              this.merger = new Merger(width, height, controller, jobId);
-          }
-          else {
-              this.mergeJobMerger[jobId] = new Merger(width, height, controller, jobId);
-          }
-      }
-      _stopMerge(jobId) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
-          }
-          if (jobId && !this.mergeJobTracks[jobId]) {
-              throw NO_MERGE_JOB(jobId);
-          }
-          qos.addEvent("StopMerge", {
-              id: jobId || "",
-          });
-          this.signaling.sendWsMsg("stop-merge", {
-              id: jobId,
-          });
-          if (jobId) {
-              delete this.mergeJobTracks[jobId];
-              if (this.mergeJobMerger[jobId]) {
-                  this.mergeJobMerger[jobId].release();
-                  delete this.mergeJobMerger[jobId];
-              }
-          }
-          else {
-              this.defaultMergeJobTracks = [];
-              if (this.merger) {
-                  this.merger.release();
-                  this.merger = undefined;
-              }
-          }
-      }
-      async _addMergeTracks(mergeOpts, jobId) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
-          }
-          if (jobId && !this.mergeJobTracks[jobId]) {
-              throw NO_MERGE_JOB(jobId);
-          }
-          const addTraget = mergeOpts.map(opt => ({
-              trackid: opt.trackId, x: opt.x, y: opt.y,
-              w: opt.w, h: opt.h, z: opt.z,
-          }));
-          const config = { id: jobId, add: addTraget };
-          log.debug("addMergeTracks", config);
-          if (jobId) {
-              this.mergeJobTracks[jobId] = this.mergeJobTracks[jobId].concat(mergeOpts.map(t => t.trackId));
-              this.mergeJobTracks[jobId] = lodash_uniqby(this.mergeJobTracks[jobId], s => s);
-          }
-          else {
-              this.defaultMergeJobTracks = this.defaultMergeJobTracks.concat(mergeOpts.map(t => t.trackId));
-              this.defaultMergeJobTracks = lodash_uniqby(this.defaultMergeJobTracks, s => s);
-          }
-          qos.addEvent("UpdateMergeTracks", {
-              id: jobId || "",
-              add: addTraget.map(t => ({
-                  track_id: t.trackid,
-                  x: t.x || 0, y: t.y || 0, w: t.w || 0, h: t.h || 0, z: t.z || 0,
-              })),
-          });
-          await this.signaling.request("update-merge-tracks", config);
-      }
-      async _removeMergeTracks(trackIds, jobId) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
-          }
-          if (jobId && !this.mergeJobTracks[jobId]) {
-              throw NO_MERGE_JOB(jobId);
-          }
-          const config = {
-              id: jobId,
-              remove: trackIds.map(t => ({ trackid: t })),
-          };
-          log.debug("removeMergeTracks", config);
-          if (jobId) {
-              lodash_remove(this.mergeJobTracks[jobId], t => trackIds.indexOf(t) !== -1);
-          }
-          else {
-              lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
-          }
-          await this.signaling.request("update-merge-tracks", config);
-      }
-      /**
-       * @param isReconnect 代表这次 unsub 是否是为了重新订阅，如果是 pcTrack 不需要释放
-       */
-      async _unsubscribe(trackIds, isReconnect) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
-          }
-          const targetTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
-          log.debug("unsubscribe", targetTracks);
-          if (targetTracks.length === 0) {
-              return;
-          }
-          qos.addEvent("UnSubscribeTracks", {
-              tracks: trackIds.map(t => ({
-                  track_id: t,
-              })),
-          });
-          this.signaling.request("unsub-tracks", {
-              tracks: targetTracks.map(t => ({ trackid: t.trackId })),
-          });
-          if (!isReconnect) {
-              targetTracks.forEach(t => t.release());
-              lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
-          }
-          await this.connectionTransport.removeConsumers(targetTracks.map(p => p.consumer));
-      }
-      _muteTracks(tracks) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
-          }
-          const transport = this.connectionTransport;
-          const trackMuteMap = {};
+
           tracks.forEach(t => {
-              trackMuteMap[t.trackId] = t.muted;
+            t.on("@get-stats", (lastReport, cb, errorcb) => {
+              if (!this.connectionTransport) return cb(defaultTrackStatsReport());
+              this.connectionTransport.sendHandler.getStats(t.mediaTrack, lastReport).then(cb, errorcb);
+            });
           });
-          const targetTracks = transport.publishTracks.filter(t => trackMuteMap[t.trackId] !== undefined);
-          targetTracks.forEach(t => {
-              t.setMute(trackMuteMap[t.trackId]);
-          });
-          qos.addEvent("MuteTracks", {
-              tracks: targetTracks.map(t => ({
-                  track_id: t.trackId,
-                  muted: t.track.info.muted,
-                  kind: t.track.info.kind,
-              })),
-          });
-          this.signaling.sendWsMsg("mute-tracks", {
-              tracks: tracks.map(t => ({ trackid: t.trackId, muted: t.muted })),
-          });
-      }
-      async kickoutUser(userId) {
-          log.log("kickoutUser", userId);
-          await this.control("kickplayer", userId);
-      }
-      /**
-       * @internal
-       * 向房间中指定目标发送自定义消息
-       * @param data string 自定义消息内容
-       * @param userIds Array<string> 目标用户名列表，如果为空，则在全房间广播
-       */
-      sendCustomMessage(data, userIds) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("room state is not connected, can not send message");
-          }
-          this.signaling.sendWsMsg("send-message", {
-              msgid: randomStringGen(8),
-              target: !userIds || userIds.length === 0 ? undefined : userIds,
-              type: "normal",
-              text: data,
-          });
-          log.debug("send custom message", data, userIds);
-      }
-      /**
-       * leaveRoom 将不会本地的发布流，如果想清除本地的发布流
-       * 或者手动调用 Track 对象的 release 方法
-       */
-      leaveRoom() {
-          if (this.roomState === exports.RoomState.Idle) {
-              log.log("can not leave room, please join room first");
-              return;
-          }
-          log.log("leave room");
-          qos.addEvent("LeaveRoom", { leave_reason_code: 0 });
-          if (this.signaling) {
-              this.signaling.sendDisconnect();
-          }
-          this.releaseRoom();
-      }
-      _releasePublishTracks() {
-      }
-      async control(command, userId) {
-          if (this.roomState !== exports.RoomState.Connected) {
-              throw UNEXPECTED_ERROR("can not connected to the room, please run joinRoom first");
-          }
-          const startTime = Date.now();
-          const data = await this.signaling.request("control", { command, playerid: userId });
-          if (command === "kickplayer") {
-              qos.addEvent("KickoutUser", {
-                  signal_take_time: Date.now() - startTime,
-                  user_id: userId,
-                  result_code: data.code,
-              });
-          }
-          if (data.error) {
-              throw CONTROL_ERROR(data.code, data.error);
-          }
-      }
-      handlePlayerOut(data) {
-          const removeElement = this._users.get(data.playerid);
-          if (removeElement) {
-              this._users.delete(data.playerid);
-              lodash_remove(this._trackInfo, info => info.playerid === data.playerid);
-              const targetTracks = lodash_remove(this.subscribeTracks, t => t.track.userId === removeElement.userId);
-              targetTracks.forEach(t => t.release());
-              nextTick(() => {
-                  log.debug("user-leave", removeElement);
-                  this.emit("user-leave", removeElement);
-              });
-          }
-      }
-      handlePlayerIn(signalUser) {
-          const user = transferSignalingUserToUser(signalUser);
-          this._users.set(user.userId, user);
-          nextTick(() => {
-              log.debug("user-join", user);
-              this.emit("user-join", user);
-          });
-      }
-      handleAddTracks({ tracks }) {
-          log.log("receive track-add", tracks, { ...this._trackInfo });
-          const publishedUsers = new Set();
-          for (const track of tracks) {
-              const user = getElementFromArray(this.users, "userId", track.playerid);
-              if (!user)
-                  continue;
-              // 如果在收到这个 master track 之前已经有了 master track
-              // 就翻译为 unpublish 后再 publish
-              if (user.published && !publishedUsers.has(user.userId) && this.sessionMode === "stream") {
-                  const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
-                  this.handleRemoveTracks({ tracks: publishedTracks });
-                  publishedTracks.push(track);
-                  this.handleAddTracks({ tracks: publishedTracks });
-              }
-              else {
-                  this._trackInfo.push(track);
-                  user.addPublishedTrackInfo([transferSignalingTrackToTrackBaseInfo(track)]);
-                  publishedUsers.add(user.userId);
-              }
-          }
-          if (this.sessionMode === "stream") {
-              for (const userId of Array.from(publishedUsers)) {
-                  nextTick(() => {
-                      log.debug("user-publish", this._users.get(userId));
-                      this.emit("user-publish", this._users.get(userId));
-                  });
-              }
-          }
-          nextTick(() => {
-              log.debug("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
-              this.emit("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
-          });
-      }
-      handleRemoveTracks({ tracks }) {
-          log.log("receive track-remove", tracks, { ...this._trackInfo });
-          const targetTracks = lodash_remove(this._trackInfo, t => tracks.map(t => t.trackid).includes(t.trackid));
-          const unpublishedUsers = new Set();
-          for (const track of targetTracks) {
-              const user = this._users.get(track.playerid);
-              if (!user)
-                  continue;
-              user.removePublishedTrackInfo([track.trackid]);
-              user.removeTracksByTrackId([track.trackid]);
-              unpublishedUsers.add(user.userId);
-              const subscribeTrack = lodash_remove(this.subscribeTracks, t => t.trackId === track.trackid)[0];
-              if (subscribeTrack) {
-                  subscribeTrack.release();
-              }
-          }
-          this.cleanTrackIdsFromMergeJobs(tracks.map(t => t.trackid));
-          if (this.sessionMode === "stream") {
-              for (const userId of Array.from(unpublishedUsers)) {
-                  const user = this._users.get(userId);
-                  // 如果收到 master track remove 后还留有 master track
-                  // 翻译为先取消发布再重新发布
-                  if (user.published) {
-                      const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
-                      this.handleRemoveTracks({ tracks: publishedTracks });
-                      this.handleAddTracks({ tracks: publishedTracks });
-                  }
-                  else {
-                      nextTick(() => {
-                          log.debug("user-unpublish", user);
-                          this.emit("user-unpublish", user);
-                      });
-                  }
-              }
-          }
-          nextTick(() => {
-              log.debug("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
-              this.emit("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
-          });
-      }
-      handleMute({ tracks }) {
-          for (const sigTrack of tracks) {
-              const trackid = sigTrack.trackid;
-              const muted = sigTrack.muted;
-              const trackInfo = getElementFromArray(this._trackInfo, "trackid", trackid);
-              if (!trackInfo) {
+          this.getAllMerger().forEach(m => m.controller.onAddTracks(tracks.map(t => t.info)));
+        } catch (e) {
+          if (e instanceof QNRTCError) {
+            switch (e.code) {
+              case 10061:
+              case 30001:
+                {
                   return;
-              }
-              const user = this._users.get(trackInfo.playerid);
-              if (!user) {
+                }
+
+              case 10052:
+                {
+                  log.warning(e, "republish");
+                  setTimeout(() => this._publish(tracks, true), 1000);
                   return;
-              }
-              const info = user.publishedTrackInfo.find(t => t.trackId === trackid);
-              if (info) {
-                  info.muted = muted;
-              }
-              const track = user.tracks.find(t => t.info.trackId === trackid);
-              if (track) {
-                  track.info.muted = muted;
-                  track.setMute(muted);
-              }
-              trackInfo.muted = muted;
-              const pcTrack = this.subscribeTracks.filter(t => t.trackId === trackid)[0];
-              if (pcTrack) {
-                  pcTrack.setMute(muted);
-              }
-              let anotherTrackInfo = undefined;
-              for (let i = 0; i < this._trackInfo.length; i += 1) {
-                  if (this._trackInfo[i].playerid === trackInfo.playerid && this._trackInfo[i].kind !== trackInfo.kind) {
-                      anotherTrackInfo = this._trackInfo[i];
-                  }
-              }
-              const data = {
-                  userId: trackInfo.playerid,
-                  muteAudio: false, muteVideo: false,
-              };
-              if (trackInfo.kind === "audio") {
-                  data.muteAudio = muted;
-                  data.muteVideo = anotherTrackInfo ? anotherTrackInfo.muted : false;
-              }
-              else {
-                  data.muteVideo = muted;
-                  data.muteAudio = anotherTrackInfo ? anotherTrackInfo.muted : false;
-              }
-              if (this.sessionMode === "stream") {
-                  nextTick(() => {
-                      log.log("user-mute", data);
-                      this.emit("user-mute", data);
-                  });
-              }
+                }
+
+              default:
+                {
+                  transport.removeTrackFromPublishTracks(tracks);
+                  reject(e);
+                }
+            }
+          } else {
+            log.warning(e, "republish");
+            setTimeout(() => this._publish(tracks, true), 1000);
           }
-          nextTick(() => {
-              log.log("mute-tracks", tracks.map(t => ({ trackId: t.trackid, muted: t.muted })));
-              this.emit("mute-tracks", tracks.map(t => ({ trackId: t.trackid, muted: t.muted })));
-          });
-      }
-      /** @internal */
-      handleCustomMessages({ messages }) {
-          log.debug("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
-          this.emit("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
-      }
-      handleDisconnect(data) {
-          log.log("handle disconnect", data);
-          qos.addEvent("LeaveRoom", { leave_reason_code: data.code });
-          if (data.code === 10052 && this.roomToken) {
-              this.roomState = exports.RoomState.Reconnecting;
-              setTimeout(() => this.signaling.initWs(), 1000);
-              return;
+        }
+      });
+
+      this._subscribe = (trackIds, isReconnect, strictMode = false) => new Promise(async (resolve, reject) => {
+        if (this.roomState !== exports.RoomState.Connected) {
+          reject(UNEXPECTED_ERROR("can not connected to the room, please joinRoom first"));
+          return;
+        }
+
+        if (trackIds.length === 0) {
+          resolve([]);
+          return;
+        }
+
+        log.debug("subscribe", trackIds, isReconnect);
+
+        const availableTrackInfo = this._trackInfo.filter(info => trackIds.includes(info.trackid));
+
+        if (availableTrackInfo.length !== trackIds.length) {
+          reject(SUB_ERROR(10041, `can not find track in room ${trackIds}`));
+          return;
+        }
+
+        let pcTracks;
+        const transport = this.connectionTransport;
+        const signaling = this.signaling;
+
+        if (isReconnect) {
+          pcTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+        } else {
+          const currentTrackIds = this.subscribeTracks.map(t => t.trackId);
+          const targetTrackInfo = availableTrackInfo.filter(t => !currentTrackIds.includes(t.trackid));
+          pcTracks = targetTrackInfo.map(t => new PCTrack(transport, "recv", undefined, t.trackid, t.mid));
+          this.subscribeTracks = this.subscribeTracks.concat(pcTracks);
+        }
+
+        log.log("sub tracks", pcTracks);
+
+        try {
+          if (!isReconnect) {
+            const connectPromise = pcTracks.map(t => t.startConnect());
+            Promise.all(connectPromise).then(() => resolve(pcTracks.map(p => p.track))).catch(() => {
+              // 表示调用 unsubscribe 中止了订阅
+              reject(SUB_PUB_ABORT());
+            });
           }
-          this.releaseRoom();
+
+          let data = await transport.initRecvHandler(pcTracks.map(t => t.trackId));
+
+          if (!data) {
+            const startTime = Date.now();
+            data = await signaling.request("sub-tracks", {
+              tracks: pcTracks.map(track => ({
+                trackid: track.trackId
+              }))
+            });
+            qos.addEvent("SubscribeTracks", {
+              result_code: data.code,
+              signal_take_time: Date.now() - startTime,
+              tracks: data.tracks.map(t => ({
+                track_id: t.trackid,
+                status: t.status
+              }))
+            });
+          }
+
+          log.log("get sub res data", data);
+
           switch (data.code) {
-              case 10006: {
-                  this.emit("disconnect", {
-                      code: data.code,
-                      data: {
-                          userId: data.kickedid,
-                      },
-                  });
-                  break;
-              }
-              default: {
-                  this.emit("disconnect", {
-                      code: data.code,
-                  });
-                  break;
-              }
+            case 0:
+              break;
+
+            case 10052:
+              throw SERVER_UNAVAILABLE();
+
+            case 10062:
+              transport.resetRecvHandler();
+              throw SUB_ERROR(10062, data.error);
+
+            default:
+              throw SUB_ERROR(data.code, data.error);
           }
-      }
-      /** 更新 AccessToken  */
-      async updateAccessToken() {
-          const roomAccess = getRoomAccessFromToken(this.roomToken);
-          const authRes = await getAccessToken(roomAccess, this.roomToken);
-          qos.setSessionId(authRes.sessionId);
-          this.accessToken = authRes.accessToken;
-          if (this.signaling) {
-              this.signaling.accessToken = this.accessToken;
+
+          const successTracks = data.tracks.filter(t => !!t.status);
+          const faildTrackIds = data.tracks.filter(t => !t.status).map(t => t.trackid); // 在严格模式下，直接抛出错误，取消之后的订阅流程
+
+          if (successTracks.length < data.tracks.length && strictMode) {
+            throw SUB_ERROR(10041, `can not find target track id: ${faildTrackIds.join(" ")}`);
           }
-          else {
-              // 此时 signaling 被释放，已经离开了房间
-              throw UNEXPECTED_ERROR("room state is idle");
+
+          if (successTracks && !strictMode) {
+            log.debug(`can not find target track id: ${faildTrackIds.join("")}, continue`);
+            const removedPcTracks = lodash_remove(pcTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
+            lodash_remove(this.subscribeTracks, t => faildTrackIds.indexOf(t.trackId) !== -1);
+            removedPcTracks.map(t => t.release());
           }
-      }
-      async handleAuth(authData) {
-          this.filterSignalTracks(authData);
-          // auth 鉴权失败，一般是 token 过期，或者长时间断线导致房间被关闭，
-          // 直接重新走加入房间的流程
-          log.debug("handleAuth", authData);
-          if (authData.error) {
-              await this.joinRoomWithToken(this.roomToken, this.userData);
-              return;
+
+          data.tracks = successTracks; // 先检查后设置
+
+          for (const track of data.tracks || []) {
+            const pcTrack = pcTracks.find(t => t.trackId === track.trackid);
+            const info = availableTrackInfo.find(t => t.trackid === track.trackid);
+            if (!pcTrack || !info) continue;
+            const rtpparams = track.rtpparams;
+            pcTrack.appendConsumner(rtpparams, info.kind);
           }
-          authData.tracks = authData.tracks || [];
-          // 只保留除自己以外的 trackInfo，防止补事件出错
-          authData.tracks = authData.tracks.filter(t => t.playerid !== this.userId);
-          authData.players = authData.players || [];
-          const isGetMissingEvent = this.roomState === exports.RoomState.Reconnecting;
-          let missingEvents = {
-              join: [], leave: [], add: [], remove: [], mute: [],
-          };
-          const lastUsers = Array.from(this._users.keys());
-          const currentUsers = authData.players.map(player => player.playerid);
-          missingEvents = getMissingUserEvent(this.userId, this._trackInfo, authData.tracks, lastUsers, currentUsers);
-          // connected 的唯一标准是收到 error 为 0 的 auth-res
-          this.roomState = exports.RoomState.Connected;
-          // 仅在第一次处理的时候设置用户和 TrackInfo, 其余通过补事件来更新
-          if (!isGetMissingEvent) {
-              this._trackInfo = authData.tracks;
-              this._users.clear();
-              for (const player of authData.players || []) {
-                  const user = transferSignalingUserToUser(player);
-                  const userTracks = this._trackInfo.filter(trackInfo => trackInfo.playerid === user.userId);
-                  user.addPublishedTrackInfo(userTracks.map(transferSignalingTrackToTrackBaseInfo));
-                  this._users.set(user.userId, user);
+
+          await transport.addConsumers();
+          transport.resolveInitSubPcPromise();
+
+          for (const pcTrack of pcTracks) {
+            const {
+              consumer
+            } = pcTrack;
+            if (!consumer || !consumer.track) continue;
+            const t = consumer.track;
+            let track = pcTrack.track;
+            const info = availableTrackInfo.find(t => t.trackid === consumer.id);
+            if (!info) continue;
+
+            if (!track) {
+              if (t.kind === "audio") {
+                track = new AudioTrack(t, info.playerid, "remote");
+                track.initAudioManager();
+              } else {
+                track = new Track(t, info.playerid, "remote");
               }
+            } else {
+              track.resume(t);
+            }
+
+            track.setInfo({
+              trackId: info.trackid,
+              userId: info.playerid,
+              tag: info.tag,
+              kind: info.kind,
+              muted: info.muted,
+              versionid: info.versionid
+            });
+            track.setMaster(info.master);
+            track.removeAllListeners("@get-stats");
+            track.removeAllListeners("@ended");
+            track.on("@get-stats", (lastReport, cb, errcb) => {
+              if (!this.connectionTransport) return cb(defaultTrackStatsReport());
+              this.connectionTransport.recvHandler.getStats(track.mediaTrack, lastReport).then(cb, errcb);
+            }); // 如果远端 track ended，重新订阅
+
+            track.once("@ended", async () => {
+              if (!track || !track.info.trackId) return;
+              log.warning("remote track ended, try to resubscribe");
+
+              try {
+                await this._unsubscribe([track.info.trackId], true);
+              } catch (e) {}
+
+              await this._subscribe([track.info.trackId], true);
+            });
+            pcTrack.track = track;
+            const user = this.users.find(u => u.userId === info.playerid);
+
+            if (user) {
+              user.addTracks([track]);
+            }
           }
-          else {
-              log.debug("get missing events", missingEvents);
-              if (missingEvents.remove.length > 0) {
-                  this.handleRemoveTracks({ tracks: missingEvents.remove });
-              }
-              if (missingEvents.leave.length > 0) {
-                  missingEvents.leave.forEach(this.handlePlayerOut.bind(this));
-              }
-              if (missingEvents.join.length > 0) {
-                  missingEvents.join.forEach(this.handlePlayerIn.bind(this));
-              }
-              if (missingEvents.add.length > 0) {
-                  this.handleAddTracks({ tracks: missingEvents.add });
-              }
-              if (missingEvents.mute.length > 0) {
-                  this.handleMute({ tracks: missingEvents.mute });
-              }
-          }
-          if (!this.connectionTransport) {
-              this.connectionTransport = this.createConnectionTransport(authData.rtpcaps);
-          }
-          else {
-              const publishingTracks = this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
-              const subscribingTracks = this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
-              this.connectionTransport.extendedRtpCapabilities = authData.rtpcaps;
-              if (!this.connectionTransport.sendHandler.isPcReady || this.connectionTransport.sendHandler._isRestartingICE || publishingTracks.length > 0) {
-                  this.connectionTransport.reconnectProducer();
-              }
-              if (!this.connectionTransport.recvHandler.isPcReady || this.connectionTransport.recvHandler._isRestartingICE || subscribingTracks.length > 0) {
-                  this.connectionTransport.resetRecvHandler();
-              }
-          }
-      }
-      createConnectionTransport(rtpcaps) {
-          const signaling = this.signaling;
-          const transport = new ConnectionTransport(rtpcaps, signaling);
-          transport.on("@needpubpc", (sdp, tracks, cb, errcb) => {
-              signaling.request("pubpc", {
-                  sdp, tracks: tracks.map(transferTrackToPublishTrack),
-                  policy: this.config.transportPolicy,
-              })
-                  .then((d) => {
-                  switch (d.code) {
-                      case 0: {
-                          cb(d);
-                          return;
-                      }
-                      case 10052: {
-                          throw SERVER_UNAVAILABLE();
-                      }
-                      default: {
-                          throw PUB_P2P_ERROR(d.error);
-                      }
-                  }
-              })
-                  .catch(errcb);
+
+          pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect);
+          this.handleMute({
+            tracks: data.tracks
           });
-          transport.on("@needsubpc", (trackIds, cb, errcb) => {
-              signaling.request("subpc", {
-                  tracks: trackIds.map(t => ({ trackid: t })),
-                  policy: this.config.transportPolicy,
-              })
-                  .then((d) => {
-                  switch (d.code) {
-                      case 0: {
-                          cb(d);
-                          return;
-                      }
-                      case 10052: {
-                          throw SERVER_UNAVAILABLE();
-                      }
-                      default: {
-                          throw SUB_P2P_ERROR(d.error);
-                      }
-                  }
-              })
-                  .catch(errcb);
-          })
-              .on("@needresub", () => {
-              const allTrackIds = this.subscribeTracks.map(t => t.trackId);
-              this.subscribeTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connecting);
-              this._subscribe(allTrackIds, true);
-          })
-              .on("@needrepub", (tracks) => {
-              this._publish(tracks.map(t => t.track), true);
-          })
-              .on("@needresetrecv", () => {
-              this.subscribeTracks.filter(p => !!p.track).forEach(p => {
-                  p.track.removeAllListeners("@ended");
-              });
+        } catch (e) {
+          log.log(e);
+          const consumers = [];
+          pcTracks.forEach(t => {
+            if (t.consumer) {
+              consumers.push(t.consumer);
+            }
           });
-          return transport;
+          await transport.removeConsumers(consumers);
+
+          if (e instanceof QNRTCError) {
+            switch (e.code) {
+              case 10062:
+              case 30001:
+                {
+                  return;
+                }
+
+              case 10052:
+                {
+                  log.warning(e, "resubscribe");
+                  setTimeout(() => this._subscribe(trackIds, true), 1000);
+                  return;
+                }
+
+              default:
+                {
+                  lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
+                  reject(e);
+                }
+            }
+          } else {
+            log.warning(e, "resubscribe");
+            setTimeout(() => this._subscribe(trackIds, true), 1000);
+            return;
+          }
+        }
+
+        resolve(pcTracks.map(p => p.track));
+      });
+
+      this.config = config;
+      log.log("version", version);
+      log.log("browser report", browserReport, browser);
+    }
+
+    get users() {
+      return Array.from(this._users.values());
+    }
+    /**
+     * 房间内所有 Track 的信息列表，包括未订阅的，用 TrackBaseInfo 表示
+     */
+
+
+    get trackInfoList() {
+      return this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
+    }
+
+    get roomState() {
+      return this._roomState;
+    }
+
+    set roomState(state) {
+      if (this._roomState !== state) {
+        this._roomState = state;
+        log.debug("roomState change", this._roomState);
+        this.emit("room-state-change", this._roomState);
+        qos.addEvent("RoomStateChanged", {
+          room_state: state
+        });
       }
-      cleanTrackIdsFromMergeJobs(trackIds) {
-          lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
-          for (const tracks in this.mergeJobTracks) {
-              lodash_remove(tracks, t => trackIds.indexOf(t) !== -1);
-          }
+    }
+
+    async joinRoomWithToken(roomToken, userData) {
+      if (this.roomState !== exports.RoomState.Reconnecting) {
+        if (this.roomState !== exports.RoomState.Idle) {
+          throw UNEXPECTED_ERROR("roomState is not idle! Do not repeat join room, please run leaveRoom first");
+        }
+
+        this.roomState = exports.RoomState.Connecting;
       }
-      CreateMergerSessionController() {
-          const controller = new MergerSessionController();
-          const handleTrackAdd = (tracks) => {
-              controller.onAddTracks(tracks);
-          };
-          const handleTrackRemove = (tracks) => {
-              controller.onRemoveTracks(tracks);
-          };
-          this.on("track-add", handleTrackAdd);
-          this.on("track-remove", handleTrackRemove);
-          controller.getCurrentTracks = () => {
-              if (!this.connectionTransport)
-                  return [];
-              const tracks = this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
-              const selfPublishedTracks = this.connectionTransport.publishTracks.map(t => t.track.info);
-              return tracks.concat(selfPublishedTracks);
-          };
-          controller.addMergeTrack = (mergeOpt, jobId) => {
-              this._addMergeTracks(mergeOpt, jobId);
-          };
-          controller.release = () => {
-              this.off("track-add", handleTrackAdd);
-              this.off("track-remove", handleTrackRemove);
-          };
-          return controller;
-      }
-      getAllMerger() {
-          const mergers = [];
-          if (this.merger) {
-              mergers.push(this.merger);
-          }
-          for (const jobId in this.mergeJobMerger) {
-              mergers.push(this.mergeJobMerger[jobId]);
-          }
-          return mergers;
-      }
-      // 退出房间后清空房间状态
-      releaseRoom() {
-          this.releaseSession();
-          if (this.signaling) {
-              this.signaling.release();
-              this.signaling = undefined;
-          }
-          qos.addEvent("UnInit", {}, true);
-          if (this.connectionTransport) {
-              this.connectionTransport.release();
-              this.connectionTransport = undefined;
-          }
-          this.getAllMerger().map(merger => {
-              merger.release();
-          });
-          this.defaultMergeJobTracks = [];
-          this.mergeJobTracks = {};
-          this.merger = undefined;
-          this.mergeJobMerger = {};
+
+      qos.addEvent("JoinRoom", {
+        room_token: roomToken,
+        user_data: userData
+      });
+
+      try {
+        this.roomToken = roomToken;
+        this.userData = userData;
+        const roomAccess = getRoomAccessFromToken(roomToken);
+        this.userId = roomAccess.userId;
+        this.roomName = roomAccess.roomName;
+        this.appId = roomAccess.appId;
+        log.log("join room, token:", roomToken);
+        log.debug(`join room, roomName: ${this.roomName}, userId: ${this.userId}`);
+
+        if (!this.roomName.match(/^[a-zA-Z0-9_-]{3,64}$/)) {
           this.roomState = exports.RoomState.Idle;
-          this._trackInfo = [];
-          this._users.clear();
-          this.userId = undefined;
-          this.subscribeTracks.forEach(t => {
-              t.release();
-          });
-          this.subscribeTracks = [];
+          throw UNEXPECTED_ERROR("invalid roomname. roomname must match /^[a-zA-Z0-9_-]{3,64}$/");
+        }
+
+        if (!this.userId.match(/^[a-zA-Z0-9_-]{3,50}$/)) {
+          this.roomState = exports.RoomState.Idle;
+          throw UNEXPECTED_ERROR("invalid userId. userId must match /^[a-zA-Z0-9_-]{3,50}$/");
+        }
+
+        try {
+          const authRes = await getAccessToken(roomAccess, roomToken);
+          this.accessToken = authRes.accessToken;
+          qos.setSessionId(authRes.sessionId);
+          qos.setUserBase(this.userId, this.roomName);
+        } catch (e) {
+          throw e;
+        }
+
+        return await this.joinRoomWithAccess(this.accessToken);
+      } catch (e) {
+        this.roomState = exports.RoomState.Idle;
+        throw e;
       }
+    }
+
+    async joinRoomWithAccess(accessToken) {
+      const accessPayload = getPayloadFromJwt(accessToken);
+      const {
+        capsdp
+      } = await getClientCapabilitiesSdp();
+
+      if (this._roomState === exports.RoomState.Idle) {
+        throw UNEXPECTED_ERROR("roomState is idle, maybe because you left the room.");
+      }
+
+      const signaling = new SignalingWS(accessPayload.signalingurl2, accessToken, capsdp, this.userData);
+      signaling.on("@error", this.handleDisconnect.bind(this)).on("@ws-state-change", (prev, curr) => {
+        switch (curr) {
+          case SignalingState.CONNECTING:
+            if (this.roomState === exports.RoomState.Connected) {
+              this.roomState = exports.RoomState.Reconnecting;
+            } else if (this.roomState !== exports.RoomState.Reconnecting) {
+              this.roomState = exports.RoomState.Connecting;
+            }
+
+            break;
+
+          default:
+            break;
+        }
+      }).on("@needupdateaccesstoken", (cb, errcb) => {
+        this.updateAccessToken().then(cb).catch(errcb);
+      })
+      /*
+      .on("send", (msgType: string, data: string) => {
+        if (msgType === "pong") return;
+        console.log("send", msgType, data);
+      })
+      .on("receive", (msgType: string, data: string) => {
+        if (msgType === "ping") return;
+        console.log("receive", msgType, data);
+      })
+      */
+      .on("on-player-in", this.handlePlayerIn.bind(this)).on("on-player-out", this.handlePlayerOut.bind(this)).on("on-add-tracks", d => {
+        this.filterSignalTracks(d);
+        this.handleAddTracks(d);
+      }).on("on-remove-tracks", d => {
+        this.filterSignalTracks(d);
+        this.handleRemoveTracks(d);
+      }).on("mute-tracks", d => {
+        this.filterSignalTracks(d);
+        this.handleMute(d);
+      }).on("on-messages", this.handleCustomMessages.bind(this)).on("on-pubpc-restart-notify", d => {
+        const transport = this.connectionTransport;
+        if (!transport || !browserReport.supportRestartICE) return;
+        transport.restartSendICE(d.pcid).catch(log.debug);
+      }).on("on-subpc-restart-notify", d => {
+        const transport = this.connectionTransport;
+        if (!transport || !browserReport.supportRestartICE) return;
+        transport.restartRecvICE(d.pcid).catch(log.debug);
+      }).on("disconnect", this.handleDisconnect.bind(this));
+      log.log("init signaling websocket");
+      this.signaling = signaling;
+
+      try {
+        const authResData = await signaling.initWs(true);
+        signaling.on("@signalingauth", this.handleAuth.bind(this));
+        await this.handleAuth(authResData);
+      } catch (e) {
+        if (this.signaling) {
+          this.signaling.release();
+          this.signaling = undefined;
+        }
+
+        if (e.code === 10052) {
+          await timeout(1000);
+          return this.joinRoomWithToken(this.roomToken, this.userData);
+        }
+
+        throw e;
+      }
+
+      return this.users;
+    }
+
+    async _unpublish(trackIds) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("not connected to the room");
+      }
+
+      if (trackIds.length === 0) return;
+      log.debug("unpublish", trackIds);
+      const transport = this.connectionTransport;
+      const targetTracks = transport.publishTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+
+      if (targetTracks.length !== trackIds.length) {
+        throw UNEXPECTED_ERROR("can not find target trackid to unpublish");
+      }
+
+      await transport.removeTracks(targetTracks);
+      this.getAllMerger().forEach(m => m.controller.onRemoveTracks(targetTracks.map(t => t.track.info)));
+      const user = getElementFromArray(this.users, "userId", this.userId);
+
+      if (user) {
+        user.removeTracksByTrackId(trackIds);
+        user.removePublishedTrackInfo(trackIds);
+      }
+
+      this.cleanTrackIdsFromMergeJobs(trackIds);
+    }
+
+    async createMergeJob(id, option) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("can not createMergeJob, room state is not connected");
+      }
+
+      const mergeJob = objectSpread({}, defaultMergeJob, option, {
+        id
+      });
+
+      log.debug("send create merge job", mergeJob, id);
+      const startTime = Date.now();
+      const data = await this.signaling.request("create-merge-job", mergeJob);
+      qos.addEvent("CreateMergeJob", {
+        signal_take_time: Date.now() - startTime,
+        id: id,
+        result_code: data.code
+      });
+
+      if (data.code !== 0) {
+        throw CREATE_MERGE_JOB_ERROR(data.code, data.error);
+      }
+
+      if (this.mergeJobTracks[id]) {
+        log.warning("merge job id already exist", id);
+      } else {
+        this.mergeJobTracks[id] = [];
+      }
+    }
+
+    setDefaultMergeStream(width, height, jobId) {
+      if (jobId && !this.mergeJobTracks[jobId]) {
+        throw NO_MERGE_JOB(jobId);
+      }
+
+      if (this.merger && !jobId) {
+        this.merger.release();
+        this.merger = undefined;
+      }
+
+      if (jobId && this.mergeJobMerger[jobId]) {
+        this.mergeJobMerger[jobId].release();
+        delete this.mergeJobMerger[jobId];
+      }
+
+      const controller = this.CreateMergerSessionController();
+
+      if (!jobId) {
+        this.merger = new Merger(width, height, controller, jobId);
+      } else {
+        this.mergeJobMerger[jobId] = new Merger(width, height, controller, jobId);
+      }
+    }
+
+    _stopMerge(jobId) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+      }
+
+      if (jobId && !this.mergeJobTracks[jobId]) {
+        throw NO_MERGE_JOB(jobId);
+      }
+
+      qos.addEvent("StopMerge", {
+        id: jobId || ""
+      });
+      this.signaling.sendWsMsg("stop-merge", {
+        id: jobId
+      });
+
+      if (jobId) {
+        delete this.mergeJobTracks[jobId];
+
+        if (this.mergeJobMerger[jobId]) {
+          this.mergeJobMerger[jobId].release();
+          delete this.mergeJobMerger[jobId];
+        }
+      } else {
+        this.defaultMergeJobTracks = [];
+
+        if (this.merger) {
+          this.merger.release();
+          this.merger = undefined;
+        }
+      }
+    }
+
+    async _addMergeTracks(mergeOpts, jobId) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+      }
+
+      if (jobId && !this.mergeJobTracks[jobId]) {
+        throw NO_MERGE_JOB(jobId);
+      }
+
+      const addTraget = mergeOpts.map(opt => ({
+        trackid: opt.trackId,
+        x: opt.x,
+        y: opt.y,
+        w: opt.w,
+        h: opt.h,
+        z: opt.z
+      }));
+      const config = {
+        id: jobId,
+        add: addTraget
+      };
+      log.debug("addMergeTracks", config);
+
+      if (jobId) {
+        this.mergeJobTracks[jobId] = this.mergeJobTracks[jobId].concat(mergeOpts.map(t => t.trackId));
+        this.mergeJobTracks[jobId] = lodash_uniqby(this.mergeJobTracks[jobId], s => s);
+      } else {
+        this.defaultMergeJobTracks = this.defaultMergeJobTracks.concat(mergeOpts.map(t => t.trackId));
+        this.defaultMergeJobTracks = lodash_uniqby(this.defaultMergeJobTracks, s => s);
+      }
+
+      qos.addEvent("UpdateMergeTracks", {
+        id: jobId || "",
+        add: addTraget.map(t => ({
+          track_id: t.trackid,
+          x: t.x || 0,
+          y: t.y || 0,
+          w: t.w || 0,
+          h: t.h || 0,
+          z: t.z || 0
+        }))
+      });
+      await this.signaling.request("update-merge-tracks", config);
+    }
+
+    async _removeMergeTracks(trackIds, jobId) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("can not addMergeTracks, room state is not connected");
+      }
+
+      if (jobId && !this.mergeJobTracks[jobId]) {
+        throw NO_MERGE_JOB(jobId);
+      }
+
+      const config = {
+        id: jobId,
+        remove: trackIds.map(t => ({
+          trackid: t
+        }))
+      };
+      log.debug("removeMergeTracks", config);
+
+      if (jobId) {
+        lodash_remove(this.mergeJobTracks[jobId], t => trackIds.indexOf(t) !== -1);
+      } else {
+        lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
+      }
+
+      await this.signaling.request("update-merge-tracks", config);
+    }
+    /**
+     * @param isReconnect 代表这次 unsub 是否是为了重新订阅，如果是 pcTrack 不需要释放
+     */
+
+
+    async _unsubscribe(trackIds, isReconnect) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
+      }
+
+      const targetTracks = this.subscribeTracks.filter(t => trackIds.indexOf(t.trackId) !== -1);
+      log.debug("unsubscribe", targetTracks);
+
+      if (targetTracks.length === 0) {
+        return;
+      }
+
+      qos.addEvent("UnSubscribeTracks", {
+        tracks: trackIds.map(t => ({
+          track_id: t
+        }))
+      });
+      this.signaling.request("unsub-tracks", {
+        tracks: targetTracks.map(t => ({
+          trackid: t.trackId
+        }))
+      });
+
+      if (!isReconnect) {
+        targetTracks.forEach(t => t.release());
+        lodash_remove(this.subscribeTracks, t => trackIds.indexOf(t.trackId) !== -1);
+      }
+
+      await this.connectionTransport.removeConsumers(targetTracks.map(p => p.consumer));
+    }
+
+    _muteTracks(tracks) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("no signaling model, please run joinRoomWithToken first");
+      }
+
+      const transport = this.connectionTransport;
+      const trackMuteMap = {};
+      tracks.forEach(t => {
+        trackMuteMap[t.trackId] = t.muted;
+      });
+      const targetTracks = transport.publishTracks.filter(t => trackMuteMap[t.trackId] !== undefined);
+      targetTracks.forEach(t => {
+        t.setMute(trackMuteMap[t.trackId]);
+      });
+      qos.addEvent("MuteTracks", {
+        tracks: targetTracks.map(t => ({
+          track_id: t.trackId,
+          muted: t.track.info.muted,
+          kind: t.track.info.kind
+        }))
+      });
+      this.signaling.sendWsMsg("mute-tracks", {
+        tracks: tracks.map(t => ({
+          trackid: t.trackId,
+          muted: t.muted
+        }))
+      });
+    }
+
+    async kickoutUser(userId) {
+      log.log("kickoutUser", userId);
+      await this.control("kickplayer", userId);
+    }
+    /**
+     * @internal
+     * 向房间中指定目标发送自定义消息
+     * @param data string 自定义消息内容
+     * @param userIds Array<string> 目标用户名列表，如果为空，则在全房间广播
+     */
+
+
+    sendCustomMessage(data, userIds) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("room state is not connected, can not send message");
+      }
+
+      this.signaling.sendWsMsg("send-message", {
+        msgid: randomStringGen(8),
+        target: !userIds || userIds.length === 0 ? undefined : userIds,
+        type: "normal",
+        text: data
+      });
+      log.debug("send custom message", data, userIds);
+    }
+    /**
+     * leaveRoom 将不会本地的发布流，如果想清除本地的发布流
+     * 或者手动调用 Track 对象的 release 方法
+     */
+
+
+    leaveRoom() {
+      if (this.roomState === exports.RoomState.Idle) {
+        log.log("can not leave room, please join room first");
+        return;
+      }
+
+      log.log("leave room");
+      qos.addEvent("LeaveRoom", {
+        leave_reason_code: 0
+      });
+
+      if (this.signaling) {
+        this.signaling.sendDisconnect();
+      }
+
+      this.releaseRoom();
+    }
+
+    _releasePublishTracks() {}
+
+    async control(command, userId) {
+      if (this.roomState !== exports.RoomState.Connected) {
+        throw UNEXPECTED_ERROR("can not connected to the room, please run joinRoom first");
+      }
+
+      const startTime = Date.now();
+      const data = await this.signaling.request("control", {
+        command,
+        playerid: userId
+      });
+
+      if (command === "kickplayer") {
+        qos.addEvent("KickoutUser", {
+          signal_take_time: Date.now() - startTime,
+          user_id: userId,
+          result_code: data.code
+        });
+      }
+
+      if (data.error) {
+        throw CONTROL_ERROR(data.code, data.error);
+      }
+    }
+
+    handlePlayerOut(data) {
+      const removeElement = this._users.get(data.playerid);
+
+      if (removeElement) {
+        this._users.delete(data.playerid);
+
+        lodash_remove(this._trackInfo, info => info.playerid === data.playerid);
+        const targetTracks = lodash_remove(this.subscribeTracks, t => t.track.userId === removeElement.userId);
+        targetTracks.forEach(t => t.release());
+        nextTick(() => {
+          log.debug("user-leave", removeElement);
+          this.emit("user-leave", removeElement);
+        });
+      }
+    }
+
+    handlePlayerIn(signalUser) {
+      const user = transferSignalingUserToUser(signalUser);
+
+      this._users.set(user.userId, user);
+
+      nextTick(() => {
+        log.debug("user-join", user);
+        this.emit("user-join", user);
+      });
+    }
+
+    handleAddTracks({
+      tracks
+    }) {
+      log.log("receive track-add", tracks, objectSpread({}, this._trackInfo));
+      const publishedUsers = new Set();
+
+      for (const track of tracks) {
+        const user = getElementFromArray(this.users, "userId", track.playerid);
+        if (!user) continue; // 如果在收到这个 master track 之前已经有了 master track
+        // 就翻译为 unpublish 后再 publish
+
+        if (user.published && !publishedUsers.has(user.userId) && this.sessionMode === "stream") {
+          const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
+          this.handleRemoveTracks({
+            tracks: publishedTracks
+          });
+          publishedTracks.push(track);
+          this.handleAddTracks({
+            tracks: publishedTracks
+          });
+        } else {
+          this._trackInfo.push(track);
+
+          user.addPublishedTrackInfo([transferSignalingTrackToTrackBaseInfo(track)]);
+          publishedUsers.add(user.userId);
+        }
+      }
+
+      if (this.sessionMode === "stream") {
+        for (const userId of Array.from(publishedUsers)) {
+          nextTick(() => {
+            log.debug("user-publish", this._users.get(userId));
+            this.emit("user-publish", this._users.get(userId));
+          });
+        }
+      }
+
+      nextTick(() => {
+        log.debug("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
+        this.emit("track-add", tracks.map(transferSignalingTrackToTrackBaseInfo));
+      });
+    }
+
+    handleRemoveTracks({
+      tracks
+    }) {
+      log.log("receive track-remove", tracks, objectSpread({}, this._trackInfo));
+      const targetTracks = lodash_remove(this._trackInfo, t => tracks.map(t => t.trackid).includes(t.trackid));
+      const unpublishedUsers = new Set();
+
+      for (const track of targetTracks) {
+        const user = this._users.get(track.playerid);
+
+        if (!user) continue;
+        user.removePublishedTrackInfo([track.trackid]);
+        user.removeTracksByTrackId([track.trackid]);
+        unpublishedUsers.add(user.userId);
+        const subscribeTrack = lodash_remove(this.subscribeTracks, t => t.trackId === track.trackid)[0];
+
+        if (subscribeTrack) {
+          subscribeTrack.release();
+        }
+      }
+
+      this.cleanTrackIdsFromMergeJobs(tracks.map(t => t.trackid));
+
+      if (this.sessionMode === "stream") {
+        for (const userId of Array.from(unpublishedUsers)) {
+          const user = this._users.get(userId); // 如果收到 master track remove 后还留有 master track
+          // 翻译为先取消发布再重新发布
+
+
+          if (user.published) {
+            const publishedTracks = user.publishedTrackInfo.map(t => transferTrackBaseInfoToSignalingTrack(t, true));
+            this.handleRemoveTracks({
+              tracks: publishedTracks
+            });
+            this.handleAddTracks({
+              tracks: publishedTracks
+            });
+          } else {
+            nextTick(() => {
+              log.debug("user-unpublish", user);
+              this.emit("user-unpublish", user);
+            });
+          }
+        }
+      }
+
+      nextTick(() => {
+        log.debug("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
+        this.emit("track-remove", targetTracks.map(transferSignalingTrackToTrackBaseInfo));
+      });
+    }
+
+    handleMute({
+      tracks
+    }) {
+      for (const sigTrack of tracks) {
+        const trackid = sigTrack.trackid;
+        const muted = sigTrack.muted;
+        const trackInfo = getElementFromArray(this._trackInfo, "trackid", trackid);
+
+        if (!trackInfo) {
+          return;
+        }
+
+        const user = this._users.get(trackInfo.playerid);
+
+        if (!user) {
+          return;
+        }
+
+        const info = user.publishedTrackInfo.find(t => t.trackId === trackid);
+
+        if (info) {
+          info.muted = muted;
+        }
+
+        const track = user.tracks.find(t => t.info.trackId === trackid);
+
+        if (track) {
+          track.info.muted = muted;
+          track.setMute(muted);
+        }
+
+        trackInfo.muted = muted;
+        const pcTrack = this.subscribeTracks.filter(t => t.trackId === trackid)[0];
+
+        if (pcTrack) {
+          pcTrack.setMute(muted);
+        }
+
+        let anotherTrackInfo = undefined;
+
+        for (let i = 0; i < this._trackInfo.length; i += 1) {
+          if (this._trackInfo[i].playerid === trackInfo.playerid && this._trackInfo[i].kind !== trackInfo.kind) {
+            anotherTrackInfo = this._trackInfo[i];
+          }
+        }
+
+        const data = {
+          userId: trackInfo.playerid,
+          muteAudio: false,
+          muteVideo: false
+        };
+
+        if (trackInfo.kind === "audio") {
+          data.muteAudio = muted;
+          data.muteVideo = anotherTrackInfo ? anotherTrackInfo.muted : false;
+        } else {
+          data.muteVideo = muted;
+          data.muteAudio = anotherTrackInfo ? anotherTrackInfo.muted : false;
+        }
+
+        if (this.sessionMode === "stream") {
+          nextTick(() => {
+            log.log("user-mute", data);
+            this.emit("user-mute", data);
+          });
+        }
+      }
+
+      nextTick(() => {
+        log.log("mute-tracks", tracks.map(t => ({
+          trackId: t.trackid,
+          muted: t.muted
+        })));
+        this.emit("mute-tracks", tracks.map(t => ({
+          trackId: t.trackid,
+          muted: t.muted
+        })));
+      });
+    }
+    /** @internal */
+
+
+    handleCustomMessages({
+      messages
+    }) {
+      log.debug("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
+      this.emit("messages-received", messages.map(transferSignalingCustomMessageToCustomMessage));
+    }
+
+    handleDisconnect(data) {
+      log.log("handle disconnect", data);
+      qos.addEvent("LeaveRoom", {
+        leave_reason_code: data.code
+      });
+
+      if (data.code === 10052 && this.roomToken) {
+        this.roomState = exports.RoomState.Reconnecting;
+        setTimeout(() => this.signaling.initWs(), 1000);
+        return;
+      }
+
+      this.releaseRoom();
+
+      switch (data.code) {
+        case 10006:
+          {
+            this.emit("disconnect", {
+              code: data.code,
+              data: {
+                userId: data.kickedid
+              }
+            });
+            break;
+          }
+
+        default:
+          {
+            this.emit("disconnect", {
+              code: data.code
+            });
+            break;
+          }
+      }
+    }
+    /** 更新 AccessToken  */
+
+
+    async updateAccessToken() {
+      const roomAccess = getRoomAccessFromToken(this.roomToken);
+      const authRes = await getAccessToken(roomAccess, this.roomToken);
+      qos.setSessionId(authRes.sessionId);
+      this.accessToken = authRes.accessToken;
+
+      if (this.signaling) {
+        this.signaling.accessToken = this.accessToken;
+      } else {
+        // 此时 signaling 被释放，已经离开了房间
+        throw UNEXPECTED_ERROR("room state is idle");
+      }
+    }
+
+    async handleAuth(authData) {
+      this.filterSignalTracks(authData); // auth 鉴权失败，一般是 token 过期，或者长时间断线导致房间被关闭，
+      // 直接重新走加入房间的流程
+
+      log.debug("handleAuth", authData);
+
+      if (authData.error) {
+        await this.joinRoomWithToken(this.roomToken, this.userData);
+        return;
+      }
+
+      authData.tracks = authData.tracks || []; // 只保留除自己以外的 trackInfo，防止补事件出错
+
+      authData.tracks = authData.tracks.filter(t => t.playerid !== this.userId);
+      authData.players = authData.players || [];
+      const isGetMissingEvent = this.roomState === exports.RoomState.Reconnecting;
+      let missingEvents = {
+        join: [],
+        leave: [],
+        add: [],
+        remove: [],
+        mute: []
+      };
+      const lastUsers = Array.from(this._users.keys());
+      const currentUsers = authData.players.map(player => player.playerid);
+      missingEvents = getMissingUserEvent(this.userId, this._trackInfo, authData.tracks, lastUsers, currentUsers); // connected 的唯一标准是收到 error 为 0 的 auth-res
+
+      this.roomState = exports.RoomState.Connected; // 仅在第一次处理的时候设置用户和 TrackInfo, 其余通过补事件来更新
+
+      if (!isGetMissingEvent) {
+        this._trackInfo = authData.tracks;
+
+        this._users.clear();
+
+        for (const player of authData.players || []) {
+          const user = transferSignalingUserToUser(player);
+
+          const userTracks = this._trackInfo.filter(trackInfo => trackInfo.playerid === user.userId);
+
+          user.addPublishedTrackInfo(userTracks.map(transferSignalingTrackToTrackBaseInfo));
+
+          this._users.set(user.userId, user);
+        }
+      } else {
+        log.debug("get missing events", missingEvents);
+
+        if (missingEvents.remove.length > 0) {
+          this.handleRemoveTracks({
+            tracks: missingEvents.remove
+          });
+        }
+
+        if (missingEvents.leave.length > 0) {
+          missingEvents.leave.forEach(this.handlePlayerOut.bind(this));
+        }
+
+        if (missingEvents.join.length > 0) {
+          missingEvents.join.forEach(this.handlePlayerIn.bind(this));
+        }
+
+        if (missingEvents.add.length > 0) {
+          this.handleAddTracks({
+            tracks: missingEvents.add
+          });
+        }
+
+        if (missingEvents.mute.length > 0) {
+          this.handleMute({
+            tracks: missingEvents.mute
+          });
+        }
+      }
+
+      if (!this.connectionTransport) {
+        this.connectionTransport = this.createConnectionTransport(authData.rtpcaps);
+      } else {
+        const publishingTracks = this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
+        const subscribingTracks = this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connecting);
+        this.connectionTransport.extendedRtpCapabilities = authData.rtpcaps;
+
+        if (!this.connectionTransport.sendHandler.isPcReady || this.connectionTransport.sendHandler._isRestartingICE || publishingTracks.length > 0) {
+          this.connectionTransport.reconnectProducer();
+        }
+
+        if (!this.connectionTransport.recvHandler.isPcReady || this.connectionTransport.recvHandler._isRestartingICE || subscribingTracks.length > 0) {
+          this.connectionTransport.resetRecvHandler();
+        }
+      }
+    }
+
+    createConnectionTransport(rtpcaps) {
+      const signaling = this.signaling;
+      const transport = new ConnectionTransport(rtpcaps, signaling);
+      transport.on("@needpubpc", (sdp, tracks, cb, errcb) => {
+        signaling.request("pubpc", {
+          sdp,
+          tracks: tracks.map(transferTrackToPublishTrack),
+          policy: this.config.transportPolicy
+        }).then(d => {
+          switch (d.code) {
+            case 0:
+              {
+                cb(d);
+                return;
+              }
+
+            case 10052:
+              {
+                throw SERVER_UNAVAILABLE();
+              }
+
+            default:
+              {
+                throw PUB_P2P_ERROR(d.error);
+              }
+          }
+        }).catch(errcb);
+      });
+      transport.on("@needsubpc", (trackIds, cb, errcb) => {
+        signaling.request("subpc", {
+          tracks: trackIds.map(t => ({
+            trackid: t
+          })),
+          policy: this.config.transportPolicy
+        }).then(d => {
+          switch (d.code) {
+            case 0:
+              {
+                cb(d);
+                return;
+              }
+
+            case 10052:
+              {
+                throw SERVER_UNAVAILABLE();
+              }
+
+            default:
+              {
+                throw SUB_P2P_ERROR(d.error);
+              }
+          }
+        }).catch(errcb);
+      }).on("@needresub", () => {
+        const allTrackIds = this.subscribeTracks.map(t => t.trackId);
+        this.subscribeTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connecting);
+
+        this._subscribe(allTrackIds, true);
+      }).on("@needrepub", tracks => {
+        this._publish(tracks.map(t => t.track), true);
+      }).on("@needresetrecv", () => {
+        this.subscribeTracks.filter(p => !!p.track).forEach(p => {
+          p.track.removeAllListeners("@ended");
+        });
+      });
+      return transport;
+    }
+
+    cleanTrackIdsFromMergeJobs(trackIds) {
+      lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
+
+      for (const tracks in this.mergeJobTracks) {
+        lodash_remove(tracks, t => trackIds.indexOf(t) !== -1);
+      }
+    }
+
+    CreateMergerSessionController() {
+      const controller = new MergerSessionController();
+
+      const handleTrackAdd = tracks => {
+        controller.onAddTracks(tracks);
+      };
+
+      const handleTrackRemove = tracks => {
+        controller.onRemoveTracks(tracks);
+      };
+
+      this.on("track-add", handleTrackAdd);
+      this.on("track-remove", handleTrackRemove);
+
+      controller.getCurrentTracks = () => {
+        if (!this.connectionTransport) return [];
+
+        const tracks = this._trackInfo.map(transferSignalingTrackToTrackBaseInfo);
+
+        const selfPublishedTracks = this.connectionTransport.publishTracks.map(t => t.track.info);
+        return tracks.concat(selfPublishedTracks);
+      };
+
+      controller.addMergeTrack = (mergeOpt, jobId) => {
+        this._addMergeTracks(mergeOpt, jobId);
+      };
+
+      controller.release = () => {
+        this.off("track-add", handleTrackAdd);
+        this.off("track-remove", handleTrackRemove);
+      };
+
+      return controller;
+    }
+
+    getAllMerger() {
+      const mergers = [];
+
+      if (this.merger) {
+        mergers.push(this.merger);
+      }
+
+      for (const jobId in this.mergeJobMerger) {
+        mergers.push(this.mergeJobMerger[jobId]);
+      }
+
+      return mergers;
+    } // 退出房间后清空房间状态
+
+
+    releaseRoom() {
+      this.releaseSession();
+
+      if (this.signaling) {
+        this.signaling.release();
+        this.signaling = undefined;
+      }
+
+      qos.addEvent("UnInit", {}, true);
+
+      if (this.connectionTransport) {
+        this.connectionTransport.release();
+        this.connectionTransport = undefined;
+      }
+
+      this.getAllMerger().map(merger => {
+        merger.release();
+      });
+      this.defaultMergeJobTracks = [];
+      this.mergeJobTracks = {};
+      this.merger = undefined;
+      this.mergeJobMerger = {};
+      this.roomState = exports.RoomState.Idle;
+      this._trackInfo = [];
+
+      this._users.clear();
+
+      this.userId = undefined;
+      this.subscribeTracks.forEach(t => {
+        t.release();
+      });
+      this.subscribeTracks = [];
+    }
+
   }
 
   class StreamModeSession extends QNRTCCore {
-      constructor(config) {
-          super(config);
-          this.subscribedUsers = {};
-          this.sessionMode = "stream";
-          qos.addEvent("Init", { id: `${this.sessionMode}_${Date.now()}` });
+    constructor(config) {
+      super(config);
+      this.subscribedUsers = {};
+      this.sessionMode = "stream";
+      qos.addEvent("Init", {
+        id: `${this.sessionMode}_${Date.now()}`
+      });
+    }
+
+    async publish(stream) {
+      if (this.stream) {
+        log.warning("repeat publish, please unpublish first!");
+        return;
       }
-      async publish(stream) {
-          if (this.stream) {
-              log.warning("repeat publish, please unpublish first!");
-              return;
-          }
-          stream.userId = this.userId;
-          this.stream = stream;
-          return await this._publish(stream.trackList);
+
+      stream.userId = this.userId;
+      this.stream = stream;
+      return await this._publish(stream.trackList);
+    }
+
+    async unpublish() {
+      if (!this.connectionTransport) return;
+      const alltrackIds = this.connectionTransport.publishTracks.map(t => {
+        return t.trackId;
+      });
+      await this._unpublish(alltrackIds);
+      this.stream = undefined;
+    }
+
+    async setMergeStreamLayout(userId, opt) {
+      let tracks = undefined;
+
+      if (opt.id) {
+        tracks = this.mergeJobTracks[opt.id];
+      } else {
+        tracks = this.defaultMergeJobTracks;
       }
-      async unpublish() {
-          if (!this.connectionTransport)
-              return;
-          const alltrackIds = this.connectionTransport.publishTracks.map(t => {
-              return t.trackId;
+
+      if (!tracks) {
+        throw NO_MERGE_JOB(opt.id);
+      }
+
+      const user = getElementFromArray(this.users, "userId", userId);
+
+      if (!user || !user.published) {
+        log.warning(`can not setMergeOption, user ${userId} is published ?`);
+        return;
+      }
+
+      const mergeOptions = opt; // 兼容旧版写法
+
+      if (opt.visible === false) {
+        mergeOptions.hidden = true;
+      }
+
+      const id = mergeOptions.id;
+      const hidden = !!mergeOptions.hidden;
+      const muted = !!mergeOptions.muted;
+      delete mergeOptions.id;
+      delete mergeOptions.hidden;
+      delete mergeOptions.muted;
+      const addTarget = [];
+      const removeTarget = [];
+
+      for (const info of user.publishedTrackInfo) {
+        if (info.kind === "audio" && muted) {
+          removeTarget.push(info.trackId);
+        } else if (info.kind === "audio") {
+          addTarget.push({
+            trackId: info.trackId
           });
-          await this._unpublish(alltrackIds);
-          this.stream = undefined;
+        }
+
+        if (info.kind === "video" && hidden) {
+          removeTarget.push(info.trackId);
+        } else if (info.kind === "video") {
+          addTarget.push(objectSpread({}, mergeOptions, {
+            trackId: info.trackId
+          }));
+        }
       }
-      async setMergeStreamLayout(userId, opt) {
-          let tracks = undefined;
-          if (opt.id) {
-              tracks = this.mergeJobTracks[opt.id];
-          }
-          else {
-              tracks = this.defaultMergeJobTracks;
-          }
-          if (!tracks) {
-              throw NO_MERGE_JOB(opt.id);
-          }
-          const user = getElementFromArray(this.users, "userId", userId);
-          if (!user || !user.published) {
-              log.warning(`can not setMergeOption, user ${userId} is published ?`);
-              return;
-          }
-          const mergeOptions = opt;
-          // 兼容旧版写法
-          if (opt.visible === false) {
-              mergeOptions.hidden = true;
-          }
-          const id = mergeOptions.id;
-          const hidden = !!mergeOptions.hidden;
-          const muted = !!mergeOptions.muted;
-          delete mergeOptions.id;
-          delete mergeOptions.hidden;
-          delete mergeOptions.muted;
-          const addTarget = [];
-          const removeTarget = [];
-          for (const info of user.publishedTrackInfo) {
-              if (info.kind === "audio" && muted) {
-                  removeTarget.push(info.trackId);
-              }
-              else if (info.kind === "audio") {
-                  addTarget.push({ trackId: info.trackId });
-              }
-              if (info.kind === "video" && hidden) {
-                  removeTarget.push(info.trackId);
-              }
-              else if (info.kind === "video") {
-                  addTarget.push({
-                      ...mergeOptions,
-                      trackId: info.trackId,
-                  });
-              }
-          }
-          await this._addMergeTracks(addTarget, id);
-          await this._removeMergeTracks(removeTarget, id);
+
+      await this._addMergeTracks(addTarget, id);
+      await this._removeMergeTracks(removeTarget, id);
+    }
+
+    stopMergeStream(id) {
+      this._stopMerge(id);
+    }
+
+    async subscribe(userId) {
+      if (userId === this.userId) {
+        throw SUB_ERROR(10044, "can not subscribe yourself");
       }
-      stopMergeStream(id) {
-          this._stopMerge(id);
+
+      const targetTracks = this._trackInfo.filter(track => track.playerid === userId && track.master);
+
+      if (targetTracks.length === 0) {
+        throw SUB_ERROR(10041, `subscribe user ${userId} is not published`);
       }
-      async subscribe(userId) {
-          if (userId === this.userId) {
-              throw SUB_ERROR(10044, "can not subscribe yourself");
-          }
-          const targetTracks = this._trackInfo.filter(track => track.playerid === userId && track.master);
-          if (targetTracks.length === 0) {
-              throw SUB_ERROR(10041, `subscribe user ${userId} is not published`);
-          }
-          const trackIds = targetTracks.map(t => t.trackid);
-          const tracks = await this._subscribe(trackIds, false, true);
-          this.subscribedUsers[userId] = new Stream(tracks, "recv", userId);
-          this.subscribedUsers[userId].once("release", () => {
-              delete this.subscribedUsers[userId];
-          });
-          return this.subscribedUsers[userId];
+
+      const trackIds = targetTracks.map(t => t.trackid);
+      const tracks = await this._subscribe(trackIds, false, true);
+      this.subscribedUsers[userId] = new Stream(tracks, "recv", userId);
+      this.subscribedUsers[userId].once("release", () => {
+        delete this.subscribedUsers[userId];
+      });
+      return this.subscribedUsers[userId];
+    }
+
+    async unsubscribe(userId) {
+      if (!this.subscribedUsers[userId]) {
+        log.warning("user", userId, "is not in subscribedUsers");
+        return;
       }
-      async unsubscribe(userId) {
-          if (!this.subscribedUsers[userId]) {
-              log.warning("user", userId, "is not in subscribedUsers");
-              return;
-          }
-          await this._unsubscribe(this.subscribedUsers[userId].trackList.map(t => t.info.trackId));
-          delete this.subscribedUsers[userId];
+
+      await this._unsubscribe(this.subscribedUsers[userId].trackList.map(t => t.info.trackId));
+      delete this.subscribedUsers[userId];
+    }
+
+    mute(muteaudio, mutevideo = false) {
+      if (!this.stream) {
+        log.warning("can not mute, please run publish first");
+        return;
       }
-      mute(muteaudio, mutevideo = false) {
-          if (!this.stream) {
-              log.warning("can not mute, please run publish first");
-              return;
-          }
-          const tracks = [];
-          if (this.stream._audioTrack && this.stream._audioTrack.info.muted !== muteaudio) {
-              tracks.push({ trackId: this.stream._audioTrack.info.trackId, muted: muteaudio });
-          }
-          if (this.stream._videoTrack && this.stream._videoTrack.info.muted !== mutevideo) {
-              tracks.push({ trackId: this.stream._videoTrack.info.trackId, muted: mutevideo });
-          }
-          this._muteTracks(tracks);
+
+      const tracks = [];
+
+      if (this.stream._audioTrack && this.stream._audioTrack.info.muted !== muteaudio) {
+        tracks.push({
+          trackId: this.stream._audioTrack.info.trackId,
+          muted: muteaudio
+        });
       }
-      /**
-       * 只关注 master 流
-       */
-      filterSignalTracks(d) {
-          if (!d.tracks)
-              return;
-          d.tracks = d.tracks.filter((t) => {
-              if (t.master !== undefined && t.master !== null)
-                  return t.master;
-              const track = this._trackInfo.find(info => info.trackid === t.trackid);
-              if (!track)
-                  return false;
-              return track.master;
-          });
+
+      if (this.stream._videoTrack && this.stream._videoTrack.info.muted !== mutevideo) {
+        tracks.push({
+          trackId: this.stream._videoTrack.info.trackId,
+          muted: mutevideo
+        });
       }
-      releaseSession() {
-          if (this.stream) {
-              this.stream.release();
-              this.stream = undefined;
-          }
-          for (const key in this.subscribedUsers) {
-              this.subscribedUsers[key].release();
-          }
-          this.subscribedUsers = {};
+
+      this._muteTracks(tracks);
+    }
+    /**
+     * 只关注 master 流
+     */
+
+
+    filterSignalTracks(d) {
+      if (!d.tracks) return;
+      d.tracks = d.tracks.filter(t => {
+        if (t.master !== undefined && t.master !== null) return t.master;
+
+        const track = this._trackInfo.find(info => info.trackid === t.trackid);
+
+        if (!track) return false;
+        return track.master;
+      });
+    }
+
+    releaseSession() {
+      if (this.stream) {
+        this.stream.release();
+        this.stream = undefined;
       }
+
+      for (const key in this.subscribedUsers) {
+        this.subscribedUsers[key].release();
+      }
+
+      this.subscribedUsers = {};
+    }
+
   }
 
   class TrackModeSession extends QNRTCCore {
-      /**
-       * 房间中已经发布的 Track 列表
-       */
-      get publishedTracks() {
-          if (!this.connectionTransport)
-              return [];
-          return this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(p => p.track);
-      }
-      /**
-       * 房间中已经订阅的 Track 列表
-       */
-      get subscribedTracks() {
-          return this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(t => t.track);
-      }
-      /**
-       * 已经添加进合流的 Track 列表（只有 trackid 信息）
-       */
-      get mergeStreamTracks() {
-          return this.defaultMergeJobTracks;
-      }
-      /**
-       * 除了默认合流 job 之外的其他 job 的 合流 Track 列表
-       */
-      get mergeStreamJobTracks() {
-          return this.mergeJobTracks;
-      }
-      constructor(config) {
-          super(config);
-          this.sessionMode = "track";
-          qos.addEvent("Init", { id: `${this.sessionMode}_${Date.now()}` });
-      }
-      async publish(tracks) {
-          return await this._publish(tracks);
-      }
-      async unpublish(trackIds) {
-          return await this._unpublish(trackIds);
-      }
-      /**
-       * 传入 trackId 列表订阅指定 Track
-       * @param trackIds trackId 列表
-       * @param strictMode 是否开启严格模式
-       * 如果开启严格模式，订阅过程中只要有一个 Track 出现错误就会导致整个订阅失败
-       * 默认不开启严格模式
-       */
-      async subscribe(trackIds, strictMode = false) {
-          return await this._subscribe(trackIds, false, strictMode);
-      }
-      async unsubscribe(trackIds) {
-          return await this._unsubscribe(trackIds);
-      }
-      muteTracks(tracks) {
-          this._muteTracks(tracks);
-      }
-      async addMergeStreamTracks(mergeOpts, jobId) {
-          await this._addMergeTracks(mergeOpts, jobId);
-      }
-      async removeMergeStreamTracks(trackIds, jobId) {
-          await this._removeMergeTracks(trackIds, jobId);
-      }
-      stopMergeStream(id) {
-          this._stopMerge(id);
-      }
-      filterSignalTracks() { }
-      releaseSession() { }
+    /**
+     * 房间中已经发布的 Track 列表
+     */
+    get publishedTracks() {
+      if (!this.connectionTransport) return [];
+      return this.connectionTransport.publishTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(p => p.track);
+    }
+    /**
+     * 房间中已经订阅的 Track 列表
+     */
+
+
+    get subscribedTracks() {
+      return this.subscribeTracks.filter(p => p.connectStatus === exports.TrackConnectStatus.Connect).map(t => t.track);
+    }
+    /**
+     * 已经添加进合流的 Track 列表（只有 trackid 信息）
+     */
+
+
+    get mergeStreamTracks() {
+      return this.defaultMergeJobTracks;
+    }
+    /**
+     * 除了默认合流 job 之外的其他 job 的 合流 Track 列表
+     */
+
+
+    get mergeStreamJobTracks() {
+      return this.mergeJobTracks;
+    }
+
+    constructor(config) {
+      super(config);
+      this.sessionMode = "track";
+      qos.addEvent("Init", {
+        id: `${this.sessionMode}_${Date.now()}`
+      });
+    }
+
+    async publish(tracks) {
+      return await this._publish(tracks);
+    }
+
+    async unpublish(trackIds) {
+      return await this._unpublish(trackIds);
+    }
+    /**
+     * 传入 trackId 列表订阅指定 Track
+     * @param trackIds trackId 列表
+     * @param strictMode 是否开启严格模式
+     * 如果开启严格模式，订阅过程中只要有一个 Track 出现错误就会导致整个订阅失败
+     * 默认不开启严格模式
+     */
+
+
+    async subscribe(trackIds, strictMode = false) {
+      return await this._subscribe(trackIds, false, strictMode);
+    }
+
+    async unsubscribe(trackIds) {
+      return await this._unsubscribe(trackIds);
+    }
+
+    muteTracks(tracks) {
+      this._muteTracks(tracks);
+    }
+
+    async addMergeStreamTracks(mergeOpts, jobId) {
+      await this._addMergeTracks(mergeOpts, jobId);
+    }
+
+    async removeMergeStreamTracks(trackIds, jobId) {
+      await this._removeMergeTracks(trackIds, jobId);
+    }
+
+    stopMergeStream(id) {
+      this._stopMerge(id);
+    }
+
+    filterSignalTracks() {}
+
+    releaseSession() {}
+
   }
 
   class AudioMixingTrack extends AudioTrack {
-      constructor(userId) {
-          const destination = audioContext.createMediaStreamDestination();
-          const audioTrack = destination.stream.getAudioTracks()[0];
-          super(audioTrack, userId, "local");
-          this.sourceType = exports.TrackSourceType.MIXING;
-          this.initAudioManager(true);
-          this.destination = destination;
-          this.inputList = [];
+    constructor(userId) {
+      const destination = audioContext.createMediaStreamDestination();
+      const audioTrack = destination.stream.getAudioTracks()[0];
+      super(audioTrack, userId, "local");
+      this.sourceType = exports.TrackSourceType.MIXING;
+      this.initAudioManager(true);
+      this.destination = destination;
+      this.inputList = [];
+    }
+
+    appendAudioSource(track) {
+      if (this.inputList.find(input => input.track === track)) {
+        log.warning("track is already in the track list");
+        return;
       }
-      appendAudioSource(track) {
-          if (this.inputList.find(input => input.track === track)) {
-              log.warning("track is already in the track list");
-              return;
-          }
-          this.inputList.push({
-              track,
-          });
-          track.audioManager.gainNode.connect(this.destination);
+
+      this.inputList.push({
+        track
+      });
+      track.audioManager.gainNode.connect(this.destination);
+    }
+
+    removeAudioSource(track) {
+      const targetInput = this.inputList.find(input => input.track === track);
+
+      if (!targetInput) {
+        return;
       }
-      removeAudioSource(track) {
-          const targetInput = this.inputList.find(input => input.track === track);
-          if (!targetInput) {
-              return;
-          }
-          targetInput.track.audioManager.gainNode.disconnect(this.destination);
-          lodash_remove(this.inputList, i => i === targetInput);
+
+      targetInput.track.audioManager.gainNode.disconnect(this.destination);
+      lodash_remove(this.inputList, i => i === targetInput);
+    }
+
+    release() {
+      // remove all audio source
+      for (const input of this.inputList) {
+        this.removeAudioSource(input.track);
       }
-      release() {
-          // remove all audio source
-          for (const input of this.inputList) {
-              this.removeAudioSource(input.track);
-          }
-          super.release();
-      }
+
+      super.release();
+    }
+
   }
 
   class AudioEffectManager {
-      constructor(output, playbackEngine) {
-          /** @inrernal */
-          this.effectSourceMap = new Map();
-          /** @inrernal */
-          this.playback = true;
-          this.output = output;
-          this.playbackEngine = playbackEngine;
+    constructor(output, playbackEngine) {
+      /** @inrernal */
+      this.effectSourceMap = new Map();
+      /** @inrernal */
+
+      this.playback = true;
+      this.output = output;
+      this.playbackEngine = playbackEngine;
+    }
+
+    get effectList() {
+      return Array.from(this.effectSourceMap.keys());
+    }
+
+    getEffectTrack(key) {
+      return this.effectSourceMap.get(key);
+    }
+
+    playEffect(key, volume) {
+      const audioTrack = this.effectSourceMap.get(key);
+
+      if (!audioTrack) {
+        log.warning("can not find target effect", key);
+        return;
       }
-      get effectList() {
-          return Array.from(this.effectSourceMap.keys());
+
+      if (volume) {
+        audioTrack.setVolume(volume);
       }
-      getEffectTrack(key) {
-          return this.effectSourceMap.get(key);
+
+      if (this.playback && audioTrack.audioManager.audioSource) {
+        this.playbackEngine.addAudioNode(audioTrack.audioManager.gainNode);
       }
-      playEffect(key, volume) {
-          const audioTrack = this.effectSourceMap.get(key);
-          if (!audioTrack) {
-              log.warning("can not find target effect", key);
-              return;
-          }
-          if (volume) {
-              audioTrack.setVolume(volume);
-          }
-          if (this.playback && audioTrack.audioManager.audioSource) {
-              this.playbackEngine.addAudioNode(audioTrack.audioManager.gainNode);
-          }
-          audioTrack.startAudioSource();
+
+      audioTrack.startAudioSource();
+    }
+    /**
+     * 添加音效
+     * @param source 音效的源文件，支持本地 File 文件或者在线音乐地址
+     * @param key 音效的 key，每个音效需要指定一个唯一的 key，用于之后调用
+     */
+
+
+    async addEffectSource(source, key) {
+      if (this.effectSourceMap.has(key)) {
+        log.warning("duplicate effect key!", key);
+        return;
       }
-      /**
-       * 添加音效
-       * @param source 音效的源文件，支持本地 File 文件或者在线音乐地址
-       * @param key 音效的 key，每个音效需要指定一个唯一的 key，用于之后调用
-       */
-      async addEffectSource(source, key) {
-          if (this.effectSourceMap.has(key)) {
-              log.warning("duplicate effect key!", key);
-              return;
-          }
-          const audioTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
-          this.effectSourceMap.set(key, audioTrack);
-          this.output.appendAudioSource(audioTrack);
+
+      const audioTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
+      this.effectSourceMap.set(key, audioTrack);
+      this.output.appendAudioSource(audioTrack);
+    }
+    /**
+     * 移除并释放已经添加的音效
+     * @param key 指定音效的 key，如果不指定默认删除全部的音效
+     */
+
+
+    removeEffectSource(key) {
+      let targetKeys = [];
+
+      if (!key) {
+        targetKeys = Array.from(this.effectSourceMap.keys());
+      } else {
+        targetKeys = [key];
       }
-      /**
-       * 移除并释放已经添加的音效
-       * @param key 指定音效的 key，如果不指定默认删除全部的音效
-       */
-      removeEffectSource(key) {
-          let targetKeys = [];
-          if (!key) {
-              targetKeys = Array.from(this.effectSourceMap.keys());
-          }
-          else {
-              targetKeys = [key];
-          }
-          for (const k of targetKeys) {
-              const targetAudioTrack = this.effectSourceMap.get(k);
-              if (!targetAudioTrack) {
-                  return;
-              }
-              this.output.removeAudioSource(targetAudioTrack);
-              targetAudioTrack.release();
-              this.effectSourceMap.delete(k);
-          }
+
+      for (const k of targetKeys) {
+        const targetAudioTrack = this.effectSourceMap.get(k);
+
+        if (!targetAudioTrack) {
+          return;
+        }
+
+        this.output.removeAudioSource(targetAudioTrack);
+        targetAudioTrack.release();
+        this.effectSourceMap.delete(k);
       }
+    }
+
   }
 
   class AudioMusicManager extends EventEmitter {
-      constructor(output, playbackEngine) {
-          super();
-          this.musicOption = {
-              loop: false,
-              volume: 1,
-          };
-          /** @internal */
-          this.playback = true;
-          this.output = output;
-          this.playbackEngine = playbackEngine;
-      }
+    constructor(output, playbackEngine) {
+      super();
+      this.musicOption = {
+        loop: false,
+        volume: 1
+      };
       /** @internal */
-      get audioNode() {
-          if (!this.musicTrack)
-              return null;
-          return this.musicTrack.audioManager.gainNode;
+
+      this.playback = true;
+      this.output = output;
+      this.playbackEngine = playbackEngine;
+    }
+    /** @internal */
+
+
+    get audioNode() {
+      if (!this.musicTrack) return null;
+      return this.musicTrack.audioManager.gainNode;
+    }
+    /**
+     * 更新背景音乐混音的各种参数，支持在混音中途更新
+     * @param option Partical<AudioMusicOption>
+     */
+
+
+    setMusicOption(option) {
+      this.musicOption = Object.assign(this.musicOption, option);
+
+      if (this.musicTrack) {
+        this.musicTrack.setVolume(this.musicOption.volume);
+        this.musicTrack.setLoop(this.musicOption.loop);
       }
-      /**
-       * 更新背景音乐混音的各种参数，支持在混音中途更新
-       * @param option Partical<AudioMusicOption>
-       */
-      setMusicOption(option) {
-          this.musicOption = Object.assign(this.musicOption, option);
-          if (this.musicTrack) {
-              this.musicTrack.setVolume(this.musicOption.volume);
-              this.musicTrack.setLoop(this.musicOption.loop);
-          }
+    }
+    /**
+     * 开始音乐混音
+     * @param source 音乐的源文件，支持本地文件对象或者在线音乐地址
+     */
+
+
+    async startMusicMixing(source) {
+      // 如果重复 start，就自动 stop 一次
+      if (this.musicTrack) {
+        this.stopMusicMixing();
+        return await this.startMusicMixing(source);
       }
-      /**
-       * 开始音乐混音
-       * @param source 音乐的源文件，支持本地文件对象或者在线音乐地址
-       */
-      async startMusicMixing(source) {
-          // 如果重复 start，就自动 stop 一次
-          if (this.musicTrack) {
-              this.stopMusicMixing();
-              return await this.startMusicMixing(source);
-          }
-          this.musicTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
-          this.output.appendAudioSource(this.musicTrack);
-          this.setMusicOption({});
-          if (!this.musicTrack.audioManager.audioSource)
-              throw UNEXPECTED_ERROR("can not find audio source");
-          if (this.playback && this.audioNode) {
-              this.playbackEngine.addAudioNode(this.audioNode);
-          }
-          this.musicTrack.on("audio-state-change", (curr, last) => {
-              this.emit("music-state-change", curr, last);
-          });
-          this.musicTrack.startAudioSource();
+
+      this.musicTrack = await exports.AudioUtils.createAudioTrackFromSource(source);
+      this.output.appendAudioSource(this.musicTrack);
+      this.setMusicOption({});
+      if (!this.musicTrack.audioManager.audioSource) throw UNEXPECTED_ERROR("can not find audio source");
+
+      if (this.playback && this.audioNode) {
+        this.playbackEngine.addAudioNode(this.audioNode);
       }
-      /**
-       * 暂停音乐混音
-       */
-      pauseMusicMixing() {
-          if (!this.musicTrack) {
-              log.warning("can not find target music, please run startAudioMixing");
-              return;
-          }
-          this.musicTrack.pauseAudioSource();
+
+      this.musicTrack.on("audio-state-change", (curr, last) => {
+        this.emit("music-state-change", curr, last);
+      });
+      this.musicTrack.startAudioSource();
+    }
+    /**
+     * 暂停音乐混音
+     */
+
+
+    pauseMusicMixing() {
+      if (!this.musicTrack) {
+        log.warning("can not find target music, please run startAudioMixing");
+        return;
       }
-      /**
-       * 恢复音乐混音
-       */
-      resumeMusicMixing() {
-          if (!this.musicTrack) {
-              log.warning("can not find target music, please run startAudioMixing");
-              return;
-          }
-          this.musicTrack.resumeAudioSource();
+
+      this.musicTrack.pauseAudioSource();
+    }
+    /**
+     * 恢复音乐混音
+     */
+
+
+    resumeMusicMixing() {
+      if (!this.musicTrack) {
+        log.warning("can not find target music, please run startAudioMixing");
+        return;
       }
-      /**
-       * 停止音乐混音
-       */
-      stopMusicMixing() {
-          if (!this.musicTrack) {
-              return;
-          }
-          this.musicTrack.stopAudioSource();
-          this.output.removeAudioSource(this.musicTrack);
-          this.musicTrack.release();
-          this.musicTrack = undefined;
+
+      this.musicTrack.resumeAudioSource();
+    }
+    /**
+     * 停止音乐混音
+     */
+
+
+    stopMusicMixing() {
+      if (!this.musicTrack) {
+        return;
       }
-      getMusicDuration() {
-          if (!this.musicTrack) {
-              return 0;
-          }
-          return this.musicTrack.getDuration();
+
+      this.musicTrack.stopAudioSource();
+      this.output.removeAudioSource(this.musicTrack);
+      this.musicTrack.release();
+      this.musicTrack = undefined;
+    }
+
+    getMusicDuration() {
+      if (!this.musicTrack) {
+        return 0;
       }
-      getMusicCurrentTime() {
-          if (!this.musicTrack) {
-              return 0;
-          }
-          return this.musicTrack.getCurrentTime();
+
+      return this.musicTrack.getDuration();
+    }
+
+    getMusicCurrentTime() {
+      if (!this.musicTrack) {
+        return 0;
       }
-      setMusicCurrentTime(currentTime) {
-          if (!this.musicTrack) {
-              return;
-          }
-          this.musicTrack.setCurrentTime(currentTime);
-          if (!this.musicTrack.audioManager.audioSource)
-              throw UNEXPECTED_ERROR("can not find audio source");
+
+      return this.musicTrack.getCurrentTime();
+    }
+
+    setMusicCurrentTime(currentTime) {
+      if (!this.musicTrack) {
+        return;
       }
+
+      this.musicTrack.setCurrentTime(currentTime);
+      if (!this.musicTrack.audioManager.audioSource) throw UNEXPECTED_ERROR("can not find audio source");
+    }
+
   }
 
   class AudioPlaybackEngine {
-      constructor() {
-          this.volume = 1;
-          this.gainNode = audioContext.createGain();
-          this.gainNode.connect(audioContext.destination);
-      }
-      addAudioNode(audioNode) {
-          audioNode.connect(this.gainNode);
-      }
-      removeAudioNode(audioNode) {
-          audioNode.disconnect(this.gainNode);
-      }
-      release() {
-          this.gainNode.disconnect();
-      }
+    constructor() {
+      this.volume = 1;
+      this.gainNode = audioContext.createGain();
+      this.gainNode.connect(audioContext.destination);
+    }
+
+    addAudioNode(audioNode) {
+      audioNode.connect(this.gainNode);
+    }
+
+    removeAudioNode(audioNode) {
+      audioNode.disconnect(this.gainNode);
+    }
+
+    release() {
+      this.gainNode.disconnect();
+    }
+
   }
 
   class TrackMixingManager {
-      constructor(originSource) {
-          this.playbackEngine = new AudioPlaybackEngine();
-          this.sourcePlayebackState = false;
-          if (originSource instanceof AudioTrack) {
-              this.outputTrack = new AudioMixingTrack();
-              this.outputTrack.appendAudioSource(originSource);
-          }
-          else {
-              throw UNEXPECTED_ERROR("audio mixing manager: origin track is not audio track");
-          }
-          this.source = originSource;
-          this.effectManager = new AudioEffectManager(this.outputTrack, this.playbackEngine);
-          this.musicManager = new AudioMusicManager(this.outputTrack, this.playbackEngine);
+    constructor(originSource) {
+      this.playbackEngine = new AudioPlaybackEngine();
+      this.sourcePlayebackState = false;
+
+      if (originSource instanceof AudioTrack) {
+        this.outputTrack = new AudioMixingTrack();
+        this.outputTrack.appendAudioSource(originSource);
+      } else {
+        throw UNEXPECTED_ERROR("audio mixing manager: origin track is not audio track");
       }
-      /**
-       * 获取背景音乐返听的状态, 默认打开
-       */
-      getMusicPlaybackState() {
-          return this.musicManager.playback;
+
+      this.source = originSource;
+      this.effectManager = new AudioEffectManager(this.outputTrack, this.playbackEngine);
+      this.musicManager = new AudioMusicManager(this.outputTrack, this.playbackEngine);
+    }
+    /**
+     * 获取背景音乐返听的状态, 默认打开
+     */
+
+
+    getMusicPlaybackState() {
+      return this.musicManager.playback;
+    }
+    /**
+     * 设置背景音乐的返听状态，默认打开
+     * @param state boolean
+     */
+
+
+    setMusicPlaybackState(state) {
+      if (this.musicManager.playback === state) return;
+      this.musicManager.playback = state;
+      if (!this.musicManager.audioNode) return;
+
+      if (state) {
+        this.playbackEngine.addAudioNode(this.musicManager.audioNode);
+      } else {
+        this.playbackEngine.removeAudioNode(this.musicManager.audioNode);
       }
-      /**
-       * 设置背景音乐的返听状态，默认打开
-       * @param state boolean
-       */
-      setMusicPlaybackState(state) {
-          if (this.musicManager.playback === state)
-              return;
-          this.musicManager.playback = state;
-          if (!this.musicManager.audioNode)
-              return;
-          if (state) {
-              this.playbackEngine.addAudioNode(this.musicManager.audioNode);
-          }
-          else {
-              this.playbackEngine.removeAudioNode(this.musicManager.audioNode);
-          }
+    }
+    /**
+     * 获取输入音源返听的状态，默认关闭
+     */
+
+
+    getSourcePlaybackState() {
+      return this.sourcePlayebackState;
+    }
+    /**
+     * 设置输入音源的返听状态，默认关闭
+     * @param state boolean
+     */
+
+
+    setSourcePlaybackState(state) {
+      if (this.sourcePlayebackState === state) return;
+      this.sourcePlayebackState = state;
+      if (!this.source.audioManager.audioSource) return;
+
+      if (state) {
+        this.playbackEngine.addAudioNode(this.source.audioManager.gainNode);
+      } else {
+        this.playbackEngine.removeAudioNode(this.source.audioManager.gainNode);
       }
-      /**
-       * 获取输入音源返听的状态，默认关闭
-       */
-      getSourcePlaybackState() {
-          return this.sourcePlayebackState;
-      }
-      /**
-       * 设置输入音源的返听状态，默认关闭
-       * @param state boolean
-       */
-      setSourcePlaybackState(state) {
-          if (this.sourcePlayebackState === state)
-              return;
-          this.sourcePlayebackState = state;
-          if (!this.source.audioManager.audioSource)
-              return;
-          if (state) {
-              this.playbackEngine.addAudioNode(this.source.audioManager.gainNode);
-          }
-          else {
-              this.playbackEngine.removeAudioNode(this.source.audioManager.gainNode);
-          }
-      }
-      /**
-       * 获取音效返听的状态，默认打开
-       */
-      getEffectPlaybackState() {
-          return this.effectManager.playback;
-      }
-      /**
-       * 设置音效返听的状态，默认打开
-       */
-      setEffectPlaybackState(state) {
-          if (this.effectManager.playback === state)
-              return;
-          this.effectManager.playback = state;
-          this.effectManager.effectSourceMap.forEach((v, k) => {
-              if (!v.audioManager.audioSource)
-                  return;
-              if (state) {
-                  this.playbackEngine.addAudioNode(v.audioManager.gainNode);
-              }
-              else {
-                  this.playbackEngine.removeAudioNode(v.audioManager.gainNode);
-              }
-          });
-      }
-      setBitrate(kbps) {
-          this.outputTrack.setInfo({ kbps });
-      }
-      setTag(tag) {
-          this.outputTrack.setInfo({ tag });
-      }
-      /**
-       * 释放整个混音模块，清除 output/音乐/音效等资源
-       * 但是不会释放构造函数传入的原始源
-       */
-      release() {
-          this.effectManager.removeEffectSource();
-          this.musicManager.stopMusicMixing();
-          this.outputTrack.removeAudioSource(this.source);
-          this.outputTrack.release();
-          this.playbackEngine.release();
-      }
+    }
+    /**
+     * 获取音效返听的状态，默认打开
+     */
+
+
+    getEffectPlaybackState() {
+      return this.effectManager.playback;
+    }
+    /**
+     * 设置音效返听的状态，默认打开
+     */
+
+
+    setEffectPlaybackState(state) {
+      if (this.effectManager.playback === state) return;
+      this.effectManager.playback = state;
+      this.effectManager.effectSourceMap.forEach((v, k) => {
+        if (!v.audioManager.audioSource) return;
+
+        if (state) {
+          this.playbackEngine.addAudioNode(v.audioManager.gainNode);
+        } else {
+          this.playbackEngine.removeAudioNode(v.audioManager.gainNode);
+        }
+      });
+    }
+
+    setBitrate(kbps) {
+      this.outputTrack.setInfo({
+        kbps
+      });
+    }
+
+    setTag(tag) {
+      this.outputTrack.setInfo({
+        tag
+      });
+    }
+    /**
+     * 释放整个混音模块，清除 output/音乐/音效等资源
+     * 但是不会释放构造函数传入的原始源
+     */
+
+
+    release() {
+      this.effectManager.removeEffectSource();
+      this.musicManager.stopMusicMixing();
+      this.outputTrack.removeAudioSource(this.source);
+      this.outputTrack.release();
+      this.playbackEngine.release();
+    }
+
   }
   class StreamMixingManager extends TrackMixingManager {
-      constructor(input) {
-          if (!input._audioTrack) {
-              throw UNEXPECTED_ERROR("input stream do not have audio track");
-          }
-          super(input._audioTrack);
-          this.input = input;
-          const trackList = [this.outputTrack];
-          if (this.input._videoTrack) {
-              trackList.push(this.input._videoTrack);
-          }
-          this.outputStream = new Stream(trackList, "send", this.input.userId);
+    constructor(input) {
+      if (!input._audioTrack) {
+        throw UNEXPECTED_ERROR("input stream do not have audio track");
       }
-      /**
-       * 设置输出 Stream 的码率
-       * @param audio 音频码率
-       * @param video 视频码率
-       */
-      setBitrate(audio, video) {
-          if (audio && this.outputStream._audioTrack) {
-              this.outputStream._audioTrack.setKbps(audio);
-          }
-          if (video && this.outputStream._videoTrack) {
-              this.outputStream._videoTrack.setKbps(video);
-          }
+
+      super(input._audioTrack);
+      this.input = input;
+      const trackList = [this.outputTrack];
+
+      if (this.input._videoTrack) {
+        trackList.push(this.input._videoTrack);
       }
+
+      this.outputStream = new Stream(trackList, "send", this.input.userId);
+    }
+    /**
+     * 设置输出 Stream 的码率
+     * @param audio 音频码率
+     * @param video 视频码率
+     */
+
+
+    setBitrate(audio, video) {
+      if (audio && this.outputStream._audioTrack) {
+        this.outputStream._audioTrack.setKbps(audio);
+      }
+
+      if (video && this.outputStream._videoTrack) {
+        this.outputStream._videoTrack.setKbps(video);
+      }
+    }
+
   }
 
   (function (AudioUtils) {
-      function createAudioTrackFromURL(url, crossorigin = "anonymous", tag, bitrate) {
-          const audioElement = document.createElement("audio");
-          audioElement.preload = "auto";
-          audioElement.src = url;
-          audioElement.crossOrigin = crossorigin;
-          const track = new AudioSourceTrack(audioElement);
-          if (bitrate) {
+    function createAudioTrackFromURL(url, crossorigin = "anonymous", tag, bitrate) {
+      const audioElement = document.createElement("audio");
+      audioElement.preload = "auto";
+      audioElement.src = url;
+      audioElement.crossOrigin = crossorigin;
+      const track = new AudioSourceTrack(audioElement);
+
+      if (bitrate) {
+        track.setKbps(bitrate);
+      }
+
+      track.setInfo({
+        tag
+      });
+      return track;
+    }
+
+    AudioUtils.createAudioTrackFromURL = createAudioTrackFromURL;
+
+    function createAudioTrackFromFile(file, tag, bitrate) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = e => {
+          const data = e.target.result;
+          decodeAudioData(data).then(buffer => {
+            const track = new AudioSourceTrack(buffer);
+
+            if (bitrate) {
               track.setKbps(bitrate);
-          }
-          track.setInfo({ tag });
-          return track;
+            }
+
+            track.setInfo({
+              tag
+            });
+            resolve(track);
+          }).catch(reject);
+        };
+
+        reader.readAsArrayBuffer(file);
+      });
+    }
+
+    AudioUtils.createAudioTrackFromFile = createAudioTrackFromFile;
+
+    function createAudioTrackFromBuffer(buffer, tag, bitrate) {
+      const track = new AudioSourceTrack(buffer);
+
+      if (bitrate) {
+        track.setKbps(bitrate);
       }
-      AudioUtils.createAudioTrackFromURL = createAudioTrackFromURL;
-      function createAudioTrackFromFile(file, tag, bitrate) {
-          return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                  const data = e.target.result;
-                  decodeAudioData(data).then(buffer => {
-                      const track = new AudioSourceTrack(buffer);
-                      if (bitrate) {
-                          track.setKbps(bitrate);
-                      }
-                      track.setInfo({ tag });
-                      resolve(track);
-                  }).catch(reject);
-              };
-              reader.readAsArrayBuffer(file);
-          });
+
+      track.setInfo({
+        tag
+      });
+      return track;
+    }
+
+    AudioUtils.createAudioTrackFromBuffer = createAudioTrackFromBuffer;
+
+    async function createAudioTrackFromSource(source, tag, bitrate) {
+      if (source instanceof File) {
+        return await createAudioTrackFromFile(source, tag, bitrate);
+      } else if (source instanceof AudioBuffer) {
+        return createAudioTrackFromBuffer(source, tag, bitrate);
       }
-      AudioUtils.createAudioTrackFromFile = createAudioTrackFromFile;
-      function createAudioTrackFromBuffer(buffer, tag, bitrate) {
-          const track = new AudioSourceTrack(buffer);
-          if (bitrate) {
-              track.setKbps(bitrate);
-          }
-          track.setInfo({ tag });
-          return track;
+
+      return createAudioTrackFromURL(source, "anonymous", tag, bitrate);
+    }
+
+    AudioUtils.createAudioTrackFromSource = createAudioTrackFromSource;
+
+    async function decodeAudioData(data) {
+      if (audioContext.state === "suspended") {
+        await audioContext.resume();
       }
-      AudioUtils.createAudioTrackFromBuffer = createAudioTrackFromBuffer;
-      async function createAudioTrackFromSource(source, tag, bitrate) {
-          if (source instanceof File) {
-              return await createAudioTrackFromFile(source, tag, bitrate);
-          }
-          else if (source instanceof AudioBuffer) {
-              return createAudioTrackFromBuffer(source, tag, bitrate);
-          }
-          return createAudioTrackFromURL(source, "anonymous", tag, bitrate);
-      }
-      AudioUtils.createAudioTrackFromSource = createAudioTrackFromSource;
-      async function decodeAudioData(data) {
-          if (audioContext.state === "suspended") {
-              await audioContext.resume();
-          }
-          const decodePromise = () => new Promise((resolve, reject) => {
-              audioContext.decodeAudioData(data, (buffer) => {
-                  resolve(buffer);
-              }, (e) => {
-                  reject(AUDIO_DECODE_ERROR(e));
-              });
-          });
-          return await decodePromise();
-      }
-      AudioUtils.decodeAudioData = decodeAudioData;
-      function createAudioMixingManagerFromTrack(track) {
-          return new TrackMixingManager(track);
-      }
-      AudioUtils.createAudioMixingManagerFromTrack = createAudioMixingManagerFromTrack;
-      function createAudioMixingManagerFromStream(stream) {
-          return new StreamMixingManager(stream);
-      }
-      AudioUtils.createAudioMixingManagerFromStream = createAudioMixingManagerFromStream;
+
+      const decodePromise = () => new Promise((resolve, reject) => {
+        audioContext.decodeAudioData(data, buffer => {
+          resolve(buffer);
+        }, e => {
+          reject(AUDIO_DECODE_ERROR(e));
+        });
+      });
+
+      return await decodePromise();
+    }
+
+    AudioUtils.decodeAudioData = decodeAudioData;
+
+    function createAudioMixingManagerFromTrack(track) {
+      return new TrackMixingManager(track);
+    }
+
+    AudioUtils.createAudioMixingManagerFromTrack = createAudioMixingManagerFromTrack;
+
+    function createAudioMixingManagerFromStream(stream) {
+      return new StreamMixingManager(stream);
+    }
+
+    AudioUtils.createAudioMixingManagerFromStream = createAudioMixingManagerFromStream;
   })(exports.AudioUtils || (exports.AudioUtils = {}));
 
   /*
@@ -28157,193 +29502,231 @@
    * Distributed under terms of the MIT license.
   */
   const DEFAULT_RECORD_CONFIG = {
-      audio: {
-          enabled: true,
-      },
-      video: {
-          enabled: true,
-          bitrate: 600,
-      },
+    audio: {
+      enabled: true
+    },
+    video: {
+      enabled: true,
+      bitrate: 600
+    }
   };
   class DeviceManager extends EventEmitter {
-      constructor() {
-          super();
-          // 记录每个 device 存在的 tick 数量
-          this.deviceMap = {};
-          if (!browserReport.support) {
-              return;
-          }
-          this.updateDeivceInfo();
-          // safari 11 不支持 ondevicechange，使用 setInterval
-          if (!browserReport.ondevicechange) {
-              window.setInterval(this.updateDeivceInfo.bind(this), 1000);
-          }
-          if (browserReport.ondevicechange) {
-              navigator.mediaDevices.ondevicechange = this.updateDeivceInfo.bind(this);
-          }
+    constructor() {
+      super(); // 记录每个 device 存在的 tick 数量
+
+      this.deviceMap = {};
+
+      if (!browserReport.support) {
+        return;
       }
-      // TODO: 允许 video/screen 同时打开
-      async getLocalTracks(config = DEFAULT_RECORD_CONFIG) {
-          log.debug("get local tracks", config);
-          /**
-           * 如果同时开启了摄像头和屏幕采集，分 2 次采集完成
-           */
-          if (REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
-              const subConfig = { screen: config.screen };
-              const subConfig2 = { video: config.video, audio: config.audio };
-              const values = await Promise.all([this.getLocalTracks(subConfig), this.getLocalTracks(subConfig2)]);
-              return values[0].concat(values[1]);
-          }
-          const constraints = await transferRecordOptionToMediaConstraints(config);
-          if (constraints.video && typeof constraints.video === "object" && constraints.video.deviceId) {
-              qos.addEvent("DeviceChanged", {
-                  type: 0, desc: constraints.video.deviceId,
-              });
-          }
-          if (constraints.audio && typeof constraints.audio === "object" && constraints.audio.deviceId) {
-              qos.addEvent("DeviceChanged", {
-                  type: 1, desc: constraints.audio.deviceId,
-              });
-          }
-          let mediaStream;
-          try {
-              mediaStream = await this.getUserMedia(config, constraints, true);
-          }
-          catch (e) {
-              if (e.name === "NotAllowedError") {
-                  throw DEVICE_NOT_ALLOWED("");
-              }
-              else {
-                  throw e;
-              }
-          }
-          let videoKbps = undefined;
-          let audioKbps = undefined;
-          let videoTag = undefined;
-          let audioTag = undefined;
-          if (REC_AUDIO_ENABLE(config)) {
-              audioKbps = config.audio.bitrate;
-              audioTag = config.audio.tag;
-          }
-          if (REC_SCREEN_ENABLE(config)) {
-              videoKbps = config.screen.bitrate;
-              videoTag = config.screen.tag;
-          }
-          if (REC_VIDEO_ENABLE(config)) {
-              videoKbps = config.video.bitrate;
-              videoTag = config.video.tag;
-          }
-          const mediaTracks = mediaStream ? mediaStream.getTracks() : [];
-          const tracks = [];
-          for (const mediaTrack of mediaTracks) {
-              let track;
-              if (mediaTrack.kind === "audio") {
-                  track = createCustomTrack(mediaTrack, audioTag, audioKbps);
-              }
-              else {
-                  track = createCustomTrack(mediaTrack, videoTag, videoKbps);
-              }
-              tracks.push(track);
-          }
-          if (config.audio && !!config.audio.source) {
-              const track = await exports.AudioUtils.createAudioTrackFromSource(config.audio.source, audioTag, audioKbps);
-              tracks.push(track);
-          }
-          return tracks;
+
+      this.updateDeivceInfo(); // safari 11 不支持 ondevicechange，使用 setInterval
+
+      if (!browserReport.ondevicechange) {
+        window.setInterval(this.updateDeivceInfo.bind(this), 1000);
       }
-      async getLocalStream(config) {
-          if (config && REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
-              throw UNEXPECTED_ERROR("can not get local stream with video and screen");
-          }
-          const tracks = await this.getLocalTracks(config);
-          return new Stream(tracks, "send");
+
+      if (browserReport.ondevicechange) {
+        navigator.mediaDevices.ondevicechange = this.updateDeivceInfo.bind(this);
       }
-      async getUserMedia(config, constraints, init) {
-          log.debug("request to get user media", constraints, config);
-          if (!constraints.audio && !constraints.video) {
-              return null;
-          }
-          let mediaStream;
-          if (REC_SCREEN_ENABLE(config)) {
-              mediaStream = await this.getDisplayMedia(constraints, config);
-          }
-          else {
-              mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-          }
-          return mediaStream;
-      }
+    } // TODO: 允许 video/screen 同时打开
+
+
+    async getLocalTracks(config = DEFAULT_RECORD_CONFIG) {
+      log.debug("get local tracks", config);
       /**
-       * getDisplayMedia 不支持同时录制屏幕和麦克风
-       * 在这种情况下分 2 次请求 stream 之后合并
+       * 如果同时开启了摄像头和屏幕采集，分 2 次采集完成
        */
-      async getDisplayMedia(constraints, config) {
-          let audioStream;
-          if (constraints.audio) {
-              audioStream = await navigator.mediaDevices.getUserMedia({
-                  audio: constraints.audio,
-              });
-          }
-          let screenStream;
-          if (browserReport.getDisplayMedia && config.screen && !config.screen.forceChromePlugin) {
-              screenStream = await navigator.mediaDevices.getDisplayMedia({
-                  video: constraints.video,
-              });
-          }
-          else {
-              screenStream = await navigator.mediaDevices.getUserMedia({
-                  video: constraints.video,
-              });
-          }
-          if (audioStream) {
-              screenStream.addTrack(audioStream.getAudioTracks()[0]);
-          }
-          return screenStream;
+
+      if (REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
+        const subConfig = {
+          screen: config.screen
+        };
+        const subConfig2 = {
+          video: config.video,
+          audio: config.audio
+        };
+        const values = await Promise.all([this.getLocalTracks(subConfig), this.getLocalTracks(subConfig2)]);
+        return values[0].concat(values[1]);
       }
-      async updateDeivceInfo() {
-          this.deviceInfo = await navigator.mediaDevices.enumerateDevices();
-          const currentDeviceIds = this.deviceInfo.map(d => d.deviceId);
-          const lastDeviceIds = Object.keys(this.deviceMap);
-          let updateFlag = false;
-          lastDeviceIds.forEach(deviceId => {
-              // device 被拔出
-              if (currentDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
-                  this.emit("device-remove", this.deviceMap[deviceId].device);
-                  const device = this.deviceMap[deviceId].device;
-                  qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
-                      device_type: device.kind === "audiooutput" ? 1 : 0,
-                      device_state: 0,
-                      device_label: device.label,
-                      device_id: device.deviceId,
-                  });
-                  delete this.deviceMap[deviceId];
-                  updateFlag = true;
-              }
-              else {
-                  this.deviceMap[deviceId].tick += 1;
-              }
-          });
-          currentDeviceIds.forEach((deviceId, index) => {
-              // device 插入
-              if (lastDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
-                  this.deviceMap[deviceId] = {
-                      device: this.deviceInfo[index],
-                      tick: 0,
-                  };
-                  const device = this.deviceMap[deviceId].device;
-                  this.emit("device-add", device);
-                  qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
-                      device_type: device.kind === "audiooutput" ? 1 : 0,
-                      device_state: 1,
-                      device_label: device.label,
-                      device_id: device.deviceId,
-                  });
-                  updateFlag = true;
-              }
-          });
-          if (updateFlag) {
-              this.emit("device-update", this.deviceInfo);
-          }
+
+      const constraints = await transferRecordOptionToMediaConstraints(config);
+
+      if (constraints.video && typeof constraints.video === "object" && constraints.video.deviceId) {
+        qos.addEvent("DeviceChanged", {
+          type: 0,
+          desc: constraints.video.deviceId
+        });
       }
+
+      if (constraints.audio && typeof constraints.audio === "object" && constraints.audio.deviceId) {
+        qos.addEvent("DeviceChanged", {
+          type: 1,
+          desc: constraints.audio.deviceId
+        });
+      }
+
+      let mediaStream;
+
+      try {
+        mediaStream = await this.getUserMedia(config, constraints, true);
+      } catch (e) {
+        if (e.name === "NotAllowedError") {
+          throw DEVICE_NOT_ALLOWED("");
+        } else {
+          throw e;
+        }
+      }
+
+      let videoKbps = undefined;
+      let audioKbps = undefined;
+      let videoTag = undefined;
+      let audioTag = undefined;
+
+      if (REC_AUDIO_ENABLE(config)) {
+        audioKbps = config.audio.bitrate;
+        audioTag = config.audio.tag;
+      }
+
+      if (REC_SCREEN_ENABLE(config)) {
+        videoKbps = config.screen.bitrate;
+        videoTag = config.screen.tag;
+      }
+
+      if (REC_VIDEO_ENABLE(config)) {
+        videoKbps = config.video.bitrate;
+        videoTag = config.video.tag;
+      }
+
+      const mediaTracks = mediaStream ? mediaStream.getTracks() : [];
+      const tracks = [];
+
+      for (const mediaTrack of mediaTracks) {
+        let track;
+
+        if (mediaTrack.kind === "audio") {
+          track = createCustomTrack(mediaTrack, audioTag, audioKbps);
+        } else {
+          track = createCustomTrack(mediaTrack, videoTag, videoKbps);
+        }
+
+        tracks.push(track);
+      }
+
+      if (config.audio && !!config.audio.source) {
+        const track = await exports.AudioUtils.createAudioTrackFromSource(config.audio.source, audioTag, audioKbps);
+        tracks.push(track);
+      }
+
+      return tracks;
+    }
+
+    async getLocalStream(config) {
+      if (config && REC_SCREEN_ENABLE(config) && REC_VIDEO_ENABLE(config)) {
+        throw UNEXPECTED_ERROR("can not get local stream with video and screen");
+      }
+
+      const tracks = await this.getLocalTracks(config);
+      return new Stream(tracks, "send");
+    }
+
+    async getUserMedia(config, constraints, init) {
+      log.debug("request to get user media", constraints, config);
+
+      if (!constraints.audio && !constraints.video) {
+        return null;
+      }
+
+      let mediaStream;
+
+      if (REC_SCREEN_ENABLE(config)) {
+        mediaStream = await this.getDisplayMedia(constraints, config);
+      } else {
+        mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+      }
+
+      return mediaStream;
+    }
+    /**
+     * getDisplayMedia 不支持同时录制屏幕和麦克风
+     * 在这种情况下分 2 次请求 stream 之后合并
+     */
+
+
+    async getDisplayMedia(constraints, config) {
+      let audioStream;
+
+      if (constraints.audio) {
+        audioStream = await navigator.mediaDevices.getUserMedia({
+          audio: constraints.audio
+        });
+      }
+
+      let screenStream;
+
+      if (browserReport.getDisplayMedia && config.screen && !config.screen.forceChromePlugin) {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: constraints.video
+        });
+      } else {
+        screenStream = await navigator.mediaDevices.getUserMedia({
+          video: constraints.video
+        });
+      }
+
+      if (audioStream) {
+        screenStream.addTrack(audioStream.getAudioTracks()[0]);
+      }
+
+      return screenStream;
+    }
+
+    async updateDeivceInfo() {
+      this.deviceInfo = await navigator.mediaDevices.enumerateDevices();
+      const currentDeviceIds = this.deviceInfo.map(d => d.deviceId);
+      const lastDeviceIds = Object.keys(this.deviceMap);
+      let updateFlag = false;
+      lastDeviceIds.forEach(deviceId => {
+        // device 被拔出
+        if (currentDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
+          this.emit("device-remove", this.deviceMap[deviceId].device);
+          const device = this.deviceMap[deviceId].device;
+          qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
+            device_type: device.kind === "audiooutput" ? 1 : 0,
+            device_state: 0,
+            device_label: device.label,
+            device_id: device.deviceId
+          });
+          delete this.deviceMap[deviceId];
+          updateFlag = true;
+        } else {
+          this.deviceMap[deviceId].tick += 1;
+        }
+      });
+      currentDeviceIds.forEach((deviceId, index) => {
+        // device 插入
+        if (lastDeviceIds.indexOf(deviceId) === -1 && deviceId !== "@default") {
+          this.deviceMap[deviceId] = {
+            device: this.deviceInfo[index],
+            tick: 0
+          };
+          const device = this.deviceMap[deviceId].device;
+          this.emit("device-add", device);
+          qos.addEvent(device.kind === "audioinput" || device.kind === "audiooutput" ? "AudioDeviceInOut" : "VideoDeviceInOut", {
+            device_type: device.kind === "audiooutput" ? 1 : 0,
+            device_state: 1,
+            device_label: device.label,
+            device_id: device.deviceId
+          });
+          updateFlag = true;
+        }
+      });
+
+      if (updateFlag) {
+        this.emit("device-update", this.deviceInfo);
+      }
+    }
+
   }
   const deviceManager = new DeviceManager();
 
@@ -28381,4 +29764,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.2.4.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.2.5.umd.js.map
