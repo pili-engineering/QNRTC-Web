@@ -4,7 +4,117 @@
   (global = global || self, factory(global.QNRTC = {}));
 }(this, function (exports) { 'use strict';
 
-  function detect() {
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var defineProperty = _defineProperty;
+
+  function _objectSpread(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
+
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
+      }
+
+      ownKeys.forEach(function (key) {
+        defineProperty(target, key, source[key]);
+      });
+    }
+
+    return target;
+  }
+
+  var objectSpread = _objectSpread;
+
+  var __spreadArrays = undefined && undefined.__spreadArrays || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+
+    for (var r = Array(s), k = 0, i = 0; i < il; i++) for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
+
+    return r;
+  };
+
+  var BrowserInfo =
+  /** @class */
+  function () {
+    function BrowserInfo(name, version, os) {
+      this.name = name;
+      this.version = version;
+      this.os = os;
+      this.type = 'browser';
+    }
+
+    return BrowserInfo;
+  }();
+
+  var NodeInfo =
+  /** @class */
+  function () {
+    function NodeInfo(version) {
+      this.version = version;
+      this.type = 'node';
+      this.name = 'node';
+      this.os = process.platform;
+    }
+
+    return NodeInfo;
+  }();
+
+  var SearchBotDeviceInfo =
+  /** @class */
+  function () {
+    function SearchBotDeviceInfo(name, version, os, bot) {
+      this.name = name;
+      this.version = version;
+      this.os = os;
+      this.bot = bot;
+      this.type = 'bot-device';
+    }
+
+    return SearchBotDeviceInfo;
+  }();
+
+  var BotInfo =
+  /** @class */
+  function () {
+    function BotInfo() {
+      this.type = 'bot';
+      this.bot = true; // NOTE: deprecated test name instead
+
+      this.name = 'bot';
+      this.version = null;
+      this.os = null;
+    }
+
+    return BotInfo;
+  }();
+
+  var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
+  var SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
+  var REQUIRED_VERSION_PARTS = 3;
+  var userAgentRules = [['aol', /AOLShield\/([0-9\._]+)/], ['edge', /Edge\/([0-9\._]+)/], ['edge-ios', /EdgiOS\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['samsung', /SamsungBrowser\/([0-9\.]+)/], ['silk', /\bSilk\/([0-9._-]+)\b/], ['miui', /MiuiBrowser\/([0-9\.]+)$/], ['beaker', /BeakerBrowser\/([0-9\.]+)/], ['edge-chromium', /Edg\/([0-9\.]+)/], ['chromium-webview', /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera-mini', /Opera Mini.*Version\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/], ['facebook', /FBAV\/([0-9\.]+)/], ['instagram', /Instagram\s([0-9\.]+)/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Gecko\)$/], ['searchbot', SEARCHBOX_UA_REGEX]];
+  var operatingSystemRules = [['iOS', /iP(hone|od|ad)/], ['Android OS', /Android/], ['BlackBerry OS', /BlackBerry|BB10/], ['Windows Mobile', /IEMobile/], ['Amazon OS', /Kindle/], ['Windows 3.11', /Win16/], ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/], ['Windows 98', /(Windows 98)|(Win98)/], ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/], ['Windows XP', /(Windows NT 5.1)|(Windows XP)/], ['Windows Server 2003', /(Windows NT 5.2)/], ['Windows Vista', /(Windows NT 6.0)/], ['Windows 7', /(Windows NT 6.1)/], ['Windows 8', /(Windows NT 6.2)/], ['Windows 8.1', /(Windows NT 6.3)/], ['Windows 10', /(Windows NT 10.0)/], ['Windows ME', /Windows ME/], ['Open BSD', /OpenBSD/], ['Sun OS', /SunOS/], ['Chrome OS', /CrOS/], ['Linux', /(Linux)|(X11)/], ['Mac OS', /(Mac_PowerPC)|(Macintosh)/], ['QNX', /QNX/], ['BeOS', /BeOS/], ['OS/2', /OS\/2/]];
+  function detect(userAgent) {
+    if (!!userAgent) {
+      return parseUserAgent(userAgent);
+    }
+
     if (typeof navigator !== 'undefined') {
       return parseUserAgent(navigator.userAgent);
     }
@@ -12,80 +122,85 @@
     return getNodeVersion();
   }
 
-  function detectOS(userAgentString) {
-    var rules = getOperatingSystemRules();
-    var detected = rules.filter(function (os) {
-      return os.rule && os.rule.test(userAgentString);
-    })[0];
-    return detected ? detected.name : null;
+  function matchUserAgent(ua) {
+    // opted for using reduce here rather than Array#first with a regex.test call
+    // this is primarily because using the reduce we only perform the regex
+    // execution once rather than once for the test and for the exec again below
+    // probably something that needs to be benchmarked though
+    return ua !== '' && userAgentRules.reduce(function (matched, _a) {
+      var browser = _a[0],
+          regex = _a[1];
+
+      if (matched) {
+        return matched;
+      }
+
+      var uaMatch = regex.exec(ua);
+      return !!uaMatch && [browser, uaMatch];
+    }, false);
   }
+  function parseUserAgent(ua) {
+    var matchedRule = matchUserAgent(ua);
 
-  function getNodeVersion() {
-    var isNode = typeof process !== 'undefined' && process.version;
-    return isNode && {
-      name: 'node',
-      version: process.version.slice(1),
-      os: process.platform
-    };
-  }
-
-  function parseUserAgent(userAgentString) {
-    var browsers = getBrowserRules();
-
-    if (!userAgentString) {
+    if (!matchedRule) {
       return null;
     }
 
-    var detected = browsers.map(function (browser) {
-      var match = browser.rule.exec(userAgentString);
-      var version = match && match[1].split(/[._]/).slice(0, 3);
+    var name = matchedRule[0],
+        match = matchedRule[1];
 
-      if (version && version.length < 3) {
-        version = version.concat(version.length == 1 ? [0, 0] : [0]);
+    if (name === 'searchbot') {
+      return new BotInfo();
+    }
+
+    var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
+
+    if (versionParts) {
+      if (versionParts.length < REQUIRED_VERSION_PARTS) {
+        versionParts = __spreadArrays(versionParts, createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
       }
-
-      return match && {
-        name: browser.name,
-        version: version.join('.')
-      };
-    }).filter(Boolean)[0] || null;
-
-    if (detected) {
-      detected.os = detectOS(userAgentString);
+    } else {
+      versionParts = [];
     }
 
-    if (/alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/i.test(userAgentString)) {
-      detected = detected || {};
-      detected.bot = true;
+    var version = versionParts.join('.');
+    var os = detectOS(ua);
+    var searchBotMatch = SEARCHBOT_OS_REGEX.exec(ua);
+
+    if (searchBotMatch && searchBotMatch[1]) {
+      return new SearchBotDeviceInfo(name, version, os, searchBotMatch[1]);
     }
 
-    return detected;
+    return new BrowserInfo(name, versionParts.join('.'), os);
+  }
+  function detectOS(ua) {
+    for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
+      var _a = operatingSystemRules[ii],
+          os = _a[0],
+          regex = _a[1];
+      var match = regex.exec(ua);
+
+      if (match) {
+        return os;
+      }
+    }
+
+    return null;
+  }
+  function getNodeVersion() {
+    var isNode = typeof process !== 'undefined' && process.version;
+    return isNode ? new NodeInfo(process.version.slice(1)) : null;
   }
 
-  function getBrowserRules() {
-    return buildRules([['aol', /AOLShield\/([0-9\._]+)/], ['edge', /Edge\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['samsung', /SamsungBrowser\/([0-9\.]+)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)$/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/], ['facebook', /FBAV\/([0-9\.]+)/], ['instagram', /Instagram\s([0-9\.]+)/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/]]);
-  }
+  function createVersionParts(count) {
+    var output = [];
 
-  function getOperatingSystemRules() {
-    return buildRules([['iOS', /iP(hone|od|ad)/], ['Android OS', /Android/], ['BlackBerry OS', /BlackBerry|BB10/], ['Windows Mobile', /IEMobile/], ['Amazon OS', /Kindle/], ['Windows 3.11', /Win16/], ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/], ['Windows 98', /(Windows 98)|(Win98)/], ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/], ['Windows XP', /(Windows NT 5.1)|(Windows XP)/], ['Windows Server 2003', /(Windows NT 5.2)/], ['Windows Vista', /(Windows NT 6.0)/], ['Windows 7', /(Windows NT 6.1)/], ['Windows 8', /(Windows NT 6.2)/], ['Windows 8.1', /(Windows NT 6.3)/], ['Windows 10', /(Windows NT 10.0)/], ['Windows ME', /Windows ME/], ['Open BSD', /OpenBSD/], ['Sun OS', /SunOS/], ['Linux', /(Linux)|(X11)/], ['Mac OS', /(Mac_PowerPC)|(Macintosh)/], ['QNX', /QNX/], ['BeOS', /BeOS/], ['OS/2', /OS\/2/], ['Search Bot', /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/]]);
-  }
+    for (var ii = 0; ii < count; ii++) {
+      output.push('0');
+    }
 
-  function buildRules(ruleTuples) {
-    return ruleTuples.map(function (tuple) {
-      return {
-        name: tuple[0],
-        rule: tuple[1]
-      };
-    });
+    return output;
   }
-
-  var detectBrowser = {
-    detect: detect,
-    detectOS: detectOS,
-    getNodeVersion: getNodeVersion,
-    parseUserAgent: parseUserAgent
-  };
-  var detectBrowser_1 = detectBrowser.detect;
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1328,16 +1443,29 @@
   var semver_38 = semver.intersects;
   var semver_39 = semver.coerce;
 
-  /*
-   * browserCheck.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
+  function detectBrowser() {
+    const originBrowser = detect();
+
+    if (!navigator || !navigator.appVersion || !originBrowser) {
+      return originBrowser;
+    }
+
+    const IChrome = /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/;
+    const chromeInfo = IChrome.exec(window.navigator.appVersion);
+
+    if (!chromeInfo || !chromeInfo[1]) {
+      return originBrowser;
+    }
+
+    return objectSpread({}, originBrowser, {
+      chromeVersion: chromeInfo[1]
+    });
+  }
+
   const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
   const isChrome = !!window.chrome;
   const isIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i);
-  const browser = detectBrowser_1() || {};
+  const browser = detectBrowser() || {};
 
   function baseSupportCheck() {
     try {
@@ -1722,44 +1850,6 @@
   if (browser.name === "firefox") {
     mediaDevicesShim$1();
   }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  var defineProperty = _defineProperty;
-
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
-
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
-      }
-
-      ownKeys.forEach(function (key) {
-        defineProperty(target, key, source[key]);
-      });
-    }
-
-    return target;
-  }
-
-  var objectSpread = _objectSpread;
 
   var adapter_no_edge_no_global = createCommonjsModule(function (module) {
     (function () {
@@ -10769,6 +10859,44 @@
     module.exports = remove;
   });
 
+  function _objectWithoutPropertiesLoose(source, excluded) {
+    if (source == null) return {};
+    var target = {};
+    var sourceKeys = Object.keys(source);
+    var key, i;
+
+    for (i = 0; i < sourceKeys.length; i++) {
+      key = sourceKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      target[key] = source[key];
+    }
+
+    return target;
+  }
+
+  var objectWithoutPropertiesLoose = _objectWithoutPropertiesLoose;
+
+  function _objectWithoutProperties(source, excluded) {
+    if (source == null) return {};
+    var target = objectWithoutPropertiesLoose(source, excluded);
+    var key, i;
+
+    if (Object.getOwnPropertySymbols) {
+      var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+      for (i = 0; i < sourceSymbolKeys.length; i++) {
+        key = sourceSymbolKeys[i];
+        if (excluded.indexOf(key) >= 0) continue;
+        if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+        target[key] = source[key];
+      }
+    }
+
+    return target;
+  }
+
+  var objectWithoutProperties = _objectWithoutProperties;
+
   /*
    * device.ts
    * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
@@ -10853,7 +10981,10 @@
     CreateMergeJob: 24,
     UpdateMergeTracks: 25,
     StopMerge: 26,
-    DeviceChanged: 28
+    DeviceChanged: 28,
+    DefaultSetting: 29,
+    MediaStatistics: 30,
+    AbnormalDisconnect: 31
   };
 
   var fingerprint2 = createCommonjsModule(function (module) {
@@ -21279,7 +21410,7 @@
   /**
    * SDK版本号
    */
-  const version = "2.2.5"; // @internal
+  const version = "2.2.7"; // @internal
 
   class LogModel {
     constructor(level) {
@@ -21342,6 +21473,275 @@
   }
 
   const log = new LogModel("log");
+
+  const defaultTrackStatsReport = () => ({
+    packetLossRate: 0,
+    bitrate: 0,
+    bytes: 0,
+    packets: 0,
+    packetLoss: 0,
+    timestamp: Date.now()
+  });
+  async function getStats(pc, track, pctype) {
+    const statsReport = defaultTrackStatsReport();
+    let report;
+
+    try {
+      report = await pc.getStats(track);
+    } catch (e) {
+      log.debug("get stats error, fallback to default", e);
+      return defaultTrackStatsReport();
+    }
+
+    if (!report) {
+      log.debug("get null stats, fallback to default");
+      return defaultTrackStatsReport();
+    }
+
+    for (const item of report.values()) {
+      if (pctype === "send" && item.type === "outbound-rtp" && !item.isRemote || pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote) {
+        const remoteItem = report.get(item.remoteId);
+        const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
+        const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
+        let packetLoss = 0;
+
+        if (remoteItem) {
+          const remotePackets = pctype === "send" ? remoteItem.packetsReceived : remoteItem.packetsSent;
+          packetLoss = pctype === "send" ? remoteItem.packetsLost : remotePackets - packets;
+        }
+
+        statsReport.bytes = bytes;
+        statsReport.packets = packets;
+        statsReport.packetLoss = packetLoss;
+      }
+    }
+
+    return statsReport;
+  }
+  const defaultAudioExtraStats = {
+    track_audio_volume: 0,
+    jitter_buffer_delay: 0,
+    bytes_sent: 0,
+    bytes_received: 0
+  };
+  const defaultVideoExtraStats = {
+    nack_count: 0,
+    fir_count: 0,
+    pli_count: 0,
+    width: 0,
+    height: 0,
+    jitter_buffer_delay: 0,
+    bytes_sent: 0,
+    frame_encoded: 0,
+    bytes_received: 0,
+    frame_decoded: 0
+  };
+  const defaultCalculationStats = {
+    frames_received: 0,
+    frames_sent: 0,
+    packets_lost: 0,
+    packets_received: 0,
+    packets_sent: 0,
+    timestamp: 0,
+    bytes_sent: 0,
+    bytes_received: 0
+  };
+  var MediaType;
+
+  (function (MediaType) {
+    MediaType["Video"] = "video";
+    MediaType["Audio"] = "audio";
+  })(MediaType || (MediaType = {}));
+
+  var StatsReportType;
+
+  (function (StatsReportType) {
+    StatsReportType["MediaSource"] = "media-source";
+    StatsReportType["Track"] = "track";
+    StatsReportType["OutBoundRtp"] = "outbound-rtp";
+    StatsReportType["InBoundRtp"] = "inbound-rtp";
+  })(StatsReportType || (StatsReportType = {}));
+
+  var BoundType;
+
+  (function (BoundType) {
+    BoundType["In"] = "in";
+    BoundType["Out"] = "out";
+  })(BoundType || (BoundType = {}));
+
+  function getDefaultMediaStatisticWithCalculationReport(trackId, mediaType) {
+    const report = {
+      track_id: trackId,
+      kind: "",
+      kbps: 0,
+      framerate: 0,
+      packet_lost_rate: 0,
+      rtt: 0,
+      extra_stats: null,
+      calculation_stats: objectSpread({}, defaultCalculationStats)
+    };
+
+    if (mediaType === MediaType.Audio) {
+      report.extra_stats = objectSpread({}, defaultAudioExtraStats);
+    } else {
+      report.extra_stats = objectSpread({}, defaultVideoExtraStats);
+    }
+
+    return report;
+  }
+  async function getMediaStatisticStats(pc) {
+    let report;
+
+    try {
+      report = await pc.getStats();
+    } catch (e) {
+      log.debug("get media statistic stats error, fallback to default", e);
+      return [];
+    }
+
+    if (!report) {
+      log.debug("get null media statistic stats, fallback to default");
+      return [];
+    }
+
+    const reportList = [...report.values()];
+    const statisticReports = reportList.filter(reportItem => reportItem.type === StatsReportType.InBoundRtp || reportItem.type === StatsReportType.OutBoundRtp).map(item => {
+      return createStatisticReport(item, reportList);
+    });
+    return statisticReports;
+  }
+
+  function parseVideoInOutBound(item, report) {
+    report.kind = item.kind;
+    report.extra_stats.nack_count = item.nackCount;
+    report.extra_stats.fir_count = item.firCount;
+    report.extra_stats.pli_count = item.pliCount;
+    report.extra_stats.bytes_sent = item.bytesSent || 0;
+    report.extra_stats.frame_encoded = item.framesEncoded || 0;
+    report.extra_stats.bytes_received = item.bytesReceived || 0;
+    report.extra_stats.frame_decoded = item.framesDecoded || 0;
+
+    if (item.roundTripTime) {
+      report.rtt = item.roundTripTime * 1000;
+    } else if (item.googRtt) {
+      report.rtt = item.googRtt;
+    } else {
+      report.rtt = 0;
+    }
+
+    report.calculation_stats.bytes_received = item.bytesReceived || 0;
+    report.calculation_stats.bytes_sent = item.bytesSent || 0;
+    report.calculation_stats.packets_lost = item.packetsLoss || 0;
+    report.calculation_stats.packets_received = item.packetsReceived || 0;
+    report.calculation_stats.packets_sent = item.packetsSent || 0;
+    report.calculation_stats.timestamp = item.timestamp || 0;
+    return report;
+  }
+
+  function parseVideoMediaSource(item, report) {
+    report.framerate = item.framesPerSecond;
+    return report;
+  }
+
+  function parseVideoTrack(item, report) {
+    report.track_id = item.trackIdentifier;
+    report.extra_stats.width = item.frameWidth;
+    report.extra_stats.height = item.frameHeight;
+    report.extra_stats.jitter_buffer_delay = item.jitterBufferDelay || 0;
+    report.calculation_stats.frames_sent = item.framesSent || 0;
+    report.calculation_stats.frames_received = item.framesReceived || 0;
+    return report;
+  }
+
+  function parseAudioInOutBound(item, report) {
+    report.kind = item.kind;
+
+    if (item.roundTripTime) {
+      report.rtt = item.roundTripTime * 1000;
+    } else if (item.googRtt) {
+      report.rtt = item.googRtt;
+    } else {
+      report.rtt = 0;
+    }
+
+    report.extra_stats.bytes_sent = item.bytesSent || 0;
+    report.extra_stats.bytes_received = item.bytesReceived || 0;
+    report.calculation_stats.bytes_received = item.bytesReceived || 0;
+    report.calculation_stats.bytes_sent = item.bytesSent || 0;
+    report.calculation_stats.packets_lost = item.packetsLoss || 0;
+    report.calculation_stats.packets_received = item.packetsReceived || 0;
+    report.calculation_stats.packets_sent = item.packetsSent || 0;
+    report.calculation_stats.timestamp = item.timestamp || 0;
+    return report;
+  }
+
+  function parseAudioMediaSource(item, report) {
+    report.extra_stats.track_audio_volume = item.audioLevel;
+    return report;
+  }
+
+  function parseAudioTrack(item, report) {
+    report.track_id = item.trackIdentifier;
+    report.extra_stats.jitter_buffer_delay = item.jitterBufferDelay || 0;
+    report.calculation_stats.frames_sent = item.framesSent || 0;
+    report.calculation_stats.frames_received = item.framesReceived || 0;
+    return report;
+  }
+
+  function createStatisticReport(item, reports) {
+    const reportMap = {
+      [StatsReportType.MediaSource]: reports.filter(reportItem => reportItem.type === StatsReportType.MediaSource).find(reportItem => reportItem.id === item.mediaSourceId),
+      [StatsReportType.Track]: reports.filter(reportItem => reportItem.type === StatsReportType.Track).find(reportItem => reportItem.id === item.trackId)
+    };
+    let report = getDefaultMediaStatisticWithCalculationReport(item.trackId, item.mediaType);
+
+    if (item.mediaType === MediaType.Video) {
+      report = parseVideoInOutBound(item, report);
+
+      if (reportMap[StatsReportType.MediaSource]) {
+        report = parseVideoMediaSource(reportMap[StatsReportType.MediaSource], report);
+      }
+
+      if (reportMap[StatsReportType.Track]) {
+        report = parseVideoTrack(reportMap[StatsReportType.Track], report);
+      }
+    } else {
+      report = parseAudioInOutBound(item, report);
+
+      if (reportMap[StatsReportType.MediaSource]) {
+        report = parseAudioMediaSource(reportMap[StatsReportType.MediaSource], report);
+      }
+
+      if (reportMap[StatsReportType.Track]) {
+        report = parseAudioTrack(reportMap[StatsReportType.Track], report);
+      }
+    }
+
+    return report;
+  }
+
+  function calculationMediaStatisticReport(calculation, lastCalculation) {
+    if (!calculation || !lastCalculation) {
+      return {
+        framerate: 0,
+        kbps: 0,
+        packet_lost_rate: 0
+      };
+    }
+
+    const gapTime = (calculation.timestamp - lastCalculation.timestamp) / 1000;
+    const framerate = gapTime === 0 ? 0 : (calculation.frames_sent - lastCalculation.frames_sent + (calculation.frames_received - lastCalculation.frames_received)) / gapTime;
+    const kbps = gapTime === 0 ? 0 : (calculation.bytes_sent - lastCalculation.bytes_sent + (calculation.bytes_received - lastCalculation.bytes_received)) / (gapTime * 1024 / 8);
+    const diffPackageLost = calculation.packets_lost - lastCalculation.packets_lost;
+    const totalGapFrames = calculation.packets_received + calculation.packets_sent - (lastCalculation.packets_received + lastCalculation.packets_sent) + diffPackageLost;
+    const packetLostRate = totalGapFrames === 0 ? 0 : diffPackageLost / totalGapFrames;
+    const packet_lost_rate = Math.ceil(packetLostRate * 100);
+    return {
+      framerate: Math.ceil(framerate),
+      kbps: Math.ceil(kbps),
+      packet_lost_rate
+    };
+  }
 
   class TaskQueue extends EventEmitter {
     constructor(name, debug = true) {
@@ -21479,11 +21879,11 @@
       this.sessionId = sessionId;
     }
 
-    setUserBase(userName, roomName) {
+    setUserBase(userName, roomName, appId) {
       this.userBase = {
         user_id: userName,
         room_name: roomName,
-        app_id: ""
+        app_id: appId
       };
 
       for (let i = this.events.length - 1; i >= 0; i -= 1) {
@@ -21502,6 +21902,24 @@
 
       this.submitQueue.push("add", event).catch(noop);
       this.submit(isForce);
+    }
+
+    addMediaStatistics(reports, lastCalculationStatsList) {
+      const statistics = reports.map((report, idx) => {
+        const lastCalculationStats = lastCalculationStatsList && lastCalculationStatsList[idx];
+
+        const {
+          calculation_stats
+        } = report,
+              otherStats = objectWithoutProperties(report, ["calculation_stats"]);
+
+        return objectSpread({}, otherStats, calculationMediaStatisticReport(calculation_stats, lastCalculationStats));
+      });
+      log.log("media statistics", statistics);
+      this.addEvent("MediaStatistics", {
+        cpu_loading: 0,
+        track_stats: statistics
+      });
     }
 
     submit(isForce = false) {
@@ -21534,7 +21952,7 @@
 
     async _recoverStoredEvents() {
       const res = await localforage.getItem(QNRTC_EVENTS_STORATE_KEY);
-      console.log("get item", res);
+      log.log("get item", res);
       await localforage.removeItem(QNRTC_EVENTS_STORATE_KEY);
       if (!res) return;
       this.events = JSON.parse(window.atob(decodeURIComponent(res))); // 没有 sessionid 或者 user_base 的数据将被丢弃
@@ -21614,7 +22032,7 @@
           base: this.base,
           items: events.map(e => e.event)
         };
-        console.log("encode", submitData);
+        log.log("encode", submitData);
         const byteArray = new Uint8Array(gzip.zip(toUTF8Array(JSON.stringify(submitData))));
         data.push(byteArray);
       }
@@ -21987,51 +22405,6 @@
       await timeout(1000);
       return await resolveIceHost(host);
     }
-  }
-
-  const defaultTrackStatsReport = () => ({
-    packetLossRate: 0,
-    bitrate: 0,
-    bytes: 0,
-    packets: 0,
-    packetLoss: 0,
-    timestamp: Date.now()
-  });
-  async function getStats(pc, track, pctype) {
-    const statsReport = defaultTrackStatsReport();
-    let report;
-
-    try {
-      report = await pc.getStats(track);
-    } catch (e) {
-      log.debug("get stats error, fallback to default", e);
-      return defaultTrackStatsReport();
-    }
-
-    if (!report) {
-      log.debug("get null stats, fallback to default");
-      return defaultTrackStatsReport();
-    }
-
-    for (const item of report.values()) {
-      if (pctype === "send" && item.type === "outbound-rtp" && !item.isRemote || pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote) {
-        const remoteItem = report.get(item.remoteId);
-        const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
-        const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
-        let packetLoss = 0;
-
-        if (remoteItem) {
-          const remotePackets = pctype === "send" ? remoteItem.packetsReceived : remoteItem.packetsSent;
-          packetLoss = pctype === "send" ? remoteItem.packetsLost : remotePackets - packets;
-        }
-
-        statsReport.bytes = bytes;
-        statsReport.packets = packets;
-        statsReport.packetLoss = packetLoss;
-      }
-    }
-
-    return statsReport;
   }
 
   function createPC() {
@@ -26180,7 +26553,11 @@
     constructor(direction, extendedRtpCapabilities, settings) {
       super();
       this._isRestartingICE = false;
-      this.isPcReady = false;
+      this.isPcReady = false; // last qos media statistic list
+
+      this.lastCalculationStatsList = []; // qos media statistic report interval
+
+      this.intervalId = -1;
       this._direction = direction; // RTCPeerConnection instance.
 
       this._pc = createPC(); // Generic sending RTP parameters for audio and video.
@@ -26197,18 +26574,22 @@
           case "connected":
           case "completed":
             this.emit("@connectionstatechange", "connected");
+            this.registerMediaStatisticStatsReport();
             break;
 
           case "failed":
             this.emit("@connectionstatechange", "failed");
+            this.unregisterMediaStatisticStatsReport();
             break;
 
           case "disconnected":
             this.emit("@connectionstatechange", "disconnected");
+            this.unregisterMediaStatisticStatsReport();
             break;
 
           case "closed":
             this.emit("@connectionstatechange", "closed");
+            this.unregisterMediaStatisticStatsReport();
             break;
         }
       });
@@ -26216,6 +26597,26 @@
 
     async getStats(track, lastReport) {
       return await getPCStats(this._pc, track, this._direction, lastReport);
+    }
+
+    registerMediaStatisticStatsReport() {
+      this.unregisterMediaStatisticStatsReport();
+      this.intervalId = window.setInterval(async () => {
+        const mediaStatistics = await getMediaStatisticStats(this._pc);
+
+        if (mediaStatistics && mediaStatistics.length > 0) {
+          qos.addMediaStatistics(mediaStatistics, this.lastCalculationStatsList);
+          this.lastCalculationStatsList = (mediaStatistics || []).map(statistic => objectSpread({}, statistic.calculation_stats));
+        }
+      }, 1000);
+    }
+
+    unregisterMediaStatisticStatsReport() {
+      if (this.intervalId !== -1) {
+        window.clearInterval(this.intervalId);
+        this.lastCalculationStatsList = [];
+        this.intervalId = -1;
+      }
     }
 
     getCurrentIceConnectionState() {
@@ -26475,6 +26876,9 @@
         qos.addEvent("PublisherPC", {
           signal_take_time: Date.now() - startTime,
           result_code: transportRemoteParameters.code,
+          up_stream_ip: (transportRemoteParameters.iceCandidates || []).map(({
+            ip
+          }) => ip).join(","),
           tracks: transportRemoteParameters.tracks.map(t => {
             const targetTrack = tracks.find(track => track.mediaTrack.id === t.localid);
             if (!targetTrack) return undefined;
@@ -26719,10 +27123,10 @@
           type: "offer",
           sdp: remoteSdp
         };
-        console.log("set ontrack");
+        log.log("set ontrack");
 
         this._pc.ontrack = e => {
-          console.log("ontrack", e.receiver.track);
+          log.log("ontrack", e.receiver.track);
         };
 
         log.debug("subscribe: set remote offer", offer);
@@ -26859,6 +27263,9 @@
       qos.addEvent("SubscriberPC", {
         signal_take_time: Date.now() - startTime,
         result_code: transportRemoteParameters.code,
+        down_stream_ip: (transportRemoteParameters.iceCandidates || []).map(({
+          ip
+        }) => ip).join(","),
         tracks: transportRemoteParameters.tracks.map(t => ({
           track_id: t.trackid,
           status: t.status
@@ -27764,7 +28171,7 @@
           const authRes = await getAccessToken(roomAccess, roomToken);
           this.accessToken = authRes.accessToken;
           qos.setSessionId(authRes.sessionId);
-          qos.setUserBase(this.userId, this.roomName);
+          qos.setUserBase(this.userId, this.roomName, this.appId);
         } catch (e) {
           throw e;
         }
@@ -27825,10 +28232,18 @@
         this.handleMute(d);
       }).on("on-messages", this.handleCustomMessages.bind(this)).on("on-pubpc-restart-notify", d => {
         const transport = this.connectionTransport;
+        qos.addEvent("AbnormalDisconnect", {
+          event_reason: "on-pubpc-restart-notify",
+          event_description: d.error
+        });
         if (!transport || !browserReport.supportRestartICE) return;
         transport.restartSendICE(d.pcid).catch(log.debug);
       }).on("on-subpc-restart-notify", d => {
         const transport = this.connectionTransport;
+        qos.addEvent("AbnormalDisconnect", {
+          event_reason: "on-subpc-restart-notify",
+          event_description: d.error
+        });
         if (!transport || !browserReport.supportRestartICE) return;
         transport.restartRecvICE(d.pcid).catch(log.debug);
       }).on("disconnect", this.handleDisconnect.bind(this));
@@ -28036,6 +28451,12 @@
         lodash_remove(this.defaultMergeJobTracks, t => trackIds.indexOf(t) !== -1);
       }
 
+      qos.addEvent("UpdateMergeTracks", {
+        id: jobId || "",
+        remove: config.remove.map(t => ({
+          track_id: t.trackid
+        }))
+      });
       await this.signaling.request("update-merge-tracks", config);
     }
     /**
@@ -28390,7 +28811,15 @@
     }
 
     handleDisconnect(data) {
-      log.log("handle disconnect", data);
+      log.log("handle disconnect", data); // 0, 10005, 10006 是正常的断开 code
+
+      if ([0, 10005, 10006].indexOf(data.code) === -1) {
+        qos.addEvent("AbnormalDisconnect", {
+          event_reason: "websocket_error",
+          event_description: data.error
+        });
+      }
+
       qos.addEvent("LeaveRoom", {
         leave_reason_code: data.code
       });
@@ -28665,7 +29094,9 @@
         this.signaling = undefined;
       }
 
-      qos.addEvent("UnInit", {}, true);
+      qos.addEvent("UnInit", {
+        id: `${this.sessionMode}_${Date.now()}`
+      }, true);
 
       if (this.connectionTransport) {
         this.connectionTransport.release();
@@ -29495,12 +29926,6 @@
     AudioUtils.createAudioMixingManagerFromStream = createAudioMixingManagerFromStream;
   })(exports.AudioUtils || (exports.AudioUtils = {}));
 
-  /*
-   * device.ts
-   * Copyright (C) 2018 disoul <disoul@DiSouldeMacBook-Pro.local>
-   *
-   * Distributed under terms of the MIT license.
-  */
   const DEFAULT_RECORD_CONFIG = {
     audio: {
       enabled: true
@@ -29529,8 +29954,7 @@
       if (browserReport.ondevicechange) {
         navigator.mediaDevices.ondevicechange = this.updateDeivceInfo.bind(this);
       }
-    } // TODO: 允许 video/screen 同时打开
-
+    }
 
     async getLocalTracks(config = DEFAULT_RECORD_CONFIG) {
       log.debug("get local tracks", config);
@@ -29643,6 +30067,42 @@
         mediaStream = await this.getDisplayMedia(constraints, config);
       } else {
         mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+        const videoConstraint = constraints.video;
+
+        if (videoConstraint && typeof videoConstraint !== "boolean") {
+          const videoWidth = videoConstraint.width;
+          const videoHeight = videoConstraint.height;
+
+          if (typeof videoWidth === "number" && typeof videoHeight === "number") {
+            const tracks = mediaStream.getVideoTracks();
+            const firstTrack = tracks && tracks[0];
+            const {
+              height = videoHeight,
+              width = videoWidth
+            } = firstTrack.getSettings();
+
+            if (width && height) {
+              const diffProduct = (videoHeight - height) * (videoWidth - width);
+
+              if (diffProduct * diffProduct > 10) {
+                const ratio = videoHeight / videoWidth;
+
+                if (height / width < ratio) {
+                  videoConstraint.height = height;
+                  videoConstraint.width = height / ratio;
+                } else {
+                  videoConstraint.width = width;
+                  videoConstraint.height = width * ratio;
+                }
+
+                log.debug("justified constraint constraintHeight, contraintWidth, constraintRatio, screenHeight, screenWidth:", videoHeight, videoWidth, ratio, height, width, videoConstraint);
+                return this.getUserMedia(config, objectSpread({}, constraints, {
+                  video: videoConstraint
+                }));
+              }
+            }
+          }
+        }
       }
 
       return mediaStream;
@@ -29695,7 +30155,8 @@
             device_type: device.kind === "audiooutput" ? 1 : 0,
             device_state: 0,
             device_label: device.label,
-            device_id: device.deviceId
+            device_id: device.deviceId,
+            device_info: device.label
           });
           delete this.deviceMap[deviceId];
           updateFlag = true;
@@ -29764,4 +30225,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.2.5.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.2.7.umd.js.map
