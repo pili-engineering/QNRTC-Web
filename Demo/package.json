@@ -29,7 +29,7 @@
     "clipboard": "^2.0.4",
     "core-js": "^2.6.3",
     "flv.js": "^1.5.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
