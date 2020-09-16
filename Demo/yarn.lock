@@ -6531,10 +6531,10 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.2.1.tgz#a2fd4aaa888ecad14b9490ba107b423a30dba78e"
-  integrity sha512-XCQWXGwmYouCM61daLXcdXFW25+JiO6xVLVkI5Ex8okGD4UHyTE+ropVfsEstPQ1P0w6L7/xUuMGRCe9kgWGpQ==
+pili-rtc-web@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.3.0.tgz#70e8d9f7d06d16418305580195e98eaa5218f08d"
+  integrity sha512-ojqlEeIf3AZ3/mqo/fxK7js79CDnc2k37CKmNXKDdeSlgBg/HDsB0KKlKFJLh8+gM/bPz+5xqYKEe1LKQ3IPtw==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@types/blueimp-md5" "^2.7.0"

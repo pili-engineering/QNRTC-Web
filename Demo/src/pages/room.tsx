@@ -32,6 +32,10 @@ import { MessageStore } from '../stores/messageStore';
 import { MenuStore } from '../stores/menuStore';
 import InfoPanel from '../components/InfoPanel';
 
+// 暂时先注释掉这两个组建，后续修复
+// import SwitchPanel from '../components/SwitchPanel'
+// import MergePanel from '../components/MergePanel'
+
 const styles = (theme: Theme) => createStyles({
   root: {
     overflow: 'hidden',
@@ -39,6 +43,17 @@ const styles = (theme: Theme) => createStyles({
     height: '100vh',
     width: '100vw',
     color: '#fff',
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  rootcontent: {
+    width: '75%',
+    flex: '1 0 auto',
+    position: 'relative'
+  },
+  sidebar: {
+    width: '25%',
+    flex: '1 0 auto'
   },
   progress: {
     margin: theme.spacing.unit * 2,
@@ -344,166 +359,192 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     const publishedVideoTracks = roomStore.publishedVideoTracks;
     return (
     <div className={classes.root}>
-      <div className={classes.screen}>
-        <UserPlayer
-        screen
-        local
-        tracks={Array.from(roomStore.publishedTracks.values())}
-        menuStore={menuStore}
-        />
-      </div>
-      <Grid
-        className={classes.zoom}
-        container
-        direction="column"
-        justify="space-between"
-        wrap="nowrap"
-        alignItems="stretch"
-      >
-        <Grid
-          item
-          container
-          direction="column"
-          justify="flex-end"
-          alignItems="stretch"
-        >
-          <Grid
-            item
-            container
-            className={classes.header}
-            direction="row"
-            justify="space-between"
-            alignItems="center"
-          >
-            <Grid
-              item
-              sm={4}
-              xs={6}
-              className={classes.headerContent}
-            >
-              房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
-            </Grid>
-            <Grid
-              item
-              sm={8}
-              xs={6}
-              container
-              direction="row-reverse"
-              className={classes.headerContent}
-            >
-              { Array.from(this.props.roomStore.users.values()).map(v => {
-                  return (
-                  <Grid item xl={2} md={3} sm={6} xs={12} key={v.id}>
-                  <Chip
-                    avatar={<Avatar>{v.id.substr(0, 1).toUpperCase()}</Avatar>}
-                    label={v.id}
-                    className={classes.chip}
-                    onClick={this.handleUserClick.bind(this, v.id)}
-                  />
-                  </Grid>)
-                }) }
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          container
-          direction="column"
-          justify="flex-end"
-          alignItems="stretch"
-        >
-          <InfoPanel
-            audioStatus={this.props.roomStore.publishTracksReport.audio}
-            videoStatus={this.props.roomStore.publishTracksReport.video}
-            screenStatus={this.props.roomStore.publishTracksReport.screen}
+      <div className={classes.rootcontent}>
+        <div className={classes.screen}>
+          <UserPlayer
+          screen
+          local
+          tracks={Array.from(roomStore.publishedTracks.values())}
+          menuStore={menuStore}
           />
+        </div>
+        <Grid
+          className={classes.zoom}
+          container
+          direction="column"
+          justify="space-between"
+          wrap="nowrap"
+          alignItems="stretch"
+        >
           <Grid
             item
+            container
+            direction="column"
+            justify="flex-end"
+            alignItems="stretch"
           >
             <Grid
+              item
               container
+              className={classes.header}
               direction="row"
-              justify="flex-start"
-              alignItems="flex-start"
-              spacing={8}
-              className={classes.content}
+              justify="space-between"
+              alignItems="center"
             >
-              {Array.from(this.props.roomStore.users.values())
-                .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
-                .map(v =>
-                  (<Grid key={v.id} item>
-                    <UserPlayer menuStore={menuStore} user={v}/>
-                  </Grid>)
-                )}
+              <Grid
+                item
+                sm={4}
+                xs={6}
+                className={classes.headerContent}
+              >
+                房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
+              </Grid>
+              <Grid
+                item
+                sm={8}
+                xs={6}
+                container
+                direction="row-reverse"
+                className={classes.headerContent}
+              >
+                { Array.from(this.props.roomStore.users.values()).map(v => {
+                    return (
+                    <Grid item xl={2} md={3} sm={6} xs={12} key={v.id}>
+                    <Chip
+                      avatar={<Avatar>{v.id.substr(0, 1).toUpperCase()}</Avatar>}
+                      label={v.id}
+                      className={classes.chip}
+                      onClick={this.handleUserClick.bind(this, v.id)}
+                    />
+                    </Grid>)
+                  }) }
+              </Grid>
             </Grid>
           </Grid>
           <Grid
             item
             container
-            className={classes.footer}
-            direction="row"
-            justify="center"
-            wrap="nowrap"
-            alignItems="center"
-            spacing={8}
+            direction="column"
+            justify="flex-end"
+            alignItems="stretch"
           >
-            <Grid item>
-              <Tooltip
-                  title="点击复制加会链接"
-                  placement="top-end"
-                >
-                  <IconButton
-                    buttonRef={(ref) => {
-                      if(ref) new Clipboard(ref);
-                    }}
-                    data-clipboard-text={window.location.href}
-                  >
-                    <ContentCopyIcon/>
-                  </IconButton>
-              </Tooltip>
-            </Grid>
-            <Grid item>
-              { publishedVideoTracks.length !== 0 ?
-              (<Tooltip
-                  title="视频"
-                  placement="top-end"
-                >
-                  <IconButton
-                    onClick={ roomStore.toggleMutePublishedVideo }
-                  >
-                    {!publishedVideoTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
-                  </IconButton>
-              </Tooltip>) : <></> }
-            </Grid>
-            <Grid item>
-              <Fab
-                onClick={this.handlePublish}
-                color={this.props.roomStore.publishedTracks.size > 0 ? "primary" : "default"}
-                classes={{
-                  primary: this.props.classes.activeFab,
-                }}
+            <InfoPanel
+              audioStatus={roomStore.publishTracksReport.audio}
+              videoStatus={roomStore.publishTracksReport.video}
+              screenStatus={roomStore.publishTracksReport.screen}
+            />
+            {/* <SwitchPanel
+              // session={roomStore.session}
+              audioDeviceId={roomStore.audioDeviceId}
+              videoDeviceId={roomStore.videoDeviceId}
+              roomStore={roomStore}
+            /> */}
+            <Grid
+              item
+            >
+              <Grid
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+                spacing={8}
+                className={classes.content}
               >
-                <PhoneIcon/>
-              </Fab>
+                {Array.from(this.props.roomStore.users.values())
+                  .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
+                  .map(v =>
+                    (<Grid key={v.id} item>
+                      <UserPlayer menuStore={menuStore} user={v}/>
+                    </Grid>)
+                  )}
+              </Grid>
             </Grid>
-            <Grid item>
-              { publishedAudioTracks.length !== 0 ?
-              (<Tooltip
+            <Grid
+              item
+              container
+              className={classes.footer}
+              direction="row"
+              justify="center"
+              wrap="nowrap"
+              alignItems="center"
+              spacing={8}
+            >
+              <Grid item>
+                <Tooltip
+                    title="点击复制加会链接"
+                    placement="top-end"
+                  >
+                    <IconButton
+                      buttonRef={(ref) => {
+                        if(ref) new Clipboard(ref);
+                      }}
+                      data-clipboard-text={window.location.href}
+                    >
+                      <ContentCopyIcon/>
+                    </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item>
+                { publishedVideoTracks.length !== 0 ?
+                (<Tooltip
+                    title="视频"
+                    placement="top-end"
+                  >
+                    <IconButton
+                      onClick={ roomStore.toggleMutePublishedVideo }
+                    >
+                      {!publishedVideoTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
+                    </IconButton>
+                </Tooltip>) : <></> }
+              </Grid>
+              <Grid item>
+                <Fab
+                  onClick={this.handlePublish}
+                  color={this.props.roomStore.publishedTracks.size > 0 ? "primary" : "default"}
+                  classes={{
+                    primary: this.props.classes.activeFab,
+                  }}
+                >
+                  <PhoneIcon/>
+                </Fab>
+              </Grid>
+              <Grid item>
+                { publishedAudioTracks.length !== 0 ?
+                (<Tooltip
+                    title="麦克风"
+                    placement="top-end"
+                  >
+                    <IconButton
+                      onClick={ roomStore.toggleMutePublishedAudio }
+                    >
+                      {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
+                    </IconButton>
+                </Tooltip>) : <></> }
+              </Grid>
+              <Grid item className={classes.holder}>
+                {/* <Tooltip
                   title="麦克风"
                   placement="top-end"
                 >
                   <IconButton
-                    onClick={ roomStore.toggleMutePublishedAudio }
+                    onClick={ roomStore.toggleDisplayMergePanel }
                   >
-                    {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
+                    Merge
                   </IconButton>
-              </Tooltip>) : <></> }
-            </Grid>
-            <Grid item className={classes.holder}>
+                </Tooltip> */}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </div>
+      {/* {
+        roomStore.displayMergePanel && (
+          <div className={classes.sidebar}>
+            <MergePanel roomStore={this.props.roomStore} />
+          </div>
+        )
+      } */}
+      
     </div>);
   }
 }

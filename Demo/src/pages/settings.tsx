@@ -4,6 +4,9 @@ import { observer, inject } from 'mobx-react';
 import {
   Grid,
   IconButton,
+  FormLabel,
+  Radio,
+  RadioGroup,
   ButtonBase,
 } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
@@ -129,6 +132,12 @@ class Settings extends Component<Props, State> {
           />
         </Grid>
       </Grid>
+      <Grid item container wrap="nowrap" justify="center" spacing={16}>
+        <Grid item>
+          是否使用电脑声音: <Radio checked={!!this.props.roomStore.useAudio} onChange={(_e, checked: boolean) => {this.props.roomStore.updateUseAudio(checked)}} />
+        </Grid>
+      </Grid>
+ 
       <Grid item container wrap="nowrap" justify="center" spacing={16}>
         <Grid item>
           <ButtonBase

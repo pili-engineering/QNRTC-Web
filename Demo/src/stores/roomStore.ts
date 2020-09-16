@@ -10,6 +10,8 @@ import {
   AudioTrack,
   TrackStatsReport,
   AudioUtils,
+  TrackMergeOptions,
+  MergeJob
 } from 'pili-rtc-web';
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -50,6 +52,15 @@ export class RoomStore {
   /** 已选择要采集的 Track配置 */
   public selectTracks: (RecordConfig | undefined)[] = [];
 
+  @observable
+  public videoDeviceId?: string = undefined
+
+  @observable
+  public audioDeviceId?: string = undefined
+
+  @observable
+  public useAudio?: boolean = false
+
   /** 已选择的清晰度 */
   @observable
   public selectVideoConfig: keyof publishVideoConfigs = '480p';
@@ -86,6 +97,11 @@ export class RoomStore {
     this.muteTracks(publishedAudioTracks.map(v => v.trackId), publishedAudioTracks.some(v => !v.muted));
   }
 
+  @action.bound
+  public updateUseAudio(audio: boolean) {
+    this.useAudio = audio
+  }
+
   /** 已订阅的 Track Map */
   @observable.deep
   public subscribedTracks: Map<string, Track> = new Map();
@@ -104,7 +120,7 @@ export class RoomStore {
 
 
   /** TrackModeSession */
-  public session: TrackModeSession = new TrackModeSession();
+  public session: TrackModeSession = new TrackModeSession({ transportPolicy: 'forceTcp' });
 
   /** 房间内已发布的 TrackBaseInfo */
   public publishedTrackInfos: Map<string, TrackBaseInfo> = new Map();
@@ -169,6 +185,26 @@ export class RoomStore {
   public setState(state: RoomState): void {
     console.log("room state change", state);
     this.state = state;
+  }
+
+  @action.bound
+  public async setVideoDeviceId(deviceId: string) {
+    this.videoDeviceId = deviceId
+    await this.unpublish()
+    // this.releaseLocalTracks()
+    const rtcTracks = await this.getSelectTracks()
+    console.log("update video deviceid repub:", rtcTracks);
+    await this.publish(rtcTracks);
+  }
+
+  @action.bound
+  public async setAudioDeviceId(deviceId: string) {
+    this.audioDeviceId = deviceId
+    await this.unpublish()
+    // this.releaseLocalTracks()
+    const rtcTracks = await this.getSelectTracks()
+    console.log("update audio deviceid repub:", rtcTracks);
+    await this.publish(rtcTracks);
   }
 
   @action.bound
@@ -328,7 +364,26 @@ export class RoomStore {
       }
       if (config.video) {
         Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video)
+        if (this.videoDeviceId) {
+          Object.assign(config.video, { deviceId: this.videoDeviceId })
+        }
       }
+      if (config.audio) {
+        if (this.audioDeviceId) {
+          Object.assign(config.audio, { deviceId: this.audioDeviceId })
+        }
+      }
+
+      if (this.useAudio) {
+        if (config.audio) {
+          delete config.audio
+        }
+        if (config.screen) {
+          config.screen.audio = true
+        }
+      }
+      console.log('tracks config:', config)
+      
       return deviceManager.getLocalTracks(config)
         .then(async (tracks: RTCTrack[]) => {
           for (const track of tracks) {
