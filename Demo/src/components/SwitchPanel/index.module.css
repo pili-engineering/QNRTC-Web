@@ -1,0 +1,19 @@
+
+.switchPanel {
+  background: rgba(28,28,28,0.8);
+  border-radius: 4px;
+  color: #fff;
+  left: 10px;
+  position: absolute;
+  top: 200px;
+  z-index: 64;
+  min-width: 22em;
+  font-size: 11px;
+  padding: 5px;
+}
+.formControl {
+  display: block;
+}
+.formControl > .select {
+  min-width: 120px;
+}

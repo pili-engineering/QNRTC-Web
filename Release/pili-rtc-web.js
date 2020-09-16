@@ -42,79 +42,7 @@
 
   var objectSpread = _objectSpread;
 
-  var __spreadArrays = undefined && undefined.__spreadArrays || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-
-    for (var r = Array(s), k = 0, i = 0; i < il; i++) for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
-
-    return r;
-  };
-
-  var BrowserInfo =
-  /** @class */
-  function () {
-    function BrowserInfo(name, version, os) {
-      this.name = name;
-      this.version = version;
-      this.os = os;
-      this.type = 'browser';
-    }
-
-    return BrowserInfo;
-  }();
-
-  var NodeInfo =
-  /** @class */
-  function () {
-    function NodeInfo(version) {
-      this.version = version;
-      this.type = 'node';
-      this.name = 'node';
-      this.os = process.platform;
-    }
-
-    return NodeInfo;
-  }();
-
-  var SearchBotDeviceInfo =
-  /** @class */
-  function () {
-    function SearchBotDeviceInfo(name, version, os, bot) {
-      this.name = name;
-      this.version = version;
-      this.os = os;
-      this.bot = bot;
-      this.type = 'bot-device';
-    }
-
-    return SearchBotDeviceInfo;
-  }();
-
-  var BotInfo =
-  /** @class */
-  function () {
-    function BotInfo() {
-      this.type = 'bot';
-      this.bot = true; // NOTE: deprecated test name instead
-
-      this.name = 'bot';
-      this.version = null;
-      this.os = null;
-    }
-
-    return BotInfo;
-  }();
-
-  var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
-  var SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
-  var REQUIRED_VERSION_PARTS = 3;
-  var userAgentRules = [['aol', /AOLShield\/([0-9\._]+)/], ['edge', /Edge\/([0-9\._]+)/], ['edge-ios', /EdgiOS\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['samsung', /SamsungBrowser\/([0-9\.]+)/], ['silk', /\bSilk\/([0-9._-]+)\b/], ['miui', /MiuiBrowser\/([0-9\.]+)$/], ['beaker', /BeakerBrowser\/([0-9\.]+)/], ['edge-chromium', /Edg\/([0-9\.]+)/], ['chromium-webview', /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera-mini', /Opera Mini.*Version\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/], ['facebook', /FBAV\/([0-9\.]+)/], ['instagram', /Instagram\s([0-9\.]+)/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Gecko\)$/], ['searchbot', SEARCHBOX_UA_REGEX]];
-  var operatingSystemRules = [['iOS', /iP(hone|od|ad)/], ['Android OS', /Android/], ['BlackBerry OS', /BlackBerry|BB10/], ['Windows Mobile', /IEMobile/], ['Amazon OS', /Kindle/], ['Windows 3.11', /Win16/], ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/], ['Windows 98', /(Windows 98)|(Win98)/], ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/], ['Windows XP', /(Windows NT 5.1)|(Windows XP)/], ['Windows Server 2003', /(Windows NT 5.2)/], ['Windows Vista', /(Windows NT 6.0)/], ['Windows 7', /(Windows NT 6.1)/], ['Windows 8', /(Windows NT 6.2)/], ['Windows 8.1', /(Windows NT 6.3)/], ['Windows 10', /(Windows NT 10.0)/], ['Windows ME', /Windows ME/], ['Open BSD', /OpenBSD/], ['Sun OS', /SunOS/], ['Chrome OS', /CrOS/], ['Linux', /(Linux)|(X11)/], ['Mac OS', /(Mac_PowerPC)|(Macintosh)/], ['QNX', /QNX/], ['BeOS', /BeOS/], ['OS/2', /OS\/2/]];
-  function detect(userAgent) {
-    if (!!userAgent) {
-      return parseUserAgent(userAgent);
-    }
-
+  function detect() {
     if (typeof navigator !== 'undefined') {
       return parseUserAgent(navigator.userAgent);
     }
@@ -122,85 +50,80 @@
     return getNodeVersion();
   }
 
-  function matchUserAgent(ua) {
-    // opted for using reduce here rather than Array#first with a regex.test call
-    // this is primarily because using the reduce we only perform the regex
-    // execution once rather than once for the test and for the exec again below
-    // probably something that needs to be benchmarked though
-    return ua !== '' && userAgentRules.reduce(function (matched, _a) {
-      var browser = _a[0],
-          regex = _a[1];
-
-      if (matched) {
-        return matched;
-      }
-
-      var uaMatch = regex.exec(ua);
-      return !!uaMatch && [browser, uaMatch];
-    }, false);
+  function detectOS(userAgentString) {
+    var rules = getOperatingSystemRules();
+    var detected = rules.filter(function (os) {
+      return os.rule && os.rule.test(userAgentString);
+    })[0];
+    return detected ? detected.name : null;
   }
-  function parseUserAgent(ua) {
-    var matchedRule = matchUserAgent(ua);
 
-    if (!matchedRule) {
+  function getNodeVersion() {
+    var isNode = typeof process !== 'undefined' && process.version;
+    return isNode && {
+      name: 'node',
+      version: process.version.slice(1),
+      os: process.platform
+    };
+  }
+
+  function parseUserAgent(userAgentString) {
+    var browsers = getBrowserRules();
+
+    if (!userAgentString) {
       return null;
     }
 
-    var name = matchedRule[0],
-        match = matchedRule[1];
+    var detected = browsers.map(function (browser) {
+      var match = browser.rule.exec(userAgentString);
+      var version = match && match[1].split(/[._]/).slice(0, 3);
 
-    if (name === 'searchbot') {
-      return new BotInfo();
-    }
-
-    var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
-
-    if (versionParts) {
-      if (versionParts.length < REQUIRED_VERSION_PARTS) {
-        versionParts = __spreadArrays(versionParts, createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
+      if (version && version.length < 3) {
+        version = version.concat(version.length == 1 ? [0, 0] : [0]);
       }
-    } else {
-      versionParts = [];
+
+      return match && {
+        name: browser.name,
+        version: version.join('.')
+      };
+    }).filter(Boolean)[0] || null;
+
+    if (detected) {
+      detected.os = detectOS(userAgentString);
     }
 
-    var version = versionParts.join('.');
-    var os = detectOS(ua);
-    var searchBotMatch = SEARCHBOT_OS_REGEX.exec(ua);
-
-    if (searchBotMatch && searchBotMatch[1]) {
-      return new SearchBotDeviceInfo(name, version, os, searchBotMatch[1]);
+    if (/alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/i.test(userAgentString)) {
+      detected = detected || {};
+      detected.bot = true;
     }
 
-    return new BrowserInfo(name, versionParts.join('.'), os);
-  }
-  function detectOS(ua) {
-    for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
-      var _a = operatingSystemRules[ii],
-          os = _a[0],
-          regex = _a[1];
-      var match = regex.exec(ua);
-
-      if (match) {
-        return os;
-      }
-    }
-
-    return null;
-  }
-  function getNodeVersion() {
-    var isNode = typeof process !== 'undefined' && process.version;
-    return isNode ? new NodeInfo(process.version.slice(1)) : null;
+    return detected;
   }
 
-  function createVersionParts(count) {
-    var output = [];
-
-    for (var ii = 0; ii < count; ii++) {
-      output.push('0');
-    }
-
-    return output;
+  function getBrowserRules() {
+    return buildRules([['aol', /AOLShield\/([0-9\._]+)/], ['edge', /Edge\/([0-9\._]+)/], ['yandexbrowser', /YaBrowser\/([0-9\._]+)/], ['vivaldi', /Vivaldi\/([0-9\.]+)/], ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/], ['samsung', /SamsungBrowser\/([0-9\.]+)/], ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/], ['phantomjs', /PhantomJS\/([0-9\.]+)(:?\s|$)/], ['crios', /CriOS\/([0-9\.]+)(:?\s|$)/], ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/], ['fxios', /FxiOS\/([0-9\.]+)/], ['opera', /Opera\/([0-9\.]+)(?:\s|$)/], ['opera', /OPR\/([0-9\.]+)(:?\s|$)$/], ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/], ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/], ['ie', /MSIE\s(7\.0)/], ['bb10', /BB10;\sTouch.*Version\/([0-9\.]+)/], ['android', /Android\s([0-9\.]+)/], ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/], ['safari', /Version\/([0-9\._]+).*Safari/], ['facebook', /FBAV\/([0-9\.]+)/], ['instagram', /Instagram\s([0-9\.]+)/], ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/]]);
   }
+
+  function getOperatingSystemRules() {
+    return buildRules([['iOS', /iP(hone|od|ad)/], ['Android OS', /Android/], ['BlackBerry OS', /BlackBerry|BB10/], ['Windows Mobile', /IEMobile/], ['Amazon OS', /Kindle/], ['Windows 3.11', /Win16/], ['Windows 95', /(Windows 95)|(Win95)|(Windows_95)/], ['Windows 98', /(Windows 98)|(Win98)/], ['Windows 2000', /(Windows NT 5.0)|(Windows 2000)/], ['Windows XP', /(Windows NT 5.1)|(Windows XP)/], ['Windows Server 2003', /(Windows NT 5.2)/], ['Windows Vista', /(Windows NT 6.0)/], ['Windows 7', /(Windows NT 6.1)/], ['Windows 8', /(Windows NT 6.2)/], ['Windows 8.1', /(Windows NT 6.3)/], ['Windows 10', /(Windows NT 10.0)/], ['Windows ME', /Windows ME/], ['Open BSD', /OpenBSD/], ['Sun OS', /SunOS/], ['Linux', /(Linux)|(X11)/], ['Mac OS', /(Mac_PowerPC)|(Macintosh)/], ['QNX', /QNX/], ['BeOS', /BeOS/], ['OS/2', /OS\/2/], ['Search Bot', /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/]]);
+  }
+
+  function buildRules(ruleTuples) {
+    return ruleTuples.map(function (tuple) {
+      return {
+        name: tuple[0],
+        rule: tuple[1]
+      };
+    });
+  }
+
+  var detectBrowser = {
+    detect: detect,
+    detectOS: detectOS,
+    getNodeVersion: getNodeVersion,
+    parseUserAgent: parseUserAgent
+  };
+  var detectBrowser_1 = detectBrowser.detect;
 
   var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -1443,8 +1366,8 @@
   var semver_38 = semver.intersects;
   var semver_39 = semver.coerce;
 
-  function detectBrowser() {
-    const originBrowser = detect();
+  function detectBrowser$1() {
+    const originBrowser = detectBrowser_1();
 
     if (!navigator || !navigator.appVersion || !originBrowser) {
       return originBrowser;
@@ -1465,7 +1388,7 @@
   const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
   const isChrome = !!window.chrome;
   const isIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i);
-  const browser = detectBrowser() || {};
+  const browser = detectBrowser$1() || {};
 
   function baseSupportCheck() {
     try {
@@ -1714,19 +1637,8 @@
       }
 
       return func(constraints);
-    };
+    }; // Returns the result of getUserMedia as a Promise.
 
-    const getUserMedia_ = function (constraints, onSuccess, onError) {
-      shimConstraints_(constraints, c => {
-        navigator.webkitGetUserMedia(c, onSuccess, e => {
-          if (onError) {
-            onError(e);
-          }
-        });
-      });
-    };
-
-    navigator.getUserMedia = getUserMedia_; // Returns the result of getUserMedia as a Promise.
 
     const getUserMediaPromise_ = function (constraints) {
       return new Promise((resolve, reject) => {
@@ -21410,7 +21322,7 @@
   /**
    * SDK版本号
    */
-  const version = "2.2.7"; // @internal
+  const version = "2.3.0"; // @internal
 
   class LogModel {
     constructor(level) {
@@ -28056,9 +27968,22 @@
             }
           }
 
-          pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect);
+          pcTracks.forEach(t => t.connectStatus = exports.TrackConnectStatus.Connect); // sub 数据中，缺少 muted 属性，此时手动通过 trackid 使用 this._trackInfo 赋值，
+          // 防止在 handleMute 中将 muted 属性设置为了 undefined
+
+          let tracks = data.tracks.map(subTrack => {
+            if (subTrack.muted === undefined) {
+              for (let i = 0; i < this._trackInfo.length; i++) {
+                if (subTrack.trackid === this._trackInfo[i].trackid) {
+                  subTrack.muted = this._trackInfo[i].muted;
+                }
+              }
+            }
+
+            return subTrack;
+          });
           this.handleMute({
-            tracks: data.tracks
+            tracks: tracks
           });
         } catch (e) {
           log.log(e);
@@ -28529,25 +28454,27 @@
       await this.control("kickplayer", userId);
     }
     /**
-     * @internal
      * 向房间中指定目标发送自定义消息
-     * @param data string 自定义消息内容
+     * @param message string 自定义消息内容
      * @param userIds Array<string> 目标用户名列表，如果为空，则在全房间广播
+     * @param messageId string 消息ID
      */
 
 
-    sendCustomMessage(data, userIds) {
+    sendCustomMessage(message, userIds, messageId) {
       if (this.roomState !== exports.RoomState.Connected) {
         throw UNEXPECTED_ERROR("room state is not connected, can not send message");
       }
 
+      const msgid = messageId || randomStringGen(8);
+      const target = !userIds || userIds.length === 0 ? undefined : userIds;
       this.signaling.sendWsMsg("send-message", {
-        msgid: randomStringGen(8),
-        target: !userIds || userIds.length === 0 ? undefined : userIds,
+        msgid: msgid,
+        target: target,
         type: "normal",
-        text: data
+        text: message
       });
-      log.debug("send custom message", data, userIds);
+      log.debug("send custom message", message, target, msgid);
     }
     /**
      * leaveRoom 将不会本地的发布流，如果想清除本地的发布流
@@ -30123,15 +30050,17 @@
       }
 
       let screenStream;
+      const displayConstraints = config.screen && config.screen.audio && !constraints.audio ? {
+        video: constraints.video,
+        audio: config.screen.audio
+      } : {
+        video: constraints.video
+      };
 
       if (browserReport.getDisplayMedia && config.screen && !config.screen.forceChromePlugin) {
-        screenStream = await navigator.mediaDevices.getDisplayMedia({
-          video: constraints.video
-        });
+        screenStream = await navigator.mediaDevices.getDisplayMedia(displayConstraints);
       } else {
-        screenStream = await navigator.mediaDevices.getUserMedia({
-          video: constraints.video
-        });
+        screenStream = await navigator.mediaDevices.getUserMedia(displayConstraints);
       }
 
       if (audioStream) {
@@ -30225,4 +30154,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.2.7.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.3.0.umd.js.map

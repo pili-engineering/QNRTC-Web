@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "2.2.1",
+  "version": "2.2.7",
   "private": true,
   "description": "multiple track demo",
   "author": "Yu Chao Liang <liangyuchao@qiniu.com>",
@@ -11,8 +11,8 @@
     "url": "git+https://github.com/pili-engineering/QNRTC-Web.git"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build"
+    "start": "REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) react-scripts start",
+    "build": "REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) react-scripts build"
   },
   "dependencies": {
     "@material-ui/core": "^3.8.3",
@@ -33,7 +33,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "pili-rtc-web": "^2.2.1",
+    "pili-rtc-web": "^2.3.0",
     "qs": "^6.6.0",
     "react": "^16.6.3",
     "react-app-polyfill": "^0.2.0",

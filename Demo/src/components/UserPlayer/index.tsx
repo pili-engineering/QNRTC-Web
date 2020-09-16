@@ -24,6 +24,9 @@ export default class UserPlayer extends React.Component<Props, State> {
   handlePlayerDom(track: Track, ref: HTMLDivElement | null) {
     if (!ref) return;
     if (track.rtcTrack.mediaElement && track.rtcTrack.mediaElement.parentElement === ref) return;
+    if (ref.innerHTML) {
+      ref.innerHTML = ''
+    } 
     track.rtcTrack.play(ref);
   }
 
