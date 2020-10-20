@@ -157,8 +157,6 @@ export default class LivePage extends React.Component<Props, State> {
   }
 
   private handleMergeChange(options: MergeOptions): void {
-
-    console.log(options);
     const addConfig: TrackMergeOptions[] = [];
     const removeConfig = [];
     for(const value of Object.values(options) as TrackOption[]) {
@@ -171,6 +169,7 @@ export default class LivePage extends React.Component<Props, State> {
           z: Number(value.z),
           w: Number(value.w),
           h: Number(value.h),
+          stretchMode: value.stretchMode
         };
         addConfig.push(config);
       } else {

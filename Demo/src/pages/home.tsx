@@ -20,6 +20,7 @@ import Input from '../components/Input';
 import "../styles/home.css";
 
 import { observer, inject } from 'mobx-react';
+import { version as SDKVersion } from "pili-rtc-web";
 import { UserStore } from '../stores/userStore';
 import { RoomStore } from '../stores/roomStore';
 import { RouterStore } from 'mobx-react-router';
@@ -77,6 +78,9 @@ const styles = (theme: Theme) => createStyles({
     position: 'absolute',
     bottom: '16px',
     left: '16px',
+    '& > p': {
+      margin: "1px 0 0 0"
+    }
   },
 });
 
@@ -157,7 +161,7 @@ class Home extends Component<Props, State> {
         selected = ~(0b00110 ^ (1 << index)) & selected;
       } else {
         // 不允许同时选中 index 3 屏幕共享 或 4 窗口共享
-        selected = ~(0b11000^ (1 << index)) & selected;
+        selected = ~(0b11000 ^ (1 << index)) & selected;
       }
     }
     for (let i = 0; i < PublishRecordOptions.length; i++) {
@@ -176,7 +180,7 @@ class Home extends Component<Props, State> {
   handleRadioChange = async (event: React.ChangeEvent<{}>, value: string) => {
     let selected = parseInt(value, 2);
 
-    for(let i = 0; i < PublishRecordOptions.length; i++) {
+    for (let i = 0; i < PublishRecordOptions.length; i++) {
       const { key, config } = PublishRecordOptions[i]
       if (selected & (1 << i)) {
         // 二进制按位与运算 计算是否已选择
@@ -274,7 +278,7 @@ class Home extends Component<Props, State> {
     const { enhance } = this.state;
     return (
       <div className={classes.root}>
-        <IconButton 
+        <IconButton
           style={{
             pointerEvents: this.state.joinRoomStep !== 0 ? "auto" : "none",
             opacity: this.state.joinRoomStep !== 0 ? 1 : 0,
@@ -285,7 +289,7 @@ class Home extends Component<Props, State> {
           }}
           onClick={() => this.props.routerStore.push('/settings')}
         >
-          <SettingsIcon color="inherit"/>
+          <SettingsIcon color="inherit" />
         </IconButton>
         <Grid
           container
@@ -301,55 +305,55 @@ class Home extends Component<Props, State> {
               }} className={classes.avatar}>{this.props.userStore.id[0].toUpperCase()}</Avatar> :
                 <Avatar className={classes.avatar} src={qiniu}></Avatar>
               }
-              <p className="home_user">{ this.props.userStore.id ? `账户名称: ${this.props.userStore.id}` : ''}</p>
+              <p className="home_user">{this.props.userStore.id ? `账户名称: ${this.props.userStore.id}` : ''}</p>
             </Grid>
           </Grid>
-          { this.props.routerStore.location.pathname === '/roomtoken' ?
-              (<Grid item container wrap="nowrap" justify="center" spacing={16}>
+          {this.props.routerStore.location.pathname === '/roomtoken' ?
+            (<Grid item container wrap="nowrap" justify="center" spacing={16}>
+              <Grid item>
+                <FormControl className={classes.formControl} aria-describedby="roomid-text">
+                  <Input
+                    placeholder="请输入 roomToken"
+                    value={this.state.roomToken}
+                    onChange={(e) => this.setState({ roomToken: e.target.value })}
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>) :
+            (<>
+              {this.state.joinRoomStep === 0 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
+                <Grid item>
+                  <FormControl className={classes.formControl} aria-describedby="userid-text">
+                    <Input
+                      placeholder="请输入用户名"
+                      value={this.state.userid}
+                      onChange={(e) => this.setState({ userid: e.target.value })}
+                    />
+                    <p className="hint">名称为 admin 的用户会被自动分配管理员权限</p>
+                  </FormControl>
+                </Grid>
+              </Grid>}
+              {this.state.joinRoomStep === 1 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
                 <Grid item>
                   <FormControl className={classes.formControl} aria-describedby="roomid-text">
                     <Input
-                      placeholder="请输入 roomToken"
-                      value={this.state.roomToken}
-                      onChange={(e) => this.setState({ roomToken: e.target.value })}
+                      placeholder="请输入房间名"
+                      value={this.state.roomid}
+                      onChange={(e) => this.setState({ roomid: e.target.value })}
                     />
+                    <p className="hint">如果房间尚未创建，将会自动创建一个房间</p>
                   </FormControl>
                 </Grid>
-              </Grid>) :
-            (<>
-            { this.state.joinRoomStep === 0 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
-              <Grid item>
-                <FormControl className={classes.formControl} aria-describedby="userid-text">
-                  <Input
-                    placeholder="请输入用户名"
-                    value={this.state.userid}
-                    onChange={(e) => this.setState({ userid: e.target.value })}
-                  />
-                  <p className="hint">名称为 admin 的用户会被自动分配管理员权限</p>
-                </FormControl>
-              </Grid>
-            </Grid> }
-          { this.state.joinRoomStep === 1 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
-            <Grid item>
-              <FormControl className={classes.formControl} aria-describedby="roomid-text">
-                <Input
-                  placeholder="请输入房间名"
-                  value={this.state.roomid}
-                  onChange={(e) => this.setState({ roomid: e.target.value })}
-                />
-                <p className="hint">如果房间尚未创建，将会自动创建一个房间</p>
-              </FormControl>
-            </Grid>
-          </Grid> }
-        </>)}
-          { this.state.joinRoomStep === 1 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
+              </Grid>}
+            </>)}
+          {this.state.joinRoomStep === 1 && <Grid item container wrap="nowrap" justify="center" spacing={16}>
             <Grid item>
               <FormControl className={classes.formControl}>
                 <RadioGroup
                   className={classes.radioGroup}
                   name="mode"
                   row
-                  value={this.state.selected.toString(2).padStart(PublishRecordOptions.length ,'0')}
+                  value={this.state.selected.toString(2).padStart(PublishRecordOptions.length, '0')}
                   onChange={this.handleRadioChange}
                 >
                   <FormControlLabel value="00010" control={<Radio />} label="音频通话" />
@@ -383,11 +387,11 @@ class Home extends Component<Props, State> {
                         label={val.label}
                       />
                     ))}
-                    </FormGroup>
+                  </FormGroup>
                 </FormControl>
               </Grow>
             </Grid>
-          </Grid> }
+          </Grid>}
           <Grid item container wrap="nowrap" justify="center" spacing={16}>
             <Grid item>
               <ButtonBase
@@ -395,26 +399,30 @@ class Home extends Component<Props, State> {
                 onClick={this.handleNext.bind(this, 'room')}
                 className="home_btn"
               >
-                { this.state.joinRoomStep === 0 ? "下一步" : "会议房间" }
+                {this.state.joinRoomStep === 0 ? "下一步" : "会议房间"}
               </ButtonBase>
             </Grid>
           </Grid>
-          { this.state.joinRoomStep === 0 ?
-          <></> :
-          <Grid item container wrap="nowrap" justify="center" spacing={16}>
-            <Grid item>
-              <ButtonBase
-                focusRipple
-                onClick={this.handleNext.bind(this, 'live')}
-                className="home_btn"
-              >
-                直播房间
+          {this.state.joinRoomStep === 0 ?
+            <></> :
+            <Grid item container wrap="nowrap" justify="center" spacing={16}>
+              <Grid item>
+                <ButtonBase
+                  focusRipple
+                  onClick={this.handleNext.bind(this, 'live')}
+                  className="home_btn"
+                >
+                  直播房间
               </ButtonBase>
-            </Grid>
-          </Grid> }
+              </Grid>
+            </Grid>}
         </Grid>
-        <span className={classes.linkLeft}>构建时间: {process.env.REACT_APP_BUILD_DATE}</span>
-        { this.props.routerStore.location.pathname === '/roomtoken' ?
+        <div className={classes.linkLeft}>
+          <p>构建时间: {process.env.REACT_APP_BUILD_DATE}</p>
+          <p>App Version: {process.env.REACT_APP_VERSION}</p>
+          <p>SDK Version: {SDKVersion}-{process.env.REACT_APP_LATEST_COMMIT_HASH}</p>
+        </div>
+        {this.props.routerStore.location.pathname === '/roomtoken' ?
           <Link className={classes.linkRight} to="/">使用房间名</Link> :
           <Link className={classes.linkRight} to="/roomtoken">使用 roomToken</Link>
         }

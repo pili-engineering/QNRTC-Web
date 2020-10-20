@@ -21322,7 +21322,7 @@
   /**
    * SDK版本号
    */
-  const version = "2.3.0"; // @internal
+  const version = "2.3.1"; // @internal
 
   class LogModel {
     constructor(level) {
@@ -21387,6 +21387,7 @@
   const log = new LogModel("log");
 
   const defaultTrackStatsReport = () => ({
+    id: "",
     packetLossRate: 0,
     bitrate: 0,
     bytes: 0,
@@ -21395,23 +21396,24 @@
     timestamp: Date.now()
   });
   async function getStats(pc, track, pctype) {
-    const statsReport = defaultTrackStatsReport();
+    const statsReportList = [];
     let report;
 
     try {
       report = await pc.getStats(track);
     } catch (e) {
       log.debug("get stats error, fallback to default", e);
-      return defaultTrackStatsReport();
+      return [];
     }
 
     if (!report) {
       log.debug("get null stats, fallback to default");
-      return defaultTrackStatsReport();
+      return [];
     }
 
     for (const item of report.values()) {
       if (pctype === "send" && item.type === "outbound-rtp" && !item.isRemote || pctype === "recv" && item.type === "inbound-rtp" && !item.isRemote) {
+        const statsReport = defaultTrackStatsReport();
         const remoteItem = report.get(item.remoteId);
         const packets = pctype === "send" ? item.packetsSent : item.packetsReceived;
         const bytes = pctype === "send" ? item.bytesSent : item.bytesReceived;
@@ -21425,10 +21427,21 @@
         statsReport.bytes = bytes;
         statsReport.packets = packets;
         statsReport.packetLoss = packetLoss;
+        statsReport.id = item.id;
+
+        if (item.frameWidth) {
+          statsReport.width = item.frameWidth;
+        }
+
+        if (item.frameHeight) {
+          statsReport.height = item.frameHeight;
+        }
+
+        statsReportList.push(statsReport);
       }
     }
 
-    return statsReport;
+    return statsReportList;
   }
   const defaultAudioExtraStats = {
     track_audio_volume: 0,
@@ -22348,48 +22361,56 @@
       });
     }
   }
-  async function getPCStats(pc, track, pctype, lastReport) {
+  async function getPCStats(pc, track, pctype, lastReportList) {
     if (browserReport.stats) {
       const stats = await getStats(pc, track, pctype);
-      return getRateStats(stats, lastReport);
+      return getRateStats(stats, lastReportList);
     } else {
       runOnce(() => {
         log.warning("your browser does not support getStats");
       }, "not-support-stats-warning");
-      return defaultTrackStatsReport();
+      return [];
     }
   }
-  function getRateStats(report, lastReport) {
-    if (!lastReport) {
-      return report;
+  function getRateStats(reportList, lastReportList) {
+    if (!lastReportList || lastReportList.length === 0) {
+      return reportList;
     }
 
-    const newReport = objectSpread({}, report);
+    if (lastReportList.length !== reportList.length) {
+      return reportList;
+    }
 
-    const packetTrans = report.packets - lastReport.packets;
-    const packetLoss = report.packetLoss - lastReport.packetLoss;
+    const groupedReportLists = lodash_groupby([...reportList, ...lastReportList], "id");
+    const newReportList = Object.values(groupedReportLists).map(([report, lastReport]) => {
+      const time = (report.timestamp - lastReport.timestamp) / 1000;
 
-    if (packetLoss > 0) {
-      newReport.packetLossRate = packetLoss / packetTrans;
-
-      if (newReport.packetLossRate > 1) {
-        newReport.packetLossRate = 1;
+      if (time <= 0) {
+        return report;
       }
-    }
 
-    const time = (report.timestamp - lastReport.timestamp) / 1000;
+      const newReport = objectSpread({}, report);
 
-    if (time <= 0) {
-      return report;
-    }
+      const packetTrans = report.packets - lastReport.packets;
+      const packetLoss = report.packetLoss - lastReport.packetLoss;
 
-    newReport.bitrate = 8 * (report.bytes - lastReport.bytes) / time;
+      if (packetLoss > 0) {
+        newReport.packetLossRate = packetLoss / packetTrans;
 
-    if (newReport.bitrate < 0) {
-      return lastReport;
-    }
+        if (newReport.packetLossRate > 1) {
+          newReport.packetLossRate = 1;
+        }
+      }
 
-    return newReport;
+      newReport.bitrate = 8 * (report.bytes - lastReport.bytes) / time;
+
+      if (newReport.bitrate < 0) {
+        return lastReport;
+      }
+
+      return newReport;
+    });
+    return newReportList;
   }
 
   /*
@@ -22713,10 +22734,10 @@
   }
 
   class Track extends EnhancedEventEmitter {
-    constructor(track, userId, direction) {
+    constructor(track, userId, direction, profiles) {
       super();
       this.master = false;
-      this.stats = defaultTrackStatsReport();
+      this.stats = [];
       /**
        * @internal
        */
@@ -22747,7 +22768,8 @@
         kind: track.kind,
         muted: !track.enabled,
         userId: this.userId,
-        versionid: 0
+        versionid: 0,
+        profiles: profiles || []
       };
     }
 
@@ -22881,8 +22903,8 @@
 
 
     resetStats() {
-      this.stats = defaultTrackStatsReport();
-      this.lastStats = undefined;
+      this.stats = [];
+      this.lastStats = [];
     }
     /**
      * @internal
@@ -22892,9 +22914,9 @@
     async startGetStatsInterval() {
       const getStatsFunc = async () => {
         const handlers = this.getListeners("@get-stats");
-        if (!handlers || handlers.length === 0) return defaultTrackStatsReport();
+        if (!handlers || handlers.length === 0) return [];
         this.stats = await this.safeEmitAsPromise("@get-stats", this.lastStats);
-        this.lastStats = objectSpread({}, this.stats);
+        this.lastStats = [...this.stats];
       };
 
       this.statsInterval = window.setInterval(getStatsFunc, 1000);
@@ -23800,8 +23822,26 @@
     }
 
     getStats() {
-      const audioReport = this._audioTrack ? this._audioTrack.getStats() : defaultTrackStatsReport();
-      const videoReport = this._videoTrack ? this._videoTrack.getStats() : defaultTrackStatsReport();
+      let audioReport = defaultTrackStatsReport();
+
+      if (this._audioTrack) {
+        const audioReportList = this._audioTrack.getStats();
+
+        if (audioReportList.length > 0) {
+          audioReport = audioReportList[0];
+        }
+      }
+
+      let videoReport = defaultTrackStatsReport();
+
+      if (this._videoTrack) {
+        const videoReportList = this._videoTrack.getStats();
+
+        if (videoReportList.length > 0) {
+          videoReport = videoReportList[0];
+        }
+      }
+
       return {
         timestamp: Date.now(),
         videoBitrate: videoReport.bitrate,
@@ -24020,7 +24060,8 @@
       kind: track.kind,
       userId: track.playerid,
       muted: track.muted,
-      versionid: track.versionid
+      versionid: track.versionid,
+      profiles: track.profiles || []
     };
   }
   function transferTrackBaseInfoToSignalingTrack(track, isMaster) {
@@ -24222,7 +24263,7 @@
         reg: /^(\d*)$/
       }],
       o: [{
-        //o=- 20518 0 IN IP4 203.0.113.1
+        // o=- 20518 0 IN IP4 203.0.113.1
         // NB: sessionId will be a String in most cases because it is huge
         name: 'origin',
         reg: /^(\S*) (\d*) (\d*) (\S*) IP(\d) (\S*)/,
@@ -24248,63 +24289,63 @@
       z: [{
         name: 'timezones'
       }],
-      // TODO: this one can actually be parsed properly..
+      // TODO: this one can actually be parsed properly...
       r: [{
         name: 'repeats'
       }],
       // TODO: this one can also be parsed properly
-      //k: [{}], // outdated thing ignored
+      // k: [{}], // outdated thing ignored
       t: [{
-        //t=0 0
+        // t=0 0
         name: 'timing',
         reg: /^(\d*) (\d*)/,
         names: ['start', 'stop'],
         format: '%d %d'
       }],
       c: [{
-        //c=IN IP4 10.47.197.26
+        // c=IN IP4 10.47.197.26
         name: 'connection',
         reg: /^IN IP(\d) (\S*)/,
         names: ['version', 'ip'],
         format: 'IN IP%d %s'
       }],
       b: [{
-        //b=AS:4000
+        // b=AS:4000
         push: 'bandwidth',
         reg: /^(TIAS|AS|CT|RR|RS):(\d*)/,
         names: ['type', 'limit'],
         format: '%s:%s'
       }],
       m: [{
-        //m=video 51744 RTP/AVP 126 97 98 34 31
+        // m=video 51744 RTP/AVP 126 97 98 34 31
         // NB: special - pushes to session
         // TODO: rtp/fmtp should be filtered by the payloads found here?
-        reg: /^(\w*) (\d*) ([\w\/]*)(?: (.*))?/,
+        reg: /^(\w*) (\d*) ([\w/]*)(?: (.*))?/,
         names: ['type', 'port', 'protocol', 'payloads'],
         format: '%s %d %s %s'
       }],
       a: [{
-        //a=rtpmap:110 opus/48000/2
+        // a=rtpmap:110 opus/48000/2
         push: 'rtp',
-        reg: /^rtpmap:(\d*) ([\w\-\.]*)(?:\s*\/(\d*)(?:\s*\/(\S*))?)?/,
+        reg: /^rtpmap:(\d*) ([\w\-.]*)(?:\s*\/(\d*)(?:\s*\/(\S*))?)?/,
         names: ['payload', 'codec', 'rate', 'encoding'],
         format: function (o) {
           return o.encoding ? 'rtpmap:%d %s/%s/%s' : o.rate ? 'rtpmap:%d %s/%s' : 'rtpmap:%d %s';
         }
       }, {
-        //a=fmtp:108 profile-level-id=24;object=23;bitrate=64000
-        //a=fmtp:111 minptime=10; useinbandfec=1
+        // a=fmtp:108 profile-level-id=24;object=23;bitrate=64000
+        // a=fmtp:111 minptime=10; useinbandfec=1
         push: 'fmtp',
         reg: /^fmtp:(\d*) ([\S| ]*)/,
         names: ['payload', 'config'],
         format: 'fmtp:%d %s'
       }, {
-        //a=control:streamid=0
+        // a=control:streamid=0
         name: 'control',
         reg: /^control:(.*)/,
         format: 'control:%s'
       }, {
-        //a=rtcp:65179 IN IP4 193.84.77.194
+        // a=rtcp:65179 IN IP4 193.84.77.194
         name: 'rtcp',
         reg: /^rtcp:(\d*)(?: (\S*) IP(\d) (\S*))?/,
         names: ['port', 'netType', 'ipVer', 'address'],
@@ -24312,13 +24353,13 @@
           return o.address != null ? 'rtcp:%d %s IP%d %s' : 'rtcp:%d';
         }
       }, {
-        //a=rtcp-fb:98 trr-int 100
+        // a=rtcp-fb:98 trr-int 100
         push: 'rtcpFbTrrInt',
         reg: /^rtcp-fb:(\*|\d*) trr-int (\d*)/,
         names: ['payload', 'value'],
         format: 'rtcp-fb:%d trr-int %d'
       }, {
-        //a=rtcp-fb:98 nack rpsi
+        // a=rtcp-fb:98 nack rpsi
         push: 'rtcpFb',
         reg: /^rtcp-fb:(\*|\d*) ([\w-_]*)(?: ([\w-_]*))?/,
         names: ['payload', 'type', 'subtype'],
@@ -24326,16 +24367,21 @@
           return o.subtype != null ? 'rtcp-fb:%s %s %s' : 'rtcp-fb:%s %s';
         }
       }, {
-        //a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
-        //a=extmap:1/recvonly URI-gps-string
+        // a=extmap:2 urn:ietf:params:rtp-hdrext:toffset
+        // a=extmap:1/recvonly URI-gps-string
+        // a=extmap:3 urn:ietf:params:rtp-hdrext:encrypt urn:ietf:params:rtp-hdrext:smpte-tc 25@600/24
         push: 'ext',
-        reg: /^extmap:(\d+)(?:\/(\w+))? (\S*)(?: (\S*))?/,
-        names: ['value', 'direction', 'uri', 'config'],
+        reg: /^extmap:(\d+)(?:\/(\w+))?(?: (urn:ietf:params:rtp-hdrext:encrypt))? (\S*)(?: (\S*))?/,
+        names: ['value', 'direction', 'encrypt-uri', 'uri', 'config'],
         format: function (o) {
-          return 'extmap:%d' + (o.direction ? '/%s' : '%v') + ' %s' + (o.config ? ' %s' : '');
+          return 'extmap:%d' + (o.direction ? '/%s' : '%v') + (o['encrypt-uri'] ? ' %s' : '%v') + ' %s' + (o.config ? ' %s' : '');
         }
       }, {
-        //a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:PS1uQCVeeCFCanVmcjkpPywjNWhcYD0mXXtxaVBR|2^20|1:32
+        // a=extmap-allow-mixed
+        name: 'extmapAllowMixed',
+        reg: /^(extmap-allow-mixed)/
+      }, {
+        // a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:PS1uQCVeeCFCanVmcjkpPywjNWhcYD0mXXtxaVBR|2^20|1:32
         push: 'crypto',
         reg: /^crypto:(\d*) ([\w_]*) (\S*)(?: (\S*))?/,
         names: ['id', 'suite', 'config', 'sessionConfig'],
@@ -24343,60 +24389,65 @@
           return o.sessionConfig != null ? 'crypto:%d %s %s %s' : 'crypto:%d %s %s';
         }
       }, {
-        //a=setup:actpass
+        // a=setup:actpass
         name: 'setup',
         reg: /^setup:(\w*)/,
         format: 'setup:%s'
       }, {
-        //a=mid:1
+        // a=connection:new
+        name: 'connectionType',
+        reg: /^connection:(new|existing)/,
+        format: 'connection:%s'
+      }, {
+        // a=mid:1
         name: 'mid',
         reg: /^mid:([^\s]*)/,
         format: 'mid:%s'
       }, {
-        //a=msid:0c8b064d-d807-43b4-b434-f92a889d8587 98178685-d409-46e0-8e16-7ef0db0db64a
+        // a=msid:0c8b064d-d807-43b4-b434-f92a889d8587 98178685-d409-46e0-8e16-7ef0db0db64a
         name: 'msid',
         reg: /^msid:(.*)/,
         format: 'msid:%s'
       }, {
-        //a=ptime:20
+        // a=ptime:20
         name: 'ptime',
-        reg: /^ptime:(\d*)/,
+        reg: /^ptime:(\d*(?:\.\d*)*)/,
         format: 'ptime:%d'
       }, {
-        //a=maxptime:60
+        // a=maxptime:60
         name: 'maxptime',
-        reg: /^maxptime:(\d*)/,
+        reg: /^maxptime:(\d*(?:\.\d*)*)/,
         format: 'maxptime:%d'
       }, {
-        //a=sendrecv
+        // a=sendrecv
         name: 'direction',
         reg: /^(sendrecv|recvonly|sendonly|inactive)/
       }, {
-        //a=ice-lite
+        // a=ice-lite
         name: 'icelite',
         reg: /^(ice-lite)/
       }, {
-        //a=ice-ufrag:F7gI
+        // a=ice-ufrag:F7gI
         name: 'iceUfrag',
         reg: /^ice-ufrag:(\S*)/,
         format: 'ice-ufrag:%s'
       }, {
-        //a=ice-pwd:x9cml/YzichV2+XlhiMu8g
+        // a=ice-pwd:x9cml/YzichV2+XlhiMu8g
         name: 'icePwd',
         reg: /^ice-pwd:(\S*)/,
         format: 'ice-pwd:%s'
       }, {
-        //a=fingerprint:SHA-1 00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33
+        // a=fingerprint:SHA-1 00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33
         name: 'fingerprint',
         reg: /^fingerprint:(\S*) (\S*)/,
         names: ['type', 'hash'],
         format: 'fingerprint:%s %s'
       }, {
-        //a=candidate:0 1 UDP 2113667327 203.0.113.1 54400 typ host
-        //a=candidate:1162875081 1 udp 2113937151 192.168.34.75 60017 typ host generation 0 network-id 3 network-cost 10
-        //a=candidate:3289912957 2 udp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 generation 0 network-id 3 network-cost 10
-        //a=candidate:229815620 1 tcp 1518280447 192.168.150.19 60017 typ host tcptype active generation 0 network-id 3 network-cost 10
-        //a=candidate:3289912957 2 tcp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 tcptype passive generation 0 network-id 3 network-cost 10
+        // a=candidate:0 1 UDP 2113667327 203.0.113.1 54400 typ host
+        // a=candidate:1162875081 1 udp 2113937151 192.168.34.75 60017 typ host generation 0 network-id 3 network-cost 10
+        // a=candidate:3289912957 2 udp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 generation 0 network-id 3 network-cost 10
+        // a=candidate:229815620 1 tcp 1518280447 192.168.150.19 60017 typ host tcptype active generation 0 network-id 3 network-cost 10
+        // a=candidate:3289912957 2 tcp 1845501695 193.84.77.194 60017 typ srflx raddr 192.168.34.75 rport 60017 tcptype passive generation 0 network-id 3 network-cost 10
         push: 'candidates',
         reg: /^candidate:(\S*) (\d*) (\S*) (\d*) (\S*) (\d*) typ (\S*)(?: raddr (\S*) rport (\d*))?(?: tcptype (\S*))?(?: generation (\d*))?(?: network-id (\d*))?(?: network-cost (\d*))?/,
         names: ['foundation', 'component', 'transport', 'priority', 'ip', 'port', 'type', 'raddr', 'rport', 'tcptype', 'generation', 'network-id', 'network-cost'],
@@ -24415,21 +24466,21 @@
           return str;
         }
       }, {
-        //a=end-of-candidates (keep after the candidates line for readability)
+        // a=end-of-candidates (keep after the candidates line for readability)
         name: 'endOfCandidates',
         reg: /^(end-of-candidates)/
       }, {
-        //a=remote-candidates:1 203.0.113.1 54400 2 203.0.113.1 54401 ...
+        // a=remote-candidates:1 203.0.113.1 54400 2 203.0.113.1 54401 ...
         name: 'remoteCandidates',
         reg: /^remote-candidates:(.*)/,
         format: 'remote-candidates:%s'
       }, {
-        //a=ice-options:google-ice
+        // a=ice-options:google-ice
         name: 'iceOptions',
         reg: /^ice-options:(\S*)/,
         format: 'ice-options:%s'
       }, {
-        //a=ssrc:2566107569 cname:t9YU8M1UxTF8Y1A1
+        // a=ssrc:2566107569 cname:t9YU8M1UxTF8Y1A1
         push: 'ssrcs',
         reg: /^ssrc:(\d*) ([\w_-]*)(?::(.*))?/,
         names: ['id', 'attribute', 'value'],
@@ -24447,49 +24498,49 @@
           return str;
         }
       }, {
-        //a=ssrc-group:FEC 1 2
-        //a=ssrc-group:FEC-FR 3004364195 1080772241
+        // a=ssrc-group:FEC 1 2
+        // a=ssrc-group:FEC-FR 3004364195 1080772241
         push: 'ssrcGroups',
         // token-char = %x21 / %x23-27 / %x2A-2B / %x2D-2E / %x30-39 / %x41-5A / %x5E-7E
         reg: /^ssrc-group:([\x21\x23\x24\x25\x26\x27\x2A\x2B\x2D\x2E\w]*) (.*)/,
         names: ['semantics', 'ssrcs'],
         format: 'ssrc-group:%s %s'
       }, {
-        //a=msid-semantic: WMS Jvlam5X3SX1OP6pn20zWogvaKJz5Hjf9OnlV
+        // a=msid-semantic: WMS Jvlam5X3SX1OP6pn20zWogvaKJz5Hjf9OnlV
         name: 'msidSemantic',
         reg: /^msid-semantic:\s?(\w*) (\S*)/,
         names: ['semantic', 'token'],
         format: 'msid-semantic: %s %s' // space after ':' is not accidental
 
       }, {
-        //a=group:BUNDLE audio video
+        // a=group:BUNDLE audio video
         push: 'groups',
         reg: /^group:(\w*) (.*)/,
         names: ['type', 'mids'],
         format: 'group:%s %s'
       }, {
-        //a=rtcp-mux
+        // a=rtcp-mux
         name: 'rtcpMux',
         reg: /^(rtcp-mux)/
       }, {
-        //a=rtcp-rsize
+        // a=rtcp-rsize
         name: 'rtcpRsize',
         reg: /^(rtcp-rsize)/
       }, {
-        //a=sctpmap:5000 webrtc-datachannel 1024
+        // a=sctpmap:5000 webrtc-datachannel 1024
         name: 'sctpmap',
-        reg: /^sctpmap:([\w_\/]*) (\S*)(?: (\S*))?/,
+        reg: /^sctpmap:([\w_/]*) (\S*)(?: (\S*))?/,
         names: ['sctpmapNumber', 'app', 'maxMessageSize'],
         format: function (o) {
           return o.maxMessageSize != null ? 'sctpmap:%s %s %s' : 'sctpmap:%s %s';
         }
       }, {
-        //a=x-google-flag:conference
+        // a=x-google-flag:conference
         name: 'xGoogleFlag',
         reg: /^x-google-flag:([^\s]*)/,
         format: 'x-google-flag:%s'
       }, {
-        //a=rid:1 send max-width=1280;max-height=720;max-fps=30;depend=0
+        // a=rid:1 send max-width=1280;max-height=720;max-fps=30;depend=0
         push: 'rids',
         reg: /^rid:([\d\w]+) (\w+)(?: ([\S| ]*))?/,
         names: ['id', 'direction', 'params'],
@@ -24497,59 +24548,59 @@
           return o.params ? 'rid:%s %s %s' : 'rid:%s %s';
         }
       }, {
-        //a=imageattr:97 send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320] recv [x=330,y=250]
-        //a=imageattr:* send [x=800,y=640] recv *
-        //a=imageattr:100 recv [x=320,y=240]
+        // a=imageattr:97 send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320] recv [x=330,y=250]
+        // a=imageattr:* send [x=800,y=640] recv *
+        // a=imageattr:100 recv [x=320,y=240]
         push: 'imageattrs',
-        reg: new RegExp( //a=imageattr:97
-        '^imageattr:(\\d+|\\*)' + //send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320]
-        '[\\s\\t]+(send|recv)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*)' + //recv [x=330,y=250]
+        reg: new RegExp( // a=imageattr:97
+        '^imageattr:(\\d+|\\*)' + // send [x=800,y=640,sar=1.1,q=0.6] [x=480,y=320]
+        '[\\s\\t]+(send|recv)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*)' + // recv [x=330,y=250]
         '(?:[\\s\\t]+(recv|send)[\\s\\t]+(\\*|\\[\\S+\\](?:[\\s\\t]+\\[\\S+\\])*))?'),
         names: ['pt', 'dir1', 'attrs1', 'dir2', 'attrs2'],
         format: function (o) {
           return 'imageattr:%s %s %s' + (o.dir2 ? ' %s %s' : '');
         }
       }, {
-        //a=simulcast:send 1,2,3;~4,~5 recv 6;~7,~8
-        //a=simulcast:recv 1;4,5 send 6;7
+        // a=simulcast:send 1,2,3;~4,~5 recv 6;~7,~8
+        // a=simulcast:recv 1;4,5 send 6;7
         name: 'simulcast',
-        reg: new RegExp( //a=simulcast:
-        '^simulcast:' + //send 1,2,3;~4,~5
-        '(send|recv) ([a-zA-Z0-9\\-_~;,]+)' + //space + recv 6;~7,~8
-        '(?:\\s?(send|recv) ([a-zA-Z0-9\\-_~;,]+))?' + //end
+        reg: new RegExp( // a=simulcast:
+        '^simulcast:' + // send 1,2,3;~4,~5
+        '(send|recv) ([a-zA-Z0-9\\-_~;,]+)' + // space + recv 6;~7,~8
+        '(?:\\s?(send|recv) ([a-zA-Z0-9\\-_~;,]+))?' + // end
         '$'),
         names: ['dir1', 'list1', 'dir2', 'list2'],
         format: function (o) {
           return 'simulcast:%s %s' + (o.dir2 ? ' %s %s' : '');
         }
       }, {
-        //Old simulcast draft 03 (implemented by Firefox)
-        //  https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast-03
-        //a=simulcast: recv pt=97;98 send pt=97
-        //a=simulcast: send rid=5;6;7 paused=6,7
+        // old simulcast draft 03 (implemented by Firefox)
+        //   https://tools.ietf.org/html/draft-ietf-mmusic-sdp-simulcast-03
+        // a=simulcast: recv pt=97;98 send pt=97
+        // a=simulcast: send rid=5;6;7 paused=6,7
         name: 'simulcast_03',
         reg: /^simulcast:[\s\t]+([\S+\s\t]+)$/,
         names: ['value'],
         format: 'simulcast: %s'
       }, {
-        //a=framerate:25
-        //a=framerate:29.97
+        // a=framerate:25
+        // a=framerate:29.97
         name: 'framerate',
         reg: /^framerate:(\d+(?:$|\.\d+))/,
         format: 'framerate:%s'
       }, {
         // RFC4570
-        //a=source-filter: incl IN IP4 239.5.2.31 10.1.15.5
+        // a=source-filter: incl IN IP4 239.5.2.31 10.1.15.5
         name: 'sourceFilter',
         reg: /^source-filter: *(excl|incl) (\S*) (IP4|IP6|\*) (\S*) (.*)/,
         names: ['filterMode', 'netType', 'addressTypes', 'destAddress', 'srcList'],
         format: 'source-filter: %s %s %s %s %s'
       }, {
-        //a=bundle-only
+        // a=bundle-only
         name: 'bundleOnly',
         reg: /^(bundle-only)/
       }, {
-        //a=label:1
+        // a=label:1
         name: 'label',
         reg: /^label:(.+)/,
         format: 'label:%s'
@@ -24566,7 +24617,62 @@
         reg: /^max-message-size:(\d+)$/,
         format: 'max-message-size:%s'
       }, {
-        // any a= that we don't understand is kepts verbatim on media.invalid
+        // RFC7273
+        // a=ts-refclk:ptp=IEEE1588-2008:39-A7-94-FF-FE-07-CB-D0:37
+        push: 'tsRefClocks',
+        reg: /^ts-refclk:([^\s=]*)(?:=(\S*))?/,
+        names: ['clksrc', 'clksrcExt'],
+        format: function (o) {
+          return 'ts-refclk:%s' + (o.clksrcExt != null ? '=%s' : '');
+        }
+      }, {
+        // RFC7273
+        // a=mediaclk:direct=963214424
+        name: 'mediaClk',
+        reg: /^mediaclk:(?:id=(\S*))? *([^\s=]*)(?:=(\S*))?(?: *rate=(\d+)\/(\d+))?/,
+        names: ['id', 'mediaClockName', 'mediaClockValue', 'rateNumerator', 'rateDenominator'],
+        format: function (o) {
+          var str = 'mediaclk:';
+          str += o.id != null ? 'id=%s %s' : '%v%s';
+          str += o.mediaClockValue != null ? '=%s' : '';
+          str += o.rateNumerator != null ? ' rate=%s' : '';
+          str += o.rateDenominator != null ? '/%s' : '';
+          return str;
+        }
+      }, {
+        // a=keywds:keywords
+        name: 'keywords',
+        reg: /^keywds:(.+)$/,
+        format: 'keywds:%s'
+      }, {
+        // a=content:main
+        name: 'content',
+        reg: /^content:(.+)/,
+        format: 'content:%s'
+      }, // BFCP https://tools.ietf.org/html/rfc4583
+      {
+        // a=floorctrl:c-s
+        name: 'bfcpFloorCtrl',
+        reg: /^floorctrl:(c-only|s-only|c-s)/,
+        format: 'floorctrl:%s'
+      }, {
+        // a=confid:1
+        name: 'bfcpConfId',
+        reg: /^confid:(\d+)/,
+        format: 'confid:%s'
+      }, {
+        // a=userid:1
+        name: 'bfcpUserId',
+        reg: /^userid:(\d+)/,
+        format: 'userid:%s'
+      }, {
+        // a=floorid:1
+        name: 'bfcpFloorId',
+        reg: /^floorid:(.+) (?:m-stream|mstrm):(.+)/,
+        names: ['id', 'mStream'],
+        format: 'floorid:%s mstrm:%s'
+      }, {
+        // any a= that we don't understand is kept verbatim on media.invalid
         push: 'invalid',
         names: ['value']
       }]
@@ -24682,14 +24788,14 @@
     };
 
     exports.parseParams = function (str) {
-      return str.split(/\;\s?/).reduce(paramReducer, {});
+      return str.split(/;\s?/).reduce(paramReducer, {});
     }; // For backward compatibility - alias will be removed in 3.0.0
 
 
     exports.parseFmtpConfig = exports.parseParams;
 
     exports.parsePayloads = function (str) {
-      return str.split(' ').map(Number);
+      return str.toString().split(' ').map(Number);
     };
 
     exports.parseRemoteCandidates = function (str) {
@@ -24850,8 +24956,9 @@
 
   var write = writer;
   var parse = parser.parse;
-  var parseFmtpConfig = parser.parseFmtpConfig;
   var parseParams = parser.parseParams;
+  var parseFmtpConfig = parser.parseFmtpConfig; // Alias of parseParams().
+
   var parsePayloads = parser.parsePayloads;
   var parseRemoteCandidates = parser.parseRemoteCandidates;
   var parseImageAttributes = parser.parseImageAttributes;
@@ -24859,8 +24966,8 @@
   var lib = {
     write: write,
     parse: parse,
-    parseFmtpConfig: parseFmtpConfig,
     parseParams: parseParams,
+    parseFmtpConfig: parseFmtpConfig,
     parsePayloads: parsePayloads,
     parseRemoteCandidates: parseRemoteCandidates,
     parseImageAttributes: parseImageAttributes,
@@ -24890,6 +24997,26 @@
    * Distributed under terms of the MIT license.
   */
   const REMOTE_SERVER_NAME = "qiniu-rtc-client";
+
+  function iceCandidates2Candidates(iceCandidates) {
+    return iceCandidates.map(iceCandidate => {
+      const candidate = {
+        component: 1,
+        foundation: iceCandidate.foundation,
+        ip: iceCandidate.ip,
+        port: iceCandidate.port,
+        priority: iceCandidate.priority,
+        transport: iceCandidate.protocol,
+        type: iceCandidate.type
+      };
+
+      if (iceCandidate.tcpType) {
+        candidate.tcptype = iceCandidate.tcpType;
+      }
+
+      return candidate;
+    });
+  }
   class RemoteSdp {
     constructor(direction, rtpcap) {
       this.lastSubMids = [];
@@ -25015,15 +25142,7 @@
         },
         iceUfrag: data.iceParameters.usernameFragment,
         icePwd: data.iceParameters.password,
-        candidates: data.iceCandidates.map(iceCandidate => ({
-          component: 1,
-          foundation: iceCandidate.foundation,
-          ip: iceCandidate.ip,
-          port: iceCandidate.port,
-          priority: iceCandidate.priority,
-          transport: iceCandidate.protocol,
-          type: iceCandidate.type
-        })),
+        candidates: iceCandidates2Candidates(data.iceCandidates),
         endOfCandidates: "end-of-candidates",
         iceOptions: "renomination",
         setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
@@ -25148,15 +25267,7 @@
         msid: `${info.streamId} ${info.trackId}`,
         iceUfrag: data.iceParameters.usernameFragment,
         icePwd: data.iceParameters.password,
-        candidates: data.iceCandidates.map(iceCandidate => ({
-          component: 1,
-          foundation: iceCandidate.foundation,
-          ip: iceCandidate.ip,
-          port: iceCandidate.port,
-          priority: iceCandidate.priority,
-          transport: iceCandidate.protocol,
-          type: iceCandidate.type
-        })),
+        candidates: iceCandidates2Candidates(data.iceCandidates),
         endOfCandidates: "end-of-candidates",
         iceOptions: "renomination",
         setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
@@ -25282,15 +25393,7 @@
         mid: localMediaObj.mid,
         iceUfrag: data.iceParameters.usernameFragment,
         icePwd: data.iceParameters.password,
-        candidates: data.iceCandidates.map(iceCandidate => ({
-          component: 1,
-          foundation: iceCandidate.foundation,
-          ip: iceCandidate.ip,
-          port: iceCandidate.port,
-          priority: iceCandidate.priority,
-          transport: iceCandidate.protocol,
-          type: iceCandidate.type
-        })),
+        candidates: iceCandidates2Candidates(data.iceCandidates),
         endOfCandidates: "end-of-candidates",
         iceOptions: "renomination",
         setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
@@ -25394,15 +25497,7 @@
         mid: kind,
         iceUfrag: data.iceParameters.usernameFragment,
         icePwd: data.iceParameters.password,
-        candidates: data.iceCandidates.map(iceCandidate => ({
-          component: 1,
-          foundation: iceCandidate.foundation,
-          ip: iceCandidate.ip,
-          port: iceCandidate.port,
-          priority: iceCandidate.priority,
-          transport: iceCandidate.protocol,
-          type: iceCandidate.type
-        })),
+        candidates: iceCandidates2Candidates(data.iceCandidates),
         endOfCandidates: "end-of-candidates",
         iceOptions: "renomination",
         setup: data.dtlsParameters.role === "server" ? "actpass" : "active",
@@ -25507,6 +25602,128 @@
     }
 
     return lib.write(sdpObj);
+  }
+
+  function transformOfferSdp(sdp, layers) {
+    const sdpObj = lib.parse(sdp);
+
+    if (layers) {
+      if (browser.name === 'chrome') {
+        sdpObj.media = sdpObj.media.map(media => {
+          if (!media.ssrcGroups || media.ssrcGroups.length === 0 || !media.ssrcs || media.ssrcs.length === 0) {
+            return media;
+          }
+
+          const fidGroup = media.ssrcGroups.find(group => {
+            return group.semantics === 'FID';
+          });
+
+          if (!fidGroup) {
+            return media;
+          }
+
+          const [videoSSRC1, rtxSSRC1] = fidGroup.ssrcs.split(' ').map(ssrc => parseInt(ssrc, 10));
+          let cname, msid;
+          media.ssrcs.forEach(ssrc => {
+            if (ssrc.attribute === 'cname') {
+              cname = ssrc.value;
+            }
+
+            if (ssrc.attribute === 'msid') {
+              msid = ssrc.value;
+            }
+          });
+          const simSsrcs = [];
+          simSsrcs.push(videoSSRC1);
+
+          if (layers >= 2) {
+            const videoSSRC2 = videoSSRC1 + 1;
+            const rtxSSRC2 = rtxSSRC1 + 1;
+            media.ssrcs.push({
+              id: videoSSRC2,
+              attribute: 'cname',
+              value: cname
+            });
+            media.ssrcs.push({
+              id: videoSSRC2,
+              attribute: 'msid',
+              value: msid
+            });
+            media.ssrcs.push({
+              id: rtxSSRC2,
+              attribute: 'cname',
+              value: cname
+            });
+            media.ssrcs.push({
+              id: rtxSSRC2,
+              attribute: 'msid',
+              value: msid
+            });
+            media.ssrcGroups.push({
+              semantics: "FID",
+              ssrcs: `${videoSSRC2} ${rtxSSRC2}`
+            });
+            simSsrcs.push(videoSSRC2);
+          }
+
+          if (layers >= 3) {
+            const videoSSRC3 = videoSSRC1 + 2;
+            const rtxSSRC3 = rtxSSRC1 + 2;
+            media.ssrcs.push({
+              id: videoSSRC3,
+              attribute: 'cname',
+              value: cname
+            });
+            media.ssrcs.push({
+              id: videoSSRC3,
+              attribute: 'msid',
+              value: msid
+            });
+            media.ssrcs.push({
+              id: rtxSSRC3,
+              attribute: 'cname',
+              value: cname
+            });
+            media.ssrcs.push({
+              id: rtxSSRC3,
+              attribute: 'msid',
+              value: msid
+            });
+            media.ssrcGroups.push({
+              semantics: "FID",
+              ssrcs: `${videoSSRC3} ${rtxSSRC3}`
+            });
+            simSsrcs.push(videoSSRC3);
+          }
+
+          media.ssrcGroups.push({
+            semantics: "SIM",
+            ssrcs: simSsrcs.join(' ')
+          });
+          return media;
+        });
+      }
+    }
+
+    const newSdp = lib.write(sdpObj);
+    const sdpLines = newSdp.split('\r\n');
+    let ssrcGroupsIdx = sdpLines.findIndex(line => line.indexOf('a=ssrc-group:FID') === 0);
+
+    while (ssrcGroupsIdx !== -1 && sdpLines[ssrcGroupsIdx].indexOf('a=ssrc-group:FID') === 0) {
+      const rtxSSRC = sdpLines[ssrcGroupsIdx].split(' ')[2];
+
+      for (let i = ssrcGroupsIdx - 1; i >= 0; i--) {
+        if (sdpLines[i].indexOf(rtxSSRC) > 0) {
+          sdpLines.splice(i + 1, 0, sdpLines[ssrcGroupsIdx]);
+          sdpLines.splice(ssrcGroupsIdx + 1, 1);
+          break;
+        }
+      }
+
+      ssrcGroupsIdx++;
+    }
+
+    return sdpLines.join('\r\n');
   }
 
   /*
@@ -25849,6 +26066,8 @@
           case "unsub-tracks-res":
           case "on-pubpc-restart-notify":
           case "on-subpc-restart-notify":
+          case "set-sub-profile-res":
+          case "on-sub-profile-changed":
           case "pubpc-restart-res":
           case "subpc-restart-res":
           case "create-merge-job-res":
@@ -26475,7 +26694,8 @@
       this._pc = createPC(); // Generic sending RTP parameters for audio and video.
 
       this._extendedRtpCapabilities = extendedRtpCapabilities;
-      this._remoteSdp = new RemoteSdp(direction, extendedRtpCapabilities); // Handle RTCPeerConnection connection status.
+      this._remoteSdp = new RemoteSdp(direction, extendedRtpCapabilities);
+      this._simulcast = !!settings && settings.simulcast; // Handle RTCPeerConnection connection status.
 
       this._pc.addEventListener("iceconnectionstatechange", () => {
         switch (this._pc.iceConnectionState) {
@@ -26507,8 +26727,8 @@
       });
     }
 
-    async getStats(track, lastReport) {
-      return await getPCStats(this._pc, track, this._direction, lastReport);
+    async getStats(track, lastReportList) {
+      return await getPCStats(this._pc, track, this._direction, lastReportList);
     }
 
     registerMediaStatisticStatsReport() {
@@ -26609,23 +26829,20 @@
           rtpSenders = tracks.map(track => this._pc.addTrack(track, this._stream));
         }
 
-        return this._pc.createOffer();
+        if (this._simulcast && browser.name === 'firefox') ;
+
+        return createPcOffer(this._pc, this._simulcast);
       }).then(offer => {
         let _offer;
 
-        if (browserReport.unifiedPlan) {
-          _offer = {
-            type: "offer",
-            sdp: offer.sdp
-          };
-        } else {
-          if (browserReport.needH264FmtpLine) {
-            offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
-          }
-
-          _offer = offer;
+        if (browserReport.needH264FmtpLine) {
+          offer.sdp += `a=fmtp:107 level-asymmetry-allowed=1;packetization-mode=1;profile-level-id=42e01f${NEW_LINE}`;
         }
 
+        _offer = {
+          type: "offer",
+          sdp: offer.sdp
+        };
         localSdp = _offer.sdp;
         log.log("publish: set local offer", _offer);
         return this._pc.setLocalDescription(_offer);
@@ -26716,7 +26933,9 @@
           this._stream.removeTrack(track);
         }
 
-        return this._pc.createOffer();
+        if (this._simulcast && browser.name === 'firefox') ;
+
+        return createPcOffer(this._pc, this._simulcast);
       }).then(offer => {
         const description = new RTCSessionDescription(offer);
         localSdp = description.sdp;
@@ -26756,7 +26975,7 @@
       return Promise.resolve().then(() => {
         return this._remoteSdp.updateICEData(iceParameters, iceCandidates);
       }).then(() => {
-        return this._pc.createOffer({
+        return createPcOffer(this._pc, this._simulcast, {
           iceRestart: true
         });
       }).then(offer => {
@@ -26777,7 +26996,7 @@
       const startTime = Date.now();
       return Promise.resolve().then(() => {
         if (!this._pc.localDescription) {
-          return this._pc.createOffer();
+          return createPcOffer(this._pc, this._simulcast);
         }
 
         return this._pc.localDescription;
@@ -27192,6 +27411,29 @@
     }
 
   }
+  function createPcOffer(pc, simulcast, offerOptions) {
+    if (simulcast) {
+      if (browser.name === 'chrome') {
+        return pc.createOffer(offerOptions).then(offer => {
+          const {
+            type,
+            sdp
+          } = offer;
+
+          if (!sdp) {
+            return offer;
+          }
+
+          return {
+            type: type,
+            sdp: transformOfferSdp(sdp, 3)
+          };
+        });
+      }
+    }
+
+    return pc.createOffer(offerOptions);
+  }
   function getHandler(direction, extendedRtpCapabilities, signaling, settings) {
     // let rtpParametersByKind;
     switch (direction) {
@@ -27220,10 +27462,11 @@
   })(TaskCommandEnum || (TaskCommandEnum = {}));
 
   class ConnectionTransport extends EnhancedEventEmitter {
-    constructor(rtpcap, signaling) {
+    constructor(rtpcap, signaling, simulcast) {
       super();
       this.sendCommandQueue = new TaskQueue("SendQueue");
       this.recvCommandQueue = new TaskQueue("RecvQueue");
+      this.simulcast = false;
       /**
        * sub-pc 创建单独走一个 queue
        */
@@ -27234,8 +27477,13 @@
       this._publishTracks = new Map();
       this.extendedRtpCapabilities = rtpcap;
       this.signaling = signaling;
-      this.sendHandler = getHandler("send", rtpcap, signaling, {});
-      this.recvHandler = getHandler("recv", rtpcap, signaling, {});
+      this.simulcast = !!simulcast;
+      this.sendHandler = getHandler("send", rtpcap, signaling, {
+        simulcast: this.simulcast
+      });
+      this.recvHandler = getHandler("recv", rtpcap, signaling, {
+        simulcast: this.simulcast
+      });
       this.handleSendHandler();
       this.handleRecvHandler();
       this.sendCommandQueue.on("exec", this.handleSendCommandTask.bind(this));
@@ -27485,7 +27733,9 @@
       this.resetSendCommandQueue();
       this.sendHandler.close();
       const targetPCTracks = this.publishTracks;
-      this.sendHandler = getHandler("send", this.extendedRtpCapabilities, this.signaling, {});
+      this.sendHandler = getHandler("send", this.extendedRtpCapabilities, this.signaling, {
+        simulcast: this.simulcast
+      });
       this.handleSendHandler();
       targetPCTracks.forEach(t => {
         t.connectStatus = exports.TrackConnectStatus.Connecting;
@@ -27663,7 +27913,9 @@
 
       this.emit("@needresetrecv");
       this.recvHandler.close();
-      this.recvHandler = getHandler("recv", this.extendedRtpCapabilities, this.signaling, {});
+      this.recvHandler = getHandler("recv", this.extendedRtpCapabilities, this.signaling, {
+        simulcast: this.simulcast
+      });
       this.initSubPcPromise = new Promise(resolve => {
         this.initSubPcPromiseResolve = resolve;
       });
@@ -27688,7 +27940,8 @@
   })(exports.RoomState || (exports.RoomState = {}));
 
   const DEFAULT_CONFIG = {
-    transportPolicy: "forceUdp"
+    transportPolicy: "forceUdp",
+    simulcast: false
   };
   class QNRTCCore extends EventEmitter {
     constructor(config = DEFAULT_CONFIG) {
@@ -27760,20 +28013,27 @@
 
           if (user) {
             user.addTracks(pcTracks.map(p => p.track));
+            let profiles = [];
+
+            if (this.config.simulcast === true) {
+              profiles = ['high', 'medium', 'low'];
+            }
+
             user.addPublishedTrackInfo(pcTracks.map(t => ({
               trackId: t.trackId,
               muted: !!t.track.info.muted,
               kind: t.track.info.kind,
               tag: t.track.info.tag,
               userId: this.userId,
-              versionid: t.track.info.versionid
+              versionid: t.track.info.versionid,
+              profiles: profiles
             })));
           }
 
           tracks.forEach(t => {
-            t.on("@get-stats", (lastReport, cb, errorcb) => {
-              if (!this.connectionTransport) return cb(defaultTrackStatsReport());
-              this.connectionTransport.sendHandler.getStats(t.mediaTrack, lastReport).then(cb, errorcb);
+            t.on("@get-stats", (lastReportList, cb, errorcb) => {
+              if (!this.connectionTransport) return cb([]);
+              this.connectionTransport.sendHandler.getStats(t.mediaTrack, lastReportList).then(cb, errorcb);
             });
           });
           this.getAllMerger().forEach(m => m.controller.onAddTracks(tracks.map(t => t.info)));
@@ -27806,7 +28066,7 @@
         }
       });
 
-      this._subscribe = (trackIds, isReconnect, strictMode = false) => new Promise(async (resolve, reject) => {
+      this._subscribe = (trackIds, isReconnect, strictMode = false, trackProfiles) => new Promise(async (resolve, reject) => {
         if (this.roomState !== exports.RoomState.Connected) {
           reject(UNEXPECTED_ERROR("can not connected to the room, please joinRoom first"));
           return;
@@ -27839,7 +28099,7 @@
           this.subscribeTracks = this.subscribeTracks.concat(pcTracks);
         }
 
-        log.log("sub tracks", pcTracks);
+        log.log("sub tracks", pcTracks, trackProfiles);
 
         try {
           if (!isReconnect) {
@@ -27855,9 +28115,15 @@
           if (!data) {
             const startTime = Date.now();
             data = await signaling.request("sub-tracks", {
-              tracks: pcTracks.map(track => ({
-                trackid: track.trackId
-              }))
+              tracks: pcTracks.map(track => {
+                const profile = trackProfiles && trackProfiles[track.trackId];
+                return profile ? {
+                  trackid: track.trackId,
+                  profile: profile
+                } : {
+                  trackid: track.trackId
+                };
+              })
             });
             qos.addEvent("SubscribeTracks", {
               result_code: data.code,
@@ -27928,7 +28194,7 @@
                 track = new AudioTrack(t, info.playerid, "remote");
                 track.initAudioManager();
               } else {
-                track = new Track(t, info.playerid, "remote");
+                track = new Track(t, info.playerid, "remote", info.profiles || []);
               }
             } else {
               track.resume(t);
@@ -27945,9 +28211,9 @@
             track.setMaster(info.master);
             track.removeAllListeners("@get-stats");
             track.removeAllListeners("@ended");
-            track.on("@get-stats", (lastReport, cb, errcb) => {
-              if (!this.connectionTransport) return cb(defaultTrackStatsReport());
-              this.connectionTransport.recvHandler.getStats(track.mediaTrack, lastReport).then(cb, errcb);
+            track.on("@get-stats", (lastReportList, cb, errcb) => {
+              if (!this.connectionTransport) return cb([]);
+              this.connectionTransport.recvHandler.getStats(track.mediaTrack, lastReportList).then(cb, errcb);
             }); // 如果远端 track ended，重新订阅
 
             track.once("@ended", async () => {
@@ -28024,9 +28290,12 @@
         }
 
         resolve(pcTracks.map(p => p.track));
-      });
+      }); // update config for potential missing property
 
+
+      config = objectSpread({}, DEFAULT_CONFIG, config);
       this.config = config;
+      log.log("config", config);
       log.log("version", version);
       log.log("browser report", browserReport, browser);
     }
@@ -28056,6 +28325,18 @@
           room_state: state
         });
       }
+    }
+
+    _setProfile(trackId, profile) {
+      this.profile = profile;
+      if (!this.subscribeTracks.some(track => track.trackId === trackId)) return;
+      const signaling = this.signaling;
+      signaling.sendWsMsg('set-sub-profile', {
+        tracks: [{
+          trackid: trackId,
+          profile: this.profile
+        }]
+      });
     }
 
     async joinRoomWithToken(roomToken, userData) {
@@ -28135,18 +28416,7 @@
         }
       }).on("@needupdateaccesstoken", (cb, errcb) => {
         this.updateAccessToken().then(cb).catch(errcb);
-      })
-      /*
-      .on("send", (msgType: string, data: string) => {
-        if (msgType === "pong") return;
-        console.log("send", msgType, data);
-      })
-      .on("receive", (msgType: string, data: string) => {
-        if (msgType === "ping") return;
-        console.log("receive", msgType, data);
-      })
-      */
-      .on("on-player-in", this.handlePlayerIn.bind(this)).on("on-player-out", this.handlePlayerOut.bind(this)).on("on-add-tracks", d => {
+      }).on("on-player-in", this.handlePlayerIn.bind(this)).on("on-player-out", this.handlePlayerOut.bind(this)).on("on-add-tracks", d => {
         this.filterSignalTracks(d);
         this.handleAddTracks(d);
       }).on("on-remove-tracks", d => {
@@ -28171,6 +28441,8 @@
         });
         if (!transport || !browserReport.supportRestartICE) return;
         transport.restartRecvICE(d.pcid).catch(log.debug);
+      }).on("on-sub-profile-changed", d => {
+        this.emit("on-sub-profile-changed", d);
       }).on("disconnect", this.handleDisconnect.bind(this));
       log.log("init signaling websocket");
       this.signaling = signaling;
@@ -28323,7 +28595,8 @@
         y: opt.y,
         w: opt.w,
         h: opt.h,
-        z: opt.z
+        z: opt.z,
+        stretchMode: opt.stretchMode
       }));
       const config = {
         id: jobId,
@@ -28889,7 +29162,7 @@
 
     createConnectionTransport(rtpcaps) {
       const signaling = this.signaling;
-      const transport = new ConnectionTransport(rtpcaps, signaling);
+      const transport = new ConnectionTransport(rtpcaps, signaling, this.config.simulcast);
       transport.on("@needpubpc", (sdp, tracks, cb, errcb) => {
         signaling.request("pubpc", {
           sdp,
@@ -28917,9 +29190,12 @@
       });
       transport.on("@needsubpc", (trackIds, cb, errcb) => {
         signaling.request("subpc", {
-          tracks: trackIds.map(t => ({
+          tracks: trackIds.map(t => this.profile ? {
+            trackid: t,
+            profile: this.profile
+          } : {
             trackid: t
-          })),
+          }),
           policy: this.config.transportPolicy
         }).then(d => {
           switch (d.code) {
@@ -29280,17 +29556,22 @@
      * 传入 trackId 列表订阅指定 Track
      * @param trackIds trackId 列表
      * @param strictMode 是否开启严格模式
+     * @param profiles 指定每路 track 的 profile
      * 如果开启严格模式，订阅过程中只要有一个 Track 出现错误就会导致整个订阅失败
      * 默认不开启严格模式
      */
 
 
-    async subscribe(trackIds, strictMode = false) {
-      return await this._subscribe(trackIds, false, strictMode);
+    async subscribe(trackIds, strictMode = false, trackProfiles) {
+      return await this._subscribe(trackIds, false, strictMode, trackProfiles);
     }
 
     async unsubscribe(trackIds) {
       return await this._unsubscribe(trackIds);
+    }
+
+    setProfile(trackId, profile) {
+      this._setProfile(trackId, profile);
     }
 
     muteTracks(tracks) {
@@ -30154,4 +30435,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 }));
-//# sourceMappingURL=pili-rtc-web-2.3.0.umd.js.map
+//# sourceMappingURL=pili-rtc-web-2.3.1.umd.js.map
