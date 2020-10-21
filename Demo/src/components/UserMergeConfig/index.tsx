@@ -19,6 +19,7 @@ import User from '../../models/User';
 import { FormGroup } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
+import { StretchMode } from "pili-rtc-web";
 
 interface Square {
   x?: string;
@@ -26,6 +27,7 @@ interface Square {
   z?: string;
   w?: string;
   h?: string;
+  stretchMode?: StretchMode;
   enabled?: boolean;
 }
 
@@ -45,8 +47,6 @@ interface Props {
   user: User;
   onMergeChange: (options: MergeOptions) => any;
 }
-
-
 
 interface InputProps {
   key: keyof Square;
@@ -70,6 +70,7 @@ export class UserMergeConfig extends React.Component<Props, State> {
     z: '0',
     w: '480',
     h: '320',
+    stretchMode: "aspectFit",
   };
 
   @observable cameraEnabled = true;
@@ -80,6 +81,7 @@ export class UserMergeConfig extends React.Component<Props, State> {
     z: '0',
     w: '480',
     h: '320',
+    stretchMode: "aspectFit",
   };
 
   @observable screenEnabled = true;
@@ -178,6 +180,20 @@ export class UserMergeConfig extends React.Component<Props, State> {
                     />
                   </div>
                 ))}
+                <div className={styles.stetchModeContainer}>
+                  <label className={styles.stretchModeLabel}>stretchMode</label>
+                  <select
+                    className={styles.stretchModeSelect}
+                    value={this.camera.stretchMode}
+                    onChange={action((e: React.ChangeEvent<HTMLSelectElement>) => {
+                      this.camera.stretchMode = e.target.value as StretchMode;
+                    })}
+                  >
+                    <option value="aspectFill">aspectFill</option>
+                    <option value="aspectFit">aspectFit</option>
+                    <option value="scaleToFit">scaleToFit</option>
+                  </select>
+                </div>
               </FormGroup>) : <></>}
               
               <FormGroup row>
@@ -208,7 +224,22 @@ export class UserMergeConfig extends React.Component<Props, State> {
                     />
                   </div>
                 ))}
+                <div className={styles.stetchModeContainer}>
+                  <label className={styles.stretchModeLabel}>stretchMode</label>
+                  <select
+                    className={styles.stretchModeSelect}
+                    value={this.screen.stretchMode}
+                    onChange={action((e: React.ChangeEvent<HTMLSelectElement>) => {
+                      this.screen.stretchMode = e.target.value as StretchMode;
+                    })}
+                  >
+                    <option value="aspectFill">aspectFill</option>
+                    <option value="aspectFit">aspectFit</option>
+                    <option value="scaleToFit">scaleToFit</option>
+                  </select>
+                </div>
               </FormGroup>) : <></>}
+
               <FormGroup row>
                 <FormControlLabel
                   label="麦克风"

@@ -20,6 +20,7 @@
   margin-right: 3px;
   line-height: 25px;
 }
+
 .userBlock {
   display: flex;
   text-align: center;
@@ -43,6 +44,7 @@
   height: 0;
   transition: all ease 0.3s;
 }
+
 .configBlock.active {
   height: 153px;
   margin-top: 20px;
@@ -60,7 +62,6 @@
   margin-bottom: 12px;
 }
 
-
 .formInput input {
   background: #49494B;
   border-radius: 8px;
@@ -76,8 +77,7 @@
   padding: 5px 7px;
 }
 
-.formInput input[type=number]::-webkit-inner-spin-button,
-.formInput input[type=number]::-webkit-outer-spin-button {
+.formInput input[type=number]::-webkit-inner-spin-button, .formInput input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -86,7 +86,6 @@
   display: flex;
   align-items: center;
 }
-
 
 .button {
   background: #00ACDE;
@@ -98,4 +97,26 @@
   width: 60px;
   height: 26px;
   margin-left: 16px !important;
+}
+
+.stetchModeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.stretchModeLabel {
+  width: auto;
+  padding: 3px 10px 0 0;
+  color: #FAFAFA;
+  font-size: 11px;
+  letter-spacing: 0.66px;
+  opacity: 0.66;
+}
+
+.stretchModeSelect {
+  width:100px;
+  font-size: 11px;
+  opacity: 0.66;
+  color: #FAFAFA;
 }

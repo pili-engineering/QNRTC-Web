@@ -120,7 +120,7 @@ export class RoomStore {
 
 
   /** TrackModeSession */
-  public session: TrackModeSession = new TrackModeSession({ transportPolicy: 'forceTcp' });
+  public session: TrackModeSession = new TrackModeSession();
 
   /** 房间内已发布的 TrackBaseInfo */
   public publishedTrackInfos: Map<string, TrackBaseInfo> = new Map();
@@ -524,9 +524,27 @@ export class RoomStore {
     const videoTrack = publishedTracksList.find(t => t.tag === "camera");
     const screenTrack = publishedTracksList.find(t => t.tag === "screen");
 
-    this.publishTracksReport.audio = audioTrack ? audioTrack.rtcTrack.getStats() : null;
-    this.publishTracksReport.video = videoTrack ? videoTrack.rtcTrack.getStats() : null;
-    this.publishTracksReport.screen = screenTrack ? screenTrack.rtcTrack.getStats() : null;
+    this.publishTracksReport.audio = null;
+    if (audioTrack) {
+      const audioTrackReportList = audioTrack.rtcTrack.getStats();
+      if (audioTrackReportList.length > 0) {
+        this.publishTracksReport.audio = audioTrackReportList[0];
+      }
+    }
+    this.publishTracksReport.video = null;
+    if (videoTrack) {
+      const videoTrackReportList = videoTrack.rtcTrack.getStats();
+      if (videoTrackReportList.length > 0) {
+        this.publishTracksReport.video = videoTrackReportList[0];
+      }
+    }
+    this.publishTracksReport.screen = null;
+    if (screenTrack) {
+      const screenTrackReportList = screenTrack.rtcTrack.getStats();
+      if (screenTrackReportList.length > 0) {
+        this.publishTracksReport.screen = screenTrackReportList[0];
+      }
+    }
   }
 
   /** 监听 session 的 disconnect 事件 */

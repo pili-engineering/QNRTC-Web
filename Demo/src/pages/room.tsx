@@ -32,8 +32,7 @@ import { MessageStore } from '../stores/messageStore';
 import { MenuStore } from '../stores/menuStore';
 import InfoPanel from '../components/InfoPanel';
 
-// 暂时先注释掉这两个组建，后续修复
-// import SwitchPanel from '../components/SwitchPanel'
+import SwitchPanel from '../components/SwitchPanel'
 // import MergePanel from '../components/MergePanel'
 
 const styles = (theme: Theme) => createStyles({
@@ -433,12 +432,12 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
               videoStatus={roomStore.publishTracksReport.video}
               screenStatus={roomStore.publishTracksReport.screen}
             />
-            {/* <SwitchPanel
+            <SwitchPanel
               // session={roomStore.session}
               audioDeviceId={roomStore.audioDeviceId}
               videoDeviceId={roomStore.videoDeviceId}
               roomStore={roomStore}
-            /> */}
+            />
             <Grid
               item
             >
