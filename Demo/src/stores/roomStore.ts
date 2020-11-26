@@ -138,6 +138,8 @@ export class RoomStore {
     this.session.on('track-remove', this.removeTracks);
     this.session.on('mute-tracks', this.updateTracksMute);
     this.session.on("disconnect", this.handleDisconnect);
+    this.session.on('remote-user-reconnecting', this.handleRemoteUserReconnecting);
+    this.session.on('remote-user-reconnected', this.handleRemoteUserReconnected);
     this.selectTracks[1] = PublishRecordOptions[1].config;
     this.selectTracks[0] = PublishRecordOptions[0].config;
     const selectVideoConfig = store.get('selectVideoConfig') as keyof publishVideoConfigs;
@@ -607,11 +609,30 @@ export class RoomStore {
         });
         return;
       }
+      case 10007: {
+        this.leaveRoom();
+        messageStore.showAlert({
+          show: true,
+          title: '断开连接',
+          content: '网络异常断开，重连失败',
+        });
+        return;
+      }
       default: {
         this.leaveRoom();
         return;
       }
     }
+  }
+
+  @action.bound
+  private handleRemoteUserReconnecting(user: RTCUser): void {
+    console.log('remote-user-reconnecting', user)
+  }
+
+  @action.bound
+  private handleRemoteUserReconnected(user: RTCUser): void {
+    console.log('remote-user-reconnected', user)
   }
 }
 

@@ -103,6 +103,7 @@ class Settings extends Component<Props, State> {
       <Grid style={{ marginTop: 80 }} item container wrap="nowrap" justify="center" spacing={16}>
         <Grid item>
           <Input
+            id="change_user_name"
             placeholder="修改用户名"
             value={this.state.userid}
             onChange={(e) => this.setState({ userid: e.target.value })}
@@ -126,6 +127,7 @@ class Settings extends Component<Props, State> {
       <Grid item container wrap="nowrap" justify="center" spacing={16}>
         <Grid item>
           <Input
+            id="change_app_id"
             placeholder="修改APP_ID"
             value={this.state.appid}
             onChange={(e) => this.setState({ appid: e.target.value })}
@@ -133,8 +135,10 @@ class Settings extends Component<Props, State> {
         </Grid>
       </Grid>
       <Grid item container wrap="nowrap" justify="center" spacing={16}>
-        <Grid item>
-          是否使用电脑声音: <Radio checked={!!this.props.roomStore.useAudio} onChange={(_e, checked: boolean) => {this.props.roomStore.updateUseAudio(checked)}} />
+        <Grid item className="screen_audio">
+          是否使用电脑声音: <Radio checked={!!this.props.roomStore.useAudio} onClick={() => {
+            this.props.roomStore.updateUseAudio(!this.props.roomStore.useAudio);
+          }} />
         </Grid>
       </Grid>
  

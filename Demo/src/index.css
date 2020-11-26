@@ -42,3 +42,7 @@ code {
   z-index: 10;
   position: relative;
 }
+
+.screen_audio {
+  color: #FAFAFA;
+}
