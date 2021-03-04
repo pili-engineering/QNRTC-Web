@@ -11,7 +11,13 @@ import { createBrowserHistory } from 'history';
 import Settings from './pages/settings';
 import Layout from './layouts';
 import { lazyConfirmLoading } from './components/ConfirmLoading';
+import Room from './pages/room';
 
+/**
+ * lazyConfirmLoading cause an error when request screen sharing in Safari:
+ *   Unhandled Promise Rejection: InvalidAccessError: getDisplayMedia must be called from a user gesture handler.
+ * So we'll use Room component directly.
+ */
 const LazyRoom = lazyConfirmLoading({
     lazy: import('./pages/room'),
     title: '加入会议房间',
@@ -67,7 +73,7 @@ function App() {
               />
               <Route
                 path="/room/:roomid?"
-                render={LazyRoom}
+                component={Room}
               />
               <Route
                 path="/live/:roomid"

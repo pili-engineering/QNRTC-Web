@@ -76,18 +76,30 @@ export class RoomStore {
       .filter(v => v.rtcTrack.info.kind === 'audio');
   }
 
-  /** 已发布的 VideoTrack */
+  /** 已发布的 VideoTrack(Camera) */
   @computed
-  public get publishedVideoTracks (): Track[] {
+  public get publishedCameraTracks (): Track[] {
     return Array.from(this.publishedTracks.values())
-      .filter(v => v.rtcTrack.info.kind === 'video');
+      .filter(v => v.rtcTrack.info.tag === 'camera');
   }
 
-  /** 切换已发布的 VideoTrack Mute状态 */
+  /** 已发布的 VideoTrack(Screen) */
+  public get publishedScreenTracks (): Track[] {
+    return Array.from(this.publishedTracks.values())
+      .filter(v => v.rtcTrack.info.tag === 'screen');
+  }
+
+  /** 切换已发布的 VideoTrack(Camera) Mute状态 */
   @action.bound
-  public toggleMutePublishedVideo() {
-    const publishedVideoTracks = this.publishedVideoTracks;
-    this.muteTracks(publishedVideoTracks.map(v => v.trackId), publishedVideoTracks.some(v => !v.muted));
+  public toggleMutePublishedCamera() {
+    const publishedCameraTracks = this.publishedCameraTracks;
+    this.muteTracks(publishedCameraTracks.map(v => v.trackId), publishedCameraTracks.some(v => !v.muted));
+  }
+  /** 切换已发布的 VideoTrack(Screen) Mute状态 */
+  @action.bound
+  public toggleMutePublishedScreen() {
+    const publishedScreenTracks = this.publishedScreenTracks;
+    this.muteTracks(publishedScreenTracks.map(v => v.trackId), publishedScreenTracks.some(v => !v.muted));
   }
 
   /** 切换已发布的 AudioTrack Mute状态 */
