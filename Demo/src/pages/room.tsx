@@ -15,8 +15,10 @@ import {
   MicNone,
   MicOff,
   Videocam as VideocamIcon,
-  VideocamOff as VideocamOffIcon,
+  VideocamOff as VideocamOffIcon
 } from '@material-ui/icons';
+import ScreenShareIcon from '@material-ui/icons/ScreenShare';
+import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
 import Clipboard from 'clipboard';
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
@@ -31,9 +33,9 @@ import qs from 'qs';
 import { MessageStore } from '../stores/messageStore';
 import { MenuStore } from '../stores/menuStore';
 import InfoPanel from '../components/InfoPanel';
+import SwitchPanel from '../components/SwitchPanel';
+import { ConfirmLoading } from '../components/ConfirmLoading';
 
-import SwitchPanel from '../components/SwitchPanel'
-// import MergePanel from '../components/MergePanel'
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -137,7 +139,11 @@ interface Props extends WithStyles<typeof styles> {
 @observer
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.props.messageStore.hideLoading();
+  }
+
+  handleConfirmJoinRoom = async () => {
     const roomid = this.props.match.params.roomid || '';
     const qsobj = qs.parse(this.props.routerStore.location.search.substr(1));
     // 如果加入房间的时候没有用户名，随机分配一个
@@ -147,17 +153,14 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     if (!qsobj.roomToken && !verifyRoomId(roomid)) return this.props.routerStore.push('/');
     const { roomStore, messageStore } = this.props;
     if (roomStore.state !== RoomState.Idle) {
-      messageStore.hideLoading();
       return;
     }
-
     if (qsobj.appId) {
       roomStore.setAppId(qsobj.appId);
     }
-
     let token: string | undefined = qsobj.roomToken;
     let tracks: RTCTrack[] | undefined;
-    messageStore.setLoadingText('加入房间中');
+    messageStore.showLoading('加入房间中...');
     try {
       if (!token) {
         roomStore.setId(roomid);
@@ -355,16 +358,23 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   render() {
     const { classes, roomStore, menuStore } = this.props;
     const publishedAudioTracks = roomStore.publishedAudioTracks;
-    const publishedVideoTracks = roomStore.publishedVideoTracks;
+    const publishedCameraTracks = roomStore.publishedCameraTracks;
+    const publishedScreenTracks = roomStore.publishedScreenTracks;
     return (
     <div className={classes.root}>
       <div className={classes.rootcontent}>
+        <ConfirmLoading
+          title="加入会议房间"
+          content="我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话"
+          actionTitle="加入"
+          handleClose={this.handleConfirmJoinRoom}
+        />
         <div className={classes.screen}>
           <UserPlayer
-          screen
-          local
-          tracks={Array.from(roomStore.publishedTracks.values())}
-          menuStore={menuStore}
+            screen
+            local
+            tracks={Array.from(roomStore.publishedTracks.values())}
+            menuStore={menuStore}
           />
         </div>
         <Grid
@@ -484,15 +494,15 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                 </Tooltip>
               </Grid>
               <Grid item>
-                { publishedVideoTracks.length !== 0 ?
+                { publishedAudioTracks.length !== 0 ?
                 (<Tooltip
-                    title="视频"
+                    title="麦克风"
                     placement="top-end"
                   >
                     <IconButton
-                      onClick={ roomStore.toggleMutePublishedVideo }
+                      onClick={ roomStore.toggleMutePublishedAudio }
                     >
-                      {!publishedVideoTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
+                      {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
                     </IconButton>
                 </Tooltip>) : <></> }
               </Grid>
@@ -508,15 +518,28 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                 </Fab>
               </Grid>
               <Grid item>
-                { publishedAudioTracks.length !== 0 ?
+                { publishedCameraTracks.length !== 0 ?
                 (<Tooltip
-                    title="麦克风"
+                    title="摄像头"
                     placement="top-end"
                   >
                     <IconButton
-                      onClick={ roomStore.toggleMutePublishedAudio }
+                      onClick={ roomStore.toggleMutePublishedCamera }
                     >
-                      {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
+                      {!publishedCameraTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
+                    </IconButton>
+                </Tooltip>) : <></> }
+              </Grid>
+              <Grid item>
+                { publishedScreenTracks.length !== 0 ?
+                (<Tooltip
+                    title="屏幕分享"
+                    placement="top-end"
+                  >
+                    <IconButton
+                      onClick={ roomStore.toggleMutePublishedScreen }
+                    >
+                      {!publishedScreenTracks.some(v => !v.muted) ? <StopScreenShareIcon/> : <ScreenShareIcon/> }
                     </IconButton>
                 </Tooltip>) : <></> }
               </Grid>

@@ -9,11 +9,44 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 interface Props {
   title: string;
   content: string;
-  lazy: Promise<{default: React.ComponentType<any>}>;
+  actionTitle: string;
+  handleClose: any;
 }
 
+export const ConfirmLoading = (props: Props) => {
+  const [open, setOpen] = React.useState(true);
+  const closeAll = () => {
+    setOpen(false);
+    props.handleClose();
+  }
+  return (
+    <div>
+      <Dialog
+        open={open}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title"> {props.title}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {props.content}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeAll} color="primary">
+            加入
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
+}
 
-export const lazyConfirmLoading = (props: Props) => {
+interface lazyProps {
+  title: string;
+  content: string;
+  lazy: Promise<{default: React.ComponentType<any>}>;
+}
+export const lazyConfirmLoading = (props: lazyProps) => {
 
   let resolve1: any
 
