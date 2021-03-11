@@ -121,7 +121,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 
 ## 8.1 如何体验 Demo？
 
-您可以直接使用主流浏览器(Firefox 50+, Safari 11+, Chrome 56+)[访问我们 Web 版 Demo 来体验通话效果](http://s.qnsdk.com/s/qZZag)
+您可以直接使用主流浏览器(Firefox 50+, Safari 11+, Chrome 56+)[访问我们 Web 版 Demo 来体验通话效果](https://demo-rtc.qnsdk.com/)
 
 ## 8.2 实时通话功能是否收费？
 
