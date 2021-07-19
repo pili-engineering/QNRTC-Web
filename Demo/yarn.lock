@@ -6531,10 +6531,10 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.4.0.tgz#8a261b3b70aa10aaf7781ca49befcb0500bb66a0"
-  integrity sha512-HuDpUDqVLj51OhEpvgffyZERbitMiyz/hYBhFB8wyklrTOBm/g+cMcIHJo7Ppb1HCfwJ8nQOdl05FMJ/oMq52Q==
+pili-rtc-web@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/pili-rtc-web/-/pili-rtc-web-2.5.0.tgz#fd76d00cb634f91ea07326162e8eb870a5bae6f6"
+  integrity sha512-Hlpd3at/2WRkgWbb98MM2qg7T6Vn5JFJ5htknc+XOJsVV+os2pAX6hRaeMJ14HcUvKm0HEgd76w651U2V2A35g==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@types/blueimp-md5" "^2.7.0"
@@ -6554,7 +6554,7 @@ pili-rtc-web@2.4.0:
     lodash.uniqby "^4.7.0"
     sdp-transform "^2.4.1"
     semver "^5.6.0"
-    webrtc-adapter "^7.2.0"
+    webrtc-adapter "^8.0.0"
     wolfy87-eventemitter "^5.2.5"
 
 pinkie-promise@^2.0.0:
@@ -7911,12 +7911,6 @@ rsvp@^3.3.3:
   version "3.6.2"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.6.2.tgz#2e96491599a96cde1b515d5674a8f7a91452926a"
 
-rtcpeerconnection-shim@^1.2.15:
-  version "1.2.15"
-  resolved "https://registry.yarnpkg.com/rtcpeerconnection-shim/-/rtcpeerconnection-shim-1.2.15.tgz#e7cc189a81b435324c4949aa3dfb51888684b243"
-  dependencies:
-    sdp "^2.6.0"
-
 run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
@@ -8012,9 +8006,10 @@ sdp-transform@^2.4.1:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/sdp-transform/-/sdp-transform-2.7.0.tgz#dec4d282c2538ef269cf3372a69b195c7862bcb5"
 
-sdp@^2.6.0, sdp@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.9.0.tgz#2eed2d9c0b26c81ff87593107895c68d6fb9a0a6"
+sdp@^3.0.2:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/sdp/-/sdp-3.0.3.tgz#669958d54663ea9f4a46cc66518c9d980c52c61e"
+  integrity sha512-8EkfckS+XZQaPLyChu4ey7PghrdcraCVNpJe2Gfdi2ON1ylQ7OasuKX+b37R9slnRChwIAiQgt+oj8xXGD8x+A==
 
 seedrandom@^2.4.4:
   version "2.4.4"
@@ -9142,12 +9137,12 @@ webpack@4.19.1:
     watchpack "^1.5.0"
     webpack-sources "^1.2.0"
 
-webrtc-adapter@^7.2.0:
-  version "7.2.3"
-  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-7.2.3.tgz#2b9b60cf34a6d2a38d247fd1d9a6c495aed85a02"
+webrtc-adapter@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/webrtc-adapter/-/webrtc-adapter-8.0.0.tgz#b1bd88c02ad647d064dc20f29fb311dca01c2b15"
+  integrity sha512-1U73dJB7xdXC3UmCHK3VuWU/bD1MBfYGgEPCXlBB/5QVQOzbi80UxBGvAvRt4Oocuwo5bzAD272kpkBd6f0HwA==
   dependencies:
-    rtcpeerconnection-shim "^1.2.15"
-    sdp "^2.9.0"
+    sdp "^3.0.2"
 
 websocket-driver@>=0.5.1:
   version "0.7.0"
