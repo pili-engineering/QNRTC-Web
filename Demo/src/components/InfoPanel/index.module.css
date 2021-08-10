@@ -10,6 +10,17 @@
   min-width: 22em;
   font-size: 11px;
 }
+.infoPanelMobile {
+  background: rgba(28,28,28,0.8);
+  border-radius: 4px;
+  color: #fff;
+  right: 0;
+  position: absolute;
+  top: 58px;
+  z-index: 64;
+  min-width: 17em;
+  font-size: 11px;
+}
 
 .infoPanelContent {
   padding: 5px;

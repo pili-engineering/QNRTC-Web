@@ -11,8 +11,24 @@
   font-size: 11px;
   padding: 5px;
 }
+.switchPanelMobile {
+  background: rgba(28,28,28,0.8);
+  border-radius: 4px;
+  color: #fff;
+  right: 0;
+  position: absolute;
+  top: 0;
+  z-index: 64;
+  min-width: 22em;
+  font-size: 11px;
+  padding: 5px;
+}
 .formControl {
   display: block;
+}
+.formControlMobile {
+  display: block;
+  width: calc( 50vw - 5px)
 }
 .formControl > .select {
   min-width: 120px;

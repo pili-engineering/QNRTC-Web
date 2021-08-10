@@ -14,9 +14,10 @@ interface SwitchPanelProp {
   videoDeviceId?: string
   audioDeviceId?: string
   roomStore: RoomStore
+  isMobile: Boolean
 }
 
-function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore }: SwitchPanelProp) {
+function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore, isMobile }: SwitchPanelProp) {
   const [currentVideoDeviceId, setCurrentVideoDeviceId] = useState(videoDeviceId || '')
   const [currentAudioDeviceId, setCurrentAudioDeviceId] = useState(audioDeviceId || '')
   // const [videoDevices, setVideoDevices] = useState([])
@@ -34,8 +35,8 @@ function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore }: SwitchPanelPro
     await roomStore.setAudioDeviceId(e.target.value)
   }
   return (
-    <div className={classes.switchPanel}>
-      <FormControl className={classes.formControl}>
+    <div className={`${isMobile ? classes.switchPanelMobile : classes.switchPanel}`}>
+      <FormControl className={[isMobile ? classes.formControlMobile : classes.formControl].join(' ')}>
         <InputLabel htmlFor="video-device">视频设备</InputLabel>
         <Select
           className={classes.select}
@@ -55,7 +56,7 @@ function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore }: SwitchPanelPro
         </Select>
       </FormControl>
 
-      <FormControl className={classes.formControl}>
+      <FormControl className={[isMobile ? classes.formControlMobile : classes.formControl].join(' ')}>
         <InputLabel htmlFor="audio-device">音频设备</InputLabel>
         <Select
           className={classes.select}

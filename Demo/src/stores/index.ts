@@ -10,5 +10,5 @@ export {
   routerStore,
   messageStore,
   menuStore,
-  userStore,
+  userStore
 };

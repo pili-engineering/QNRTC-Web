@@ -4,7 +4,7 @@ import {
   Chip,
   Grid,
   IconButton,
-  Tooltip,
+  Tooltip
 } from '@material-ui/core';
 
 import { MenuItemProps } from '@material-ui/core/MenuItem';
@@ -19,6 +19,8 @@ import {
 } from '@material-ui/icons';
 import ScreenShareIcon from '@material-ui/icons/ScreenShare';
 import StopScreenShareIcon from '@material-ui/icons/StopScreenShare';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import CameraEnhance from '@material-ui/icons/CameraEnhance';
 import Clipboard from 'clipboard';
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
@@ -47,6 +49,9 @@ const styles = (theme: Theme) => createStyles({
     display: 'flex',
     flexDirection: 'row'
   },
+  rootMobile: {
+    height: '100%'
+  },
   rootcontent: {
     width: '75%',
     flex: '1 0 auto',
@@ -73,6 +78,14 @@ const styles = (theme: Theme) => createStyles({
     lineHeight: `${ 80 - (theme.spacing.unit * 3)}px`,
     overflow: 'visible',
   },
+  headerContentMobile: {
+    position: 'absolute',
+    top: '65px',
+    marginLeft: '-10px',
+  },
+  headeritemMobile: {
+    marginBottom: '10px'
+  },
   footer: {
     padding: `${theme.spacing.unit * 3}px`,
     height: '104px',
@@ -96,6 +109,22 @@ const styles = (theme: Theme) => createStyles({
     width: '100%',
     height: '100%',
     zIndex: -1,
+  },
+  screenMobile: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: -1,
+    display: 'flex',
+    overflow: 'hidden',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    flex: '0 0 auto',
+    alignItems: 'center',
   },
   gridList: {
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -133,13 +162,15 @@ interface Props extends WithStyles<typeof styles> {
   roomStore: RoomStore;
   messageStore: MessageStore;
   menuStore: MenuStore;
+  isMobile: Boolean
 }
 
-@inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'menuStore')
+@inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'menuStore', 'isMobile')
 @observer
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
-
   componentDidMount() {
+    document.title = `房间:${this.props.roomStore.id},appid:${this.props.roomStore.appId}`
+    
     this.props.messageStore.hideLoading();
   }
 
@@ -217,7 +248,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
       });
     });
   }
-
+  
   componentWillUnmount() {
     this.props.roomStore.leaveRoom();
     this.props.messageStore.hideLoading();
@@ -292,8 +323,10 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   handlePublish = async () => {
     if (this.props.roomStore.publishedTracks.size === 0) {
       this.publish(await this.props.roomStore.getSelectTracks());
+      this.props.roomStore.setHandupStatus(false);
     } else {
       this.props.roomStore.unpublish();
+      this.props.roomStore.setHandupStatus(true);
     }
   };
 
@@ -356,12 +389,15 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   }
 
   render() {
-    const { classes, roomStore, menuStore } = this.props;
+    const { classes, roomStore, menuStore, isMobile } = this.props;
     const publishedAudioTracks = roomStore.publishedAudioTracks;
     const publishedCameraTracks = roomStore.publishedCameraTracks;
     const publishedScreenTracks = roomStore.publishedScreenTracks;
+    const faceingMode = roomStore.faceingMode;
+    const arr = Array.from(this.props.roomStore.users.values())
+    .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
     return (
-    <div className={classes.root}>
+    <div className={ `${classes.root} ${isMobile ? classes.rootMobile : ''}`}>
       <div className={classes.rootcontent}>
         <ConfirmLoading
           title="加入会议房间"
@@ -369,14 +405,32 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
           actionTitle="加入"
           handleClose={this.handleConfirmJoinRoom}
         />
-        <div className={classes.screen}>
+        {!isMobile && <div className={classes.screen}>
           <UserPlayer
+            isMobile={isMobile}
             screen
             local
             tracks={Array.from(roomStore.publishedTracks.values())}
             menuStore={menuStore}
           />
-        </div>
+        </div>}
+        {isMobile && <div className={classes.screenMobile}>
+          <div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+            <UserPlayer
+                isMobile={isMobile}
+                local
+                tracks={Array.from(roomStore.publishedTracks.values())}
+                menuStore={menuStore}
+            />
+          </div>
+            {Array.from(this.props.roomStore.users.values())
+              .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
+              .map(v =>
+                (<div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+                <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v}/>
+                </div>)
+              )}
+        </div>}
         <Grid
           className={classes.zoom}
           container
@@ -400,25 +454,27 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
               justify="space-between"
               alignItems="center"
             >
-              <Grid
-                item
-                sm={4}
-                xs={6}
-                className={classes.headerContent}
-              >
-                房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
-              </Grid>
+              {
+                !isMobile && <Grid
+                  item
+                  sm={4}
+                  xs={6}
+                  className={classes.headerContent}
+                >
+                  房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
+                </Grid>
+              }
               <Grid
                 item
                 sm={8}
                 xs={6}
                 container
                 direction="row-reverse"
-                className={classes.headerContent}
+                className={`${isMobile ? classes.headerContentMobile : classes.headerContent}`}
               >
                 { Array.from(this.props.roomStore.users.values()).map(v => {
                     return (
-                    <Grid item xl={2} md={3} sm={6} xs={12} key={v.id}>
+                    <Grid item xl={2} md={3} sm={6} xs={12} key={v.id} className={`${isMobile ? classes.headeritemMobile : ''}`}>
                     <Chip
                       avatar={<Avatar>{v.id.substr(0, 1).toUpperCase()}</Avatar>}
                       label={v.id}
@@ -437,18 +493,20 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
             justify="flex-end"
             alignItems="stretch"
           >
-            <InfoPanel
+            {!isMobile &&<InfoPanel
               audioStatus={roomStore.publishTracksReport.audio}
               videoStatus={roomStore.publishTracksReport.video}
               screenStatus={roomStore.publishTracksReport.screen}
-            />
+              isMobile={isMobile}
+            />}
             <SwitchPanel
               // session={roomStore.session}
               audioDeviceId={roomStore.audioDeviceId}
               videoDeviceId={roomStore.videoDeviceId}
               roomStore={roomStore}
+              isMobile={isMobile}
             />
-            <Grid
+            {!isMobile && <Grid
               item
             >
               <Grid
@@ -460,14 +518,14 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                 className={classes.content}
               >
                 {Array.from(this.props.roomStore.users.values())
-                  .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
+                  .filter(v => v.id !== this.props.userStore.id)
                   .map(v =>
                     (<Grid key={v.id} item>
-                      <UserPlayer menuStore={menuStore} user={v}/>
+                      <UserPlayer isMobile={isMobile} menuStore={menuStore} user={v}/>
                     </Grid>)
                   )}
               </Grid>
-            </Grid>
+            </Grid>}
             <Grid
               item
               container
@@ -544,16 +602,16 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                 </Tooltip>) : <></> }
               </Grid>
               <Grid item className={classes.holder}>
-                {/* <Tooltip
-                  title="麦克风"
+                <Tooltip
+                  title="切换摄像头"
                   placement="top-end"
                 >
                   <IconButton
-                    onClick={ roomStore.toggleDisplayMergePanel }
+                    onClick={ roomStore.toggleCameraFacingMode }
                   >
-                    Merge
+                    {faceingMode === 'user' ? <PhotoCamera/> : <CameraEnhance/> }
                   </IconButton>
-                </Tooltip> */}
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
@@ -566,7 +624,6 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
           </div>
         )
       } */}
-      
     </div>);
   }
 }
