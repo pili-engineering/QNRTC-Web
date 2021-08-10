@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: #212121;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -21,7 +21,9 @@ code {
 
 .niu {
   position: absolute;
-  top: 5%;
+  top: 0;
+  height:100vh;
+  width:100vw;
   right: -8%;
   z-index: -1;
 }

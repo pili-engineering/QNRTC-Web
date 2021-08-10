@@ -10,7 +10,7 @@ interface Props {
 
 export default function Select(props: Props) {
   return (
-    <div className={classes.input}>
+    <div className={`${classes.input} input`}>
       <select
         value={props.value}
         onChange={props.onChange}

@@ -46,7 +46,7 @@ const styles = (theme: Theme) => createStyles({
   },
   root: {
     overflowX: 'hidden',
-    overflowY: 'auto',
+    overflowY: 'scroll',
     height: '100vh',
     padding: `${theme.spacing.unit}px`,
   },
@@ -63,11 +63,15 @@ const styles = (theme: Theme) => createStyles({
     justifyContent: 'center',
     width: 500,
   },
+  linkWrap: {
+    display:'flex',
+    justifyContent: 'space-between',
+    padding: '30px 20px 0'
+  },
   linkRight: {
     color: 'rgba(255, 255, 255, 0.5)',
     fontSize: '10px',
     lineHeight: '16px',
-    position: 'absolute',
     bottom: '16px',
     right: '16px',
   },
@@ -75,7 +79,6 @@ const styles = (theme: Theme) => createStyles({
     color: 'rgba(255, 255, 255, 0.5)',
     fontSize: '10px',
     lineHeight: '16px',
-    position: 'absolute',
     bottom: '16px',
     left: '16px',
     '& > p': {
@@ -89,6 +92,7 @@ interface Props extends WithStyles<typeof styles> {
   userStore: UserStore;
   roomStore: RoomStore;
   messageStore: MessageStore;
+  isMobile: Boolean
 }
 
 interface State {
@@ -100,7 +104,7 @@ interface State {
   joinRoomStep: number;
 }
 
-@inject('routerStore', 'userStore', 'roomStore', 'messageStore')
+@inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'isMobile')
 @observer
 class Home extends Component<Props, State> {
 
@@ -274,7 +278,7 @@ class Home extends Component<Props, State> {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes,isMobile } = this.props;
     const { enhance } = this.state;
     return (
       <div className={classes.root}>
@@ -350,7 +354,7 @@ class Home extends Component<Props, State> {
             <Grid item>
               <FormControl className={classes.formControl}>
                 <RadioGroup
-                  className={classes.radioGroup}
+                  className={`${classes.radioGroup} radioGroup`}
                   name="mode"
                   row
                   value={this.state.selected.toString(2).padStart(PublishRecordOptions.length, '0')}
@@ -358,9 +362,9 @@ class Home extends Component<Props, State> {
                 >
                   <FormControlLabel value="00010" control={<Radio />} label="音频通话" />
                   <FormControlLabel value="00011" control={<Radio />} label="音视频通话" />
-                  <FormControlLabel value="00101" control={<Radio />} label="视频通话 + 音频文件" />
-                  <FormControlLabel value="01011" control={<Radio />} label="音视频通话 + 屏幕共享" />
-                  <FormControlLabel value="10011" control={<Radio />} label="音视频通话 + 窗口共享" />
+                  { !isMobile && <FormControlLabel value="00101" control={<Radio />} label="视频通话 + 音频文件" />}
+                  { !isMobile && <FormControlLabel value="01011" control={<Radio />} label="音视频通话 + 屏幕共享" />}
+                  { !isMobile && <FormControlLabel value="10011" control={<Radio />} label="音视频通话 + 窗口共享" />}
                 </RadioGroup>
               </FormControl>
               <Grow
@@ -416,16 +420,18 @@ class Home extends Component<Props, State> {
               </ButtonBase>
               </Grid>
             </Grid>}
+            <div className={classes.linkWrap}>
+              <div className={classes.linkLeft}>
+                <p>构建时间: {process.env.REACT_APP_BUILD_DATE}</p>
+                <p>App Version: {process.env.REACT_APP_VERSION}</p>
+                <p>SDK Version: {SDKVersion}-{process.env.REACT_APP_LATEST_COMMIT_HASH}</p>
+              </div>
+              {this.props.routerStore.location.pathname === '/roomtoken' ?
+                <Link className={classes.linkRight} to="/">使用房间名</Link> :
+                <Link className={classes.linkRight} to="/roomtoken">使用 roomToken</Link>
+              }
+            </div>
         </Grid>
-        <div className={classes.linkLeft}>
-          <p>构建时间: {process.env.REACT_APP_BUILD_DATE}</p>
-          <p>App Version: {process.env.REACT_APP_VERSION}</p>
-          <p>SDK Version: {SDKVersion}-{process.env.REACT_APP_LATEST_COMMIT_HASH}</p>
-        </div>
-        {this.props.routerStore.location.pathname === '/roomtoken' ?
-          <Link className={classes.linkRight} to="/">使用房间名</Link> :
-          <Link className={classes.linkRight} to="/roomtoken">使用 roomToken</Link>
-        }
         <img className="niu" src={niu} />
         <input
           ref={this.fileinput}

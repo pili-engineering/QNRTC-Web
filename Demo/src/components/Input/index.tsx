@@ -10,7 +10,7 @@ interface Props {
 
 export default function Input(props: Props) {
   return (
-    <div className={classes.input}>
+    <div className={`${classes.input} input`}>
       <input
         value={props.value}
         onChange={props.onChange}

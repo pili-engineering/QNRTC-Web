@@ -1,8 +1,5 @@
-# QNRTC Web Demo v2.0.0
+# QNRTC Web Demo v2.6.0
 
-## 注意
-该 Demo 是以 `Track 模式` 编写的，关于模式的介绍，可以参见文档站的
-[模式选择](https://doc.qnsdk.com/rtn/web/docs/mode_select)
 
 ## 运行
 

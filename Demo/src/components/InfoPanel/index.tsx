@@ -7,10 +7,11 @@ interface InfoPanelProp {
   audioStatus: TrackStatsReport | null;
   videoStatus: TrackStatsReport | null;
   screenStatus: TrackStatsReport | null;
+  isMobile: Boolean
 }
 
 export default (props: InfoPanelProp) => (
-<div className={classes.infoPanel}>
+<div className={`${props.isMobile ? classes.infoPanelMobile : classes.infoPanel}`}>
   <div className={classes.infoPanelContent}>
     <div>
       <div>视频丢包率</div><span>{ props.videoStatus ? Number(props.videoStatus.packetLossRate * 100).toFixed(2) : "0.00" } %</span>

@@ -32,9 +32,10 @@ interface Props extends RouteComponentProps<Params> {
   routerStore: RouterStore;
   messageStore: MessageStore;
   userStore: UserStore;
+  isMobile: Boolean
 }
 
-@inject('roomStore', 'routerStore', 'messageStore', 'userStore')
+@inject('roomStore', 'routerStore', 'messageStore', 'userStore', 'isMobile')
 @observer
 export default class LivePage extends React.Component<Props, State> {
   public video = React.createRef<HTMLVideoElement>();;
@@ -183,16 +184,17 @@ export default class LivePage extends React.Component<Props, State> {
   }
 
   public render(): JSX.Element {
+    const { isMobile } = this.props;
     return (
-      <div className={styles.container}>
+      <div className={`${styles.container} ${isMobile ? styles.containerMobile : ''}`}>
         <p className={styles.roomName}>房间名称: {this.props.match.params.roomid}</p>
-        <div className={styles.videoContainer}>
+        <div className={`${isMobile ? styles.videoMobileContainer : styles.videoContainer }`}>
           <video
             ref={this.video}
             autoPlay
           />
         </div>
-        {this.props.userStore.isAdmin && <div className={styles.users}>
+        {this.props.userStore.isAdmin && <div className={`users ${isMobile ? styles.usersMobile : '' }`}>
           <p className={styles.configTitle}>合流设置</p>
           { Array.from(this.props.roomStore.users.values()).map(user => (
             <UserMergeConfig

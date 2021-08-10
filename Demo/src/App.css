@@ -1,0 +1,52 @@
+.qnMobile{
+    position: relative;
+    top:0;
+    overflow: scroll;
+}
+.qnMobile .input {
+    width:90vw;
+    max-width: 500px;
+}
+.qnMobile .home_btn{
+    width: 90vw;
+    max-width: 500px;
+}
+.qnMobile .niu {
+    top:0;
+    left:0;
+    width:100%
+}
+.qnMobule .style_input{
+    width:90vw
+}
+.qnMobile .radioGroup{
+    width:100vw
+}
+
+.col-2 {
+    width: 16.666%;
+}
+  
+.col-4 {
+    width: 33.333%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+.row-4 {
+    height: 33.33%;
+}
+
+.row-6 {
+    height: 50%;
+}
+
+.row-12 {
+    height: 100%;
+}

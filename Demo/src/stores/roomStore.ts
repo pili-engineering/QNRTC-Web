@@ -25,7 +25,7 @@ import store from 'store';
 import { matchPath } from "react-router";
 import messageStore from './messageStore';
 
-const match = matchPath<{roomid:string}>(window.location.pathname, {
+const match = matchPath<{ roomid: string }>(window.location.pathname, {
   path: "/room/:roomid",
   exact: true,
   strict: false
@@ -45,6 +45,10 @@ export class RoomStore {
   @observable
   public appId: string = RTC_APP_ID;
 
+  /** 前后置摄像头 */
+  @observable
+  public faceingMode: string = 'user'
+
   /** 房间中的用户 */
   @observable.deep
   public users: Map<string, User> = new Map();
@@ -61,6 +65,9 @@ export class RoomStore {
   @observable
   public useAudio?: boolean = false
 
+  @observable
+  public handupStatus: boolean = false
+
   /** 已选择的清晰度 */
   @observable
   public selectVideoConfig: keyof publishVideoConfigs = '480p';
@@ -71,20 +78,20 @@ export class RoomStore {
 
   /** 已发布的 AudioTrack */
   @computed
-  public get publishedAudioTracks (): Track[] {
+  public get publishedAudioTracks(): Track[] {
     return Array.from(this.publishedTracks.values())
       .filter(v => v.rtcTrack.info.kind === 'audio');
   }
 
   /** 已发布的 VideoTrack(Camera) */
   @computed
-  public get publishedCameraTracks (): Track[] {
+  public get publishedCameraTracks(): Track[] {
     return Array.from(this.publishedTracks.values())
       .filter(v => v.rtcTrack.info.tag === 'camera');
   }
 
   /** 已发布的 VideoTrack(Screen) */
-  public get publishedScreenTracks (): Track[] {
+  public get publishedScreenTracks(): Track[] {
     return Array.from(this.publishedTracks.values())
       .filter(v => v.rtcTrack.info.tag === 'screen');
   }
@@ -101,7 +108,17 @@ export class RoomStore {
     const publishedScreenTracks = this.publishedScreenTracks;
     this.muteTracks(publishedScreenTracks.map(v => v.trackId), publishedScreenTracks.some(v => !v.muted));
   }
-
+  /** 切换前后置摄像头 */
+  @action.bound
+  public async toggleCameraFacingMode() {
+    this.setFaceingMode(this.faceingMode === 'user' ? 'environment' : 'user')
+    await this.unpublish()
+    const rtcTracks = await this.getSelectTracks('faceingMode')
+    console.log("changeFaceingMode:", this.faceingMode);
+    if(this.handupStatus === false) {
+      await this.publish(rtcTracks);
+    }
+  }
   /** 切换已发布的 AudioTrack Mute状态 */
   @action.bound
   public toggleMutePublishedAudio() {
@@ -165,6 +182,11 @@ export class RoomStore {
     window.onbeforeunload = () => this.leaveRoom();
   }
 
+  @action 
+  setFaceingMode(type: string) {
+    this.faceingMode = type
+  }
+
   @action
   public setId(roomId: string) {
     this.id = roomId;
@@ -173,6 +195,11 @@ export class RoomStore {
   @action
   public setToken(token: string) {
     this.token = token;
+  }
+
+  @action
+  setHandupStatus(type: boolean) {
+    this.handupStatus = type
   }
 
   @action
@@ -208,7 +235,9 @@ export class RoomStore {
     // this.releaseLocalTracks()
     const rtcTracks = await this.getSelectTracks()
     console.log("update video deviceid repub:", rtcTracks);
-    await this.publish(rtcTracks);
+    if(this.handupStatus === false) {
+      await this.publish(rtcTracks);
+    }
   }
 
   @action.bound
@@ -218,7 +247,9 @@ export class RoomStore {
     // this.releaseLocalTracks()
     const rtcTracks = await this.getSelectTracks()
     console.log("update audio deviceid repub:", rtcTracks);
-    await this.publish(rtcTracks);
+    if(this.handupStatus === false) {
+      await this.publish(rtcTracks);
+    }
   }
 
   @action.bound
@@ -245,13 +276,13 @@ export class RoomStore {
         }
       }
     }
-    this.subscribe(tracks.map( v => v.trackId) as string[]);
+    this.subscribe(tracks.map(v => v.trackId) as string[]);
   }
 
   @action.bound
   private removeTracks(tracks: TrackBaseInfo[]): void {
     const groupTracks = groupBy(tracks, 'userId');
-    for(const userid of Object.keys(groupTracks)) {
+    for (const userid of Object.keys(groupTracks)) {
       const tracks = groupTracks[userid];
       if (this.users.has(userid)) {
         const user = this.users.get(userid) as User;
@@ -285,7 +316,7 @@ export class RoomStore {
   @action.bound
   private syncUserList(users: RTCUser[]): void {
     for (const userid of this.users.keys()) {
-      if(!users.find((user) => user.userId === userid)) {
+      if (!users.find((user) => user.userId === userid)) {
         this.users.delete(userid);
       }
     }
@@ -340,7 +371,7 @@ export class RoomStore {
 
   @action
   public muteTracks(trackids: string[], muted: boolean) {
-    this.session.muteTracks(trackids.map(trackId =>({
+    this.session.muteTracks(trackids.map(trackId => ({
       trackId,
       muted,
     })));
@@ -366,8 +397,8 @@ export class RoomStore {
     this.publishedTracks.clear();
   }
 
-  @action 
-  public async getSelectTracks(): Promise<RTCTrack[]> {
+  @action
+  public async getSelectTracks(type = "deviceId"): Promise<RTCTrack[]> {
 
     const tracksConfig = this.selectTracks.filter(v => v) as RecordConfig[];
     // 只发布 camera screen audio 三路流。
@@ -378,8 +409,12 @@ export class RoomStore {
       }
       if (config.video) {
         Object.assign(config.video, (videoConfig.find(v => v.key === this.selectVideoConfig) || videoConfig[0]).config.video)
-        if (this.videoDeviceId) {
+        if (this.videoDeviceId && type === 'deviceId') {
           Object.assign(config.video, { deviceId: this.videoDeviceId })
+        }
+        if(type === 'faceingMode') {
+          delete config.video.deviceId
+          Object.assign(config.video, { facingMode: this.faceingMode })
         }
       }
       if (config.audio) {
@@ -397,7 +432,7 @@ export class RoomStore {
         }
       }
       console.log('tracks config:', config)
-      
+
       return deviceManager.getLocalTracks(config)
         .then(async (tracks: RTCTrack[]) => {
           for (const track of tracks) {
@@ -426,7 +461,7 @@ export class RoomStore {
         }
         // 每次只采集了一路流
         return deviceManager.getLocalTracks(config)
-          .then(async ([ track ]: RTCTrack[] ) => {
+          .then(async ([track]: RTCTrack[]) => {
             if (config.audio && config.audio.source) {
               track.setLoop(true);
               track.startAudioSource();
@@ -449,7 +484,7 @@ export class RoomStore {
   /** 订阅 */
   @action
   public async subscribe(trackids: string[]): Promise<void> {
-    let innerfunc ;
+    let innerfunc;
     const removePromise = new Promise<RTCTrack[]>((resovle, reject) => {
       innerfunc = (tracks: TrackBaseInfo[]) => {
         for (const track of tracks) {
@@ -476,7 +511,7 @@ export class RoomStore {
           }
         }
       });
-    } catch(e) {
+    } catch (e) {
       console.warn(e);
       throw e;
     }
@@ -499,10 +534,10 @@ export class RoomStore {
     runInAction(() => {
       for (const trackid of trackids) {
         const track = this.subscribedTracks.get(trackid);
-        if (!track) { return ; }
+        if (!track) { return; }
         this.subscribedTracks.delete(trackid);
         const user = this.users.get(track.userId as string);
-        if (!user) { return ; }
+        if (!user) { return; }
         user.tracks.delete(trackid);
       }
     });

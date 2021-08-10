@@ -13,6 +13,7 @@ interface Props {
   screen?: boolean;
   tracks?: Track[];
   menuStore: MenuStore;
+  isMobile: Boolean
 }
 
 interface State {
@@ -55,7 +56,7 @@ export default class UserPlayer extends React.Component<Props, State> {
   }
 
   render() {
-    const { tracks: tracksProp, user, local } = this.props;
+    const { tracks: tracksProp, user, local, isMobile } = this.props;
     let tracks = tracksProp;
     if (user) tracks = Array.from(user.tracks.values());
     if (!tracks) {
@@ -67,11 +68,11 @@ export default class UserPlayer extends React.Component<Props, State> {
     let audioTrack: Track | undefined = undefined;
     for (const track of tracks) {
       const tag = track.rtcTrack.info.tag;
-      if (tag ==='camera' && !track.muted) {
+      if (tag === 'camera' && !track.muted) {
         camera = track;
       } else if (tag === 'screen' && !track.muted) {
         share = track;
-      } else if (track.rtcTrack.info.kind === 'audio'){
+      } else if (track.rtcTrack.info.kind === 'audio') {
         audioTrack = track;
       }
     }
@@ -79,23 +80,23 @@ export default class UserPlayer extends React.Component<Props, State> {
       camera = tracks.find(v => v.rtcTrack.info.kind === 'video' && !v.muted);
     }
     if ((!share && !camera)) {
-      return (<div className={classes.root} style={{ backgroundColor: local ? "#212121" : undefined }}>
-          { !local && audioTrack && <p className={classes.userName}>{audioTrack.userId}</p> }
-          { !local && audioTrack && <AudioWave width={200} height={150} color="#66ccff" track={audioTrack.rtcTrack} /> }
-          { !local && audioTrack && <div ref={this.handlePlayerDom.bind(this, audioTrack)}></div> }
-        </div>);
+      return (<div className={isMobile ? classes.rootMobile : classes.root} style={{ backgroundColor: local ? "#212121" : undefined }}>
+        {!local && audioTrack && <p className={classes.userName}>{audioTrack.userId}</p>}
+        {!local && audioTrack && <AudioWave width={200} height={150} color="#66ccff" track={audioTrack.rtcTrack} />}
+        {!local && audioTrack && <div ref={this.handlePlayerDom.bind(this, audioTrack)}></div>}
+      </div>);
     }
-    return (<div className={classes.root + ' ' +(this.props.screen ? classes.screen : classes.zoom)}>
-          { share !== undefined ? <div
-          onDoubleClick={() => this.handleTrackFullScreen(share as Track)}
-          onContextMenu={this.handleCaptureFrame.bind(this, share as Track)}
-          ref={this.handlePlayerDom.bind(this, share)}></div> : <></> }
-          { camera ? <div
-          onDoubleClick={() => this.handleTrackFullScreen(camera as Track)}
-          onContextMenu={this.handleCaptureFrame.bind(this, camera as Track)}
-          ref={this.handlePlayerDom.bind(this, camera)}
-          ></div> : <></> }
-          { !local && audioTrack ? <div ref={this.handlePlayerDom.bind(this, audioTrack)}></div>  : <></> }
-         </div>);
+    return (<div className={isMobile ? classes.rootMobile : classes.root + ' ' + (this.props.screen ? classes.screen : isMobile ? classes.zoomMobile : classes.zoom)}>
+      {share !== undefined ? <div
+        onDoubleClick={() => this.handleTrackFullScreen(share as Track)}
+        onContextMenu={this.handleCaptureFrame.bind(this, share as Track)}
+        ref={this.handlePlayerDom.bind(this, share)}></div> : <></>}
+      {camera ? <div
+        onDoubleClick={() => this.handleTrackFullScreen(camera as Track)}
+        onContextMenu={this.handleCaptureFrame.bind(this, camera as Track)}
+        ref={this.handlePlayerDom.bind(this, camera)}
+      ></div> : <></>}
+      {!local && audioTrack ? <div ref={this.handlePlayerDom.bind(this, audioTrack)}></div> : <></>}
+    </div>);
   }
 }
