@@ -19,7 +19,6 @@ import User from '../../models/User';
 import { FormGroup } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
-import { StretchMode } from "pili-rtc-web";
 
 interface Square {
   x?: string;
@@ -27,7 +26,6 @@ interface Square {
   z?: string;
   w?: string;
   h?: string;
-  stretchMode?: StretchMode;
   enabled?: boolean;
 }
 
@@ -37,7 +35,7 @@ export interface MergeOptions {
   audio?: TrackOption;
 }
 export interface TrackOption extends Square {
-  trackId: string;
+  trackID: string;
 }
 
 interface State extends MergeOptions {
@@ -70,7 +68,6 @@ export class UserMergeConfig extends React.Component<Props, State> {
     z: '0',
     w: '480',
     h: '320',
-    stretchMode: "aspectFit",
   };
 
   @observable cameraEnabled = true;
@@ -81,58 +78,58 @@ export class UserMergeConfig extends React.Component<Props, State> {
     z: '0',
     w: '480',
     h: '320',
-    stretchMode: "aspectFit",
   };
 
   @observable screenEnabled = true;
 
   @observable audioEnabled = true;
 
-  @computed get cameraTrackInfo() {
-    return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.tag === 'camera');
-  }
+  // @computed get cameraTrackInfo() {
+  //   return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.tag === 'camera');
+  // }
 
-  @computed get screenTrackInfo() {
-    return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.tag === 'screen');
-  }
+  // @computed get screenTrackInfo() {
+  //   return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.tag === 'screen');
+  // }
 
-  @computed get audioTrackInfo() {
-    return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.kind === 'audio');
-  }
+  // @computed get audioTrackInfo() {
+  //   return Array.from(this.props.user.publishedTrackInfo.values()).find(v => v.kind === 'audio');
+  // }
+
   private handleSubmit = (e: any) => {
     e.preventDefault();
-    let opt: MergeOptions = {};
-    const audioTrackInfo = this.audioTrackInfo;
-    if (audioTrackInfo) {
-      opt.audio = {
-        trackId: audioTrackInfo.trackId as string,
-        enabled: this.audioEnabled,
-      };
-    }
-    const cameraTrackInfo = this.cameraTrackInfo;
-    if (cameraTrackInfo) {
-      opt.camera = {
-        ...this.camera,
-        trackId: cameraTrackInfo.trackId as string,
-        enabled: this.cameraEnabled,
-      };
-    }
-    const screenTrackInfo = this.screenTrackInfo
-    if (screenTrackInfo) {
-      opt.screen = {
-        ...this.screen,
-        trackId: screenTrackInfo.trackId as string,
-        enabled: this.screenEnabled,
-      };
-    }
-    this.props.onMergeChange(opt);
+    // let opt: MergeOptions = {};
+    // const audioTrackInfo = this.audioTrackInfo;
+    // if (audioTrackInfo) {
+    //   opt.audio = {
+    //     trackID: audioTrackInfo.trackID as string,
+    //     enabled: this.audioEnabled,
+    //   };
+    // }
+    // const cameraTrackInfo = this.cameraTrackInfo;
+    // if (cameraTrackInfo) {
+    //   opt.camera = {
+    //     ...this.camera,
+    //     trackID: cameraTrackInfo.trackID as string,
+    //     enabled: this.cameraEnabled,
+    //   };
+    // }
+    // const screenTrackInfo = this.screenTrackInfo
+    // if (screenTrackInfo) {
+    //   opt.screen = {
+    //     ...this.screen,
+    //     trackID: screenTrackInfo.trackID as string,
+    //     enabled: this.screenEnabled,
+    //   };
+    // }
+    // this.props.onMergeChange(opt);
   }
 
   public render(): JSX.Element {
     const { user } = this.props;
     return (
       <div className={styles.mergeConfig}>
-        <ExpansionPanel>
+        {/* <ExpansionPanel>
           <ExpansionPanelSummary>
             <div
               className={styles.userBlock}
@@ -259,7 +256,7 @@ export class UserMergeConfig extends React.Component<Props, State> {
               </Button>
             </form>
           </ExpansionPanelDetails>
-        </ExpansionPanel>
+        </ExpansionPanel> */}
       </div>
     );
   }

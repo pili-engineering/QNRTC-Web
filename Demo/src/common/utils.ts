@@ -1,5 +1,5 @@
-import { TrackBaseInfo } from 'pili-rtc-web';
 import seedrandom from 'seedrandom';
+import { QNRemoteTrack } from 'qnweb-rtc';
 
 export function randomNumberGen(): number {
   const buf = new Uint8Array(1);
@@ -13,7 +13,7 @@ export const verifyUserId = (str: string): boolean =>
 export const verifyRoomId = (str: string): boolean =>
   /^[a-zA-Z0-9_-]{3,64}$/.test(str);
 
-export function getTrackNmae(track: TrackBaseInfo): string {
+export function getTrackName(track: QNRemoteTrack): string {
   switch (track.tag) {
     case "screen":
       return "屏幕共享";
@@ -22,18 +22,18 @@ export function getTrackNmae(track: TrackBaseInfo): string {
     default:
       break;
   }
-  if (track.kind === "audio") {
+  if (track.isAudio()) {
     return "音频";
   } else {
     return "视频";
   }
 }
 
-export function getColorFromUserId(userId: string): string {
+export function getColorFromUserId(userID: string): string {
   const colors = [
     '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#009688', '#4caf50', '#ff9800', '#795548',
   ];
-  const rand = seedrandom(userId);
+  const rand = seedrandom(userID);
   return colors[Math.min(Math.floor(rand() * 8), 7)];
 }
 

@@ -1,6 +1,14 @@
-import { RecordConfig } from 'pili-rtc-web';
-
 export const ROOM_STATE_TEXT = [ "未连接", "正在连接中", "已连接", "正在重连" ];
+
+interface RecordConfig {
+  video?: {
+      frameRate?: number;
+      height?: number;
+      width?: number;
+      bitrate?: number;
+      facingMode?: "";
+  };
+}
 
 export interface publishRecordConfigs {
   camera: RecordConfig;
@@ -32,7 +40,6 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
     config:
     {
       video: {
-        enabled: true,
         width: 352,
         height: 288,
         frameRate: 15,
@@ -48,7 +55,6 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
     config:
     {
       video: {
-        enabled: true,
         width: 640,
         height: 480,
         frameRate: 15,
@@ -62,7 +68,6 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
     selected: true,
     config:{
       video:  {
-        enabled: true,
         width: 960,
         height: 544,
         frameRate: 15,
@@ -76,7 +81,6 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
     config:
     {
       video: {
-        enabled: true,
         width: 1280,
         height: 720,
         frameRate: 20,
@@ -85,59 +89,3 @@ export const videoConfig: PublishRecordOption<keyof publishVideoConfigs>[] = [
     },
   },
 ]
-
-// Array
-//   0 -> 摄像头
-//   1 -> 音频（麦克风）
-//   2 -> 音频（外部数据导入）
-//   3 -> 屏幕共享
-//   4 -> 窗口共享
-export const PublishRecordOptions: PublishRecordOption<keyof publishRecordConfigs>[] =
-[
-  {
-    key: 'camera',
-    label: '摄像头',
-    selected: true,
-    config:
-    {
-      video: {
-        enabled: true,
-        tag: "camera",
-        ...videoConfig[0].config.video,
-      },
-    },
-  },
-  {
-    key: 'audio',
-    label: '音频（麦克风）',
-    selected: true,
-    config: {
-      audio: { enabled: true, tag: "audio" },
-    },
-  },
-  {
-    key: 'buffer_audio',
-    label: '音频（外部数据导入）',
-    /**
-     * 将采集参数留空，等待使用音频模块来导入外部音频
-     */
-    config: {
-    },
-  },
-  {
-    key: 'screen_share',
-    label: '屏幕共享',
-    config: {
-      screen: { enabled: true, tag: "screen", source: "screen" },
-    },
-  },
-  {
-    key: 'window_share',
-    label: '窗口共享',
-    config: {
-      screen: { enabled: true, tag: "screen", source: "window" },
-    },
-  },
-];
-
-export const selectkeys = PublishRecordOptions.map(v => v.key) as Array<keyof publishRecordConfigs>;

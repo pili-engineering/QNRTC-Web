@@ -6,6 +6,7 @@ import AudioWave from '../AudioWave';
 import Track from "../../models/Track";
 import classes from './index.module.css';
 import { MenuStore } from "../../stores/menuStore";
+import { QNLocalVideoTrack, QNRemoteVideoTrack } from "qnweb-rtc";
 
 interface Props {
   user?: User;
@@ -13,7 +14,7 @@ interface Props {
   screen?: boolean;
   tracks?: Track[];
   menuStore: MenuStore;
-  isMobile: Boolean
+  isMobile: Boolean;
 }
 
 interface State {
@@ -26,8 +27,8 @@ export default class UserPlayer extends React.Component<Props, State> {
     if (!ref) return;
     if (track.rtcTrack.mediaElement && track.rtcTrack.mediaElement.parentElement === ref) return;
     if (ref.innerHTML) {
-      ref.innerHTML = ''
-    } 
+      ref.innerHTML = '';
+    }
     track.rtcTrack.play(ref);
   }
 
@@ -43,16 +44,18 @@ export default class UserPlayer extends React.Component<Props, State> {
       children: '截帧',
       onClick: () => {
         this.props.menuStore.close();
-        const data = track.rtcTrack.getCurrentFrameDataURL();
-        if (data === 'data:,') return;
-        const link = document.createElement('a');
-        link.download = 'capture.png';
-        link.href = data;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        if (track.rtcTrack instanceof QNLocalVideoTrack || track.rtcTrack instanceof QNRemoteVideoTrack) {
+          const data = track.rtcTrack.getCurrentFrameData();
+          if (data === 'data:,') return;
+          const link = document.createElement('a');
+          link.download = 'capture.png';
+          link.href = data;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
       },
-    }])
+    }]);
   }
 
   render() {
@@ -60,28 +63,28 @@ export default class UserPlayer extends React.Component<Props, State> {
     let tracks = tracksProp;
     if (user) tracks = Array.from(user.tracks.values());
     if (!tracks) {
-      throw Error('require tracks or user')
+      throw Error('require tracks or user');
     }
     if (tracks.length === 0) return '';
     let camera: Track | undefined = undefined;
     let share: Track | undefined = undefined;
     let audioTrack: Track | undefined = undefined;
     for (const track of tracks) {
-      const tag = track.rtcTrack.info.tag;
+      const tag = track.rtcTrack.tag;
       if (tag === 'camera' && !track.muted) {
         camera = track;
       } else if (tag === 'screen' && !track.muted) {
         share = track;
-      } else if (track.rtcTrack.info.kind === 'audio') {
+      } else if (track.rtcTrack.isAudio()) {
         audioTrack = track;
       }
     }
     if (!share && !camera) {
-      camera = tracks.find(v => v.rtcTrack.info.kind === 'video' && !v.muted);
+      camera = tracks.find(v => v.rtcTrack.isVideo() && !v.muted);
     }
     if ((!share && !camera)) {
       return (<div className={isMobile ? classes.rootMobile : classes.root} style={{ backgroundColor: local ? "#212121" : undefined }}>
-        {!local && audioTrack && <p className={classes.userName}>{audioTrack.userId}</p>}
+        {!local && audioTrack && <p className={classes.userName}>{audioTrack.userID}</p>}
         {!local && audioTrack && <AudioWave width={200} height={150} color="#66ccff" track={audioTrack.rtcTrack} />}
         {!local && audioTrack && <div ref={this.handlePlayerDom.bind(this, audioTrack)}></div>}
       </div>);

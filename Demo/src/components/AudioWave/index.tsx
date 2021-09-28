@@ -4,7 +4,7 @@
  *
  * Distributed under terms of the MIT license.
  */
-import { Track } from "pili-rtc-web";
+import { QNLocalAudioTrack, QNTrack } from "qnweb-rtc";
 import * as React from 'react';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   width: number;
   height: number;
   color: string;
-  track: Track;
+  track: QNTrack;
 }
 
 interface State {
@@ -31,13 +31,14 @@ export default class AudioWave extends React.Component<Props, State> {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
     requestAnimationFrame(this.draw.bind(this));
-  }
+  };
 
   private draw(): void {
     const { color, width, height, track } = this.props;
     if (!this.ctx) return;
     // 从 track 中获取 时域数据 和 频域数据
-    const timeData = track.getCurrentTimeDomainData();
+    const timeData = (track as QNLocalAudioTrack).getCurrentTimeDomainData();
+    if (!timeData) return;
     // const freqData = this.props.stream.getCurrentFrequencyData();
 
     this.ctx.fillStyle = color;

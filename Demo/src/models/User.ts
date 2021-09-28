@@ -1,61 +1,49 @@
-import { User as RTCUser, TrackBaseInfo } from "pili-rtc-web";
+import { QNRemoteTrack, QNRemoteUser as RTCUser } from "qnweb-rtc";
 import { observable, action } from 'mobx';
 import Track from './Track';
 
 /**
- * 包裹 pili-rtc-web 的 User 对象
- * 将属性置为 observable
+ * 包裹 qnweb-rtc 的 QNRemoteUser 对象
  */
 export default class User {
+
   private rtcUser: RTCUser;
+
   @observable
   public id: string;
+
   @observable
   public tracks: Map<string, Track> = new Map();
+
   @observable
-  public publishedTrackInfo: Map<string, TrackBaseInfo> = new Map();
+  public publishedTracks: Map<string, QNRemoteTrack> = new Map();
 
   public constructor(user: RTCUser) {
     this.rtcUser = user;
-    this.id = user.userId;
-    console.log('publishedTrackInfo:', user.publishedTrackInfo)
-    for (const trackInfo of user.publishedTrackInfo) {
-      console.log('trackInfo:', trackInfo)
-      this.publishedTrackInfo.set(trackInfo.trackId as string, trackInfo);
-    }
+    this.id = user.userID;
   }
 
   @action
-  public updateUser(): void {
-    this.id = this.rtcUser.userId;
-    const publishedTrackInfo = new Map<string, TrackBaseInfo>();
-    for (const trackInfo of this.rtcUser.publishedTrackInfo) {
-      publishedTrackInfo.set(trackInfo.trackId as string, trackInfo);
-    }
-    this.publishedTrackInfo = publishedTrackInfo;
+  public addPublishedTrack(track: QNRemoteTrack): void {
+    this.publishedTracks.set(track.trackID as string, track);
   }
 
   @action
-  public addPublishedTrackInfo(track: TrackBaseInfo): void {
-    this.publishedTrackInfo.set(track.trackId as string, track);
-  }
-
-  @action
-  public removePublishedTrackInfo(track: TrackBaseInfo): void {
-    this.publishedTrackInfo.delete(track.trackId as string);
+  public removePublishedTrack(track: QNRemoteTrack): void {
+    this.publishedTracks.delete(track.trackID as string);
   }
 
   @action
   public updateTracks(tracks: Track[]): void {
     for (const track of tracks) {
-      this.tracks.set(track.trackId as string, track);
+      this.tracks.set(track.trackID as string, track);
     }
   }
 
   @action
   public updateTrack(key: string, v: Track): void {
-    // Mobx set not observable?
     this.tracks.delete(key);
     this.tracks.set(key, v);
   }
+
 }
