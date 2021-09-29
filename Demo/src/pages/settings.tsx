@@ -135,14 +135,6 @@ class Settings extends Component<Props, State> {
         </Grid>
       </Grid>
       <Grid item container wrap="nowrap" justify="center" spacing={16}>
-        <Grid item className="screen_audio">
-          是否使用电脑声音: <Radio checked={!!this.props.roomStore.useAudio} onClick={() => {
-            this.props.roomStore.updateUseAudio(!this.props.roomStore.useAudio);
-          }} />
-        </Grid>
-      </Grid>
- 
-      <Grid item container wrap="nowrap" justify="center" spacing={16}>
         <Grid item>
           <ButtonBase
             focusRipple

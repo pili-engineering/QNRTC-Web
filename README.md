@@ -1,6 +1,10 @@
 # 1 概述
 
 QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK，提供了包括音视频通话、静音、发布、订阅多种功能，提供灵活的接口，支持高度定制以及二次开发。
+ 
+> QNWebRTC 4.x 是在 2.x 的基础上进行了 API 的重构和优化。从而使使用者能够更加高效的接入，所以新接入的用户推荐使用最新版本的 SDK。  
+> 老用户也可以继续使用 QNWebRTC 2.x 版本，可参考 [2.x相关文档](https://doc.qnsdk.com/rtn/web/docs/import_sdk) 。我们也会持续在此版本上进行问题修复和版本更迭，但是后续的一些新功能有可能并不会在 2.x 版本上提供。  
+> 使用 2.x 版本的用户若想升级至 4.x 版本，可参考 [4.x版本迁移指南](https://developer.qiniu.io/rtc/9531/migration-guide-web) 进行升级。
 
 # 2 功能列表
 
@@ -47,7 +51,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
   
 ### 3.2 交互流程
 
-![](http://docs.qnsdk.com/qnrtc-interactive.png)
+![](https://docs.qnsdk.com/qnrtc-interactive.png)
 
 实时通话交互流程如上图所示，因此，App 服务端需要开发的工作如下：
 
@@ -55,10 +59,10 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 - 计算加入房间的 roomToken 并提供给 App，该 roomToken 是结合 userId、roomName 等信息使用七牛的 AccessKey 和 SecretKey 按照一定的规则生成
 - 提供通话的业务逻辑，如：通话请求/应答业务逻辑、服务端房间管理和踢人等
 
-关于 roomToken 的计算方法请查阅[《七牛实时音视频云服务端 API 接口规范》](https://developer.qiniu.com/rtn/sdk/4538/server-api-reference#5)，另外，我们也提供了多种开发语言的 SDK  [服务端开发手册及 SDK 下载](https://developer.qiniu.com/rtn/sdk/4354/the-server-sdk-development-manual)。
+关于 roomToken 的计算方法请查阅[《七牛实时音视频云服务端 API 接口规范》](https://developer.qiniu.io/rtc/8813/roomToken)，另外，我们也提供了多种开发语言的 SDK  [服务端开发手册及 SDK 下载](https://developer.qiniu.io/rtc/8812/serversdk)。
 
 ### 3.3 房间管理
-关于音视频通话房间的 API 主要分为两个部分，一部分在客户端，另一部分在服务端。在客户端 SDK 中，只有加入/离开连麦房间的接口。我们把创建/销毁连麦房间的功能放到了服务端，由 App Server 向七牛的服务器发送请求来完成。关于服务端 API 的详细内容，请查阅[《七牛实时音视频云服务端 API 接口规范》](https://developer.qiniu.com/rtn/sdk/4538/server-api-reference)。
+关于音视频通话房间的 API 主要分为两个部分，一部分在客户端，另一部分在服务端。在客户端 SDK 中，只有加入/离开连麦房间的接口。我们把创建/销毁连麦房间的功能放到了服务端，由 App Server 向七牛的服务器发送请求来完成。关于服务端 API 的详细内容，请查阅[《七牛实时音视频云服务端 API 接口规范》](https://developer.qiniu.io/rtc/8788/server)。
 
 # 4 方案优势
 - 实时互动对网络的稳定性和连通性要求非常苛刻，所以必须购买数据中心建设基础网络。而使用七牛的实时音视频云服务，不需要投入大量资金做传输网络的基础建设，按量计费灵活方便。
@@ -109,7 +113,7 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 - 提供云端存储空间及海量数据的处理能力，提供高可用的技术和高稳定的平台
 
 # 6 开发文档
-请参考开发文档：[QNRTCWeb 开发文档](https://doc.qnsdk.com/rtn/web/docs/import_sdk)
+请参考开发文档：[QNRTCWeb 开发文档](https://developer.qiniu.io/rtc/9476/prepare-web-development)
 
 # 7 反馈及意见
 
@@ -133,5 +137,5 @@ QNRTCWeb 是七牛云推出的一款适用于 Web 平台的实时音视频 SDK�
 
 ## 8.4 是否有服务端的 SDK 或者 demo 代码可以参考？
 
-有的，请参考： [QNRTC-Server](https://developer.qiniu.com/rtn/sdk/4354/the-server-sdk-development-manual)
+有的，请参考： [QNRTC-Server](https://developer.qiniu.io/rtc/8812/serversdk)
 

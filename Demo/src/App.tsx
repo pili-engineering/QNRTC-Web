@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Home from './pages/home';
-import SupportDialog from './components/SupportDialog';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Provider } from 'mobx-react';
@@ -87,7 +86,7 @@ function App() {
             messageStore={providerData.messageStore}
             menuStore={providerData.menuStore}
           >
-            <SupportDialog />
+            {/* <SupportDialog /> */}
             <Router history={history}>
               <Switch>
                 <Route

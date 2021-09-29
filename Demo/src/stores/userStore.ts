@@ -3,7 +3,7 @@ import store from 'store';
 
 export class UserStore {
 
-  /** session.userId */
+  /** session.userID */
   @observable
   public id: string = store.get('userid') || '';
 
@@ -13,14 +13,14 @@ export class UserStore {
   }
 
   @action
-  public setId(userId: string) {
-    this.id = userId;
-    store.set('userid', userId)
+  public setId(userID: string) {
+    this.id = userID;
+    store.set('userid', userID)
   }
 
   @action
-  public setIdNoStore(userId: string) {
-    this.id = userId;
+  public setIdNoStore(userID: string) {
+    this.id = userID;
   }
 }
 

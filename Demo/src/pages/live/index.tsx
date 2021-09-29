@@ -18,7 +18,7 @@ import styles from './style.module.css';
 import { MessageStore } from '../../stores/messageStore';
 import { UserStore } from '../../stores/userStore';
 import { verifyRoomId, timeout, retrying } from '../../common/utils';
-import { TrackMergeOptions } from 'pili-rtc-web';
+import { QNRenderMode, QNTranscodingLiveStreamingTrack } from "qnweb-rtc";
 
 interface Params {
   roomid: string;
@@ -32,7 +32,7 @@ interface Props extends RouteComponentProps<Params> {
   routerStore: RouterStore;
   messageStore: MessageStore;
   userStore: UserStore;
-  isMobile: Boolean
+  isMobile: Boolean;
 }
 
 @inject('roomStore', 'routerStore', 'messageStore', 'userStore', 'isMobile')
@@ -48,7 +48,7 @@ export default class LivePage extends React.Component<Props, State> {
     if (!this.props.roomStore.token) {
       this.props.roomStore.setId(roomid);
       const data = await request(`${API.LIST_USERS(this.props.roomStore.appId, roomid)}`);
-      if(data.users.length === 0) {
+      if (data.users.length === 0) {
         this.props.messageStore.hideLoading();
         this.props.messageStore.showAlert({
           show: true,
@@ -57,7 +57,7 @@ export default class LivePage extends React.Component<Props, State> {
         });
         return;
       }
-      const hasAdmin = data.users.find((user: any) => user.userId === 'admin');
+      const hasAdmin = data.users.find((user: any) => user.userID === 'admin');
       if (!hasAdmin && this.props.userStore.id !== 'admin') {
         this.props.userStore.setIdNoStore('admin');
       }
@@ -76,7 +76,7 @@ export default class LivePage extends React.Component<Props, State> {
   private fetchStream() {
     const ua = navigator.userAgent.toLowerCase();
     const isSafari = ((ua.indexOf('safari') !== -1) && (ua.indexOf('chrome') === -1));
-    if(isSafari) { return this.fetchStreamSafari(); }
+    if (isSafari) { return this.fetchStreamSafari(); }
     else { return this.fetchStreamDefault(); }
   }
 
@@ -87,9 +87,9 @@ export default class LivePage extends React.Component<Props, State> {
     const video = this.video.current;
     if (!video) return;
     this.flvPlayer = flvjs.createPlayer({
-        type: 'flv',
-        url: liveURL,
-        isLive: true,
+      type: 'flv',
+      url: liveURL,
+      isLive: true,
     });
     this.flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
       this.fetchStreamDefault();
@@ -102,8 +102,8 @@ export default class LivePage extends React.Component<Props, State> {
     });
     this.flvPlayer.on(flvjs.Events.ERROR, (err, details) => {
       if (err === flvjs.ErrorTypes.NETWORK_ERROR) {
-        if (this.flvPlayer) this.flvPlayer.detachMediaElement()
-        console.log('flv NETWORK_ERROR')
+        if (this.flvPlayer) this.flvPlayer.detachMediaElement();
+        console.log('flv NETWORK_ERROR');
         this.props.messageStore.hideLoading();
         this.props.messageStore.showAlert({
           show: true,
@@ -111,7 +111,7 @@ export default class LivePage extends React.Component<Props, State> {
           content: '请确认该房间是否有其他用户发布流',
         });
       }
-    })
+    });
     this.flvPlayer.attachMediaElement(video);
     this.flvPlayer.load();
     video.oncanplay = () => {
@@ -145,7 +145,7 @@ export default class LivePage extends React.Component<Props, State> {
         })
         .catch(() => {
           return timeout(1000);
-        })
+        });
     }, 10000)
       .catch(() => {
         this.props.messageStore.hideLoading();
@@ -158,29 +158,29 @@ export default class LivePage extends React.Component<Props, State> {
   }
 
   private handleMergeChange(options: MergeOptions): void {
-    const addConfig: TrackMergeOptions[] = [];
-    const removeConfig = [];
-    for(const value of Object.values(options) as TrackOption[]) {
-      if (!value) continue;
-      if (value.enabled) {
-        const config: TrackMergeOptions = {
-          trackId: value.trackId as string,
-          x: Number(value.x),
-          y: Number(value.y),
-          z: Number(value.z),
-          w: Number(value.w),
-          h: Number(value.h),
-          stretchMode: value.stretchMode
-        };
-        addConfig.push(config);
-      } else {
-        removeConfig.push(value.trackId);
-      }
-    }
-    this.props.roomStore.session.addMergeStreamTracks(addConfig);
-    if (removeConfig.length > 0) {
-      this.props.roomStore.session.removeMergeStreamTracks(removeConfig);
-    }
+    // const addConfig: QNTranscodingLiveStreamingTrack[] = [];
+    // const removeConfig = [];
+    // for (const value of Object.values(options) as TrackOption[]) {
+    //   if (!value) continue;
+    //   if (value.enabled) {
+    //     const config: QNTranscodingLiveStreamingTrack = {
+    //       trackID: value.trackID as string,
+    //       x: Number(value.x),
+    //       y: Number(value.y),
+    //       zOrder: Number(value.z),
+    //       width: Number(value.w),
+    //       height: Number(value.h),
+    //       renderMode: value.stretchMode as QNRenderMode
+    //     };
+    //     addConfig.push(config);
+    //   } else {
+    //     removeConfig.push(value.trackID);
+    //   }
+    // }
+    // this.props.roomStore.session.setTranscodingLiveStreamingTracks(addConfig);
+    // if (removeConfig.length > 0) {
+    //   this.props.roomStore.session.removeMergeStreamTracks(removeConfig);
+    // }
   }
 
   public render(): JSX.Element {
@@ -188,21 +188,21 @@ export default class LivePage extends React.Component<Props, State> {
     return (
       <div className={`${styles.container} ${isMobile ? styles.containerMobile : ''}`}>
         <p className={styles.roomName}>房间名称: {this.props.match.params.roomid}</p>
-        <div className={`${isMobile ? styles.videoMobileContainer : styles.videoContainer }`}>
+        <div className={`${isMobile ? styles.videoMobileContainer : styles.videoContainer}`}>
           <video
             ref={this.video}
             autoPlay
           />
         </div>
-        {this.props.userStore.isAdmin && <div className={`users ${isMobile ? styles.usersMobile : '' }`}>
+        {this.props.userStore.isAdmin && <div className={`users ${isMobile ? styles.usersMobile : ''}`}>
           <p className={styles.configTitle}>合流设置</p>
-          { Array.from(this.props.roomStore.users.values()).map(user => (
+          {Array.from(this.props.roomStore.users.values()).map(user => (
             <UserMergeConfig
               key={user.id}
               user={user}
               onMergeChange={this.handleMergeChange.bind(this)}
             />
-          )) }
+          ))}
         </div>}
       </div>
     );

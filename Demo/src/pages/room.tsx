@@ -24,10 +24,10 @@ import CameraEnhance from '@material-ui/icons/CameraEnhance';
 import Clipboard from 'clipboard';
 import { inject, observer } from 'mobx-react';
 import { RouterStore } from 'mobx-react-router';
-import { RoomState, Track as RTCTrack } from 'pili-rtc-web';
+import { QNConnectionState, QNLocalTrack, QNTrack as RTCTrack } from 'qnweb-rtc';
 import React, { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { verifyRoomId, getTrackNmae, randomStringGen } from '../common/utils';
+import { verifyRoomId, getTrackName, randomStringGen } from '../common/utils';
 import { RoomStore } from '../stores/roomStore';
 import { UserStore } from '../stores/userStore';
 import UserPlayer from '../components/UserPlayer';
@@ -74,8 +74,8 @@ const styles = (theme: Theme) => createStyles({
     overflow: 'visible',
   },
   headerContent: {
-    height: `${ 80 - (theme.spacing.unit * 3)}px`,
-    lineHeight: `${ 80 - (theme.spacing.unit * 3)}px`,
+    height: `${80 - (theme.spacing.unit * 3)}px`,
+    lineHeight: `${80 - (theme.spacing.unit * 3)}px`,
     overflow: 'visible',
   },
   headerContentMobile: {
@@ -162,15 +162,15 @@ interface Props extends WithStyles<typeof styles> {
   roomStore: RoomStore;
   messageStore: MessageStore;
   menuStore: MenuStore;
-  isMobile: Boolean
+  isMobile: Boolean;
 }
 
 @inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'menuStore', 'isMobile')
 @observer
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   componentDidMount() {
-    document.title = `房间:${this.props.roomStore.id},appid:${this.props.roomStore.appId}`
-    
+    document.title = `房间:${this.props.roomStore.id},appid:${this.props.roomStore.appId}`;
+
     this.props.messageStore.hideLoading();
   }
 
@@ -183,7 +183,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     }
     if (!qsobj.roomToken && !verifyRoomId(roomid)) return this.props.routerStore.push('/');
     const { roomStore, messageStore } = this.props;
-    if (roomStore.state !== RoomState.Idle) {
+    if (roomStore.state !== QNConnectionState.DISCONNECTED) {
       return;
     }
     if (qsobj.appId) {
@@ -196,7 +196,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
       if (!token) {
         roomStore.setId(roomid);
         const location = this.props.routerStore.location.pathname;
-        [ tracks ] = await Promise.all([
+        [tracks] = await Promise.all([
           this.selectTracks()
             .then((tracks: any) => {
               if (location !== this.props.routerStore.location.pathname) {
@@ -212,20 +212,20 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
               return roomStore.joinRoom(roomToken);
             }),
         ])
-        .finally(() => {
-          if (roomStore.state === RoomState.Idle) {
-            roomStore.releaseLocalTracks();
-          }
-        });
-      } else {
-        [ tracks ] = await Promise.all([this.selectTracks(), roomStore.joinRoom(token)])
           .finally(() => {
-            if (roomStore.state === RoomState.Idle) {
+            if (roomStore.state === QNConnectionState.DISCONNECTED) {
+              roomStore.releaseLocalTracks();
+            }
+          });
+      } else {
+        [tracks] = await Promise.all([this.selectTracks(), roomStore.joinRoom(token)])
+          .finally(() => {
+            if (roomStore.state === QNConnectionState.DISCONNECTED) {
               roomStore.releaseLocalTracks();
             }
           });
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       messageStore.hideLoading();
       this.props.routerStore.push('/');
@@ -239,16 +239,8 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     if (!roomid) {
       this.props.routerStore.replace(`/room/${this.props.roomStore.id}`);
     }
-    this.props.roomStore.subscribeAll().catch(e => {
-      console.log(e);
-      messageStore.showAlert({
-        show: true,
-        title: '订阅失败',
-        content: '自动订阅失败，请手动订阅',
-      });
-    });
-  }
-  
+  };
+
   componentWillUnmount() {
     this.props.roomStore.leaveRoom();
     this.props.messageStore.hideLoading();
@@ -257,94 +249,91 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   publish = (tracks: RTCTrack[]) => {
     const { messageStore } = this.props;
     messageStore.setLoadingText('发布中');
-    this.props.roomStore.publish(tracks).then(() => {
+    this.props.roomStore.publish(tracks as QNLocalTrack[]).then(() => {
       messageStore.hideLoading();
     })
-    .catch(e => {
-      console.log(e);
-      messageStore.hideLoading();
-      messageStore.showAlert({
-        show: true,
-        title: '发布失败',
-        content: '请手动重新发布',
+      .catch(e => {
+        console.log(e);
+        messageStore.hideLoading();
+        messageStore.showAlert({
+          show: true,
+          title: '发布失败',
+          content: '请手动重新发布',
+        });
       });
-    });
-  }
+  };
 
   selectTracks = (): Promise<RTCTrack[] | undefined> => {
     const { roomStore, messageStore } = this.props;
     return roomStore.getSelectTracks()
-    .catch(e => {
-      console.log(e);
-      messageStore.hideLoading();
-      switch (e.code) {
-        case 11010:
-          messageStore.showAlert({
-            show: true,
-            title: '没有权限',
-            content: '获取摄像头/麦克风权限被拒绝，请手动打开摄像头/麦克风权限后重新进入房间',
-          });
-          break;
-        case 11009:
-          messageStore.showAlert({
-            show: true,
-            title: 'Chrome 插件异常',
-            content: '您可能没有安装录屏插件或者录屏插件没有升级，请到这里安装最新的录屏插件 https://doc.qnsdk.com/rtn/web/docs/screen_share#1',
-          });
-          break;
-        case 11008:
-          messageStore.showAlert({
-            show: true,
-            title: '浏览器不支持',
-            content: '抱歉，您的浏览器不支持屏幕共享，请使用 Chrome 或者 Firefox',
-          });
-          break;
-        case 11013:
-          messageStore.showAlert({
-            show: true,
-            title: '获取录屏权限被拒绝',
-            content: '请刷新页面手动重新发布',
-          });
-          break;
-        default:
-          messageStore.showAlert({
-            show: true,
-            title: '没有数据',
-            content: `无法获取摄像头/麦克风数据，错误代码: ${e.name}`,
-          });
-      }
-      return undefined;
-    });
-  }
+      .catch(e => {
+        console.log(e);
+        messageStore.hideLoading();
+        switch (e.code) {
+          case 11010:
+            messageStore.showAlert({
+              show: true,
+              title: '没有权限',
+              content: '获取摄像头/麦克风权限被拒绝，请手动打开摄像头/麦克风权限后重新进入房间',
+            });
+            break;
+          case 11008:
+            messageStore.showAlert({
+              show: true,
+              title: '浏览器不支持',
+              content: '抱歉，您的浏览器不支持屏幕共享，请使用 Chrome 或者 Firefox',
+            });
+            break;
+          case 11013:
+            messageStore.showAlert({
+              show: true,
+              title: '获取录屏权限被拒绝',
+              content: '请刷新页面手动重新发布',
+            });
+            break;
+          case 11018:
+            messageStore.showAlert({
+              show: true,
+              title: '获取系统声音被拒绝',
+              content: '请手动选择系统声音',
+            });
+            break;
+          default:
+            messageStore.showAlert({
+              show: true,
+              title: '没有数据',
+              content: `无法获取摄像头/麦克风数据，错误代码: ${e.name}`,
+            });
+        }
+        return undefined;
+      });
+  };
 
   handleMenuClose = this.props.menuStore.close;
-
 
   handlePublish = async () => {
     if (this.props.roomStore.publishedTracks.size === 0) {
       this.publish(await this.props.roomStore.getSelectTracks());
-      this.props.roomStore.setHandupStatus(false);
     } else {
       this.props.roomStore.unpublish();
-      this.props.roomStore.setHandupStatus(true);
     }
   };
 
-  handleSubscribe = (trackId: string) => async () => {
+  handleSubscribe = (trackID: string) => async () => {
     this.handleMenuClose();
-    try{
-      await this.props.roomStore.subscribe([ trackId ]);
-    } catch(error) {
+    try {
+      await this.props.roomStore.subscribe([trackID]);
+    } catch (error) {
       this.props.messageStore.showAlert({
         show: true,
         title: '订阅失败',
         content: error.toString(),
       });
-    } 
+    }
   };
 
-  handleUnsubscribe = (trackId: string) => async () => {
-    await this.props.roomStore.unsubscribe([ trackId ]);
+  handleUnsubscribe = (trackID: string) => async () => {
+    await this.props.roomStore.unsubscribe([trackID]);
     this.handleMenuClose();
   };
 
@@ -355,26 +344,17 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
       return;
     }
     const menulist = [] as MenuItemProps[];
-    if (this.props.userStore.id === 'admin') {
-      menulist.push({
-        children: '踢出房间',
-        onClick: () => {
-          this.props.roomStore.session.kickoutUser(user.id);
-          this.handleMenuClose();
-        },
-      });
-    }
-    for (const [ trackId, track ] of user.publishedTrackInfo.entries()) {
-      const subscribed = this.props.roomStore.subscribedTracks.has(trackId);
+    for (const [trackID, track] of user.publishedTracks.entries()) {
+      const subscribed = this.props.roomStore.subscribedTracks.has(trackID);
       if (subscribed) {
         menulist.push({
-          children: '取消订阅: ' + getTrackNmae(track),
-          onClick: this.handleUnsubscribe(trackId),
+          children: '取消订阅: ' + getTrackName(track),
+          onClick: this.handleUnsubscribe(trackID),
         });
       } else {
         menulist.push({
-          children: '订阅: ' + getTrackNmae(track),
-          onClick: this.handleSubscribe(trackId),
+          children: '订阅: ' + getTrackName(track),
+          onClick: this.handleSubscribe(trackID),
         });
       }
     }
@@ -393,238 +373,239 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     const publishedAudioTracks = roomStore.publishedAudioTracks;
     const publishedCameraTracks = roomStore.publishedCameraTracks;
     const publishedScreenTracks = roomStore.publishedScreenTracks;
-    const faceingMode = roomStore.faceingMode;
     const arr = Array.from(this.props.roomStore.users.values())
-    .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
+      .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id);
     return (
-    <div className={ `${classes.root} ${isMobile ? classes.rootMobile : ''}`}>
-      <div className={classes.rootcontent}>
-        <ConfirmLoading
-          title="加入会议房间"
-          content="我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话"
-          actionTitle="加入"
-          handleClose={this.handleConfirmJoinRoom}
-        />
-        {!isMobile && <div className={classes.screen}>
-          <UserPlayer
-            isMobile={isMobile}
-            screen
-            local
-            tracks={Array.from(roomStore.publishedTracks.values())}
-            menuStore={menuStore}
+      <div className={`${classes.root} ${isMobile ? classes.rootMobile : ''}`}>
+        <div className={classes.rootcontent}>
+          <ConfirmLoading
+            title="加入会议房间"
+            content="我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话"
+            actionTitle="加入"
+            handleClose={this.handleConfirmJoinRoom}
           />
-        </div>}
-        {isMobile && <div className={classes.screenMobile}>
-          <div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+          {!isMobile && <div className={classes.screen}>
             <UserPlayer
+              isMobile={isMobile}
+              screen
+              local
+              tracks={Array.from(roomStore.publishedTracks.values())}
+              menuStore={menuStore}
+            />
+          </div>}
+          {isMobile && <div className={classes.screenMobile}>
+            <div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+              <UserPlayer
                 isMobile={isMobile}
                 local
                 tracks={Array.from(roomStore.publishedTracks.values())}
                 menuStore={menuStore}
-            />
-          </div>
+              />
+            </div>
             {Array.from(this.props.roomStore.users.values())
               .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
               .map(v =>
-                (<div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
-                <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v}/>
-                </div>)
+              (<div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+                <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v} />
+              </div>)
               )}
-        </div>}
-        <Grid
-          className={classes.zoom}
-          container
-          direction="column"
-          justify="space-between"
-          wrap="nowrap"
-          alignItems="stretch"
-        >
+          </div>}
           <Grid
-            item
+            className={classes.zoom}
             container
             direction="column"
-            justify="flex-end"
+            justify="space-between"
+            wrap="nowrap"
             alignItems="stretch"
           >
             <Grid
               item
               container
-              className={classes.header}
-              direction="row"
-              justify="space-between"
-              alignItems="center"
+              direction="column"
+              justify="flex-end"
+              alignItems="stretch"
             >
-              {
-                !isMobile && <Grid
-                  item
-                  sm={4}
-                  xs={6}
-                  className={classes.headerContent}
-                >
-                  房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
-                </Grid>
-              }
               <Grid
                 item
-                sm={8}
-                xs={6}
                 container
-                direction="row-reverse"
-                className={`${isMobile ? classes.headerContentMobile : classes.headerContent}`}
+                className={classes.header}
+                direction="row"
+                justify="space-between"
+                alignItems="center"
               >
-                { Array.from(this.props.roomStore.users.values()).map(v => {
+                {
+                  !isMobile && <Grid
+                    item
+                    sm={4}
+                    xs={6}
+                    className={classes.headerContent}
+                  >
+                    房间：{this.props.roomStore.id} ({this.props.roomStore.appId})
+                  </Grid>
+                }
+                <Grid
+                  item
+                  sm={8}
+                  xs={6}
+                  container
+                  direction="row-reverse"
+                  className={`${isMobile ? classes.headerContentMobile : classes.headerContent}`}
+                >
+                  {Array.from(this.props.roomStore.users.values()).map(v => {
                     return (
-                    <Grid item xl={2} md={3} sm={6} xs={12} key={v.id} className={`${isMobile ? classes.headeritemMobile : ''}`}>
-                    <Chip
-                      avatar={<Avatar>{v.id.substr(0, 1).toUpperCase()}</Avatar>}
-                      label={v.id}
-                      className={classes.chip}
-                      onClick={this.handleUserClick.bind(this, v.id)}
-                    />
-                    </Grid>)
-                  }) }
+                      <Grid item xl={2} md={3} sm={6} xs={12} key={v.id} className={`${isMobile ? classes.headeritemMobile : ''}`}>
+                        <Chip
+                          avatar={<Avatar>{v.id.substr(0, 1).toUpperCase()}</Avatar>}
+                          label={v.id}
+                          className={classes.chip}
+                          onClick={this.handleUserClick.bind(this, v.id)}
+                        />
+                      </Grid>);
+                  })}
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid
-            item
-            container
-            direction="column"
-            justify="flex-end"
-            alignItems="stretch"
-          >
-            {!isMobile &&<InfoPanel
-              audioStatus={roomStore.publishTracksReport.audio}
-              videoStatus={roomStore.publishTracksReport.video}
-              screenStatus={roomStore.publishTracksReport.screen}
-              isMobile={isMobile}
-            />}
-            <SwitchPanel
-              // session={roomStore.session}
-              audioDeviceId={roomStore.audioDeviceId}
-              videoDeviceId={roomStore.videoDeviceId}
-              roomStore={roomStore}
-              isMobile={isMobile}
-            />
-            {!isMobile && <Grid
-              item
-            >
-              <Grid
-                container
-                direction="row"
-                justify="flex-start"
-                alignItems="flex-start"
-                spacing={8}
-                className={classes.content}
-              >
-                {Array.from(this.props.roomStore.users.values())
-                  .filter(v => v.id !== this.props.userStore.id)
-                  .map(v =>
-                    (<Grid key={v.id} item>
-                      <UserPlayer isMobile={isMobile} menuStore={menuStore} user={v}/>
-                    </Grid>)
-                  )}
-              </Grid>
-            </Grid>}
             <Grid
               item
               container
-              className={classes.footer}
-              direction="row"
-              justify="center"
-              wrap="nowrap"
-              alignItems="center"
-              spacing={8}
+              direction="column"
+              justify="flex-end"
+              alignItems="stretch"
             >
-              <Grid item>
-                <Tooltip
+              {!isMobile && <InfoPanel
+                audioStatus={roomStore.publishTracksReport.audio}
+                videoStatus={roomStore.publishTracksReport.video}
+                screenStatus={roomStore.publishTracksReport.screen}
+                isMobile={isMobile}
+              />}
+              {this.props.roomStore.publishedTracks.size > 0 && <SwitchPanel
+                // session={roomStore.session}
+                audioDeviceId={roomStore.audioDeviceId}
+                videoDeviceId={roomStore.videoDeviceId}
+                roomStore={roomStore}
+                isMobile={isMobile}
+              />}
+              {!isMobile && <Grid
+                item
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  spacing={8}
+                  className={classes.content}
+                >
+                  {Array.from(this.props.roomStore.users.values())
+                    .filter(v => v.id !== this.props.userStore.id)
+                    .map(v =>
+                    (<Grid key={v.id} item>
+                      <UserPlayer isMobile={isMobile} menuStore={menuStore} user={v} />
+                    </Grid>)
+                    )}
+                </Grid>
+              </Grid>}
+              <Grid
+                item
+                container
+                className={classes.footer}
+                direction="row"
+                justify="center"
+                wrap="nowrap"
+                alignItems="center"
+                spacing={8}
+              >
+                <Grid item>
+                  <Tooltip
                     title="点击复制加会链接"
                     placement="top-end"
                   >
                     <IconButton
                       buttonRef={(ref) => {
-                        if(ref) new Clipboard(ref);
+                        if (ref) new Clipboard(ref);
                       }}
                       data-clipboard-text={window.location.href}
                     >
-                      <ContentCopyIcon/>
+                      <ContentCopyIcon />
                     </IconButton>
-                </Tooltip>
-              </Grid>
-              <Grid item>
-                { publishedAudioTracks.length !== 0 ?
-                (<Tooltip
-                    title="麦克风"
-                    placement="top-end"
-                  >
-                    <IconButton
-                      onClick={ roomStore.toggleMutePublishedAudio }
+                  </Tooltip>
+                </Grid>
+                <Grid item>
+                  {publishedAudioTracks.length !== 0 ?
+                    (<Tooltip
+                      title="麦克风"
+                      placement="top-end"
                     >
-                      {!publishedAudioTracks.some(v => !v.muted) ? <MicOff/> : <MicNone/> }
-                    </IconButton>
-                </Tooltip>) : <></> }
-              </Grid>
-              <Grid item>
-                <Fab
-                  onClick={this.handlePublish}
-                  color={this.props.roomStore.publishedTracks.size > 0 ? "primary" : "default"}
-                  classes={{
-                    primary: this.props.classes.activeFab,
-                  }}
-                >
-                  <PhoneIcon/>
-                </Fab>
-              </Grid>
-              <Grid item>
-                { publishedCameraTracks.length !== 0 ?
-                (<Tooltip
-                    title="摄像头"
-                    placement="top-end"
+                      <IconButton
+                        onClick={roomStore.toggleMutePublishedAudio}
+                      >
+                        {!publishedAudioTracks.some(v => !v.muted) ? <MicOff /> : <MicNone />}
+                      </IconButton>
+                    </Tooltip>) : <></>}
+                </Grid>
+                <Grid item>
+                  <Fab
+                    onClick={this.handlePublish}
+                    color={this.props.roomStore.publishedTracks.size > 0 ? "primary" : "default"}
+                    classes={{
+                      primary: this.props.classes.activeFab,
+                    }}
                   >
-                    <IconButton
-                      onClick={ roomStore.toggleMutePublishedCamera }
+                    <PhoneIcon />
+                  </Fab>
+                </Grid>
+                <Grid item>
+                  {publishedCameraTracks.length !== 0 ?
+                    (<Tooltip
+                      title="摄像头"
+                      placement="top-end"
                     >
-                      {!publishedCameraTracks.some(v => !v.muted) ? <VideocamOffIcon/> : <VideocamIcon/> }
-                    </IconButton>
-                </Tooltip>) : <></> }
-              </Grid>
-              <Grid item>
-                { publishedScreenTracks.length !== 0 ?
-                (<Tooltip
-                    title="屏幕分享"
-                    placement="top-end"
-                  >
-                    <IconButton
-                      onClick={ roomStore.toggleMutePublishedScreen }
+                      <IconButton
+                        onClick={roomStore.toggleMutePublishedCamera}
+                      >
+                        {!publishedCameraTracks.some(v => !v.muted) ? <VideocamOffIcon /> : <VideocamIcon />}
+                      </IconButton>
+                    </Tooltip>) : <></>}
+                </Grid>
+                <Grid item>
+                  {publishedScreenTracks.length !== 0 ?
+                    (<Tooltip
+                      title="屏幕分享"
+                      placement="top-end"
                     >
-                      {!publishedScreenTracks.some(v => !v.muted) ? <StopScreenShareIcon/> : <ScreenShareIcon/> }
-                    </IconButton>
-                </Tooltip>) : <></> }
-              </Grid>
-              <Grid item className={classes.holder}>
-                <Tooltip
-                  title="切换摄像头"
-                  placement="top-end"
-                >
-                  <IconButton
-                    onClick={ roomStore.toggleCameraFacingMode }
-                  >
-                    {faceingMode === 'user' ? <PhotoCamera/> : <CameraEnhance/> }
-                  </IconButton>
-                </Tooltip>
+                      <IconButton
+                        onClick={roomStore.toggleMutePublishedScreen}
+                      >
+                        {!publishedScreenTracks.some(v => !v.muted) ? <StopScreenShareIcon /> : <ScreenShareIcon />}
+                      </IconButton>
+                    </Tooltip>) : <></>}
+                </Grid>
+                <Grid item className={classes.holder}>
+                  {publishedCameraTracks.length !== 0 ?
+                    <Tooltip
+                      title="切换摄像头"
+                      placement="top-end"
+                    >
+                      <IconButton
+                        onClick={roomStore.toggleCameraFacingMode}
+                      >
+                        {roomStore.facingMode === 'user' ? <PhotoCamera /> : <CameraEnhance />}
+                      </IconButton>
+                    </Tooltip>
+                    : <></>}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </div>
-      {/* {
+        </div>
+        {/* {
         roomStore.displayMergePanel && (
           <div className={classes.sidebar}>
             <MergePanel roomStore={this.props.roomStore} />
           </div>
         )
       } */}
-    </div>);
+      </div>);
   }
 }
 
