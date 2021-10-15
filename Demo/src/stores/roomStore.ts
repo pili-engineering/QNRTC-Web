@@ -356,6 +356,14 @@ export class RoomStore {
       await this.session.publish(tracks);
       runInAction(() => {
         for (const track of tracks) {
+          let last = new Date().getTime();
+          track.on("audio-active-status",(status: boolean) => {
+            const now = new Date().getTime();
+            if(now - last >= 2000) {
+              last = now;
+              console.log("audio-active-status", status);
+            }
+          })
           if (track.info.trackId) this.publishedTracks.set(track.info.trackId, new Track(track));
         }
       })
@@ -681,6 +689,7 @@ export class RoomStore {
   private handleRemoteUserReconnected(user: RTCUser): void {
     console.log('remote-user-reconnected', user)
   }
+
 }
 
 export default new RoomStore();
