@@ -20,6 +20,9 @@ import { UserStore } from '../../stores/userStore';
 import { verifyRoomId, timeout, retrying } from '../../common/utils';
 import { TrackMergeOptions } from 'pili-rtc-web';
 
+const { detect } = require("detect-browser");
+const browser = detect();
+
 interface Params {
   roomid: string;
 }
@@ -75,7 +78,10 @@ export default class LivePage extends React.Component<Props, State> {
 
   private fetchStream() {
     const ua = navigator.userAgent.toLowerCase();
-    const isSafari = ((ua.indexOf('safari') !== -1) && (ua.indexOf('chrome') === -1));
+    let isSafari = ((ua.indexOf('safari') !== -1) && (ua.indexOf('chrome') === -1));
+    if (browser.name === "ios-webview") {
+      isSafari = true;
+    }
     if(isSafari) { return this.fetchStreamSafari(); }
     else { return this.fetchStreamDefault(); }
   }
@@ -127,20 +133,18 @@ export default class LivePage extends React.Component<Props, State> {
     this.props.messageStore.showLoading('获取直播流...');
     const liveURL = HLS_PATH(this.props.match.params.roomid);
     if (this.stopRetrying) this.stopRetrying();
+    let video: HTMLVideoElement | null;
     retrying((stop) => {
       this.stopRetrying = stop;
       return fetch(liveURL)
         .then(() => {
-          const video = this.video.current;
+          video = this.video.current;
           if (!video) return;
           video.autoplay = true;
           video.src = liveURL;
-          video.oncanplay = () => {
-            video.play()
-              .catch(() => {
-                video.controls = true;
-              });
-          };
+          video.play().catch(() => {
+            video && (video.controls = true);
+          })
           this.props.messageStore.hideLoading();
         })
         .catch(() => {
