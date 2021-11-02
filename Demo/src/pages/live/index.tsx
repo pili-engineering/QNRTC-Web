@@ -48,6 +48,7 @@ export default class LivePage extends React.Component<Props, State> {
     if (!this.props.roomStore.token) {
       this.props.roomStore.setId(roomid);
       const data = await request(`${API.LIST_USERS(this.props.roomStore.appId, roomid)}`);
+
       if (data.users.length === 0) {
         this.props.messageStore.hideLoading();
         this.props.messageStore.showAlert({
@@ -57,11 +58,11 @@ export default class LivePage extends React.Component<Props, State> {
         });
         return;
       }
-      const hasAdmin = data.users.find((user: any) => user.userID === 'admin');
+      const hasAdmin = data.users.find((user: any) => user.userId === 'admin');
       if (!hasAdmin && this.props.userStore.id !== 'admin') {
         this.props.userStore.setIdNoStore('admin');
       }
-      await this.props.roomStore.joinRoom(await this.props.roomStore.fetchRoomToken());
+      await this.props.roomStore.joinRoom(await this.props.roomStore.fetchRoomToken(), "", "live-streaming");
     }
     this.fetchStream();
   }

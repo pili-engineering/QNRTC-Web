@@ -8628,10 +8628,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qnweb-rtc@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.0.tgz#a7372d4086184a18eb60b4c99affaa423d8ac49b"
-  integrity sha512-6QEl38Bq+Nwy8/yFrgs5o1AtpNHfvZoZYw+HzNmeBtR3VbwrnNm2DxzmbLJZGebjpWFMg5/cn/FWjPo0RMKa+w==
+qnweb-rtc@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.1.tgz#1b0e4994cd7fd2d38bf9f6c411f5693a63c83c84"
+  integrity sha512-ditAAvK00MuAwo2wweAOV9q4PX3Qm1d/Obb5dDSSJDBRhBePEoiRyOct0OuB+wTQBihLaUXn3xspsH9yEaFcMg==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@microsoft/api-extractor" "^7.18.7"
