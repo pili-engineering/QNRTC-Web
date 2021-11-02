@@ -37,6 +37,7 @@ import { MenuStore } from '../stores/menuStore';
 import InfoPanel from '../components/InfoPanel';
 import SwitchPanel from '../components/SwitchPanel';
 import { ConfirmLoading } from '../components/ConfirmLoading';
+import { ResumePlay } from "../components/ResumePlay";
 
 
 const styles = (theme: Theme) => createStyles({
@@ -378,6 +379,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     return (
       <div className={`${classes.root} ${isMobile ? classes.rootMobile : ''}`}>
         <div className={classes.rootcontent}>
+          <ResumePlay open={this.props.roomStore.showResumePlayDialog} handleResumePlay={this.props.roomStore.playShouldResumedTracks}/>
           <ConfirmLoading
             title="加入会议房间"
             content="我们将采集您的摄像头/麦克风数据并与房间其他用户进行音视频通话"
@@ -391,6 +393,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
               local
               tracks={Array.from(roomStore.publishedTracks.values())}
               menuStore={menuStore}
+              addShouldResumedTrack={this.props.roomStore.addShouldResumedTracks}
             />
           </div>}
           {isMobile && <div className={classes.screenMobile}>
@@ -400,13 +403,14 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                 local
                 tracks={Array.from(roomStore.publishedTracks.values())}
                 menuStore={menuStore}
+                addShouldResumedTrack={this.props.roomStore.addShouldResumedTracks}
               />
             </div>
             {Array.from(this.props.roomStore.users.values())
               .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
               .map(v =>
               (<div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
-                <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v} />
+                <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v} addShouldResumedTrack={this.props.roomStore.addShouldResumedTracks}/>
               </div>)
               )}
           </div>}
@@ -500,7 +504,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                     .filter(v => v.id !== this.props.userStore.id)
                     .map(v =>
                     (<Grid key={v.id} item>
-                      <UserPlayer isMobile={isMobile} menuStore={menuStore} user={v} />
+                      <UserPlayer isMobile={isMobile} menuStore={menuStore} user={v} addShouldResumedTrack={this.props.roomStore.addShouldResumedTracks}/>
                     </Grid>)
                     )}
                 </Grid>

@@ -170,10 +170,8 @@ class Home extends Component<Props, State> {
       this.props.roomStore.setId(roomid);
       if (type === 'room') {
         this.props.routerStore.push(`/room/${roomid}`);
-        this.props.messageStore.showLoading();
       } else if (type === 'live') {
         this.props.routerStore.push(`/live/${roomid}`);
-        this.props.messageStore.showLoading();
       }
     }
   };

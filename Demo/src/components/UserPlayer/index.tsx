@@ -15,6 +15,7 @@ interface Props {
   tracks?: Track[];
   menuStore: MenuStore;
   isMobile: Boolean;
+  addShouldResumedTrack: (t: Track) => void;
 }
 
 interface State {
@@ -29,7 +30,10 @@ export default class UserPlayer extends React.Component<Props, State> {
     if (ref.innerHTML) {
       ref.innerHTML = '';
     }
-    track.rtcTrack.play(ref);
+    track.rtcTrack.play(ref).catch(e => {
+      console.log(e);
+      this.props.addShouldResumedTrack(track);
+    });
   }
 
   handleTrackFullScreen(track: Track) {

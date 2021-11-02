@@ -160,13 +160,20 @@ export class RoomStore {
 
   private statusInterval?: number;
 
+  /** 播放失败的 tracks 存到这里，后续引导点击播放 */
+  @observable
+  public shouldResumedTracks: Track[] = [];
+
+  @computed
+  public get showResumePlayDialog(): boolean {
+    return this.shouldResumedTracks.length !== 0;
+  }
+
   constructor() {
     this.session = QNRTC.createClient();
     this.session.on('connection-state-changed', this.setState);
     this.session.on('user-joined', this.addUser);
     this.session.on('user-left', this.removeUser);
-    this.session.on('user-published', this.addTracks);
-    this.session.on('user-unpublished', this.removeTracks);
     // this.session.on('mute-tracks', this.updateTracksMute);
 
     const selectVideoConfig = store.get('selectVideoConfig') as keyof publishVideoConfigs;
@@ -186,6 +193,26 @@ export class RoomStore {
     this.facingMode = type;
   }
 
+  @action.bound
+  addShouldResumedTracks(track: Track) {
+    this.shouldResumedTracks.push(track);
+  }
+
+  @action
+  clearShouldResumedTracks() {
+    this.shouldResumedTracks = [];
+  }
+
+  @action.bound
+  playShouldResumedTracks() {
+    for (const t of this.shouldResumedTracks) {
+      if (t.rtcTrack && t.rtcTrack.mediaElement) {
+        t.rtcTrack.mediaElement.play();
+      }
+    }
+    this.clearShouldResumedTracks();
+  }
+  
   @action
   public setId(roomId: string) {
     this.id = roomId;
@@ -310,7 +337,11 @@ export class RoomStore {
   }
 
   @action
-  public async joinRoom(token: string = this.token, userData?: string): Promise<void> {
+  public async joinRoom(token: string = this.token, userData?: string, role?: string): Promise<void> {
+    if (role !== "live-streaming") {
+      this.session.on('user-published', this.addTracks);
+      this.session.on('user-unpublished', this.removeTracks);
+    }
     this.subscribedTracks.clear();
     this.remoteTracks.clear();
     this.users.clear();
