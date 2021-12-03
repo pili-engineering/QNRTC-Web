@@ -31,7 +31,6 @@ export default class UserPlayer extends React.Component<Props, State> {
       ref.innerHTML = '';
     }
     track.rtcTrack.play(ref).catch(e => {
-      console.log(e);
       this.props.addShouldResumedTrack(track);
     });
   }

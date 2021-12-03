@@ -443,7 +443,12 @@ export class RoomStore {
       }
       // 屏幕共享 + 系统声音
       case TrackCreateMode.D: {
-        tracks = (await QNRTC.createScreenVideoTrack({ screenAudioTag: "system-audio", screenVideoTag: "screen" }, "enable")) as QNLocalTrack[];
+        const ts = await QNRTC.createScreenVideoTrack({ screenAudioTag: "system-audio", screenVideoTag: "screen" }, "auto");
+        if (Array.isArray(ts)) {
+          tracks = ts;
+        } else {
+          tracks = [ts];
+        }
         break;
       }
     }

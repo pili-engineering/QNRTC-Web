@@ -7163,6 +7163,11 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
+mobile-detect@^1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/mobile-detect/-/mobile-detect-1.4.5.tgz#da393c3c413ca1a9bcdd9ced653c38281c0fb6ad"
+  integrity sha512-yc0LhH6tItlvfLBugVUEtgawwFU2sIe+cSdmRJJCTMZ5GEJyLxNyC/NIOAOGk67Fa8GNpOttO3Xz/1bHpXFD/g==
+
 mobx-react-router@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/mobx-react-router/-/mobx-react-router-4.0.5.tgz#5f270eebceb64c256bc2f3c6bde8c5d88e76819e"
@@ -8628,10 +8633,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qnweb-rtc@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.1.tgz#1b0e4994cd7fd2d38bf9f6c411f5693a63c83c84"
-  integrity sha512-ditAAvK00MuAwo2wweAOV9q4PX3Qm1d/Obb5dDSSJDBRhBePEoiRyOct0OuB+wTQBihLaUXn3xspsH9yEaFcMg==
+qnweb-rtc@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.3.tgz#208bacc485468904b26940d0c7237502a51db492"
+  integrity sha512-yD+TMMmZHPAYpbbr0Z9kQttA/H780pNvrfGw8DsVD78oDIvHjS202Kg+xS4rQeIu6++1CQLspaoSu1vVpMt3bQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@microsoft/api-extractor" "^7.18.7"
@@ -8650,6 +8655,7 @@ qnweb-rtc@4.0.1:
     lodash.groupby "^4.6.0"
     lodash.remove "^4.7.0"
     lodash.uniqby "^4.7.0"
+    mobile-detect "^1.4.5"
     rimraf "^3.0.2"
     sdp-transform "^2.4.1"
     semver "^5.6.0"
