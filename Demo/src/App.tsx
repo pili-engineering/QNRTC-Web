@@ -12,6 +12,7 @@ import Settings from './pages/settings';
 import Layout from './layouts';
 import { lazyConfirmLoading } from './components/ConfirmLoading';
 import Room from './pages/room';
+import SupportDialog from './components/SupportDialog';
 
 /**
  * lazyConfirmLoading cause an error when request screen sharing in Safari:
@@ -86,7 +87,7 @@ function App() {
             messageStore={providerData.messageStore}
             menuStore={providerData.menuStore}
           >
-            {/* <SupportDialog /> */}
+            <SupportDialog />
             <Router history={history}>
               <Switch>
                 <Route
