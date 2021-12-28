@@ -159,6 +159,15 @@ export class RoomStore {
 
   private statusInterval?: number;
 
+  /** 播放失败的 tracks 存到这里，后续引导点击播放 */
+  @observable
+  public shouldResumedTracks: Track[] = [];
+
+  @computed
+  public get showResumePlayDialog(): boolean {
+    return this.shouldResumedTracks.length !== 0;
+  }
+
   constructor() {
     this.session.on('room-state-change', this.setState);
     this.session.on('user-join', this.addUser);
@@ -180,6 +189,26 @@ export class RoomStore {
       this.setAppId(storeAppId);
     }
     window.onbeforeunload = () => this.leaveRoom();
+  }
+
+  @action.bound
+  addShouldResumedTracks(track: Track) {
+    this.shouldResumedTracks.push(track);
+  }
+
+  @action
+  clearShouldResumedTracks() {
+    this.shouldResumedTracks = [];
+  }
+
+  @action.bound
+  playShouldResumedTracks() {
+    for (const t of this.shouldResumedTracks) {
+      if (t.rtcTrack && t.rtcTrack.mediaElement) {
+        t.rtcTrack.mediaElement.play();
+      }
+    }
+    this.clearShouldResumedTracks();
   }
 
   @action 
@@ -437,6 +466,7 @@ export class RoomStore {
         }
         if (config.screen) {
           config.screen.audio = true
+          config.screen.audioTag = "screen-audio"
         }
       }
       console.log('tracks config:', config)

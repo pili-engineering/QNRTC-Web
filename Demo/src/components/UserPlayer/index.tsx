@@ -13,7 +13,8 @@ interface Props {
   screen?: boolean;
   tracks?: Track[];
   menuStore: MenuStore;
-  isMobile: Boolean
+  isMobile: Boolean;
+  addShouldResumedTrack: (t: Track) => void;
 }
 
 interface State {
@@ -27,8 +28,11 @@ export default class UserPlayer extends React.Component<Props, State> {
     if (track.rtcTrack.mediaElement && track.rtcTrack.mediaElement.parentElement === ref) return;
     if (ref.innerHTML) {
       ref.innerHTML = ''
-    } 
-    track.rtcTrack.play(ref);
+    }
+    track.rtcTrack.play(ref).catch(e => {
+      console.log(`mtd demo ${track.mediaTrack.kind} track play fail`, e);
+      this.props.addShouldResumedTrack(track);
+    });
   }
 
   handleTrackFullScreen(track: Track) {
