@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "private": true,
   "description": "multiple track demo",
   "author": "Yao Zhi <yaozhi@qiniu.com>",
@@ -34,7 +34,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "pili-rtc-web": "2.5.1",
+    "pili-rtc-web": "2.5.2",
     "qs": "^6.6.0",
     "react": "^16.8.0",
     "react-app-polyfill": "^0.2.0",
