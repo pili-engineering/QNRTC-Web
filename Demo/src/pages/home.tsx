@@ -286,8 +286,7 @@ class Home extends Component<Props, State> {
               </ButtonBase>
             </Grid>
           </Grid>
-          {this.state.joinRoomStep === 0 ?
-            <></> :
+          {this.state.joinRoomStep !== 0 && this.props.routerStore.location.pathname !== '/roomtoken' &&
             <Grid item container wrap="nowrap" justify="center" spacing={16}>
               <Grid item>
                 <ButtonBase
