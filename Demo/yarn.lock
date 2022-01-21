@@ -8633,10 +8633,10 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
-qnweb-rtc@4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.6.tgz#59e932d389669ece64476dfe4224b5253cb63a14"
-  integrity sha512-XksJgTPoWHUG/30ujmtxso1kaWp86QxvElPP9dQLaoBIwH3UjwAvdnkA57sIZQbd/Ldl/3lZNcjFLfuPREZrAw==
+qnweb-rtc@4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/qnweb-rtc/-/qnweb-rtc-4.0.7.tgz#2f88925e805d8e0454f34df8315bf687ea89743f"
+  integrity sha512-LDkPW/2XprmTfJdJfIHXYyRruFY7Pu4BJoc4Io+7Mvd3jGkOfGclOtGxB+9AkFFDAfai/I/KrDBeo/oDUUlIpQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     "@microsoft/api-extractor" "^7.18.7"

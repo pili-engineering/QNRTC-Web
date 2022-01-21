@@ -1,4 +1,4 @@
-# QNRTC Web Demo v4.0.3
+# QNRTC Web Demo
 
 
 ## 运行
