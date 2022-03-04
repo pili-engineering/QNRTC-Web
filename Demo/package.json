@@ -11,8 +11,8 @@
     "url": "git+https://github.com/pili-engineering/QNRTC-Web.git"
   },
   "scripts": {
-    "start": "REACT_APP_LATEST_COMMIT_HASH=`git rev-parse --short HEAD` REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) react-scripts start",
-    "build": "REACT_APP_LATEST_COMMIT_HASH=`git rev-parse --short HEAD` REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) react-scripts build"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@material-ui/core": "^3.8.3",
