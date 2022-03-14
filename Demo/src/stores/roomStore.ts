@@ -13,7 +13,8 @@ import QNRTC, {
   QNLocalVideoTrackStats,
   QNScreenVideoTrack,
   QNLocalAudioTrack,
-  QNLocalVideoTrack
+  QNLocalVideoTrack,
+  QNVideoOptimizationMode
 } from "qnweb-rtc";
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -185,7 +186,11 @@ export class RoomStore {
     if (storeAppId) {
       this.setAppId(storeAppId);
     }
-    window.onbeforeunload = () => this.leaveRoom();
+    window.onbeforeunload = () =>  {
+      try {
+        this.leaveRoom();
+      } catch {}
+    }
   }
 
   @action
@@ -437,13 +442,22 @@ export class RoomStore {
               }
             }
           ),
-          (await QNRTC.createScreenVideoTrack({ screenVideoTag: "screen" }) as QNScreenVideoTrack)
+          (await QNRTC.createScreenVideoTrack({
+            encoderConfig: "1080p",
+            screenVideoTag: "screen",
+            optimizationMode: QNVideoOptimizationMode.DETAIL
+          }) as QNScreenVideoTrack)
         ];
         break;
       }
       // 屏幕共享 + 系统声音
       case TrackCreateMode.D: {
-        const ts = await QNRTC.createScreenVideoTrack({ screenAudioTag: "system-audio", screenVideoTag: "screen" }, "auto");
+        const ts = await QNRTC.createScreenVideoTrack({ 
+          encoderConfig: "1080p",
+          optimizationMode: QNVideoOptimizationMode.DETAIL,
+          screenAudioTag: "system-audio", 
+          screenVideoTag: "screen" 
+        }, "auto");
         if (Array.isArray(ts)) {
           tracks = ts;
         } else {
