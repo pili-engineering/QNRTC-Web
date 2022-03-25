@@ -51,7 +51,7 @@ function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore, isMobile }: Swit
   };
 
   return (
-    <div className={`${isMobile ? classes.switchPanelMobile : classes.switchPanel}`}>
+    !isMobile ? <div className={`${isMobile ? classes.switchPanelMobile : classes.switchPanel}`}>
       {(roomStore.selectedTrackCreateMode === TrackCreateMode.B || roomStore.selectedTrackCreateMode === TrackCreateMode.C) &&
         <FormControl className={[isMobile ? classes.formControlMobile : classes.formControl].join(' ')}>
           <InputLabel htmlFor="video-device">视频设备</InputLabel>
@@ -95,7 +95,7 @@ function SwitchPanel({ videoDeviceId, audioDeviceId, roomStore, isMobile }: Swit
           </Select>
         </FormControl>
       }
-    </div>
+    </div>: null
   );
 };
 

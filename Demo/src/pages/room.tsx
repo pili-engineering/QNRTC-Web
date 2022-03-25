@@ -38,7 +38,7 @@ import InfoPanel from '../components/InfoPanel';
 import SwitchPanel from '../components/SwitchPanel';
 import { ConfirmLoading } from '../components/ConfirmLoading';
 import { ResumePlay } from "../components/ResumePlay";
-
+import MergeConfig from '../components/MergeConfig';
 
 const styles = (theme: Theme) => createStyles({
   root: {
@@ -81,7 +81,7 @@ const styles = (theme: Theme) => createStyles({
   },
   headerContentMobile: {
     position: 'absolute',
-    top: '65px',
+    top: '25px',
     marginLeft: '-10px',
   },
   headeritemMobile: {
@@ -370,7 +370,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
   }
 
   render() {
-    const { classes, roomStore, menuStore, isMobile } = this.props;
+    const { classes, roomStore, menuStore, isMobile, messageStore } = this.props;
     const publishedAudioTracks = roomStore.publishedAudioTracks;
     const publishedCameraTracks = roomStore.publishedCameraTracks;
     const publishedScreenTracks = roomStore.publishedScreenTracks;
@@ -409,7 +409,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
             {Array.from(this.props.roomStore.users.values())
               .filter(v => v.tracks.size !== 0 && v.id !== this.props.userStore.id)
               .map(v =>
-              (<div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
+              (<div key={v.id} className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
                 <UserPlayer isMobile={isMobile} key={v.id} menuStore={menuStore} user={v} addShouldResumedTrack={this.props.roomStore.addShouldResumedTracks}/>
               </div>)
               )}
@@ -455,7 +455,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                   direction="row-reverse"
                   className={`${isMobile ? classes.headerContentMobile : classes.headerContent}`}
                 >
-                  {Array.from(this.props.roomStore.users.values()).map(v => {
+                  {[{id: this.props.roomStore.id},...Array.from(this.props.roomStore.users.values())].map(v => {
                     return (
                       <Grid item xl={2} md={3} sm={6} xs={12} key={v.id} className={`${isMobile ? classes.headeritemMobile : ''}`}>
                         <Chip
@@ -509,6 +509,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                     )}
                 </Grid>
               </Grid>}
+              <MergeConfig roomStore={roomStore} messageStore={messageStore}></MergeConfig>
               <Grid
                 item
                 container
