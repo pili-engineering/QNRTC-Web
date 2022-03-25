@@ -19,7 +19,6 @@ import { MessageStore } from '../../stores/messageStore';
 import { UserStore } from '../../stores/userStore';
 import { verifyRoomId, timeout, retrying } from '../../common/utils';
 import { QNRenderMode, QNTranscodingLiveStreamingTrack } from "qnweb-rtc";
-
 interface Params {
   roomid: string;
 }
@@ -38,7 +37,7 @@ interface Props extends RouteComponentProps<Params> {
 @inject('roomStore', 'routerStore', 'messageStore', 'userStore', 'isMobile')
 @observer
 export default class LivePage extends React.Component<Props, State> {
-  public video = React.createRef<HTMLVideoElement>();;
+  public video = React.createRef<HTMLDivElement>();;
   public flvPlayer?: flvjs.Player;
   private stopRetrying?: (err?: any) => void;
 
@@ -75,113 +74,33 @@ export default class LivePage extends React.Component<Props, State> {
   }
 
   private fetchStream() {
-    const ua = navigator.userAgent.toLowerCase();
-    const isSafari = ((ua.indexOf('safari') !== -1) && (ua.indexOf('chrome') === -1));
-    if (isSafari) { return this.fetchStreamSafari(); }
-    else { return this.fetchStreamDefault(); }
-  }
-
-  private fetchStreamDefault() {
-    this.props.messageStore.showLoading('获取直播流...');
-    const liveURL = FLV_PATH(this.props.match.params.roomid);
-
-    const video = this.video.current;
-    if (!video) return;
-    this.flvPlayer = flvjs.createPlayer({
-      type: 'flv',
-      url: liveURL,
-      isLive: true,
-    });
-    this.flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
-      this.fetchStreamDefault();
-    });
-    this.flvPlayer.on(flvjs.Events.METADATA_ARRIVED, () => {
-      this.props.messageStore.hideLoading();
-    });
-    this.flvPlayer.on(flvjs.Events.LOADING_COMPLETE, () => {
-      this.fetchStreamDefault();
-    });
-    this.flvPlayer.on(flvjs.Events.ERROR, (err, details) => {
-      if (err === flvjs.ErrorTypes.NETWORK_ERROR) {
-        if (this.flvPlayer) this.flvPlayer.detachMediaElement();
-        console.log('flv NETWORK_ERROR');
-        this.props.messageStore.hideLoading();
-        this.props.messageStore.showAlert({
-          show: true,
-          title: '找不到会议直播',
-          content: '请确认该房间是否有其他用户发布流',
-        });
-      }
-    });
-    this.flvPlayer.attachMediaElement(video);
-    this.flvPlayer.load();
-    video.oncanplay = () => {
-      video.play()
-        .catch((err) => {
-          console.log('video.play Error', err);
-          video.controls = true;
-        });
-    };
-  }
-
-  private fetchStreamSafari() {
     this.props.messageStore.showLoading('获取直播流...');
     const liveURL = HLS_PATH(this.props.match.params.roomid);
-    if (this.stopRetrying) this.stopRetrying();
-    retrying((stop) => {
-      this.stopRetrying = stop;
-      return fetch(liveURL)
-        .then(() => {
-          const video = this.video.current;
-          if (!video) return;
-          video.autoplay = true;
-          video.src = liveURL;
-          video.oncanplay = () => {
-            video.play()
-              .catch(() => {
-                video.controls = true;
-              });
-          };
-          this.props.messageStore.hideLoading();
-        })
-        .catch(() => {
-          return timeout(1000);
-        });
-    }, 10000)
-      .catch(() => {
-        this.props.messageStore.hideLoading();
-        this.props.messageStore.showAlert({
-          show: true,
-          title: '找不到会议直播',
-          content: '请确认该房间是否有其他用户发布流',
-        });
-      });
-  }
 
-  private handleMergeChange(options: MergeOptions): void {
-    // const addConfig: QNTranscodingLiveStreamingTrack[] = [];
-    // const removeConfig = [];
-    // for (const value of Object.values(options) as TrackOption[]) {
-    //   if (!value) continue;
-    //   if (value.enabled) {
-    //     const config: QNTranscodingLiveStreamingTrack = {
-    //       trackID: value.trackID as string,
-    //       x: Number(value.x),
-    //       y: Number(value.y),
-    //       zOrder: Number(value.z),
-    //       width: Number(value.w),
-    //       height: Number(value.h),
-    //       renderMode: value.stretchMode as QNRenderMode
-    //     };
-    //     addConfig.push(config);
-    //   } else {
-    //     removeConfig.push(value.trackID);
-    //   }
-    // }
-    // this.props.roomStore.session.setTranscodingLiveStreamingTracks(addConfig);
-    // if (removeConfig.length > 0) {
-    //   this.props.roomStore.session.removeMergeStreamTracks(removeConfig);
-    // }
+    let config = {
+      id: "livedemo",
+      url:liveURL,
+      // @ts-ignore
+      type: QNPlayer.QNMediaType.HLS,
+      videoInit: true,
+      width: "100vw",
+      height: "100vh"
+    }
+    // @ts-ignore
+    this.flvPlayer = new QNPlayer.CreatePlayer(config)
+    // @ts-ignore
+    this.flvPlayer.on("complete", () => {
+      this.props.messageStore.hideLoading();
+    })
+    // @ts-ignore
+    this.flvPlayer.on("error", (data) => {
+      this.props.messageStore.hideLoading();
+        this.props.messageStore.showAlert({
+        show: true,
+        title: '找不到会议直播',
+        content: '请确认该房间是否有其他用户发布流',
+      });
+    })
   }
 
   public render(): JSX.Element {
@@ -190,21 +109,8 @@ export default class LivePage extends React.Component<Props, State> {
       <div className={`${styles.container} ${isMobile ? styles.containerMobile : ''}`}>
         <p className={styles.roomName}>房间名称: {this.props.match.params.roomid}</p>
         <div className={`${isMobile ? styles.videoMobileContainer : styles.videoContainer}`}>
-          <video
-            ref={this.video}
-            autoPlay
-          />
+          <div id="livedemo"></div>
         </div>
-        {this.props.userStore.isAdmin && <div className={`users ${isMobile ? styles.usersMobile : ''}`}>
-          <p className={styles.configTitle}>合流设置</p>
-          {Array.from(this.props.roomStore.users.values()).map(user => (
-            <UserMergeConfig
-              key={user.id}
-              user={user}
-              onMergeChange={this.handleMergeChange.bind(this)}
-            />
-          ))}
-        </div>}
       </div>
     );
   }
