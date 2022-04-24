@@ -1,0 +1,27 @@
+#msg-container {
+    width: 100%;
+    height: 300px;
+    overflow: scroll;
+    padding: 6px 16px;
+}
+
+.msg-item {
+    display: flex;
+    gap: 12px;
+    margin: 6px 0px;
+}
+
+.msg-item > div:first-child {
+    font-size: 14px;
+    align-self: center;
+    justify-self: center;
+}
+
+.msg-item > div:last-child {
+    font-size: 14px;
+    align-self: center;
+    justify-self: center;
+    padding: 3px 6px;
+    border: solid 1px gray;
+    border-radius: 6px;
+}

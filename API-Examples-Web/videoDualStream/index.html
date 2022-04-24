@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Video Dual Stream</title>
+        <link href="../assets/bootstrap.min.css" rel="stylesheet">
+        <link href="../assets/index.css" rel="stylesheet">
+        <style>
+            .dual-stream-control {
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 9;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <nav class="container-fluid demo-nav">
+            <div>Qiniu RTC Web SDK API Demos</div>
+            <a class="navbar-brand" href="https://github.com/pili-engineering/QNRTC-Web">
+                <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                </svg>
+            </a>
+        </nav>
+
+        <div class="container">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label" for="room-token"> Room Token </label>
+                    <input type="text" class="form-control" id="room-token" required>
+                    <div class="form-text">
+                        Don't know how to create a token? Refer to this <a
+                            href="https://developer.qiniu.com/rtc/8813/roomToken">doc</a>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="join-room-btn">Join</button>
+                <button class="btn btn-primary" disabled id="leave-room-btn">Leave</button>
+            </form>
+        </div>
+
+        <div class="container" id="media-container"></div>
+
+        <script src="../assets/bootstrap.bundle.min.js"></script>
+        <script src="../assets/qnweb-rtc.js"></script>
+        <script src="../assets/index.js"></script>
+
+        <script>
+            const client = QNRTC.createClient();
+
+            const joinRoomBtn = document.getElementById("join-room-btn");
+            const leaveRoomBtn = document.getElementById("leave-room-btn");
+            const roomTokenInput = document.getElementById("room-token");
+            const mediaContainer = document.getElementById("media-container");
+
+            let localTracks = [];
+
+            // 存储开启了大小流的远端 video track
+            let remoteVideoTracks = new Map();
+
+            async function handleUserPublished(userID, tracks) {
+                try {
+                    const { videoTracks, audioTracks } = await client.subscribe(tracks);
+                    playUserTracks([...videoTracks, ...audioTracks]);
+                    for (const track of videoTracks) {
+                        if (track.isLowStreamEnabled) {
+                            track.on("low-stream-state-changed", state => {
+                                console.log("state: ", track.trackID, state);
+                            });
+                            remoteVideoTracks.set(track.trackID, track);
+                        }
+                    }
+                } catch (e) {
+                    alert(e.message, "warning");
+                }
+            }
+
+            function handleUserUnPublished(userID, tracks) {
+                for (const track of tracks) {
+                    if (track.isVideo() && track.isLowStreamEnabled) {
+                        remoteVideoTracks.delete(track.trackID);
+                        const div = document.getElementById(track.trackID);
+                        if (div) div.remove();
+                    }
+                }
+            }
+
+            function handleSetLowStream(checked, trackID) {
+                const track = remoteVideoTracks.get(trackID);
+                if (!track) {
+                    alert("remote track not found", trackID);
+                    return;
+                }
+                track.setLowStream(checked);
+            }
+
+            function createVideoPlayContainer(trackID) {
+                const div = document.createElement("div");
+                div.style.position = "relative";
+                div.id = trackID;
+                div.innerHTML = `
+            <div class="form-check form-switch dual-stream-control">
+                <label class="form-check-label">low stream
+                    <input class="form-check-input" type="checkbox" role="switch" onclick="handleSetLowStream(this.checked, '${trackID}')">
+                </label>
+            </div>`;
+                return div;
+            }
+
+            function playUserTracks(tracks) {
+                for (const track of tracks) {
+                    if (track.isAudio()) {
+                        track.play(document.body)
+                            .catch(e => {
+                                alert(e.message, "warning");
+                            });
+                    } else {
+                        let div;
+                        if (track.isLowStreamEnabled) {
+                            div = createVideoPlayContainer(track.trackID);
+                        } else {
+                            div = document.createElement("div");
+                        }
+                        mediaContainer.appendChild(div);
+                        track.play(div)
+                            .catch(e => {
+                                alert(e.message, "warning");
+                            });
+                    }
+                }
+            }
+
+            joinRoomBtn.onclick = async (e) => {
+                e.preventDefault();
+                try {
+                    client.on("user-published", handleUserPublished);
+                    client.on("user-unpublished", handleUserUnPublished);
+                    await client.join(roomTokenInput.value);
+
+                    const microphoneTrack = await QNRTC.createMicrophoneAudioTrack();
+
+                    // 发布视频大小流
+                    const cameraTrack = await QNRTC.createCameraVideoTrack({
+                        encoderConfig: {
+                            width: 720,
+                            height: 480,
+                            bitrate: 1000,
+                            lowStreamConfig: {
+                                scaleResolutionDownBy: 2,
+                                bitrate: 100
+                            }
+                        }
+                    });
+                    localTracks.push(cameraTrack, microphoneTrack);
+                    for (const track of localTracks) {
+                        if (track.isVideo()) {
+                            playUserTracks([track]);
+                        }
+                    }
+                    await client.publish(localTracks);
+
+                    joinRoomBtn.disabled = true;
+                    leaveRoomBtn.disabled = false;
+                } catch (e) {
+                    alert(e.message, "warning");
+                }
+            };
+
+            leaveRoomBtn.onclick = (e) => {
+                e.preventDefault();
+                client.leave()
+                    .then(() => {
+                        for (const track of localTracks) {
+                            track.destroy();
+                        }
+                        localTracks = [];
+                        remoteVideoTracks = new Map();
+                        mediaContainer.innerHTML = "";
+                        joinRoomBtn.disabled = false;
+                        leaveRoomBtn.disabled = true;
+                    })
+                    .catch((e) => {
+                        alert(e.message, "warning");
+                    });
+            }
+
+        </script>
+
+    </body>
+
+</html>

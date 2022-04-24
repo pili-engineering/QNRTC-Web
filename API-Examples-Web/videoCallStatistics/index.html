@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Video Call Statistics</title>
+        <link href="../assets/bootstrap.min.css" rel="stylesheet">
+        <link href="../assets/index.css" rel="stylesheet">
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+
+        <nav class="container-fluid demo-nav">
+            <div>Qiniu RTC Web SDK API Demos</div>
+            <a class="navbar-brand" href="https://github.com/pili-engineering/QNRTC-Web">
+                <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                </svg>
+            </a>
+        </nav>
+
+        <div class="container">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label" for="room-token"> Room Token </label>
+                    <input type="text" class="form-control" id="room-token" required>
+                    <div class="form-text">
+                        Don't know how to create a token? Refer to this <a
+                            href="https://developer.qiniu.com/rtc/8813/roomToken">doc</a>
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="join-room-btn">Join</button>
+                <button class="btn btn-primary" disabled id="leave-room-btn">Leave</button>
+            </form>
+        </div>
+
+
+        <div class="container" id="media-container">
+        </div>
+
+        <script src="../assets/bootstrap.bundle.min.js"></script>
+        <script src="../assets/qnweb-rtc.js"></script>
+        <script src="../assets/index.js"></script>
+
+        <script>
+            const client = QNRTC.createClient();
+
+            const joinRoomBtn = document.getElementById("join-room-btn");
+            const leaveRoomBtn = document.getElementById("leave-room-btn");
+            const roomTokenInput = document.getElementById("room-token");
+            const mediaContainer = document.getElementById("media-container");
+
+            let localTracks = [];
+            let statsIntervals = new Map();
+
+            async function handleUserPublished(userID, tracks) {
+                try {
+                    const { videoTracks, audioTracks } = await client.subscribe(tracks);
+                    playUserTracks([...videoTracks, ...audioTracks], true);
+                } catch (e) {
+                    alert(e.message, "warning");
+                }
+            }
+
+            function handleUserUnpublished(userID, tracks) {
+                for (const track of tracks) {
+                    const interval = statsIntervals.get(track.trackID);
+                    if (!interval) continue;
+                    clearInterval(interval.id);
+                    interval.div.remove();
+                }
+            }
+
+            function playUserTracks(tracks, isRemote) {
+                for (const track of tracks) {
+                    if (track.isAudio()) {
+                        track.play(document.body)
+                            .catch(e => {
+                                alert(e.message, "warning");
+                            });
+                    } else {
+                        const div = document.createElement("div");
+                        mediaContainer.appendChild(div);
+                        track.play(div)
+                            .catch(e => {
+                                alert(e.message, "warning");
+                            })
+                            .then(() => {
+                                showStats(div, track, isRemote);
+                            });
+                    }
+                }
+            }
+
+            function showStats(div, track, isRemote) {
+                const statsContainer = document.createElement("div");
+                statsContainer.className = "media-stats";
+                div.appendChild(statsContainer);
+
+                const keyContainer = document.createElement("div");
+                const valueContainer = document.createElement("div");
+                statsContainer.appendChild(keyContainer);
+                statsContainer.appendChild(valueContainer);
+
+                const frameRateKey = document.createElement("div");
+                frameRateKey.innerText = "frameRate:";
+                const bitrateKey = document.createElement("div");
+                bitrateKey.innerText = "bitrate:";
+                const lostRateKey = document.createElement("div");
+                lostRateKey.innerText = "lostRate:";
+                keyContainer.appendChild(frameRateKey);
+                keyContainer.appendChild(bitrateKey);
+                keyContainer.appendChild(lostRateKey);
+
+                const frameRateValue = document.createElement("div");
+                const bitrateValue = document.createElement("div");
+                const lostRateValue = document.createElement("div");
+                valueContainer.appendChild(frameRateValue);
+                valueContainer.appendChild(bitrateValue);
+                valueContainer.appendChild(lostRateValue);
+
+                const id = setInterval(() => {
+                    let frameRate, bitrate, lostRate;
+                    if (isRemote) {
+                        const stat = track.getStats();
+                        frameRate = stat.downlinkFrameRate;
+                        bitrate = stat.downlinkBitrate;
+                        lostRate = stat.downlinkLostRate;
+                    } else {
+                        const localStats = track.getStats();
+                        frameRate = localStats.length > 0 ? localStats[0].uplinkFrameRate : 0;
+                        bitrate = localStats.length > 0 ? localStats[0].uplinkBitrate : 0;
+                        lostRate = localStats.length > 0 ? localStats[0].uplinkLostRate : 0;
+                    }
+
+                    frameRateValue.innerText = frameRate + " fps";
+
+                    bitrate = (bitrate / 1000).toFixed(2);
+                    bitrateValue.innerText = bitrate + " kbps";
+
+                    lostRate = (lostRate * 100).toFixed(2);
+                    lostRateValue.innerText = lostRate + " %";
+                }, 1000);
+
+                statsIntervals.set(track.trackID, {
+                    id, div
+                });
+            }
+
+            joinRoomBtn.onclick = async (e) => {
+                e.preventDefault();
+                try {
+                    client.on("user-published", handleUserPublished);
+                    client.on("user-unpublished", handleUserUnpublished);
+                    await client.join(roomTokenInput.value);
+
+                    localTracks = await QNRTC.createMicrophoneAndCameraTracks();
+                    await client.publish(localTracks);
+
+                    for (const track of localTracks) {
+                        if (track.isVideo()) {
+                            playUserTracks([track], false);
+                        }
+                    }
+
+                    joinRoomBtn.disabled = true;
+                    leaveRoomBtn.disabled = false;
+                } catch (e) {
+                    alert(e.message, "warning");
+                }
+            };
+
+            leaveRoomBtn.onclick = (e) => {
+                e.preventDefault();
+                client.leave()
+                    .then(() => {
+                        for (const track of localTracks) {
+                            track.destroy();
+                        }
+                        localTracks = [];
+                        mediaContainer.innerHTML = "";
+                        joinRoomBtn.disabled = false;
+                        leaveRoomBtn.disabled = true;
+                        for (const interval of statsIntervals.values()) {
+                            clearInterval(interval.id);
+                            interval.div.remove();
+                        }
+                    })
+                    .catch((e) => {
+                        alert(e.message, "warning");
+                    });
+            }
+
+        </script>
+
+    </body>
+
+</html>
