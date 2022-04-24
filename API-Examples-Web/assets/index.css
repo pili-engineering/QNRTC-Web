@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.demo-nav {
+    height: 56px;
+    padding: 6px 12px;
+
+    background-color: rgb(53, 58, 63);
+    color: #ffffff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.demo-nav a {
+    fill: white;
+}
+
+.container {
+    margin-top: 16px;
+}
+
+#media-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+#media-container > div {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.card {
+    min-width: 270px;
+    min-height: 200px;
+    margin-bottom: 16px;
+}
+
+.card-btn {
+    position: absolute;
+    bottom: 16px;
+}

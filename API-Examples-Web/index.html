@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Qiniu RTC Web SDK API Demos</title>
+    <link href="./assets/bootstrap.min.css" rel="stylesheet">
+    <link href="./assets/index.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="container-fluid demo-nav">
+    <div>Qiniu RTC Web SDK API Demos</div>
+    <a class="navbar-brand" href="https://github.com/pili-engineering/QNRTC-Web">
+        <svg height="32" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+            <path fill-rule="evenodd"
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+    </a>
+</nav>
+
+<div class="container">
+    <h2 class="mt-3">Basic</h2>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Basic Video Call</h5>
+                    <p class="card-text">Basic video call with joining room, publishing, subscribing and playing tracks.</p>
+                    <a href="./basicVideoCall" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pure Audio Call</h5>
+                    <p class="card-text">Pure audio call with joining room, publishing, subscribing and playing tracks.</p>
+                    <a href="./pureAudioCall" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Screen Sharing</h5>
+                    <p class="card-text">Turn on screen sharing along with basic audio and video calls.</p>
+                    <a href="./screenSharing" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Mute Audio Or Video</h5>
+                    <p class="card-text">Mute audio or video without unpublishing or publishing.</p>
+                    <a href="muteAudioOrVideo" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Switch Media Devices</h5>
+                    <p class="card-text">Create track from specified media input device and specified audio playback device.</p>
+                    <a href="./switchMediaDevices" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Video Call Statistics</h5>
+                    <p class="card-text">Check track statistics.</p>
+                    <a href="./videoCallStatistics" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Send Custom Message</h5>
+                    <p class="card-text">Send custom message to other user(s).</p>
+                    <a href="./sendCustomMessage" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="mt-3">CDN Livestreaming</h2>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Direct Livestreaming</h5>
+                    <p class="card-text">Create media tracks and push to CDN (Content Delivery Network).</p>
+                    <a href="./directLivestreaming" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Transcoding Livestreaming</h5>
+                    <p class="card-text">Merge all tracks in room and push to CDN (Content Delivery Network).</p>
+                    <a href="./transcodingLivestreaming" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Default Transcoding Livestreaming</h5>
+                    <p class="card-text">Merge all tracks in room and push to CDN (Content Delivery Network) in default transcoding livestraming task.</p>
+                    <a href="./defaultTranscodingLivestreaming" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="mt-3">Advanced</h2>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Publish External Audio</h5>
+                    <p class="card-text">Create audio track from audio file and publish it.</p>
+                    <a href="./publishExternalAudio" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Video Dual Stream</h5>
+                    <p class="card-text">Publish dual stream track into room and subscribe low stream.</p>
+                    <a href="./videoDualStream" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Custom Track</h5>
+                    <p class="card-text">Use custom track to publish from a video file.</p>
+                    <a href="./customTrack" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Audio Mixing</h5>
+                    <p class="card-text">Mixing microphone track with background music.</p>
+                    <a href="./audioMixing" class="btn btn-primary card-btn">try it now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="./assets/bootstrap.bundle.min.js"></script>
+<script src="./assets/qnweb-rtc.js"></script>
+<script src="./assets/index.js"></script>
+
+</body>
+</html>

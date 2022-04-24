@@ -1,0 +1,31 @@
+.media-stats {
+    width: 180px;
+    height: 80px;
+    background: rgb(60,60,60);
+    color: white;
+    opacity: 0.8;
+    border-radius: 16px;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+}
+
+.media-stats {
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+}
+
+.media-stats > div {
+    align-self: center;
+}
+
+.media-stats > div:first-child {
+    justify-self: right;
+}
+
+.media-stats > div:first-child > div {
+    display: flex;
+    justify-content: right;
+}

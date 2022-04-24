@@ -467,8 +467,23 @@ export class RoomStore {
       }
     }
 
+    this.handleTrackEnded(tracks);
     this.setLocalTracks([...this.localTracks, ...tracks]);
     return tracks;
+  }
+
+  @action
+  public handleTrackEnded = async (tracks: QNLocalTrack[]) => {
+    for (const track of tracks) {
+      if (track.tag === "microphone") {
+        track.on("ended", async () => {
+          const tracks = [await QNRTC.createMicrophoneAudioTrack({ tag: "microphone" })];
+          this.handleTrackEnded(tracks);
+          this.setLocalTracks([...this.localTracks, ...tracks]);
+          this.publish(tracks);
+        });
+      }
+    }
   }
 
   /** 订阅 */
