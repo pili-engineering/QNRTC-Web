@@ -12,6 +12,7 @@ import {
   QNRenderMode,
   QNDirectLiveStreamingConfig,
   QNTranscodingLiveStreamingImage,
+  QNTrack,
 } from "qnweb-rtc";
 import {
   Drawer,
@@ -25,6 +26,7 @@ import {
 } from "@material-ui/core";
 import { RoomStore } from "../../stores/roomStore";
 import { MessageStore } from "../../stores/messageStore";
+import Track from "../../models/Track";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -131,6 +133,22 @@ const MergeConfig = (props: MergeConfigProp) => {
   // 合流状态 - 0未创建 1已创建 2编辑中
   const [jobStatus, setJobStatus] = useState(0);
 
+  /**
+   * 获取单路转推第一个音/视频轨道没有返回undfined
+   * @param publishedTracks 发布的音/视频轨道
+   * @returns QNTrack | undefined
+   */
+  const getFirstRtcTrack = (publishedTracks: Track[]): QNTrack | undefined => {
+    let rtcTrack;
+    if (publishedTracks.length > 0) {
+      const firstTrack = publishedTracks[0];
+      if (firstTrack) {
+        rtcTrack = firstTrack.rtcTrack;
+      }
+    }
+    return rtcTrack;
+  };
+
   // 开启单路转推
   const startDirectLiveStreaming = () => {
     if (roomStore.session && roomStore.session.userID !== "admin") {
@@ -140,11 +158,12 @@ const MergeConfig = (props: MergeConfigProp) => {
         title: "没有权限",
         content: '只有"admin"用户可以开启单路转推！！！',
       });
-      return false;
+      return;
     }
     const config: QNDirectLiveStreamingConfig = {
-      videoTrack: roomStore.publishedCameraTracks[0].rtcTrack,
-      audioTrack: roomStore.publishedAudioTracks[0].rtcTrack,
+      //fix: PILCS-10497 牛会议demo，纯音频、屏幕共享+系统声音不可使用单路转推
+      videoTrack: getFirstRtcTrack(roomStore.publishedCameraTracks),
+      audioTrack: getFirstRtcTrack(roomStore.publishedAudioTracks),
       streamID: `demo${roomStore.id}`,
       url: `rtmp://pili-publish.qnsdk.com/sdk-live/${roomStore.id}`,
     };
@@ -303,7 +322,7 @@ const MergeConfig = (props: MergeConfigProp) => {
         title: "没有权限",
         content: '只有"admin"用户可以开启单路转推！！！',
       });
-      return false;
+      return;
     }
     setTranscodingLiveModel(true);
   };
