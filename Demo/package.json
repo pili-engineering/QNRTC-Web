@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "4.1.7",
+  "version": "4.1.8",
   "private": true,
   "description": "multiple track demo",
   "author": "Yao Zhi <yaozhi@qiniu.com>",
@@ -33,7 +33,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "qnweb-rtc": "^4.1.7",
+    "qnweb-rtc": "^4.1.8",
     "qs": "^6.6.0",
     "react": "^16.8.0",
     "react-app-polyfill": "^0.2.0",
