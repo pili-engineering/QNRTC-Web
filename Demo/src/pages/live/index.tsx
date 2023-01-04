@@ -38,7 +38,7 @@ interface Props extends RouteComponentProps<Params> {
 @observer
 export default class LivePage extends React.Component<Props, State> {
   public video = React.createRef<HTMLDivElement>();;
-  public flvPlayer?: flvjs.Player;
+  public flvPlayer?: any;
   private stopRetrying?: (err?: any) => void;
 
   public async componentDidMount(): Promise<void> {
@@ -68,7 +68,7 @@ export default class LivePage extends React.Component<Props, State> {
 
   componentWillUnmount() {
     if (this.stopRetrying) this.stopRetrying();
-    if (this.flvPlayer) this.flvPlayer.unload();
+    if (this.flvPlayer) this.flvPlayer.destroy && this.flvPlayer.destroy();
     this.props.roomStore.leaveRoom();
     this.props.messageStore.hideLoading();
   }

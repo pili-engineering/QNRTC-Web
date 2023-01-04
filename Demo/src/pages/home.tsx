@@ -14,6 +14,8 @@ import {
   IconButton,
   Switch,
   ButtonBase,
+  Select,
+  MenuItem
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Input from '../components/Input';
@@ -101,6 +103,7 @@ interface State {
   // enhance: boolean;
   // selected: number;
   joinRoomStep: number;
+  showScreenConfig: boolean;
 }
 
 @inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'isMobile')
@@ -119,12 +122,25 @@ class Home extends Component<Props, State> {
       roomid: props.roomStore.id,
       roomToken: '',
       joinRoomStep: props.userStore.id ? 1 : 0,
+      showScreenConfig: this.isShowScreenConfig(props.roomStore.selectedTrackCreateMode),
     };
   }
 
+
+  private isShowScreenConfig(mode: TrackCreateMode) {
+    return mode === TrackCreateMode.C || mode === TrackCreateMode.D;
+  }
+
   handleRadioChange = async (event: React.ChangeEvent<{}>, value: string) => {
-    this.props.roomStore.setSelectedTrackCreateMode(value as TrackCreateMode);
+    const mode = value as TrackCreateMode;
+    const showScreenConfig = this.isShowScreenConfig(mode);
+    this.props.roomStore.setSelectedTrackCreateMode(mode);
+    this.setState({ showScreenConfig });
   };
+
+  onChangeScreenConfig = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.props.roomStore.setScreenConfig(event.target.value as "480p" | "720p" | "1080p");
+  }
 
   showMessage = this.props.messageStore.show;
 
@@ -185,7 +201,23 @@ class Home extends Component<Props, State> {
   };
 
   render() {
+    const options = [
+        {
+          label: "480p(640x480 15fps 500kbps)",
+          value: "480p"
+        },
+        {
+          label: "720p(1280x720 30fps 1130kbps)",
+          value: "720p"
+        },
+        {
+          label: "1080p(1920x1080 30fps 3000kbps)",
+          value: "1080p"
+        }
+    ];
+
     const { classes,isMobile } = this.props;
+    const { showScreenConfig } = this.state;
     // const { enhance } = this.state;
     return (
       <div className={classes.root}>
@@ -272,7 +304,11 @@ class Home extends Component<Props, State> {
                   { !isMobile && <FormControlLabel value={TrackCreateMode.C} control={<Radio />} label={TrackCreateMode.C} />}
                   { !isMobile && <FormControlLabel value={TrackCreateMode.D} control={<Radio />} label={TrackCreateMode.D} />}
                 </RadioGroup>
+                {showScreenConfig && <Select value={this.props.roomStore.screenConfig} onChange={this.onChangeScreenConfig}>
+                  {options.map(opt => <MenuItem value={opt.value} key={opt.value}>{opt.label}</MenuItem>)}
+                </Select>}
               </FormControl>
+              
             </Grid>
           </Grid>}
           <Grid item container wrap="nowrap" justify="center" spacing={16}>

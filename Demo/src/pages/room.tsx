@@ -169,6 +169,7 @@ interface Props extends WithStyles<typeof styles> {
 @inject('routerStore', 'userStore', 'roomStore', 'messageStore', 'menuStore', 'isMobile')
 @observer
 class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
+  private localTrackRef = React.createRef<UserPlayer>();
   componentDidMount() {
     document.title = `房间:${this.props.roomStore.id},appid:${this.props.roomStore.appId}`;
 
@@ -262,6 +263,12 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
           content: '请手动重新发布',
         });
       });
+  };
+
+  toggleCameraFacingMode = () => {
+    if (this.localTrackRef.current && this.localTrackRef.current.ref) {
+      this.props.roomStore.toggleCameraFacingMode(this.localTrackRef.current.ref);
+    }
   };
 
   selectTracks = (): Promise<RTCTrack[] | undefined> => {
@@ -399,6 +406,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
           {isMobile && <div className={classes.screenMobile}>
             <div className={arr.length > 3 ? 'col-4 row-4' : arr.length > 1 ? 'col-6 row-6' : arr.length > 0 ? 'col-12 row-6' : 'col-12 row-12'}>
               <UserPlayer
+                ref={this.localTrackRef}
                 isMobile={isMobile}
                 local
                 tracks={Array.from(roomStore.publishedTracks.values())}
@@ -592,7 +600,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
                       placement="top-end"
                     >
                       <IconButton
-                        onClick={roomStore.toggleCameraFacingMode}
+                        onClick={this.toggleCameraFacingMode}
                       >
                         {roomStore.facingMode === 'user' ? <PhotoCamera /> : <CameraEnhance />}
                       </IconButton>
