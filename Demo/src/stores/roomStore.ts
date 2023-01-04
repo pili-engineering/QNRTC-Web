@@ -14,7 +14,8 @@ import QNRTC, {
   QNScreenVideoTrack,
   QNLocalAudioTrack,
   QNLocalVideoTrack,
-  QNVideoOptimizationMode
+  QNVideoOptimizationMode,
+  QNCameraVideoTrack
 } from "qnweb-rtc";
 import userStore from './userStore';
 import { RTC_APP_ID } from '../common/api';
@@ -67,6 +68,10 @@ export class RoomStore {
   @observable
   public selectedTrackCreateMode: TrackCreateMode = TrackCreateMode.B;
 
+
+  @observable
+  public screenConfig: "480p" | "720p" | "1080p" = "1080p";
+
   @observable
   public videoDeviceId?: string = undefined;
 
@@ -100,7 +105,7 @@ export class RoomStore {
   @computed
   public get publishedCameraTracks(): Track[] {
     return Array.from(this.publishedTracks.values())
-      .filter(v => v.rtcTrack.tag === 'camera');
+      .filter(v => v.rtcTrack.tag === 'camera' || v.rtcTrack.tag === 'screen');
   }
 
   /** 已发布的 VideoTrack(Screen) */
@@ -112,6 +117,11 @@ export class RoomStore {
   @action
   public setSelectedTrackCreateMode(mode: TrackCreateMode) {
     this.selectedTrackCreateMode = mode;
+  }
+
+  @action
+  public setScreenConfig(config: "480p" | "720p" | "1080p") {
+    this.screenConfig = config;
   }
 
   /** 切换已发布的 VideoTrack(Camera) Mute状态 */
@@ -128,12 +138,14 @@ export class RoomStore {
 
   /** 切换前后置摄像头 */
   @action.bound
-  public async toggleCameraFacingMode() {
+  public async toggleCameraFacingMode(ref: HTMLDivElement) {
     this.setFaceingMode(this.facingMode === 'user' ? 'environment' : 'user');
-    await this.unpublish();
-    const rtcTracks = await this.getSelectTracks();
-    console.log("update video facingMode repub:", rtcTracks);
-    await this.publish(rtcTracks);
+    const tracks = Array.from(this.publishedTracks.values()).map(t => (t.rtcTrack as QNLocalTrack));
+    const cameraTrack = tracks.find(item => item instanceof QNCameraVideoTrack);
+    if (cameraTrack) {
+      await (cameraTrack as QNCameraVideoTrack).switchCamera();
+      cameraTrack.play(ref ,{mirror: false});
+    }
   }
   /** 切换已发布的 AudioTrack Mute状态 */
   @action.bound
@@ -443,7 +455,7 @@ export class RoomStore {
             }
           ),
           (await QNRTC.createScreenVideoTrack({
-            encoderConfig: "1080p",
+            encoderConfig: this.screenConfig,
             screenVideoTag: "screen",
             optimizationMode: QNVideoOptimizationMode.DETAIL
           }) as QNScreenVideoTrack)
@@ -453,7 +465,7 @@ export class RoomStore {
       // 屏幕共享 + 系统声音
       case TrackCreateMode.D: {
         const ts = await QNRTC.createScreenVideoTrack({ 
-          encoderConfig: "1080p",
+          encoderConfig: this.screenConfig,
           optimizationMode: QNVideoOptimizationMode.DETAIL,
           screenAudioTag: "system-audio", 
           screenVideoTag: "screen" 
@@ -481,6 +493,10 @@ export class RoomStore {
           this.handleTrackEnded(tracks);
           this.setLocalTracks([...this.localTracks, ...tracks]);
           this.publish(tracks);
+        });
+      } else if (track.tag === "screen") {
+        track.on("ended", async () => {
+          track.trackID && this.publishedTracks.delete(track.trackID);
         });
       }
     }

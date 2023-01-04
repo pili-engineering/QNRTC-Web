@@ -23,14 +23,15 @@ interface State {
 
 @observer
 export default class UserPlayer extends React.Component<Props, State> {
-
+  public ref: HTMLDivElement | undefined;
   handlePlayerDom(track: Track, ref: HTMLDivElement | null) {
     if (!ref) return;
+    this.ref = ref;
     if (track.rtcTrack.mediaElement && track.rtcTrack.mediaElement.parentElement === ref) return;
     if (ref.innerHTML) {
       ref.innerHTML = '';
     }
-    track.rtcTrack.play(ref).catch(e => {
+    track.rtcTrack.play(ref, {mirror: false}).catch(e => {
       console.log(`mtd demo ${track.rtcTrack.isAudio() ? "audio" : "video"} track play fail`, e);
       this.props.addShouldResumedTrack(track);
     });

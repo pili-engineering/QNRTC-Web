@@ -11,7 +11,7 @@
     "url": "git+https://github.com/pili-engineering/QNRTC-Web.git"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build": "react-scripts build"
   },
   "dependencies": {
@@ -33,7 +33,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "qnweb-rtc": "^4.1.9",
+    "qnweb-rtc": "^4.2.0",
     "qs": "^6.6.0",
     "react": "^16.8.0",
     "react-app-polyfill": "^0.2.0",
