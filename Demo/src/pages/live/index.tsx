@@ -19,11 +19,13 @@ import { MessageStore } from '../../stores/messageStore';
 import { UserStore } from '../../stores/userStore';
 import { verifyRoomId, timeout, retrying } from '../../common/utils';
 import { QNRenderMode, QNTranscodingLiveStreamingTrack } from "qnweb-rtc";
+import { ResumePlay } from "../../components/ResumePlay";
 interface Params {
   roomid: string;
 }
 
 interface State {
+  showDialog: boolean;
 }
 
 interface Props extends RouteComponentProps<Params> {
@@ -34,11 +36,18 @@ interface Props extends RouteComponentProps<Params> {
   isMobile: Boolean;
 }
 
+let flvPlayer: any;
+
 @inject('roomStore', 'routerStore', 'messageStore', 'userStore', 'isMobile')
 @observer
 export default class LivePage extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      showDialog: false
+    };
+  }
   public video = React.createRef<HTMLDivElement>();;
-  public flvPlayer?: any;
   private stopRetrying?: (err?: any) => void;
 
   public async componentDidMount(): Promise<void> {
@@ -68,7 +77,7 @@ export default class LivePage extends React.Component<Props, State> {
 
   componentWillUnmount() {
     if (this.stopRetrying) this.stopRetrying();
-    if (this.flvPlayer) this.flvPlayer.destroy && this.flvPlayer.destroy();
+    if (flvPlayer) flvPlayer.destroy && flvPlayer.destroy();
     this.props.roomStore.leaveRoom();
     this.props.messageStore.hideLoading();
   }
@@ -87,13 +96,19 @@ export default class LivePage extends React.Component<Props, State> {
       height: "100vh"
     }
     // @ts-ignore
-    this.flvPlayer = new QNPlayer.CreatePlayer(config)
+    flvPlayer = new QNPlayer.CreatePlayer(config);
     // @ts-ignore
-    this.flvPlayer.on("complete", () => {
+    flvPlayer.on("complete", () => {
+      flvPlayer.play().catch(() => {
+        this.setState({
+          showDialog: true
+        });
+      })
+
       this.props.messageStore.hideLoading();
     })
     // @ts-ignore
-    this.flvPlayer.on("error", (data) => {
+    flvPlayer.on("error", (data) => {
       this.props.messageStore.hideLoading();
         this.props.messageStore.showAlert({
         show: true,
@@ -102,11 +117,15 @@ export default class LivePage extends React.Component<Props, State> {
       });
     })
   }
+  handleResumePlay() {
+    flvPlayer && flvPlayer.play().then(() => this.setState({showDialog: false}));
+  }
 
   public render(): JSX.Element {
     const { isMobile } = this.props;
     return (
       <div className={`${styles.container} ${isMobile ? styles.containerMobile : ''}`}>
+        <ResumePlay open={this.state.showDialog} handleResumePlay={this.handleResumePlay.bind(this)}/>
         <p className={styles.roomName}>房间名称: {this.props.match.params.roomid}</p>
         <div className={`${isMobile ? styles.videoMobileContainer : styles.videoContainer}`}>
           <div id="livedemo"></div>

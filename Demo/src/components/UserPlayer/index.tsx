@@ -40,7 +40,11 @@ export default class UserPlayer extends React.Component<Props, State> {
   handleTrackFullScreen(track: Track) {
     const videoElement = track.rtcTrack.mediaElement;
     if (!videoElement) return;
-    videoElement.requestFullscreen();
+    if ("requestFullscreen" in videoElement) {
+      videoElement.requestFullscreen();
+    } else if ("webkitRequestFullscreen" in videoElement) {
+      (videoElement as any).webkitRequestFullscreen();
+    }
   }
 
   handleCaptureFrame(track: Track, event: React.MouseEvent<HTMLDivElement>) {
