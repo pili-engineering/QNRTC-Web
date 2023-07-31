@@ -440,6 +440,11 @@ export class RoomStore {
       // 音视频 + 屏幕共享
       case TrackCreateMode.C: {
         tracks = [
+          (await QNRTC.createScreenVideoTrack({
+            encoderConfig: this.screenConfig,
+            screenVideoTag: "screen",
+            optimizationMode: QNVideoOptimizationMode.DETAIL
+          }) as QNScreenVideoTrack),
           ...await QNRTC.createMicrophoneAndCameraTracks(
             { tag: "microphone", microphoneId: this.audioDeviceId },
             {
@@ -453,12 +458,7 @@ export class RoomStore {
                 bitrate: vConfig.config.video!.bitrate
               }
             }
-          ),
-          (await QNRTC.createScreenVideoTrack({
-            encoderConfig: this.screenConfig,
-            screenVideoTag: "screen",
-            optimizationMode: QNVideoOptimizationMode.DETAIL
-          }) as QNScreenVideoTrack)
+          )
         ];
         break;
       }

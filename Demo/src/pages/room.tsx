@@ -188,10 +188,10 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     if (roomStore.state !== QNConnectionState.DISCONNECTED) {
       return;
     }
-    if (qsobj.appId) {
+    if (typeof qsobj.appId == 'string') {
       roomStore.setAppId(qsobj.appId);
     }
-    let token: string | undefined = qsobj.roomToken;
+    let token: string | undefined = qsobj.roomToken as string;
     let tracks: RTCTrack[] | undefined;
     messageStore.showLoading('加入房间中...');
     try {
@@ -275,7 +275,6 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
     const { roomStore, messageStore } = this.props;
     return roomStore.getSelectTracks()
       .catch(e => {
-        console.log(e);
         messageStore.hideLoading();
         switch (e.code) {
           case 11010:
@@ -306,6 +305,13 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
               content: '请手动选择系统声音',
             });
             break;
+          case 23004:
+            messageStore.showAlert({
+              show: true,
+              title: '没有权限',
+              content: '获取屏幕录制权限被拒绝，请手动打开录制权限后重新进入房间',
+            })
+            break
           default:
             messageStore.showAlert({
               show: true,
@@ -335,7 +341,7 @@ class Room extends Component<Props & RouteComponentProps<RoomRouterProps>, {}> {
       this.props.messageStore.showAlert({
         show: true,
         title: '订阅失败',
-        content: error.toString(),
+        content: error instanceof Error ? error.toString() : '',
       });
     }
   };
