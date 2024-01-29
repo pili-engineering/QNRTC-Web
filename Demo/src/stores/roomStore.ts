@@ -396,9 +396,9 @@ export class RoomStore {
   @action
   public async unpublish(): Promise<void> {
     const tracks = Array.from(this.publishedTracks.values()).map(t => (t.rtcTrack as QNLocalTrack));
+    this.publishedTracks.clear();
     await this.session.unpublish(tracks);
     tracks.forEach(t => t.destroy());
-    this.publishedTracks.clear();
   }
 
   @action.bound
