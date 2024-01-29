@@ -1,6 +1,6 @@
 {
   "name": "multiple-track-demo",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "private": true,
   "description": "multiple track demo",
   "author": "pili-coresdk <pili-coresdk@qiniu.com>",
@@ -11,8 +11,11 @@
     "url": "git+https://github.com/pili-engineering/QNRTC-Web.git"
   },
   "scripts": {
-    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
-    "build": "react-scripts build"
+    "start": "REACT_APP_LATEST_COMMIT_HASH=`git rev-parse --short HEAD` REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "REACT_APP_LATEST_COMMIT_HASH=`git rev-parse --short HEAD` REACT_APP_BUILD_DATE=$(date +%Y/%m/%d-%H:%M) NODE_OPTIONS=--openssl-legacy-provider react-scripts build"
+  },
+  "bugs": {
+    "url": "https://github.com/qbox/pili-rtc-web/issues"
   },
   "dependencies": {
     "@material-ui/core": "^3.8.3",
@@ -25,7 +28,7 @@
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "mobx-react-router": "^4.0.5",
-    "qnweb-rtc": "4.2.2",
+    "qnweb-rtc": "4.3.0",
     "qs": "^6.6.0",
     "react": "16.8.0",
     "react-app-polyfill": "0.2.0",
@@ -37,12 +40,18 @@
     "seedrandom": "^2.4.4",
     "store": "^2.0.12"
   },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@types/clipboard": "^2.0.1",
     "@types/history": "^4.7.2",
     "@types/jest": "^23.3.10",
     "@types/lodash": "4",
-    "@types/node": "^18",
+    "@types/node": "^10.12.15",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
@@ -53,11 +62,5 @@
     "@types/webpack-env": "^1.13.6",
     "prettier": "^2.8.6",
     "typescript": "^4.9.4"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }
