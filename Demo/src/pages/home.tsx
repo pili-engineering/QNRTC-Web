@@ -113,6 +113,7 @@ class Home extends Component<Props, State> {
 
   private fileinput: React.RefObject<HTMLInputElement> = React.createRef<HTMLInputElement>();
 
+  //@ts-ignore
   state: State;
 
   constructor(props: Props) {
